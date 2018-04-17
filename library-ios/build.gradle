@@ -1,0 +1,25 @@
+apply plugin: 'konan'
+
+konan.targets = ['iphone', 'iphone_sim', 'macbook']
+
+konanArtifacts {
+    library('library') {
+        enableMultiplatform true
+    }
+
+    program('library-test', targets: ['macbook']) {
+        enableMultiplatform true
+        srcDir 'src/test/kotlin'
+        commonSourceSet 'test'
+        libraries {
+            artifact 'library'
+        }
+        extraOpts '-tr'
+    }
+}
+
+dependencies {
+    expectedBy project(':library-common')
+}
+
+task test(dependsOn: run)

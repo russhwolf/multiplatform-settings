@@ -1,0 +1,19 @@
+apply plugin: 'konan'
+
+konan.targets = ['iphone', 'iphone_sim']
+
+konanArtifacts {
+    framework('Kotlin') {
+        enableMultiplatform true
+        enableOptimizations true
+        libraries {
+            artifact project(':library-ios'), 'library'
+        }
+    }
+}
+
+dependencies {
+    expectedBy project(':sample-common')
+}
+
+task test(dependsOn: run)
