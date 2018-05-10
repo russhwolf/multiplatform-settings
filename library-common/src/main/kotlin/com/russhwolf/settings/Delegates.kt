@@ -1,5 +1,6 @@
 package com.russhwolf.settings
 
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 fun Settings.int(key: String, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
