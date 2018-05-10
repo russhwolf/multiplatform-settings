@@ -3,16 +3,16 @@ apply plugin: 'konan'
 konan.targets = ['iphone', 'iphone_sim', 'macbook']
 
 konanArtifacts {
-    library('library') {
+    library('multiplatform-settings') {
         enableMultiplatform true
     }
 
-    program('library-test', targets: ['macbook']) {
+    program('multiplatform-settings-test', targets: ['macbook']) {
         enableMultiplatform true
         srcDir 'src/test/kotlin'
         commonSourceSet 'test'
         libraries {
-            artifact 'library'
+            artifact 'multiplatform-settings'
         }
         extraOpts '-tr'
     }
