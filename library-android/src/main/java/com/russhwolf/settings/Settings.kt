@@ -6,6 +6,9 @@ actual class Settings(private val delegate: SharedPreferences) {
 
     actual fun clear() = delegate.edit().clear().apply()
 
+    actual fun remove(key: String) = delegate.edit().remove(key).apply()
+    actual fun contains(key: String) = delegate.contains(key)
+
     actual fun putInt(key: String, value: Int) = delegate.edit().putInt(key, value).apply()
     actual fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
 

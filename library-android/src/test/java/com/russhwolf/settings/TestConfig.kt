@@ -24,6 +24,11 @@ actual fun configureTestSettings(): Settings {
         return (storage[key as String] ?: default) as T
     }
 
+    fun mockRemove(invocation: InvocationOnMock): SharedPreferences.Editor {
+        storage.remove(invocation.getArgument(0))
+        return editor
+    }
+
     editor = mock {
         on { putInt(any(), any()) } doAnswer { mockPut(it) }
         on { putLong(any(), any()) } doAnswer { mockPut(it) }
@@ -31,6 +36,7 @@ actual fun configureTestSettings(): Settings {
         on { putFloat(any(), any()) } doAnswer { mockPut(it) }
         on { putBoolean(any(), any()) } doAnswer { mockPut(it) }
         on { clear() } doAnswer { editor.also { storage.clear() } }
+        on { remove(any()) } doAnswer { mockRemove(it) }
     }
     preferences = mock {
         on { getInt(any(), any()) } doAnswer { mockGet(it) }
@@ -38,6 +44,7 @@ actual fun configureTestSettings(): Settings {
         on { getString(any(), any()) } doAnswer { mockGet(it) }
         on { getFloat(any(), any()) } doAnswer { mockGet(it) }
         on { getBoolean(any(), any()) } doAnswer { mockGet(it) }
+        on { contains(any()) } doAnswer { storage.containsKey(it.getArgument(0)) }
         on { edit() } doReturn editor
     }
 

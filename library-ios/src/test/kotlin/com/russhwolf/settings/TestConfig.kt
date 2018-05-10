@@ -10,6 +10,10 @@ private class MockDefaults : UserDefaultsWrapper {
 
     override fun removePersistentDomainForName(domainName: String) = storage.clear()
 
+    override fun removeObjectForKey(defaultName: String) {
+        storage.remove(defaultName)
+    }
+
     override fun setObject(value: Any?, forKey: String) {
         if (value != null) {
             storage[forKey] = value

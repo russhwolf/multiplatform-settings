@@ -3,6 +3,8 @@ package com.russhwolf.settings
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class SettingsTest {
     private lateinit var settings: Settings
@@ -17,6 +19,20 @@ class SettingsTest {
         settings.putInt("a", 5)
         settings.clear()
         assertEquals(0, settings.getInt("a", 0))
+    }
+
+    @Test
+    fun remove() {
+        settings.putInt("a", 3)
+        settings.remove("a")
+        assertEquals(0, settings.getInt("a", 0))
+    }
+
+    @Test
+    fun contains() {
+        assertFalse(settings.contains("a"))
+        settings.putString("a", "value")
+        assertTrue(settings.contains("a"))
     }
 
     @Test

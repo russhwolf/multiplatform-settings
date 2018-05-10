@@ -12,15 +12,18 @@ actual class Settings constructor(private val delegate: UserDefaultsWrapper) {
         delegate.removePersistentDomainForName(appDomain ?: "")
     }
 
+    actual fun remove(key: String) = delegate.removeObjectForKey(key)
+    actual fun contains(key: String) = delegate.objectForKey(key) != null
+
     actual fun putInt(key: String, value: Int) = delegate.setInteger(value.toLong(), forKey = key)
     actual fun getInt(key: String, defaultValue: Int): Int {
-        if (delegate.objectForKey(key) == null) return defaultValue
+        if (!contains(key)) return defaultValue
         return delegate.integerForKey(key).toInt()
     }
 
     actual fun putLong(key: String, value: Long) = delegate.setInteger(value, forKey = key)
     actual fun getLong(key: String, defaultValue: Long): Long {
-        if (delegate.objectForKey(key) == null) return defaultValue
+        if (!contains(key)) return defaultValue
         return delegate.integerForKey(key)
     }
 
@@ -30,19 +33,19 @@ actual class Settings constructor(private val delegate: UserDefaultsWrapper) {
 
     actual fun putFloat(key: String, value: Float) = delegate.setFloat(value, forKey = key)
     actual fun getFloat(key: String, defaultValue: Float): Float {
-        if (delegate.objectForKey(key) == null) return defaultValue
+        if (!contains(key)) return defaultValue
         return delegate.floatForKey(key)
     }
 
     actual fun putDouble(key: String, value: Double) = delegate.setDouble(value, forKey = key)
     actual fun getDouble(key: String, defaultValue: Double): Double {
-        if (delegate.objectForKey(key) == null) return defaultValue
+        if (!contains(key)) return defaultValue
         return delegate.doubleForKey(key)
     }
 
     actual fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, forKey = key)
     actual fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        if (delegate.objectForKey(key) == null) return defaultValue
+        if (!contains(key)) return defaultValue
         return delegate.boolForKey(key)
     }
 }
@@ -52,6 +55,7 @@ actual class Settings constructor(private val delegate: UserDefaultsWrapper) {
  */
 interface UserDefaultsWrapper {
     fun removePersistentDomainForName(domainName: String)
+    fun removeObjectForKey(defaultName: String)
 
     fun setObject(value: Any?, forKey: String)
     fun objectForKey(defaultName: String): Any?
@@ -73,6 +77,8 @@ interface UserDefaultsWrapper {
 class NSUserDefaultsWrapper constructor(val delegate: NSUserDefaults) : UserDefaultsWrapper {
     override fun removePersistentDomainForName(domainName: String) =
         delegate.removePersistentDomainForName(domainName)
+
+    override fun removeObjectForKey(defaultName: String) = delegate.removeObjectForKey(defaultName)
 
     override fun setObject(value: Any?, forKey: String) = delegate.setObject(value, forKey = forKey)
     override fun objectForKey(defaultName: String) = delegate.objectForKey(defaultName)
