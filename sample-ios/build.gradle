@@ -7,7 +7,7 @@ konanArtifacts {
         enableMultiplatform true
         enableOptimizations true
         libraries {
-            artifact project(':library-ios'), 'multiplatform-settings'
+            artifact project(':library-ios'), 'library'
         }
     }
 }
