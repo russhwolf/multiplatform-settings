@@ -47,7 +47,6 @@ private class MockDefaults : UserDefaultsWrapper {
         storage[forKey] = value
     }
 
-    override fun boolForKey(defaultName: String): Boolean =
-        storage[defaultName] as? Boolean ?: false
+    override fun boolForKey(defaultName: String): Boolean = storage[defaultName] as? Boolean ?: false
 }
 

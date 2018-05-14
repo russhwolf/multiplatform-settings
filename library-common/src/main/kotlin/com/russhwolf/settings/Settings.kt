@@ -3,6 +3,7 @@ package com.russhwolf.settings
 expect class Settings {
 
     fun clear()
+
     fun remove(key: String)
     fun contains(key: String): Boolean
 
