@@ -8,21 +8,21 @@ expect class Settings {
     fun contains(key: String): Boolean
 
     fun putInt(key: String, value: Int)
-    fun getInt(key: String, defaultValue: Int): Int
+    fun getInt(key: String, defaultValue: Int = 0): Int
 
     fun putLong(key: String, value: Long)
-    fun getLong(key: String, defaultValue: Long): Long
+    fun getLong(key: String, defaultValue: Long = 0): Long
 
     fun putString(key: String, value: String)
-    fun getString(key: String, defaultValue: String): String
+    fun getString(key: String, defaultValue: String = ""): String
 
     fun putFloat(key: String, value: Float)
-    fun getFloat(key: String, defaultValue: Float): Float
+    fun getFloat(key: String, defaultValue: Float = 0f): Float
 
     fun putDouble(key: String, value: Double)
-    fun getDouble(key: String, defaultValue: Double): Double
+    fun getDouble(key: String, defaultValue: Double = 0.0): Double
 
     fun putBoolean(key: String, value: Boolean)
-    fun getBoolean(key: String, defaultValue: Boolean): Boolean
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
 
 }

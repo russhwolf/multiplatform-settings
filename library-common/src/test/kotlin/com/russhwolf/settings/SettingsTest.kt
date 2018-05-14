@@ -18,14 +18,14 @@ class SettingsTest {
     fun clear() {
         settings.putInt("a", 5)
         settings.clear()
-        assertEquals(0, settings.getInt("a", 0))
+        assertEquals(-1, settings.getInt("a", -1))
     }
 
     @Test
     fun remove() {
         settings.putInt("a", 3)
         settings.remove("a")
-        assertEquals(0, settings.getInt("a", 0))
+        assertEquals(-1, settings.getInt("a", -1))
     }
 
     @Test
@@ -89,6 +89,74 @@ class SettingsTest {
         assertEquals(true, a)
         a = false
         assertEquals(false, a)
+    }
+
+    @Test
+    fun nullableIntDelegate() {
+        var a by settings.nullableInt("Nullable Int")
+        assertEquals(null, a)
+        a = 2
+        assertEquals(2, a)
+        a = 0
+        assertEquals(0, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
+    fun nullableLongDelegate() {
+        var a by settings.nullableLong("Nullable Long")
+        assertEquals(null, a)
+        a = 2
+        assertEquals(2, a)
+        a = 0
+        assertEquals(0, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
+    fun nullableStringDelegate() {
+        var a by settings.nullableString("Nullable String")
+        assertEquals(null, a)
+        a = "value"
+        assertEquals("value", a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
+    fun nullableFloatDelegate() {
+        var a by settings.nullableFloat("Nullable Float")
+        assertEquals(null, a)
+        a = 2f
+        assertEquals(2f, a)
+        a = 0f
+        assertEquals(0f, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
+    fun nullableDoubleDelegate() {
+        var a by settings.nullableDouble("Nullable Double")
+        assertEquals(null, a)
+        a = 2.0
+        assertEquals(2.0, a)
+        a = 0.0
+        assertEquals(0.0, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
+    fun nullableBooleanDelegate() {
+        var a by settings.nullableBoolean("Nullable Boolean")
+        assertEquals(null, a)
+        a = true
+        assertEquals(true, a)
+        a = null
+        assertEquals(null, a)
     }
 }
 
