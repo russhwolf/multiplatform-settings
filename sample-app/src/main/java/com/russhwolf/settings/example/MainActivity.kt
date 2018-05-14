@@ -13,13 +13,7 @@ import com.russhwolf.settings.Settings
 class MainActivity : AppCompatActivity() {
 
     val settingsRepository by lazy {
-        SettingsRepository(
-            Settings(
-                PreferenceManager.getDefaultSharedPreferences(
-                    this
-                )
-            )
-        )
+        SettingsRepository(Settings(PreferenceManager.getDefaultSharedPreferences(this)))
     }
     val typesSpinner by lazy { findViewById<Spinner>(R.id.types_spinner) }
     val valueInput by lazy { findViewById<EditText>(R.id.value_input) }
@@ -34,32 +28,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         typesSpinner.adapter =
-                ArrayAdapter<SettingConfig>(
+                ArrayAdapter<SettingConfig<*>>(
                     this,
                     android.R.layout.simple_list_item_1,
-                    SETTING_CONFIGS
+                    settingsRepository.mySettings
                 )
 
         setButton.setOnClickListener {
-            val settingConfig = typesSpinner.selectedItem as SettingConfig
+            val settingConfig = typesSpinner.selectedItem as SettingConfig<*>
             val value = valueInput.text.toString()
-            try {
-                settingConfig.set(settingsRepository, value)
+            if (settingConfig.set(value)) {
                 output.text = ""
-            } catch (exception: Exception) {
-                exception.printStackTrace()
-                output.text = "${exception::class.java.simpleName}\n${exception.message}"
+            } else {
+                output.text = "INVALID VALUE!"
             }
         }
 
         getButton.setOnClickListener {
-            val settingConfig = typesSpinner.selectedItem as SettingConfig
-            try {
-                output.text = settingConfig.get(settingsRepository)
-            } catch (exception: Exception) {
-                exception.printStackTrace()
-                output.text = "${exception::class.java.simpleName}\n${exception.message}"
-            }
+            val settingConfig = typesSpinner.selectedItem as SettingConfig<*>
+            output.text = settingConfig.get()
         }
 
         clearButton.setOnClickListener {
@@ -68,21 +55,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-}
-
-val SETTING_CONFIGS = arrayOf(
-    SettingConfig("String", { myStringSetting = it }, { myStringSetting }),
-    SettingConfig("Int", { myIntSetting = it.toInt() }, { myIntSetting.toString() }),
-    SettingConfig("Long", { myLongSetting = it.toLong() }, { myLongSetting.toString() }),
-    SettingConfig("Float", { myFloatSetting = it.toFloat() }, { myFloatSetting.toString() }),
-    SettingConfig("Double", { myDoubleSetting = it.toDouble() }, { myDoubleSetting.toString() }),
-    SettingConfig("Boolean", { myBooleanSetting = it.toBoolean() }, { myBooleanSetting.toString() })
-)
-
-class SettingConfig(
-    private val label: String,
-    val set: SettingsRepository.(String) -> Unit,
-    val get: SettingsRepository.() -> String
-) {
-    override fun toString() = label
 }
