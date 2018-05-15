@@ -4,40 +4,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <Spinner
         android:id="@+id/types_spinner"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 
     <EditText
         android:id="@+id/value_input"
         android:hint="Value"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 
     <Button
         android:id="@+id/set_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Value" />
+        android:text="Set Value"
+        />
 
     <Button
         android:id="@+id/get_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Value" />
+        android:text="Get Value"
+        />
+
+    <Button
+        android:id="@+id/remove_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove Value"
+        />
 
     <Button
         android:id="@+id/clear_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear Values" />
+        android:text="Clear All Values"
+        />
 
     <TextView
         android:id="@+id/output"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

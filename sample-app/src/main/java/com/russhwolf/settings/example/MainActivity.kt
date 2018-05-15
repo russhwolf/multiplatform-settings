@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     val valueInput by lazy { findViewById<EditText>(R.id.value_input) }
     val setButton by lazy { findViewById<Button>(R.id.set_button) }
     val getButton by lazy { findViewById<Button>(R.id.get_button) }
+    val removeButton by lazy { findViewById<Button>(R.id.remove_button) }
     val clearButton by lazy { findViewById<Button>(R.id.clear_button) }
     val output by lazy { findViewById<TextView>(R.id.output) }
 
@@ -47,6 +48,12 @@ class MainActivity : AppCompatActivity() {
         getButton.setOnClickListener {
             val settingConfig = typesSpinner.selectedItem as SettingConfig<*>
             output.text = settingConfig.get()
+        }
+
+        removeButton.setOnClickListener {
+            val settingConfig = typesSpinner.selectedItem as SettingConfig<*>
+            settingConfig.remove()
+            output.text = "Setting removed!"
         }
 
         clearButton.setOnClickListener {

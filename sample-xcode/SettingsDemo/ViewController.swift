@@ -66,7 +66,16 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         let settingConfig = settingsRepository.mySettings[row]
         outputText?.text = settingConfig.get()
     }
-
+    
+    @IBAction func onRemoveButtonPress() {
+        guard let row = typePicker?.selectedRow(inComponent: 0) else {
+            return
+        }
+        let settingConfig = settingsRepository.mySettings[row]
+        settingConfig.remove()
+        outputText?.text = "Setting Removed!"
+    }
+    
     @IBAction func onClearButtonPress() {
         settingsRepository.clear()
         outputText?.text = "Settings Cleared!"
