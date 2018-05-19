@@ -12,16 +12,16 @@ import com.russhwolf.settings.Settings
 
 class MainActivity : AppCompatActivity() {
 
-    val settingsRepository by lazy {
-        SettingsRepository(Settings(PreferenceManager.getDefaultSharedPreferences(this)))
+    private val settingsRepository by lazy {
+        SettingsRepository(Settings(PreferenceManager.getDefaultSharedPreferences(applicationContext)))
     }
-    val typesSpinner by lazy { findViewById<Spinner>(R.id.types_spinner) }
-    val valueInput by lazy { findViewById<EditText>(R.id.value_input) }
-    val setButton by lazy { findViewById<Button>(R.id.set_button) }
-    val getButton by lazy { findViewById<Button>(R.id.get_button) }
-    val removeButton by lazy { findViewById<Button>(R.id.remove_button) }
-    val clearButton by lazy { findViewById<Button>(R.id.clear_button) }
-    val output by lazy { findViewById<TextView>(R.id.output) }
+    private val typesSpinner by lazy { findViewById<Spinner>(R.id.types_spinner) }
+    private val valueInput by lazy { findViewById<EditText>(R.id.value_input) }
+    private val setButton by lazy { findViewById<Button>(R.id.set_button) }
+    private val getButton by lazy { findViewById<Button>(R.id.get_button) }
+    private val removeButton by lazy { findViewById<Button>(R.id.remove_button) }
+    private val clearButton by lazy { findViewById<Button>(R.id.clear_button) }
+    private val output by lazy { findViewById<TextView>(R.id.output) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -59,7 +59,7 @@ open class SettingConfig<T>(
     override fun toString() = key
 }
 
-open class NullableSettingConfig<T>(
+open class NullableSettingConfig<T : Any>(
     settings: Settings,
     key: String,
     delegate: Settings.(String) -> ReadWriteProperty<Any?, T?>,

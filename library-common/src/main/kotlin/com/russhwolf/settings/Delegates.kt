@@ -45,7 +45,6 @@ private abstract class Delegate<T : Any>(
     }
 
     abstract operator fun Settings.get(key: String, defaultValue: T): T
-
     abstract operator fun Settings.set(key: String, value: T)
 }
 
@@ -53,16 +52,13 @@ private abstract class NullableDelegate<T>(
     private val settings: Settings,
     private val key: String
 ) : ReadWriteProperty<Any?, T?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
-        return if (settings.contains(key)) settings[key] else null
-    }
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T? =
+        if (settings.contains(key)) settings[key] else null
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
         if (value != null) settings[key] = value else settings.remove(key)
-    }
 
     abstract operator fun Settings.get(key: String): T
-
     abstract operator fun Settings.set(key: String, value: T)
 }
 
@@ -80,9 +76,7 @@ private class LongDelegate(settings: Settings, key: String, defaultValue: Long =
 
 private class StringDelegate(settings: Settings, key: String, defaultValue: String = "") :
     Delegate<String>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: String): String =
-        getString(key, defaultValue)
-
+    override fun Settings.get(key: String, defaultValue: String): String = getString(key, defaultValue)
     override fun Settings.set(key: String, value: String) = putString(key, value)
 }
 
@@ -94,17 +88,13 @@ private class FloatDelegate(settings: Settings, key: String, defaultValue: Float
 
 private class DoubleDelegate(settings: Settings, key: String, defaultValue: Double = 0.0) :
     Delegate<Double>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: Double): Double =
-        getDouble(key, defaultValue)
-
+    override fun Settings.get(key: String, defaultValue: Double): Double = getDouble(key, defaultValue)
     override fun Settings.set(key: String, value: Double) = putDouble(key, value)
 }
 
 private class BooleanDelegate(settings: Settings, key: String, defaultValue: Boolean = false) :
     Delegate<Boolean>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: Boolean): Boolean =
-        getBoolean(key, defaultValue)
-
+    override fun Settings.get(key: String, defaultValue: Boolean): Boolean = getBoolean(key, defaultValue)
     override fun Settings.set(key: String, value: Boolean) = putBoolean(key, value)
 }
 

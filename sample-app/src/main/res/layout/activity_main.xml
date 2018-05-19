@@ -16,6 +16,8 @@
     <EditText
         android:id="@+id/value_input"
         android:hint="Value"
+        android:inputType="text"
+        android:imeOptions="actionDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />

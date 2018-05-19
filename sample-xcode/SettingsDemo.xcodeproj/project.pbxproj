@@ -293,7 +293,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "case \"$PLATFORM_NAME\" in\n  iphoneos)\n    NAME=ios_arm64\n    TASK=compileKonanKotlinIos_arm64\n    ;;\n  iphonesimulator)\n    NAME=ios_x64\n    TASK=compileKonanKotlinIos_x64\n    ;;\n  *)\n    echo \"Unknown platform: $PLATFORM_NAME\"\n    exit 1\n    ;;\nesac\n\n\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../\" \":sample-ios:build\"\nrm -rf \"$SRCROOT/build/\"\nmkdir \"$SRCROOT/build/\"\ncp -a \"$SRCROOT/../sample-ios/build/konan/bin/$NAME/\" \"$SRCROOT/build/\"";
+			shellScript = "case \"$PLATFORM_NAME\" in\n  iphoneos)\n    NAME=ios_arm64\n    TASK=compileKonanKotlinIos_arm64\n    ;;\n  iphonesimulator)\n    NAME=ios_x64\n    TASK=compileKonanKotlinIos_x64\n    ;;\n  *)\n    echo \"Unknown platform: $PLATFORM_NAME\"\n    exit 1\n    ;;\nesac\n\n\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../\" \":sample-ios:$TASK\"\nrm -rf \"$SRCROOT/build/\"\nmkdir \"$SRCROOT/build/\"\ncp -a \"$SRCROOT/../sample-ios/build/konan/bin/$NAME/\" \"$SRCROOT/build/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
