@@ -30,9 +30,9 @@ class SettingsTest {
 
     @Test
     fun contains() {
-        assertFalse(settings.contains("a"))
+        assertFalse(settings.hasKey("a"))
         settings.putString("a", "value")
-        assertTrue(settings.contains("a"))
+        assertTrue(settings.hasKey("a"))
     }
 
     @Test

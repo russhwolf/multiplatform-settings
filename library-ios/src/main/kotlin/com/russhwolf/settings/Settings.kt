@@ -13,15 +13,15 @@ actual class Settings(private val delegate: UserDefaultsWrapper) {
     }
 
     actual fun remove(key: String) = delegate.removeObjectForKey(key)
-    actual fun contains(key: String) = delegate.objectForKey(key) != null
+    actual fun hasKey(key: String) = delegate.objectForKey(key) != null
 
     actual fun putInt(key: String, value: Int) = delegate.setInteger(value.toLong(), forKey = key)
     actual fun getInt(key: String, defaultValue: Int): Int =
-        if (contains(key)) delegate.integerForKey(key).toInt() else defaultValue
+        if (hasKey(key)) delegate.integerForKey(key).toInt() else defaultValue
 
     actual fun putLong(key: String, value: Long) = delegate.setInteger(value, forKey = key)
     actual fun getLong(key: String, defaultValue: Long): Long =
-        if (contains(key)) delegate.integerForKey(key) else defaultValue
+        if (hasKey(key)) delegate.integerForKey(key) else defaultValue
 
     actual fun putString(key: String, value: String) = delegate.setObject(value, forKey = key)
     actual fun getString(key: String, defaultValue: String): String =
@@ -29,15 +29,15 @@ actual class Settings(private val delegate: UserDefaultsWrapper) {
 
     actual fun putFloat(key: String, value: Float) = delegate.setFloat(value, forKey = key)
     actual fun getFloat(key: String, defaultValue: Float): Float =
-        if (contains(key)) delegate.floatForKey(key) else defaultValue
+        if (hasKey(key)) delegate.floatForKey(key) else defaultValue
 
     actual fun putDouble(key: String, value: Double) = delegate.setDouble(value, forKey = key)
     actual fun getDouble(key: String, defaultValue: Double): Double =
-        if (contains(key)) delegate.doubleForKey(key) else defaultValue
+        if (hasKey(key)) delegate.doubleForKey(key) else defaultValue
 
     actual fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, forKey = key)
     actual fun getBoolean(key: String, defaultValue: Boolean): Boolean =
-        if (contains(key)) delegate.boolForKey(key) else defaultValue
+        if (hasKey(key)) delegate.boolForKey(key) else defaultValue
 }
 
 /**

@@ -5,7 +5,7 @@ expect class Settings {
     fun clear()
 
     fun remove(key: String)
-    fun contains(key: String): Boolean
+    fun hasKey(key: String): Boolean
 
     fun putInt(key: String, value: Int)
     fun getInt(key: String, defaultValue: Int = 0): Int
@@ -26,3 +26,18 @@ expect class Settings {
     fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
 
 }
+
+operator fun Settings.contains(key: String) = hasKey(key)
+operator fun Settings.minusAssign(key: String) = remove(key)
+operator fun Settings.get(key: String, defaultValue: Int) = getInt(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Long) = getLong(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: String) = getString(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Float) = getFloat(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Double) = getDouble(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Boolean) = getBoolean(key, defaultValue)
+operator fun Settings.set(key: String, value: Int) = putInt(key, value)
+operator fun Settings.set(key: String, value: Long) = putLong(key, value)
+operator fun Settings.set(key: String, value: String) = putString(key, value)
+operator fun Settings.set(key: String, value: Float) = putFloat(key, value)
+operator fun Settings.set(key: String, value: Double) = putDouble(key, value)
+operator fun Settings.set(key: String, value: Boolean) = putBoolean(key, value)

@@ -33,103 +33,135 @@ fun Settings.nullableDouble(key: String): ReadWriteProperty<Any?, Double?> = Nul
 
 fun Settings.nullableBoolean(key: String): ReadWriteProperty<Any?, Boolean?> = NullableBooleanDelegate(this, key)
 
-private abstract class Delegate<T : Any>(
+private class IntDelegate(
     private val settings: Settings,
     private val key: String,
-    private val defaultValue: T
-) : ReadWriteProperty<Any?, T> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T = settings[key, defaultValue]
-
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+    private val defaultValue: Int
+) : ReadWriteProperty<Any?, Int> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Int = settings[key, defaultValue]
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Int) {
         settings[key] = value
     }
-
-    abstract operator fun Settings.get(key: String, defaultValue: T): T
-    abstract operator fun Settings.set(key: String, value: T)
 }
 
-private abstract class NullableDelegate<T>(
+private class LongDelegate(
+    private val settings: Settings,
+    private val key: String,
+    private val defaultValue: Long
+) : ReadWriteProperty<Any?, Long> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Long = settings[key, defaultValue]
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Long) {
+        settings[key] = value
+    }
+}
+
+private class StringDelegate(
+    private val settings: Settings,
+    private val key: String,
+    private val defaultValue: String
+) : ReadWriteProperty<Any?, String> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): String = settings[key, defaultValue]
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+        settings[key] = value
+    }
+}
+
+private class FloatDelegate(
+    private val settings: Settings,
+    private val key: String,
+    private val defaultValue: Float
+) : ReadWriteProperty<Any?, Float> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Float = settings[key, defaultValue]
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Float) {
+        settings[key] = value
+    }
+}
+
+private class DoubleDelegate(
+    private val settings: Settings,
+    private val key: String,
+    private val defaultValue: Double
+) : ReadWriteProperty<Any?, Double> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Double = settings[key, defaultValue]
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Double) {
+        settings[key] = value
+    }
+}
+
+private class BooleanDelegate(
+    private val settings: Settings,
+    private val key: String,
+    private val defaultValue: Boolean
+) : ReadWriteProperty<Any?, Boolean> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Boolean = settings[key, defaultValue]
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Boolean) {
+        settings[key] = value
+    }
+}
+
+private class NullableIntDelegate(
     private val settings: Settings,
     private val key: String
-) : ReadWriteProperty<Any?, T?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T? =
-        if (settings.contains(key)) settings[key] else null
+) : ReadWriteProperty<Any?, Int?> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Int? =
+        if (key in settings) settings[key, 0] else null
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
-        if (value != null) settings[key] = value else settings.remove(key)
-
-    abstract operator fun Settings.get(key: String): T
-    abstract operator fun Settings.set(key: String, value: T)
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Int?) =
+        if (value != null) settings[key] = value else settings -= key
 }
 
-private class IntDelegate(settings: Settings, key: String, defaultValue: Int = 0) :
-    Delegate<Int>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: Int): Int = getInt(key, defaultValue)
-    override fun Settings.set(key: String, value: Int) = putInt(key, value)
+private class NullableLongDelegate(
+    private val settings: Settings,
+    private val key: String
+) : ReadWriteProperty<Any?, Long?> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Long? =
+        if (key in settings) settings[key, 0L] else null
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Long?) =
+        if (value != null) settings[key] = value else settings -= key
 }
 
-private class LongDelegate(settings: Settings, key: String, defaultValue: Long = 0) :
-    Delegate<Long>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: Long): Long = getLong(key, defaultValue)
-    override fun Settings.set(key: String, value: Long) = putLong(key, value)
+private class NullableStringDelegate(
+    private val settings: Settings,
+    private val key: String
+) : ReadWriteProperty<Any?, String?> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): String? =
+        if (key in settings) settings[key, ""] else null
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: String?) =
+        if (value != null) settings[key] = value else settings -= key
 }
 
-private class StringDelegate(settings: Settings, key: String, defaultValue: String = "") :
-    Delegate<String>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: String): String = getString(key, defaultValue)
-    override fun Settings.set(key: String, value: String) = putString(key, value)
+private class NullableFloatDelegate(
+    private val settings: Settings,
+    private val key: String
+) : ReadWriteProperty<Any?, Float?> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Float? =
+        if (key in settings) settings[key, 0f] else null
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Float?) =
+        if (value != null) settings[key] = value else settings -= key
 }
 
-private class FloatDelegate(settings: Settings, key: String, defaultValue: Float = 0f) :
-    Delegate<Float>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: Float): Float = getFloat(key, defaultValue)
-    override fun Settings.set(key: String, value: Float) = putFloat(key, value)
+private class NullableDoubleDelegate(
+    private val settings: Settings,
+    private val key: String
+) : ReadWriteProperty<Any?, Double?> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Double? =
+        if (key in settings) settings[key, 0.0] else null
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Double?) =
+        if (value != null) settings[key] = value else settings -= key
 }
 
-private class DoubleDelegate(settings: Settings, key: String, defaultValue: Double = 0.0) :
-    Delegate<Double>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: Double): Double = getDouble(key, defaultValue)
-    override fun Settings.set(key: String, value: Double) = putDouble(key, value)
+private class NullableBooleanDelegate(
+    private val settings: Settings,
+    private val key: String
+) : ReadWriteProperty<Any?, Boolean?> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Boolean? =
+        if (key in settings) settings[key, false] else null
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Boolean?) =
+        if (value != null) settings[key] = value else settings -= key
 }
 
-private class BooleanDelegate(settings: Settings, key: String, defaultValue: Boolean = false) :
-    Delegate<Boolean>(settings, key, defaultValue) {
-    override fun Settings.get(key: String, defaultValue: Boolean): Boolean = getBoolean(key, defaultValue)
-    override fun Settings.set(key: String, value: Boolean) = putBoolean(key, value)
-}
-
-private class NullableIntDelegate(settings: Settings, key: String) :
-    NullableDelegate<Int>(settings, key) {
-    override fun Settings.get(key: String): Int = getInt(key)
-    override fun Settings.set(key: String, value: Int) = putInt(key, value)
-}
-
-private class NullableLongDelegate(settings: Settings, key: String) :
-    NullableDelegate<Long>(settings, key) {
-    override fun Settings.get(key: String): Long = getLong(key)
-    override fun Settings.set(key: String, value: Long) = putLong(key, value)
-}
-
-private class NullableStringDelegate(settings: Settings, key: String) :
-    NullableDelegate<String>(settings, key) {
-    override fun Settings.get(key: String): String = getString(key)
-    override fun Settings.set(key: String, value: String) = putString(key, value)
-}
-
-private class NullableFloatDelegate(settings: Settings, key: String) :
-    NullableDelegate<Float>(settings, key) {
-    override fun Settings.get(key: String): Float = getFloat(key)
-    override fun Settings.set(key: String, value: Float) = putFloat(key, value)
-}
-
-private class NullableDoubleDelegate(settings: Settings, key: String) :
-    NullableDelegate<Double>(settings, key) {
-    override fun Settings.get(key: String): Double = getDouble(key)
-    override fun Settings.set(key: String, value: Double) = putDouble(key, value)
-}
-
-private class NullableBooleanDelegate(settings: Settings, key: String) :
-    NullableDelegate<Boolean>(settings, key) {
-    override fun Settings.get(key: String): Boolean = getBoolean(key)
-    override fun Settings.set(key: String, value: Boolean) = putBoolean(key, value)
-}

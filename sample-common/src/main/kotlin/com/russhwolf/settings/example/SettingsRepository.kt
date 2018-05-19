@@ -4,10 +4,12 @@ import kotlin.properties.ReadWriteProperty
 
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.boolean
+import com.russhwolf.settings.contains
 import com.russhwolf.settings.double
 import com.russhwolf.settings.float
 import com.russhwolf.settings.int
 import com.russhwolf.settings.long
+import com.russhwolf.settings.minusAssign
 import com.russhwolf.settings.nullableBoolean
 import com.russhwolf.settings.nullableDouble
 import com.russhwolf.settings.nullableFloat
@@ -44,8 +46,11 @@ open class SettingConfig<T>(
 ) {
     private var value: T by settings.delegate(key, defaultValue)
 
-    fun remove(): Unit = settings.remove(key)
-    fun exists(): Boolean = settings.contains(key)
+    fun remove() {
+        settings -= key
+    }
+
+    fun exists(): Boolean = key in settings
     fun get(): String = value.toString()
     fun set(value: String): Boolean {
         return try {
