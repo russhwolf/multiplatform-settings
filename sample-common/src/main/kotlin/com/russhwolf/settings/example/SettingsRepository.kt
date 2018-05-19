@@ -18,12 +18,12 @@ import com.russhwolf.settings.string
 
 class SettingsRepository(private var settings: Settings) {
     val mySettings: List<SettingConfig<*>> = listOf(
-        StringSettingConfig(settings, "MY_STRING"),
-        IntSettingConfig(settings, "MY_INT"),
-        LongSettingConfig(settings, "MY_LONG"),
-        FloatSettingConfig(settings, "MY_FLOAT"),
-        DoubleSettingConfig(settings, "MY_DOUBLE"),
-        BooleanSettingConfig(settings, "MY_BOOLEAN"),
+        StringSettingConfig(settings, "MY_STRING", "default"),
+        IntSettingConfig(settings, "MY_INT", -1),
+        LongSettingConfig(settings, "MY_LONG", -1),
+        FloatSettingConfig(settings, "MY_FLOAT", -1f),
+        DoubleSettingConfig(settings, "MY_DOUBLE", -1.0),
+        BooleanSettingConfig(settings, "MY_BOOLEAN", true),
         NullableStringSettingConfig(settings, "MY_NULLABLE_STRING"),
         NullableIntSettingConfig(settings, "MY_NULLABLE_INT"),
         NullableLongSettingConfig(settings, "MY_NULLABLE_LONG"),
