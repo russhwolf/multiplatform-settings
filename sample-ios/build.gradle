@@ -1,13 +1,20 @@
 apply plugin: 'konan'
 
-konan.targets = ['iphone', 'iphone_sim']
+konan.targets = ['ios_arm64', 'ios_x64']
 
 konanArtifacts {
-    framework('Kotlin') {
+    framework('Kotlin_ios_arm64', targets: ['ios_arm64']) {
         enableMultiplatform true
-        enableOptimizations true
-        libraries {
-            artifact project(':library-ios'), 'library'
+        artifactName 'Kotlin'
+        dependencies {
+            artifactKotlin_ios_arm64 "com.russhwolf:multiplatform_settings_ios_arm64:0.1"
+        }
+    }
+    framework('Kotlin_ios_x64', targets: ['ios_x64']) {
+        enableMultiplatform true
+        artifactName 'Kotlin'
+        dependencies {
+            artifactKotlin_ios_x64 "com.russhwolf:multiplatform_settings_ios_x64:0.1"
         }
     }
 }

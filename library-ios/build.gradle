@@ -1,13 +1,31 @@
 apply plugin: 'konan'
 
-konan.targets = ['iphone', 'iphone_sim', 'macbook']
+publishing {
+    publications {
+
+        ios_arm64(MavenPublication) {
+            artifact("$buildDir/konan/libs/ios_arm64/library.klib")
+            groupId
+            artifactId 'multiplatform-settings-ios_arm64'
+            version this.version
+        }
+        ios_x86(MavenPublication) {
+            artifact("$buildDir/konan/libs/ios_x64/library.klib")
+            groupId
+            artifactId 'multiplatform-settings-ios_x64'
+            version this.version
+        }
+    }
+}
+
+konan.targets = ['ios_arm64', 'ios_x64', 'macos']
 
 konanArtifacts {
     library('library') {
         enableMultiplatform true
     }
 
-    program('library-test', targets: ['macbook']) {
+    program('library-test', targets: ['macos']) {
         enableMultiplatform true
         srcDir 'src/test/kotlin'
         commonSourceSet 'test'

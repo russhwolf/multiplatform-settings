@@ -10,3 +10,4 @@
 .externalNativeBuild
 /.idea/caches/build_file_checksums.ser
 /.idea/runConfigurations.xml\
+keys.gradle

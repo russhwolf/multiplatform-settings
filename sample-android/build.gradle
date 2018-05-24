@@ -21,6 +21,6 @@ android {
 
 dependencies {
     expectedBy project(':sample-common')
-    api project(':library-android')
+    api "com.russhwolf:multiplatform-settings-android:0.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

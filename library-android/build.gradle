@@ -2,6 +2,17 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-platform-android'
 
+publishing {
+    publications {
+        android(MavenPublication) {
+            artifact("$buildDir/outputs/aar/library-android-release.aar")
+            groupId
+            artifactId 'multiplatform-settings-android'
+            version this.version
+        }
+    }
+}
+
 android {
     compileSdkVersion 27
     defaultConfig {
