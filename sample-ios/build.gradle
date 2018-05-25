@@ -7,14 +7,14 @@ konanArtifacts {
         enableMultiplatform true
         artifactName 'Kotlin'
         dependencies {
-            artifactKotlin_ios_arm64 "com.russhwolf:multiplatform_settings_ios_arm64:0.1"
+            artifactKotlin_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1"
         }
     }
     framework('Kotlin_ios_x64', targets: ['ios_x64']) {
         enableMultiplatform true
         artifactName 'Kotlin'
         dependencies {
-            artifactKotlin_ios_x64 "com.russhwolf:multiplatform_settings_ios_x64:0.1"
+            artifactKotlin_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1"
         }
     }
 }

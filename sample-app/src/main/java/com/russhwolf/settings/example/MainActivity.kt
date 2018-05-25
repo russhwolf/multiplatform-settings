@@ -1,19 +1,17 @@
 package com.russhwolf.settings.example
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import com.russhwolf.settings.Settings
 
 class MainActivity : AppCompatActivity() {
 
     private val settingsRepository by lazy {
-        SettingsRepository(Settings(PreferenceManager.getDefaultSharedPreferences(applicationContext)))
+        SettingsRepository(SettingsFactory(applicationContext))
     }
     private val typesSpinner by lazy { findViewById<Spinner>(R.id.types_spinner) }
     private val valueInput by lazy { findViewById<EditText>(R.id.value_input) }

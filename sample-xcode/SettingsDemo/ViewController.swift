@@ -15,7 +15,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet var valueInput: UITextField?
     @IBOutlet var outputText: UILabel?
 
-    lazy var settingsRepository = KotlinSettingsRepository(settings: KotlinLibrarySettings())
+    lazy var settingsRepository = KotlinSettingsRepository(settingsFactory: KotlinSettingsFactory())
 
     override func viewDidLoad() {
         super.viewDidLoad()
