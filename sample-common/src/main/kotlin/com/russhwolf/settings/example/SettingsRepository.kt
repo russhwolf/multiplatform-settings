@@ -18,6 +18,10 @@ import com.russhwolf.settings.nullableLong
 import com.russhwolf.settings.nullableString
 import com.russhwolf.settings.string
 
+/**
+ * This class demonstrates `kotlin-platform-common` code exercising all of the functionality of the [Settings] class.
+ * The majority of this functionality is delegated to [SettingConfig] subclasses for each supported type.
+ */
 class SettingsRepository(private var settings: Settings) {
     val mySettings: List<SettingConfig<*>> = listOf(
         StringSettingConfig(settings, "MY_STRING", "default"),
@@ -37,7 +41,11 @@ class SettingsRepository(private var settings: Settings) {
     fun clear() = settings.clear()
 }
 
-open class SettingConfig<T>(
+/**
+ * This class wraps all of the different operations that might be performed on a given [key], and adds an interface to
+ * get and set it as a [String] value..
+ */
+sealed class SettingConfig<T>(
     private val settings: Settings,
     val key: String,
     defaultValue: T,
@@ -64,7 +72,7 @@ open class SettingConfig<T>(
     override fun toString() = key
 }
 
-open class NullableSettingConfig<T : Any>(
+sealed class NullableSettingConfig<T : Any>(
     settings: Settings,
     key: String,
     delegate: Settings.(String) -> ReadWriteProperty<Any?, T?>,

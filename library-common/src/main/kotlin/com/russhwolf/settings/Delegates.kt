@@ -3,34 +3,70 @@ package com.russhwolf.settings
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * Returns an [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
+ */
 fun Settings.int(key: String, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
     IntDelegate(this, key, defaultValue)
 
+/**
+ * Returns a [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
+ */
 fun Settings.long(key: String, defaultValue: Long = 0): ReadWriteProperty<Any?, Long> =
     LongDelegate(this, key, defaultValue)
 
+/**
+ * Returns a [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
+ */
 fun Settings.string(key: String, defaultValue: String = ""): ReadWriteProperty<Any?, String> =
     StringDelegate(this, key, defaultValue)
 
+/**
+ * Returns a [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
+ */
 fun Settings.float(key: String, defaultValue: Float = 0f): ReadWriteProperty<Any?, Float> =
     FloatDelegate(this, key, defaultValue)
 
+/**
+ * Returns a [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
+ */
 fun Settings.double(key: String, defaultValue: Double = 0.0): ReadWriteProperty<Any?, Double> =
     DoubleDelegate(this, key, defaultValue)
 
+/**
+ * Returns a [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
+ */
 fun Settings.boolean(key: String, defaultValue: Boolean = false): ReadWriteProperty<Any?, Boolean> =
     BooleanDelegate(this, key, defaultValue)
 
+/**
+ * Returns a nullable [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ */
 fun Settings.nullableInt(key: String): ReadWriteProperty<Any?, Int?> = NullableIntDelegate(this, key)
 
+/**
+ * Returns a nullable [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ */
 fun Settings.nullableLong(key: String): ReadWriteProperty<Any?, Long?> = NullableLongDelegate(this, key)
 
+/**
+ * Returns a nullable [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ */
 fun Settings.nullableString(key: String): ReadWriteProperty<Any?, String?> = NullableStringDelegate(this, key)
 
+/**
+ * Returns a nullable [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ */
 fun Settings.nullableFloat(key: String): ReadWriteProperty<Any?, Float?> = NullableFloatDelegate(this, key)
 
+/**
+ * Returns a nullable [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ */
 fun Settings.nullableDouble(key: String): ReadWriteProperty<Any?, Double?> = NullableDoubleDelegate(this, key)
 
+/**
+ * Returns a nullable [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ */
 fun Settings.nullableBoolean(key: String): ReadWriteProperty<Any?, Boolean?> = NullableBooleanDelegate(this, key)
 
 private class IntDelegate(
@@ -103,8 +139,9 @@ private class NullableIntDelegate(
     private val settings: Settings,
     private val key: String
 ) : ReadWriteProperty<Any?, Int?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Int? =
-        if (key in settings) settings[key, 0] else null
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Int? {
+        return if (key in settings) settings[key, 0] else null
+    }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: Int?) =
         if (value != null) settings[key] = value else settings -= key
