@@ -1,0 +1,24 @@
+apply plugin: 'konan'
+
+konan.targets = ['ios_arm64', 'ios_x64']
+
+konanArtifacts {
+    framework('Shared_ios_arm64', targets: ['ios_arm64']) {
+        enableMultiplatform true
+        artifactName 'Shared'
+        dependencies {
+            artifactShared_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha"
+        }
+    }
+    framework('Shared_ios_x64', targets: ['ios_x64']) {
+        enableMultiplatform true
+        artifactName 'Shared'
+        dependencies {
+            artifactShared_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha"
+        }
+    }
+}
+
+dependencies {
+    expectedBy project(':shared:common')
+}

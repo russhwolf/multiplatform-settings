@@ -5,28 +5,27 @@ This is a Kotlin library for Multiplatform mobile apps, so that common code can 
 ## Adding to your project
 In your `kotlin-platform-common` module, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-common:0.1"
+    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha"
     
 In your `kotlin-platform-android` module, add an `expectedBy` dependency on the common module as well as the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-android:0.1"
+    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha"
     
 In your `konan` module, add an `expectedBy` dependency on the common module as well as separate artifacts for the targets `ios_arm64` (phyiscal device) and `ios_x64` (emulator). The syntax here is not particularly well-documented, but here's an example to illustrate. Assume you want to expose a framework named `MyKotlinFramework` to your ios project.
-
 
     konanArtifacts {
         framework('MyKotlinFramework_ios_arm64', targets: ['ios_arm64']) {
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1"
+                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha"
             }
         }
         framework('MyKotlinFramework_ios_x64', targets: ['ios_x64']) {
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1"
+                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha"
             }
         }
     }
@@ -46,7 +45,7 @@ On iOS, it's enough to directly call
     
 although optionally a `NSUserDefaults` implementation can be passed by wrapping it in a `NSUserDefaultsWrapper` like so:
 
-    val userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults
+    val userDefaults: NSUserDefaults = NSUserDefaults()
     val wrapper: NSUserDefaultsWrapper = NSUserDefaultsWrapper(userDefaults)
     val settings: Settings = Settings(wrapper)
     
@@ -68,8 +67,8 @@ The `getXXX()` and `putXXX()` operation for a given key can be wrapped using a p
     
 Existence of a key can be queried
      
-    settings.hasKey("key")
-    "key" in settings
+    val a = settings.hasKey("key")
+    val b = "key" in settings
      
  Values can also be removed by key
   
@@ -81,12 +80,13 @@ Existence of a key can be queried
     settings.clear()
 
 ## Project Structure
-The library logic lives in the modules `library-common`, `library-android`, and `library-ios`. The common module holds `expect` declarations for the `Settings` class, which can persist values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. It also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
+The library logic lives in the module `multiplatform-settings` and its `common`, `android`, and `ios` submodules. The common module holds `expect` declarations for the `Settings` class, which can persist values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. It also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
 
- Unit tests are defined which can be run via `./gradlew test`. There is some platform-specific code here to handle mocking out the actual platform persistence and instead using an in-memory `Map`.
+Some simple unit tests are defined which can be run via `./gradlew test`. There is some platform-specific code here to handle mocking out the actual platform persistence and instead using an in-memory `Map`.
 
-There is also a sample project, consisting of five modules. The first, `sample-common`, holds the code that actually consumes the library. It simply defines a setting of each type as a demo. `sample-android` and `sample-ios` exist for build configuration, to expose `sample-common` to the respective platforms. The Android app lives in `sample-app`, which consumes `sample-android` and defines an Android UI to update and view the settings. Similarly, `sample-xcode` holds the iOS UI, consuming the framework produced by `sample-ios`.
-    
+There is also a sample project to demonstrate usage, which is configured as a separate gradle project. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. It also includes an `app-android` module which consumes `sample:android` and defines an Android UI, as well as an Xcode project which consumes the framework exported from `sample:ios` and holds an iOS UI.
+
+In order to build the library, you must supply a file in the root directory called `keys.properties`, which defines the properties `bintrayUser` and `bintrayKey`. These are used to upload build artifacts to bintray. The sample project can be built separately and shouldn't need any additional configuration.
 
 ## License
         

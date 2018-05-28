@@ -1,6 +1,0 @@
-framework module Kotlin {
-    umbrella header "Kotlin.h"
-
-    export *
-    module * { export * }
-}

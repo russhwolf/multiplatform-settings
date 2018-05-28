@@ -1,0 +1,2 @@
+include ':shared',':shared:common', ':shared:android', ':shared:ios'
+include ':app-android'

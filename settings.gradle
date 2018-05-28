@@ -1,2 +1,1 @@
-include ':library-android', ':library-ios', ':library-common',
-        ':sample-android', ':sample-ios', ':sample-common', ':sample-app'
+include ':multiplatform-settings',':multiplatform-settings:android', ':multiplatform-settings:ios', ':multiplatform-settings:common'

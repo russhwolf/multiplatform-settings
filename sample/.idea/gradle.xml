@@ -8,10 +8,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/multiplatform-settings" />
-            <option value="$PROJECT_DIR$/multiplatform-settings/android" />
-            <option value="$PROJECT_DIR$/multiplatform-settings/common" />
-            <option value="$PROJECT_DIR$/multiplatform-settings/ios" />
+            <option value="$PROJECT_DIR$/app-android" />
+            <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/shared/android" />
+            <option value="$PROJECT_DIR$/shared/common" />
+            <option value="$PROJECT_DIR$/shared/ios" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
