@@ -22,68 +22,68 @@ import kotlin.reflect.KProperty
 /**
  * Returns an [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-fun Settings.int(key: String, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
+public fun Settings.int(key: String, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
     IntDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-fun Settings.long(key: String, defaultValue: Long = 0): ReadWriteProperty<Any?, Long> =
+public fun Settings.long(key: String, defaultValue: Long = 0): ReadWriteProperty<Any?, Long> =
     LongDelegate(this, key, defaultValue)
 
 /**
  * Returns a [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-fun Settings.string(key: String, defaultValue: String = ""): ReadWriteProperty<Any?, String> =
+public fun Settings.string(key: String, defaultValue: String = ""): ReadWriteProperty<Any?, String> =
     StringDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-fun Settings.float(key: String, defaultValue: Float = 0f): ReadWriteProperty<Any?, Float> =
+public fun Settings.float(key: String, defaultValue: Float = 0f): ReadWriteProperty<Any?, Float> =
     FloatDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-fun Settings.double(key: String, defaultValue: Double = 0.0): ReadWriteProperty<Any?, Double> =
+public fun Settings.double(key: String, defaultValue: Double = 0.0): ReadWriteProperty<Any?, Double> =
     DoubleDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-fun Settings.boolean(key: String, defaultValue: Boolean = false): ReadWriteProperty<Any?, Boolean> =
+public fun Settings.boolean(key: String, defaultValue: Boolean = false): ReadWriteProperty<Any?, Boolean> =
     BooleanDelegate(this, key, defaultValue)
 
 /**
  * Returns a nullable [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-fun Settings.nullableInt(key: String): ReadWriteProperty<Any?, Int?> = NullableIntDelegate(this, key)
+public fun Settings.nullableInt(key: String): ReadWriteProperty<Any?, Int?> = NullableIntDelegate(this, key)
 
 /**
  * Returns a nullable [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-fun Settings.nullableLong(key: String): ReadWriteProperty<Any?, Long?> = NullableLongDelegate(this, key)
+public fun Settings.nullableLong(key: String): ReadWriteProperty<Any?, Long?> = NullableLongDelegate(this, key)
 
 /**
  * Returns a nullable [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-fun Settings.nullableString(key: String): ReadWriteProperty<Any?, String?> = NullableStringDelegate(this, key)
+public fun Settings.nullableString(key: String): ReadWriteProperty<Any?, String?> = NullableStringDelegate(this, key)
 
 /**
  * Returns a nullable [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-fun Settings.nullableFloat(key: String): ReadWriteProperty<Any?, Float?> = NullableFloatDelegate(this, key)
+public fun Settings.nullableFloat(key: String): ReadWriteProperty<Any?, Float?> = NullableFloatDelegate(this, key)
 
 /**
  * Returns a nullable [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-fun Settings.nullableDouble(key: String): ReadWriteProperty<Any?, Double?> = NullableDoubleDelegate(this, key)
+public fun Settings.nullableDouble(key: String): ReadWriteProperty<Any?, Double?> = NullableDoubleDelegate(this, key)
 
 /**
  * Returns a nullable [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-fun Settings.nullableBoolean(key: String): ReadWriteProperty<Any?, Boolean?> = NullableBooleanDelegate(this, key)
+public fun Settings.nullableBoolean(key: String): ReadWriteProperty<Any?, Boolean?> = NullableBooleanDelegate(this, key)
 
 private class IntDelegate(
     private val settings: Settings,

@@ -32,97 +32,97 @@ expect class Settings {
     /**
      * Clear all values stored in this [Settings] instance
      */
-    fun clear()
+    public fun clear(): Unit
 
     /**
      * Remove the value stored at [key]
      */
-    fun remove(key: String)
+    public fun remove(key: String): Unit
 
     /**
      * Returns `true` if there is a value stored at [key], or `false` otherwise
      */
-    fun hasKey(key: String): Boolean
+    public fun hasKey(key: String): Boolean
 
     /**
      * Stores the `Int` [value] at [key].
      */
-    fun putInt(key: String, value: Int)
+    public fun putInt(key: String, value: Int): Unit
 
     /**
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value
      * of a different type was stored at [key], the behavior is not defined.
      */
-    fun getInt(key: String, defaultValue: Int = 0): Int
+    public fun getInt(key: String, defaultValue: Int = 0): Int
 
     /**
      * Stores the `Long` [value] at [key].
      */
-    fun putLong(key: String, value: Long)
+    public fun putLong(key: String, value: Long): Unit
 
     /**
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value
      * of a different type was stored at [key], the behavior is not defined.
      */
-    fun getLong(key: String, defaultValue: Long = 0): Long
+    public fun getLong(key: String, defaultValue: Long = 0): Long
 
     /**
      * Stores the `String` [value] at [key].
      */
-    fun putString(key: String, value: String)
+    public fun putString(key: String, value: String): Unit
 
     /**
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value
      * of a different type was stored at [key], the behavior is not defined.
      */
-    fun getString(key: String, defaultValue: String = ""): String
+    public fun getString(key: String, defaultValue: String = ""): String
 
     /**
      * Stores the `Float` [value] at [key].
      */
-    fun putFloat(key: String, value: Float)
+    public fun putFloat(key: String, value: Float): Unit
 
     /**
      * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value
      * of a different type was stored at [key], the behavior is not defined.
      */
-    fun getFloat(key: String, defaultValue: Float = 0f): Float
+    public fun getFloat(key: String, defaultValue: Float = 0f): Float
 
     /**
      * Stores the `Double` [value] at [key].
      */
-    fun putDouble(key: String, value: Double)
+    public fun putDouble(key: String, value: Double): Unit
 
     /**
      * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value
      * of a different type was stored at [key], the behavior is not defined.
      */
-    fun getDouble(key: String, defaultValue: Double = 0.0): Double
+    public fun getDouble(key: String, defaultValue: Double = 0.0): Double
 
     /**
      * Stores the `Boolean` [value] at [key].
      */
-    fun putBoolean(key: String, value: Boolean)
+    public fun putBoolean(key: String, value: Boolean): Unit
 
     /**
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value
      * of a different type was stored at [key], the behavior is not defined.
      */
-    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
+    public fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
 
 }
 
-operator fun Settings.contains(key: String) = hasKey(key)
-operator fun Settings.minusAssign(key: String) = remove(key)
-operator fun Settings.get(key: String, defaultValue: Int) = getInt(key, defaultValue)
-operator fun Settings.get(key: String, defaultValue: Long) = getLong(key, defaultValue)
-operator fun Settings.get(key: String, defaultValue: String) = getString(key, defaultValue)
-operator fun Settings.get(key: String, defaultValue: Float) = getFloat(key, defaultValue)
-operator fun Settings.get(key: String, defaultValue: Double) = getDouble(key, defaultValue)
-operator fun Settings.get(key: String, defaultValue: Boolean) = getBoolean(key, defaultValue)
-operator fun Settings.set(key: String, value: Int) = putInt(key, value)
-operator fun Settings.set(key: String, value: Long) = putLong(key, value)
-operator fun Settings.set(key: String, value: String) = putString(key, value)
-operator fun Settings.set(key: String, value: Float) = putFloat(key, value)
-operator fun Settings.set(key: String, value: Double) = putDouble(key, value)
-operator fun Settings.set(key: String, value: Boolean) = putBoolean(key, value)
+operator fun Settings.contains(key: String): Boolean = hasKey(key)
+operator fun Settings.minusAssign(key: String): Unit = remove(key)
+operator fun Settings.get(key: String, defaultValue: Int): Int = getInt(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Long): Long = getLong(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: String): String = getString(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Float): Float = getFloat(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Double): Double = getDouble(key, defaultValue)
+operator fun Settings.get(key: String, defaultValue: Boolean): Boolean = getBoolean(key, defaultValue)
+operator fun Settings.set(key: String, value: Int): Unit = putInt(key, value)
+operator fun Settings.set(key: String, value: Long): Unit = putLong(key, value)
+operator fun Settings.set(key: String, value: String): Unit = putString(key, value)
+operator fun Settings.set(key: String, value: Float): Unit = putFloat(key, value)
+operator fun Settings.set(key: String, value: Double): Unit = putDouble(key, value)
+operator fun Settings.set(key: String, value: Boolean): Unit = putBoolean(key, value)
