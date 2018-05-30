@@ -3,6 +3,13 @@
 This is a Kotlin library for Multiplatform mobile apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and UserDefaults on iOS. 
 
 ## Adding to your project
+First, add the multiplatform-settings bintray url to the `repositories` block of any module using it.
+
+    repositories {
+        ...
+        maven { url = 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
+    }
+
 In your `kotlin-platform-common` module, add the dependency
 
     implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha"
@@ -11,7 +18,7 @@ In your `kotlin-platform-android` module, add an `expectedBy` dependency on the 
 
     implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha"
     
-In your `konan` module, add an `expectedBy` dependency on the common module as well as separate artifacts for the targets `ios_arm64` (phyiscal device) and `ios_x64` (emulator). The syntax here is not particularly well-documented, but here's an example to illustrate. Assume you want to expose a framework named `MyKotlinFramework` to your ios project.
+In your `konan` module, add an `expectedBy` dependency on the common module as well as separate artifacts for the targets `ios_arm64` (physical device) and `ios_x64` (emulator). The syntax here is not particularly well-documented, but here's an example to illustrate. Assume you want to expose a framework named `MyKotlinFramework` to your ios project.
 
     konanArtifacts {
         framework('MyKotlinFramework_ios_arm64', targets: ['ios_arm64']) {
@@ -84,7 +91,7 @@ The library logic lives in the module `multiplatform-settings` and its `common`,
 
 Some simple unit tests are defined which can be run via `./gradlew test`. There is some platform-specific code here to handle mocking out the actual platform persistence and instead using an in-memory `Map`.
 
-There is also a sample project to demonstrate usage, which is configured as a separate gradle project. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. It also includes an `app-android` module which consumes `sample:android` and defines an Android UI, as well as an Xcode project which consumes the framework exported from `sample:ios` and holds an iOS UI.
+There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. It also includes an `app-android` module which consumes `shared:android` and defines an Android UI, as well as an Xcode project in the `app-ios` directory which consumes the framework exported from `shared:ios` and holds an iOS UI.
 
 In order to build the library, you must supply a file in the root directory called `keys.properties`, which defines the properties `bintrayUser` and `bintrayKey`. These are used to upload build artifacts to bintray. The sample project can be built separately and shouldn't need any additional configuration.
 
