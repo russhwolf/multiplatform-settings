@@ -12,11 +12,11 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
 
 In your `kotlin-platform-common` module, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha"
+    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha2"
     
 In your `kotlin-platform-android` module, add an `expectedBy` dependency on the common module as well as the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha"
+    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha2"
     
 In your `konan` module, add an `expectedBy` dependency on the common module as well as separate artifacts for the targets `ios_arm64` (physical device) and `ios_x64` (emulator). The syntax here is not particularly well-documented, but here's an example to illustrate. Assume you want to expose a framework named `MyKotlinFramework` to your ios project.
 
@@ -25,14 +25,14 @@ In your `konan` module, add an `expectedBy` dependency on the common module as w
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha"
+                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha2"
             }
         }
         framework('MyKotlinFramework_ios_x64', targets: ['ios_x64']) {
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha"
+                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha2"
             }
         }
     }
@@ -41,22 +41,20 @@ See also the sample project, which uses this structure.
 
 ## Usage
 
-A `Settings` instance must be created in a platform-specific way. On Android, pass a `SharedPreferences` instance, like
- 
-    val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-    val settings: Settings = Settings(preferences)
-    
-On iOS, it's enough to directly call
+A `Settings` instance can be created using a platform-specific factory. On Android, this factory needs a `Context` parameter
 
-    val settings: Settings = Settings()
+    val context: Context = ...
+    val factory: Settings.Factory = Settings.Factory(context)
+    val settings: Settings = factory.create("my_settings_name")
     
-although optionally a `NSUserDefaults` implementation can be passed by wrapping it in a `NSUserDefaultsWrapper` like so:
+On iOS, the factory can be instantiated without passing any parameter
 
-    val userDefaults: NSUserDefaults = NSUserDefaults()
-    val wrapper: NSUserDefaultsWrapper = NSUserDefaultsWrapper(userDefaults)
-    val settings: Settings = Settings(wrapper)
+    val factory: Settings.Factory = Settings.Factory()
+    val settings = factory.create("my_settings_name")
     
-Once created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
+On both platforms, the name argument to `Factory.create()` can be omitted, and a platform-specific default will be used.
+    
+Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
 
     settings.putInt("key", 3)
     settings["key"] = 3

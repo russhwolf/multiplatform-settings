@@ -35,19 +35,14 @@ import com.russhwolf.settings.nullableString
 import com.russhwolf.settings.string
 
 /**
- * This factory class shields the library module from needing to be exposed as an `api` dependency by allowing
- * platform-specific `Settings` constructors to be called in the `kotlin-platform` modules instead of the UI-level code
- */
-expect class SettingsFactory {
-    fun create(): Settings
-}
-
-/**
  * This class demonstrates `kotlin-platform-common` code exercising all of the functionality of the [Settings] class.
  * The majority of this functionality is delegated to [SettingConfig] subclasses for each supported type.
  */
-class SettingsRepository(settingsFactory: SettingsFactory) {
-    private var settings = settingsFactory.create()
+class SettingsRepository(private val settings: Settings) {
+
+    companion object {
+        val SETTINGS_NAME: String? = "MY_SETTINGS_NAME"
+    }
 
     val mySettings: List<SettingConfig<*>> = listOf(
         StringSettingConfig(settings, "MY_STRING", "default"),

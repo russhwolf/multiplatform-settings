@@ -44,7 +44,7 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
 
-    version '0.1-alpha'
+    version '0.1-alpha2'
     group 'com.russhwolf'
 
     publishing {
@@ -62,7 +62,7 @@ subprojects {
             licenses = ['Apache-2.0']
             vcsUrl = 'https://github.com/russhwolf/multiplatform-settings.git'
             version {
-                name = '0.1-alpha'
+                name = '0.1-alpha2'
                 desc = 'Initial bintray release'
                 released = new Date()
             }

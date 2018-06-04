@@ -19,14 +19,13 @@ package com.russhwolf.settings
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSBundle
 
-actual class Settings(private val delegate: UserDefaultsWrapper) {
+actual class Settings(private val delegate: UserDefaultsWrapper, private val name: String? = null) {
 
-    constructor() : this(NSUserDefaultsWrapper())
-
-    actual fun clear() {
-        val appDomain = NSBundle.mainBundle().bundleIdentifier
-        delegate.removePersistentDomainForName(appDomain ?: "")
+    actual class Factory() {
+        actual fun create(name: String?) = Settings(NSUserDefaultsWrapper(NSUserDefaults(name)), name)
     }
+
+    actual fun clear() = delegate.removePersistentDomainForName(name ?: NSBundle.mainBundle().bundleIdentifier ?: "")
 
     actual fun remove(key: String) = delegate.removeObjectForKey(key)
     actual fun hasKey(key: String) = delegate.objectForKey(key) != null

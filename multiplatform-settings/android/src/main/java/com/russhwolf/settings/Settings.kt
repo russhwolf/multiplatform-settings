@@ -16,9 +16,24 @@
 
 package com.russhwolf.settings
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 
-actual class Settings(private val delegate: SharedPreferences) {
+actual class Settings internal constructor(private val delegate: SharedPreferences) {
+
+    actual class Factory(context: Context) {
+        private val appContext = context.applicationContext
+
+        actual fun create(name: String?) = Settings(
+            if (name == null) {
+                PreferenceManager.getDefaultSharedPreferences(appContext)
+            } else {
+                appContext.getSharedPreferences(name, MODE_PRIVATE)
+            }
+        )
+    }
 
     actual fun clear() = delegate.edit().clear().apply()
 

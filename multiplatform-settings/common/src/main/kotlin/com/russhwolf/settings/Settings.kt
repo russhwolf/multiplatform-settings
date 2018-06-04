@@ -27,7 +27,11 @@ package com.russhwolf.settings
  * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  */
-expect class Settings {
+public expect class Settings {
+
+    public class Factory {
+        public fun create(name: String? = null): Settings
+    }
 
     /**
      * Clear all values stored in this [Settings] instance
