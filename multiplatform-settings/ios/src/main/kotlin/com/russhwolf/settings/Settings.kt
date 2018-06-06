@@ -19,13 +19,20 @@ package com.russhwolf.settings
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSBundle
 
-actual class Settings(private val delegate: UserDefaultsWrapper, private val name: String? = null) {
+actual class Settings constructor(private val delegate: NSUserDefaults) {
 
     actual class Factory() {
-        actual fun create(name: String?) = Settings(NSUserDefaultsWrapper(NSUserDefaults(name)), name)
+        actual fun create(name: String?): Settings {
+            val userDefaults = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(name)
+            return Settings(userDefaults)
+        }
     }
 
-    actual fun clear() = delegate.removePersistentDomainForName(name ?: NSBundle.mainBundle().bundleIdentifier ?: "")
+    actual fun clear() {
+        for (key in delegate.dictionaryRepresentation().keys) {
+            remove(key as String)
+        }
+    }
 
     actual fun remove(key: String) = delegate.removeObjectForKey(key)
     actual fun hasKey(key: String) = delegate.objectForKey(key) != null
@@ -53,50 +60,4 @@ actual class Settings(private val delegate: UserDefaultsWrapper, private val nam
     actual fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, forKey = key)
     actual fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         if (hasKey(key)) delegate.boolForKey(key) else defaultValue
-}
-
-/**
- * A pass-through facade for NSUserDefaults, to facilitate mocking for tests
- */
-interface UserDefaultsWrapper {
-    fun removePersistentDomainForName(domainName: String)
-    fun removeObjectForKey(defaultName: String)
-
-    fun setObject(value: Any?, forKey: String)
-    fun objectForKey(defaultName: String): Any?
-    fun stringForKey(defaultName: String): String?
-
-    fun setInteger(value: Long, forKey: String)
-    fun integerForKey(defaultName: String): Long
-
-    fun setFloat(value: Float, forKey: String)
-    fun floatForKey(defaultName: String): Float
-
-    fun setDouble(value: Double, forKey: String)
-    fun doubleForKey(defaultName: String): Double
-
-    fun setBool(value: Boolean, forKey: String)
-    fun boolForKey(defaultName: String): Boolean
-}
-
-class NSUserDefaultsWrapper(val delegate: NSUserDefaults = NSUserDefaults()) : UserDefaultsWrapper {
-    override fun removePersistentDomainForName(domainName: String) = delegate.removePersistentDomainForName(domainName)
-
-    override fun removeObjectForKey(defaultName: String) = delegate.removeObjectForKey(defaultName)
-
-    override fun setObject(value: Any?, forKey: String) = delegate.setObject(value, forKey = forKey)
-    override fun objectForKey(defaultName: String) = delegate.objectForKey(defaultName)
-    override fun stringForKey(defaultName: String) = delegate.stringForKey(defaultName)
-
-    override fun setInteger(value: Long, forKey: String) = delegate.setInteger(value, forKey = forKey)
-    override fun integerForKey(defaultName: String) = delegate.integerForKey(defaultName)
-
-    override fun setFloat(value: Float, forKey: String) = delegate.setFloat(value, forKey = forKey)
-    override fun floatForKey(defaultName: String) = delegate.floatForKey(defaultName)
-
-    override fun setDouble(value: Double, forKey: String) = delegate.setDouble(value, forKey = forKey)
-    override fun doubleForKey(defaultName: String) = delegate.doubleForKey(defaultName)
-
-    override fun setBool(value: Boolean, forKey: String) = delegate.setBool(value, forKey = forKey)
-    override fun boolForKey(defaultName: String) = delegate.boolForKey(defaultName)
 }

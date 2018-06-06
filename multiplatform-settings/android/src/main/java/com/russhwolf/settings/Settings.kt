@@ -21,7 +21,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
-actual class Settings internal constructor(private val delegate: SharedPreferences) {
+actual class Settings private constructor(private val delegate: SharedPreferences) {
 
     actual class Factory(context: Context) {
         private val appContext = context.applicationContext

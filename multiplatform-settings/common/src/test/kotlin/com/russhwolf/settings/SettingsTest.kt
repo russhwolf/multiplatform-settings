@@ -22,12 +22,16 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+expect val settingsFactory: Settings.Factory
+
+@RunWith(RobolectricTestRunner::class)
 class SettingsTest {
     private lateinit var settings: Settings
 
     @BeforeTest
     fun setup() {
-        settings = configureTestSettings()
+        settings = settingsFactory.create()
+        settings.clear()
     }
 
     @Test
@@ -175,5 +179,3 @@ class SettingsTest {
         assertEquals(null, a)
     }
 }
-
-expect fun configureTestSettings(): Settings
