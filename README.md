@@ -59,21 +59,23 @@ Once the `Settings` instance is created, you can store values by calling the var
     settings.putInt("key", 3)
     settings["key"] = 3
     
-You can retrieve stored values via the `getXXX()` methods or their operator shortcuts
+You can retrieve stored values via the `getXXX()` methods or their operator shortcuts. If a key is not present, then the supplied default will be returned instead.
 
-    val a = settings.getInt("key")
-    val b = settings.getInt("key", defaultValue = -1) 
-    val c = settings["key", -1]
+    val a: Int = settings.getInt("key")
+    val b: Int = settings.getInt("key", defaultValue = -1) 
+    val c: Int = settings["key", -1]
     
 The `getXXX()` and `putXXX()` operation for a given key can be wrapped using a property delegate. This has the advantage of ensuring that the key is always accessed with a consistent type.
 
-    val a by settings.int("key")
-    val b by settings.int("key", defaultValue = -1)
+    val a: Int by settings.int("key")
+    val b: Int by settings.int("key", defaultValue = -1)
+    
+    val c: Int? by settings.nullableInt("another_key")
     
 Existence of a key can be queried
      
-    val a = settings.hasKey("key")
-    val b = "key" in settings
+    val a: Boolean = settings.hasKey("key")
+    val b: Boolean = "key" in settings
      
  Values can also be removed by key
   
@@ -87,7 +89,7 @@ Existence of a key can be queried
 ## Project Structure
 The library logic lives in the module `multiplatform-settings` and its `common`, `android`, and `ios` submodules. The common module holds `expect` declarations for the `Settings` class, which can persist values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. It also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
 
-Some simple unit tests are defined which can be run via `./gradlew test`. There is some platform-specific code here to handle mocking out the actual platform persistence and instead using an in-memory `Map`.
+Some simple unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the platform-specific behavior, and use the `macos` target to run the native tests.
 
 There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. It also includes an `app-android` module which consumes `shared:android` and defines an Android UI, as well as an Xcode project in the `app-ios` directory which consumes the framework exported from `shared:ios` and holds an iOS UI.
 
