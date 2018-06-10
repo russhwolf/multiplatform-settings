@@ -53,6 +53,16 @@ On iOS, the factory can be instantiated without passing any parameter
     val settings = factory.create("my_settings_name")
     
 On both platforms, the name argument to `Factory.create()` can be omitted, and a platform-specific default will be used.
+
+Alternatively, you can create a `Settings` instance by passing the platform-specific delegate class that `Settings` wraps around. On Android, 
+
+    val delegate: SharedPreferences = ...
+    val settings: Settings = Settings(delegate)
+    
+And on iOS,
+
+    val delegate: NSUserDefaults = ...
+    val settings: Settings = Settings(delegate)    
     
 Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
 

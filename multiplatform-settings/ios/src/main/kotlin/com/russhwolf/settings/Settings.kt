@@ -19,7 +19,7 @@ package com.russhwolf.settings
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSBundle
 
-actual class Settings constructor(private val delegate: NSUserDefaults) {
+actual class Settings public constructor(private val delegate: NSUserDefaults) {
 
     actual class Factory() {
         actual fun create(name: String?): Settings {
