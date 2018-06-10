@@ -24,13 +24,13 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.7"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.2-SNAPSHOT"
+        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.7.1"
     }
 }
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         jcenter()
         maven { url = 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
