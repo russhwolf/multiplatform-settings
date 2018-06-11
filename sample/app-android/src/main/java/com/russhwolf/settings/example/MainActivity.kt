@@ -26,7 +26,7 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
-    private val settingsRepository by lazy { SettingsRepository(applicationContext) }
+    private val settingsRepository by lazy { settingsRepository(applicationContext) }
 
     private val typesSpinner by lazy { findViewById<Spinner>(R.id.types_spinner) }
     private val valueInput by lazy { findViewById<EditText>(R.id.value_input) }

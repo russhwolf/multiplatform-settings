@@ -34,15 +34,15 @@ import com.russhwolf.settings.nullableLong
 import com.russhwolf.settings.nullableString
 import com.russhwolf.settings.string
 
+private val SETTINGS_NAME: String? = "MY_SETTINGS_NAME"
+
 /**
  * This class demonstrates `kotlin-platform-common` code exercising all of the functionality of the [Settings] class.
  * The majority of this functionality is delegated to [SettingConfig] subclasses for each supported type.
  */
-class SettingsRepository(private val settings: Settings) {
+class SettingsRepository(factory: Settings.Factory) {
 
-    companion object {
-        val SETTINGS_NAME: String? = "MY_SETTINGS_NAME"
-    }
+    private val settings = factory.create(SETTINGS_NAME)
 
     val mySettings: List<SettingConfig<*>> = listOf(
         StringSettingConfig(settings, "MY_STRING", "default"),

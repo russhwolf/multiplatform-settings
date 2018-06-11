@@ -18,4 +18,4 @@ package com.russhwolf.settings.example
 
 import com.russhwolf.settings.Settings
 
-fun settingsRepository() = SettingsRepository(Settings.Factory().create(SettingsRepository.SETTINGS_NAME))
+fun settingsRepository() = SettingsRepository(Settings.Factory())

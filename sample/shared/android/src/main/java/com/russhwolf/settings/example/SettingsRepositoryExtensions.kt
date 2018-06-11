@@ -19,6 +19,4 @@ package com.russhwolf.settings.example
 import android.content.Context
 import com.russhwolf.settings.Settings
 
-operator fun SettingsRepository.Companion.invoke(context: Context): SettingsRepository {
-    return SettingsRepository(Settings.Factory(context).create(SETTINGS_NAME))
-}
+fun settingsRepository(context: Context) = SettingsRepository(Settings.Factory(context))
