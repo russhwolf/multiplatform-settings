@@ -16,7 +16,6 @@
 
 package com.russhwolf.settings
 
-import android.app.Activity
-import org.robolectric.Robolectric
+import org.robolectric.RuntimeEnvironment
 
-actual val settingsFactory = Settings.Factory(Robolectric.setupActivity(Activity::class.java))
+actual val settingsFactory = Settings.Factory(RuntimeEnvironment.application)
