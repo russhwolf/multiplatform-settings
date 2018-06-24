@@ -39,7 +39,7 @@ android {
     }
 
     packagingOptions {
-        exclude 'META-INF/main.kotlin_module'
+        exclude 'META-INF/*.kotlin_module'
     }
 }
 

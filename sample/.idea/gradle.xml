@@ -15,7 +15,6 @@
             <option value="$PROJECT_DIR$/shared/ios" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

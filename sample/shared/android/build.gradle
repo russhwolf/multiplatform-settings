@@ -37,6 +37,6 @@ android {
 
 dependencies {
     expectedBy project(':shared:common')
-    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha3"
+    implementation "com.russhwolf:multiplatform-settings-android:$library_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
