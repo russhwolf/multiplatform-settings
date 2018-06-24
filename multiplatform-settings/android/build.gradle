@@ -18,10 +18,20 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-platform-android'
 
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 publishing {
     publications {
         android(MavenPublication) {
             artifact("$buildDir/outputs/aar/android-release.aar")
+            artifact sourcesJar
             groupId
             artifactId 'multiplatform-settings-android'
             version this.version

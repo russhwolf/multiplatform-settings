@@ -26,6 +26,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.7.1"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.2-SNAPSHOT"
     }
 }
@@ -44,7 +45,7 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
 
-    version '0.1-alpha2'
+    version '0.1-alpha3'
     group 'com.russhwolf'
 
     publishing {
@@ -62,7 +63,7 @@ subprojects {
             licenses = ['Apache-2.0']
             vcsUrl = 'https://github.com/russhwolf/multiplatform-settings.git'
             version {
-                name = '0.1-alpha2'
+                name = '0.1-alpha3'
                 desc = 'Initial bintray release'
                 released = new Date()
             }

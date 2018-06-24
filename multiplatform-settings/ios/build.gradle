@@ -16,17 +16,28 @@
 
 apply plugin: 'konan'
 
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from 'src/main/kotlin'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 publishing {
     publications {
 
         ios_arm64(MavenPublication) {
             artifact("$buildDir/konan/libs/ios_arm64/library.klib")
+            artifact sourcesJar
             groupId
             artifactId 'multiplatform-settings-ios_arm64'
             version this.version
         }
         ios_x86(MavenPublication) {
             artifact("$buildDir/konan/libs/ios_x64/library.klib")
+            artifact sourcesJar
             groupId
             artifactId 'multiplatform-settings-ios_x64'
             version this.version
