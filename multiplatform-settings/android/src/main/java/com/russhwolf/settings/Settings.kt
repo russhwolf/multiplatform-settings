@@ -21,41 +21,140 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
+/**
+ * A collection of storage-backed key-value data
+ *
+ * This class allows storage of values with the [Int], [Long], [String], [Float], [Double], or [Boolean] types, using a
+ * [String] reference as a key. Values will be persisted across app launches.
+ *
+ * The specific persistence mechanism is defined using a platform-specific implementation, so certain behavior may vary
+ * across platforms. In general, updates will be reflected immediately in-memory, but will be persisted to disk
+ * asynchronously.
+ *
+ * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
+ * syntax and better type-safety when interacting with values stored in a `Settings` instance.
+ *
+ * This class can be instantiated via a platform-specific constructor or via a [Factory].
+ *
+ * On the Android platform, this class can be created by passing a [SharedPreferences] instance which will be used as a
+ * delegate. Thus two `Settings` instances created using the same [delegate] will be backed by the same data.
+ */
 actual class Settings public constructor(private val delegate: SharedPreferences) {
 
+    /**
+     * A factory that can produce [Settings] instances.
+     *
+     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
+     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
+     * multiple `Settings` objects is the one-time creation of a single `Factory`.
+     *
+     * On the Android platform, this class creates `Settings` objects backed by [SharedPreferences]. It  can only be
+     * created by supplying a [Context] instance. The `Factory` will hold onto a reference to the
+     * [applicationContext][Context.getApplicationContext] property of the supplied `context` and will use that to
+     * create [SharedPreferences] objects.
+     */
     actual class Factory(context: Context) {
         private val appContext = context.applicationContext
 
-        actual fun create(name: String?) = Settings(
-            if (name == null) {
+        /**
+         * Creates a [Settings] object associated with the provided [name].
+         *
+         * Multiple `Settings` instances created with the same `name` parameter will be backed by the same persistent
+         * data, while distinct `name`s will use different data. If `name` is `null` then a platform-specific default
+         * will be used.
+         *
+         * On the Android platform, this is implemented by calling [Context.getSharedPreferences] and passing [name]. If
+         * `name` is `null` then [PreferenceManager.getDefaultSharedPreferences] will be used instead.
+         */
+        actual fun create(name: String?): Settings {
+            val delegate = if (name == null) {
                 PreferenceManager.getDefaultSharedPreferences(appContext)
             } else {
                 appContext.getSharedPreferences(name, MODE_PRIVATE)
             }
-        )
+            return Settings(delegate)
+        }
     }
 
-    actual fun clear() = delegate.edit().clear().apply()
+    /**
+     * Clears all values stored in this [Settings] instance.
+     */
+    actual fun clear(): Unit = delegate.edit().clear().apply()
 
-    actual fun remove(key: String) = delegate.edit().remove(key).apply()
-    actual fun hasKey(key: String) = delegate.contains(key)
+    /**
+     * Removes the value stored at [key].
+     */
+    actual fun remove(key: String): Unit = delegate.edit().remove(key).apply()
 
-    actual fun putInt(key: String, value: Int) = delegate.edit().putInt(key, value).apply()
+    /**
+     * Returns `true` if there is a value stored at [key], or `false` otherwise.
+     */
+    actual fun hasKey(key: String): Boolean = delegate.contains(key)
+
+    /**
+     * Stores the `Int` [value] at [key].
+     */
+    actual fun putInt(key: String, value: Int): Unit = delegate.edit().putInt(key, value).apply()
+
+    /**
+     * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
 
-    actual fun putLong(key: String, value: Long) = delegate.edit().putLong(key, value).apply()
+    /**
+     * Stores the `Long` [value] at [key].
+     */
+    actual fun putLong(key: String, value: Long): Unit = delegate.edit().putLong(key, value).apply()
+
+    /**
+     * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
 
-    actual fun putString(key: String, value: String) = delegate.edit().putString(key, value).apply()
+    /**
+     * Stores the `String` [value] at [key].
+     */
+    actual fun putString(key: String, value: String): Unit = delegate.edit().putString(key, value).apply()
+
+    /**
+     * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getString(key: String, defaultValue: String): String = delegate.getString(key, defaultValue)
 
-    actual fun putFloat(key: String, value: Float) = delegate.edit().putFloat(key, value).apply()
+    /**
+     * Stores the `Float` [value] at [key].
+     */
+    actual fun putFloat(key: String, value: Float): Unit = delegate.edit().putFloat(key, value).apply()
+
+    /**
+     * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
 
-    actual fun putDouble(key: String, value: Double) = putLong(key, value.toRawBits())
-    actual fun getDouble(key: String, defaultValue: Double): Double =
-        Double.fromBits(getLong(key, defaultValue.toRawBits()))
+    /**
+     * Stores the `Double` [value] at [key].
+     */
+    actual fun putDouble(key: String, value: Double): Unit = delegate.edit().putLong(key, value.toRawBits()).apply()
 
-    actual fun putBoolean(key: String, value: Boolean) = delegate.edit().putBoolean(key, value).apply()
+    /**
+     * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
+    actual fun getDouble(key: String, defaultValue: Double): Double =
+        Double.fromBits(delegate.getLong(key, defaultValue.toRawBits()))
+
+    /**
+     * Stores the `Boolean` [value] at [key].
+     */
+    actual fun putBoolean(key: String, value: Boolean): Unit = delegate.edit().putBoolean(key, value).apply()
+
+    /**
+     * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate.getBoolean(key, defaultValue)
 }

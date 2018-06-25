@@ -16,4 +16,4 @@
 
 package com.russhwolf.settings
 
-actual val settingsFactory = Settings.Factory()
+actual val settingsFactory: Settings.Factory = Settings.Factory()

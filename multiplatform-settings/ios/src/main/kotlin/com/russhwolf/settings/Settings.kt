@@ -19,45 +19,139 @@ package com.russhwolf.settings
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSBundle
 
+/**
+ * A collection of storage-backed key-value data
+ *
+ * This class allows storage of values with the [Int], [Long], [String], [Float], [Double], or [Boolean] types, using a
+ * [String] reference as a key. Values will be persisted across app launches.
+ *
+ * The specific persistence mechanism is defined using a platform-specific implementation, so certain behavior may vary
+ * across platforms. In general, updates will be reflected immediately in-memory, but will be persisted to disk
+ * asynchronously.
+ *
+ * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
+ * syntax and better type-safety when interacting with values stored in a `Settings` instance.
+ *
+ * On the iOS platform, this class can be created by passing a [NSUserDefaults] instance which will be used as a
+ * delegate, or via a [Factory].
+ */
 actual class Settings public constructor(private val delegate: NSUserDefaults) {
 
+    /**
+     * A factory that can produce [Settings] instances.
+     *
+     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
+     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
+     * multiple `Settings` objects is the one-time creation of a single `Factory`.
+     *
+     * On the iOS platform, this class creates `Settings` objects backed by [NSUserDefaults].
+     */
     actual class Factory() {
+
+        /**
+         * Creates a [Settings] object associated with the provided [name].
+         *
+         * Multiple `Settings` instances created with the same `name` parameter will be backed by the same persistent
+         * data, while distinct `name`s will use different data. If `name` is `null` then a platform-specific default
+         * will be used.
+         *
+         * On the iOS platform, this is implemented by calling [NSUserDefaults.init] and passing [name]. If `name` is
+         * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
+         */
         actual fun create(name: String?): Settings {
             val userDefaults = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(name)
             return Settings(userDefaults)
         }
     }
 
-    actual fun clear() {
+    /**
+     * Clears all values stored in this [Settings] instance.
+     */
+    actual fun clear(): Unit {
         for (key in delegate.dictionaryRepresentation().keys) {
             remove(key as String)
         }
     }
 
-    actual fun remove(key: String) = delegate.removeObjectForKey(key)
-    actual fun hasKey(key: String) = delegate.objectForKey(key) != null
+    /**
+     * Removes the value stored at [key].
+     */
+    actual fun remove(key: String): Unit = delegate.removeObjectForKey(key)
 
-    actual fun putInt(key: String, value: Int) = delegate.setInteger(value.toLong(), forKey = key)
+    /**
+     * Returns `true` if there is a value stored at [key], or `false` otherwise.
+     */
+    actual fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
+
+    /**
+     * Stores the `Int` [value] at [key].
+     */
+    actual fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), forKey = key)
+
+    /**
+     * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getInt(key: String, defaultValue: Int): Int =
         if (hasKey(key)) delegate.integerForKey(key).toInt() else defaultValue
 
+    /**
+     * Stores the `Long` [value] at [key].
+     */
     actual fun putLong(key: String, value: Long) = delegate.setInteger(value, forKey = key)
+
+    /**
+     * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getLong(key: String, defaultValue: Long): Long =
         if (hasKey(key)) delegate.integerForKey(key) else defaultValue
 
+    /**
+     * Stores the `String` [value] at [key].
+     */
     actual fun putString(key: String, value: String) = delegate.setObject(value, forKey = key)
+
+    /**
+     * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getString(key: String, defaultValue: String): String =
         delegate.stringForKey(key) ?: defaultValue
 
+    /**
+     * Stores the `Float` [value] at [key].
+     */
     actual fun putFloat(key: String, value: Float) = delegate.setFloat(value, forKey = key)
+
+    /**
+     * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getFloat(key: String, defaultValue: Float): Float =
         if (hasKey(key)) delegate.floatForKey(key) else defaultValue
 
+    /**
+     * Stores the `Double` [value] at [key].
+     */
     actual fun putDouble(key: String, value: Double) = delegate.setDouble(value, forKey = key)
+
+    /**
+     * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getDouble(key: String, defaultValue: Double): Double =
         if (hasKey(key)) delegate.doubleForKey(key) else defaultValue
 
+    /**
+     * Stores the `Boolean` [value] at [key].
+     */
     actual fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, forKey = key)
+
+    /**
+     * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     actual fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         if (hasKey(key)) delegate.boolForKey(key) else defaultValue
 }
