@@ -59,8 +59,8 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
          * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
          */
         actual fun create(name: String?): Settings {
-            val userDefaults = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(name)
-            return Settings(userDefaults)
+            val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(name)
+            return Settings(delegate)
         }
     }
 
@@ -86,7 +86,7 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
     /**
      * Stores the `Int` [value] at [key].
      */
-    actual fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), forKey = key)
+    actual fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), key)
 
     /**
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
@@ -98,7 +98,7 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
     /**
      * Stores the `Long` [value] at [key].
      */
-    actual fun putLong(key: String, value: Long) = delegate.setInteger(value, forKey = key)
+    actual fun putLong(key: String, value: Long) = delegate.setInteger(value, key)
 
     /**
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
@@ -110,7 +110,7 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
     /**
      * Stores the `String` [value] at [key].
      */
-    actual fun putString(key: String, value: String) = delegate.setObject(value, forKey = key)
+    actual fun putString(key: String, value: String) = delegate.setObject(value, key)
 
     /**
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
@@ -122,7 +122,7 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
     /**
      * Stores the `Float` [value] at [key].
      */
-    actual fun putFloat(key: String, value: Float) = delegate.setFloat(value, forKey = key)
+    actual fun putFloat(key: String, value: Float) = delegate.setFloat(value, key)
 
     /**
      * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
@@ -134,7 +134,7 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
     /**
      * Stores the `Double` [value] at [key].
      */
-    actual fun putDouble(key: String, value: Double) = delegate.setDouble(value, forKey = key)
+    actual fun putDouble(key: String, value: Double) = delegate.setDouble(value, key)
 
     /**
      * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
@@ -146,7 +146,7 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
     /**
      * Stores the `Boolean` [value] at [key].
      */
-    actual fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, forKey = key)
+    actual fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, key)
 
     /**
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different

@@ -23,7 +23,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet var valueInput: UITextField?
     @IBOutlet var outputText: UILabel?
 
-    lazy var settingsRepository = Shared.settingsRepository()
+    lazy var settingsRepository: SharedSettingsRepository = Shared.settingsRepository()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +74,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         let settingConfig = settingsRepository.mySettings[row]
         outputText?.text = settingConfig.get()
     }
-    
+
     @IBAction func onRemoveButtonPress() {
         guard let row = typePicker?.selectedRow(inComponent: 0) else {
             return
@@ -83,7 +83,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         settingConfig.remove()
         outputText?.text = "Setting Removed!"
     }
-    
+
     @IBAction func onClearButtonPress() {
         settingsRepository.clear()
         outputText?.text = "Settings Cleared!"
