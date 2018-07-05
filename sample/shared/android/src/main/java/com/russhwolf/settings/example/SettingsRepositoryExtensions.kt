@@ -17,6 +17,6 @@
 package com.russhwolf.settings.example
 
 import android.content.Context
-import com.russhwolf.settings.Settings
+import com.russhwolf.settings.PlatformSettings
 
-fun settingsRepository(context: Context) = SettingsRepository(Settings.Factory(context))
+fun settingsRepository(context: Context) = SettingsRepository(PlatformSettings.Factory(context))

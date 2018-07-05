@@ -18,4 +18,4 @@ package com.russhwolf.settings
 
 import org.robolectric.RuntimeEnvironment
 
-actual val settingsFactory: Settings.Factory = Settings.Factory(RuntimeEnvironment.application)
+actual val settingsFactory: Settings.Factory = PlatformSettings.Factory(RuntimeEnvironment.application)

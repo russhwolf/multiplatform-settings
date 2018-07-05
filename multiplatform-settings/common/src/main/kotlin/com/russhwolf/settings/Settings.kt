@@ -19,34 +19,23 @@ package com.russhwolf.settings
 /**
  * A collection of storage-backed key-value data
  *
- * This class allows storage of values with the [Int], [Long], [String], [Float], [Double], or [Boolean] types, using a
+ * This interface allows storage of values with the [Int], [Long], [String], [Float], [Double], or [Boolean] types, using a
  * [String] reference as a key. Values will be persisted across app launches.
- *
- * The specific persistence mechanism is defined using a platform-specific implementation, so certain behavior may vary
- * across platforms. In general, updates will be reflected immediately in-memory, but will be persisted to disk
- * asynchronously.
  *
  * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
- *
- * This class can be instantiated via a platform-specific constructor or via a [Factory].
  */
-public expect class Settings {
+public interface Settings {
 
     /**
      * A factory that can produce [Settings] instances.
-     *
-     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
-     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
-     * multiple `Settings` objects is the one-time creation of a single `Factory`.
      */
-    public class Factory {
+    public interface Factory {
         /**
          * Creates a [Settings] object associated with the provided [name].
          *
          * Multiple `Settings` instances created with the same `name` parameter will be backed by the same persistent
-         * data, while distinct `name`s will use different data. If `name` is `null` then a platform-specific default
-         * will be used.
+         * data, while distinct `name`s will use different data.
          */
         public fun create(name: String? = null): Settings
     }

@@ -35,7 +35,7 @@ import platform.Foundation.NSBundle
  * On the iOS platform, this class can be created by passing a [NSUserDefaults] instance which will be used as a
  * delegate, or via a [Factory].
  */
-actual class Settings public constructor(private val delegate: NSUserDefaults) {
+actual class PlatformSettings public constructor(private val delegate: NSUserDefaults) : Settings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -46,7 +46,7 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
      *
      * On the iOS platform, this class creates `Settings` objects backed by [NSUserDefaults].
      */
-    actual class Factory() {
+    actual class Factory() : Settings.Factory {
 
         /**
          * Creates a [Settings] object associated with the provided [name].
@@ -58,16 +58,16 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
          * On the iOS platform, this is implemented by calling [NSUserDefaults.init] and passing [name]. If `name` is
          * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
          */
-        actual fun create(name: String?): Settings {
+        actual override fun create(name: String?): Settings {
             val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(name)
-            return Settings(delegate)
+            return PlatformSettings(delegate)
         }
     }
 
     /**
      * Clears all values stored in this [Settings] instance.
      */
-    actual fun clear(): Unit {
+    actual override fun clear(): Unit {
         for (key in delegate.dictionaryRepresentation().keys) {
             remove(key as String)
         }
@@ -76,82 +76,82 @@ actual class Settings public constructor(private val delegate: NSUserDefaults) {
     /**
      * Removes the value stored at [key].
      */
-    actual fun remove(key: String): Unit = delegate.removeObjectForKey(key)
+    actual override fun remove(key: String): Unit = delegate.removeObjectForKey(key)
 
     /**
      * Returns `true` if there is a value stored at [key], or `false` otherwise.
      */
-    actual fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
+    actual override fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
 
     /**
      * Stores the `Int` [value] at [key].
      */
-    actual fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), key)
+    actual override fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), key)
 
     /**
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual fun getInt(key: String, defaultValue: Int): Int =
+    actual override fun getInt(key: String, defaultValue: Int): Int =
         if (hasKey(key)) delegate.integerForKey(key).toInt() else defaultValue
 
     /**
      * Stores the `Long` [value] at [key].
      */
-    actual fun putLong(key: String, value: Long) = delegate.setInteger(value, key)
+    actual override fun putLong(key: String, value: Long) = delegate.setInteger(value, key)
 
     /**
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual fun getLong(key: String, defaultValue: Long): Long =
+    actual override fun getLong(key: String, defaultValue: Long): Long =
         if (hasKey(key)) delegate.integerForKey(key) else defaultValue
 
     /**
      * Stores the `String` [value] at [key].
      */
-    actual fun putString(key: String, value: String) = delegate.setObject(value, key)
+    actual override fun putString(key: String, value: String) = delegate.setObject(value, key)
 
     /**
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual fun getString(key: String, defaultValue: String): String =
+    actual override fun getString(key: String, defaultValue: String): String =
         delegate.stringForKey(key) ?: defaultValue
 
     /**
      * Stores the `Float` [value] at [key].
      */
-    actual fun putFloat(key: String, value: Float) = delegate.setFloat(value, key)
+    actual override fun putFloat(key: String, value: Float) = delegate.setFloat(value, key)
 
     /**
      * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual fun getFloat(key: String, defaultValue: Float): Float =
+    actual override fun getFloat(key: String, defaultValue: Float): Float =
         if (hasKey(key)) delegate.floatForKey(key) else defaultValue
 
     /**
      * Stores the `Double` [value] at [key].
      */
-    actual fun putDouble(key: String, value: Double) = delegate.setDouble(value, key)
+    actual override fun putDouble(key: String, value: Double) = delegate.setDouble(value, key)
 
     /**
      * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual fun getDouble(key: String, defaultValue: Double): Double =
+    actual override fun getDouble(key: String, defaultValue: Double): Double =
         if (hasKey(key)) delegate.doubleForKey(key) else defaultValue
 
     /**
      * Stores the `Boolean` [value] at [key].
      */
-    actual fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, key)
+    actual override fun putBoolean(key: String, value: Boolean) = delegate.setBool(value, key)
 
     /**
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+    actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         if (hasKey(key)) delegate.boolForKey(key) else defaultValue
 }
