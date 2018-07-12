@@ -12,11 +12,11 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
 
 In your `kotlin-platform-common` module, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha2"
+    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha3"
     
 In your `kotlin-platform-android` module, add an `expectedBy` dependency on the common module as well as the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha2"
+    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha3"
     
 In your `konan` module, add an `expectedBy` dependency on the common module as well as separate artifacts for the targets `ios_arm64` (physical device) and `ios_x64` (emulator). The syntax here is not particularly well-documented, but here's an example to illustrate. Assume you want to expose a framework named `MyKotlinFramework` to your ios project.
 
@@ -25,14 +25,14 @@ In your `konan` module, add an `expectedBy` dependency on the common module as w
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha2"
+                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha3"
             }
         }
         framework('MyKotlinFramework_ios_x64', targets: ['ios_x64']) {
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha2"
+                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha3"
             }
         }
     }
@@ -41,28 +41,28 @@ See also the sample project, which uses this structure.
 
 ## Usage
 
-A `Settings` instance can be created using a platform-specific factory. On Android, this factory needs a `Context` parameter
+The `Settings` interface is implemented by the `PlatformSettings` class, which has separate implementations for Android and iOS. A `PlatformSettings` instance can be created using a platform-specific factory. On Android, this factory needs a `Context` parameter
 
     val context: Context = ...
-    val factory: Settings.Factory = Settings.Factory(context)
+    val factory: Settings.Factory = PlatformSettings.Factory(context)
     val settings: Settings = factory.create("my_settings_name")
     
 On iOS, the factory can be instantiated without passing any parameter
 
-    val factory: Settings.Factory = Settings.Factory()
+    val factory: Settings.Factory = PlatformSettings.Factory()
     val settings = factory.create("my_settings_name")
     
 On both platforms, the name argument to `Factory.create()` can be omitted, and a platform-specific default will be used.
 
-Alternatively, you can create a `Settings` instance by passing the platform-specific delegate class that `Settings` wraps around. On Android, 
+Alternatively, you can create a `PlatformSettings` instance by passing the platform-specific delegate class that `PlatformSettings` wraps around. On Android, 
 
     val delegate: SharedPreferences = ...
-    val settings: Settings = Settings(delegate)
+    val settings: Settings = PlatformSettings(delegate)
     
 And on iOS,
 
     val delegate: NSUserDefaults = ...
-    val settings: Settings = Settings(delegate)    
+    val settings: Settings = PlatformSettings(delegate)    
     
 Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
 
