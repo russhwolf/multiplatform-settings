@@ -565,8 +565,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				KONAN_ENABLE_OPTIMIZATIONS = NO;
 				KONAN_TASK = "";
-				"KONAN_TASK[sdk=iphoneos*]" = compileKonanShared_ios_arm64;
-				"KONAN_TASK[sdk=iphonesimulator*]" = compileKonanShared_ios_x64;
+				"KONAN_TASK[sdk=iphoneos*]" = compileKonanSharedIos_arm64;
+				"KONAN_TASK[sdk=iphonesimulator*]" = compileKonanSharedIos_x64;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -597,8 +597,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				KONAN_ENABLE_OPTIMIZATIONS = YES;
 				KONAN_TASK = "";
-				"KONAN_TASK[sdk=iphoneos*]" = compileKonanShared_ios_arm64;
-				"KONAN_TASK[sdk=iphonesimulator*]" = compileKonanShared_ios_x64;
+				"KONAN_TASK[sdk=iphoneos*]" = compileKonanSharedIos_arm64;
+				"KONAN_TASK[sdk=iphonesimulator*]" = compileKonanSharedIos_x64;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
