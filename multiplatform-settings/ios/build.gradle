@@ -16,48 +16,20 @@
 
 apply plugin: 'konan'
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from 'src/main/kotlin'
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-publishing {
-    publications {
-
-        ios_arm64(MavenPublication) {
-            artifact("$buildDir/konan/libs/ios_arm64/library.klib")
-            artifact sourcesJar
-            groupId
-            artifactId 'multiplatform-settings-ios_arm64'
-            version this.version
-        }
-        ios_x86(MavenPublication) {
-            artifact("$buildDir/konan/libs/ios_x64/library.klib")
-            artifact sourcesJar
-            groupId
-            artifactId 'multiplatform-settings-ios_x64'
-            version this.version
-        }
-    }
-}
-
 konan.targets = ['ios_arm64', 'ios_x64', 'macos']
 
 konanArtifacts {
-    library('library') {
+    library('multiplatform-settings-ios') {
         enableMultiplatform true
+        artifactName 'MultiplatformSettingsIos'
     }
 
-    program('library-test', targets: ['macos']) {
+    program('multiplatform-settings-ios-test', targets: ['macos']) {
         enableMultiplatform true
         srcDir 'src/test/kotlin'
         commonSourceSet 'test'
         libraries {
-            artifact 'library'
+            artifact 'multiplatform-settings-ios'
         }
         extraOpts '-tr'
     }

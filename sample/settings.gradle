@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
+enableFeaturePreview('GRADLE_METADATA')
 include ':shared',':shared:common', ':shared:android', ':shared:ios'
 include ':app-android'

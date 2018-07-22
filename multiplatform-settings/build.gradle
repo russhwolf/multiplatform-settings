@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2018 Russell Wolf
  *
@@ -71,7 +70,14 @@ subprojects {
     }
 
     bintrayUpload.doFirst {
-        publications = project.publishing.publications
+        publications = []
+        def projectPublications = project.publishing.publications
+        for (publication in projectPublications) {
+            if (publication.artifactId.endsWith("-test")) {
+                continue
+            }
+            publications += publication.name
+        }
     }
 }
 

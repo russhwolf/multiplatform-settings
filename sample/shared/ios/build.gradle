@@ -26,6 +26,5 @@ konanArtifacts {
 
 dependencies {
     expectedBy project(':shared:common')
-    artifactShared_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:$library_version"
-    artifactShared_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:$library_version"
+    artifactShared "com.russhwolf:multiplatform-settings-ios:$library_version"
 }
