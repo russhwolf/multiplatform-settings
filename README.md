@@ -12,11 +12,11 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
 
 In your `kotlin-platform-common` module, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha3"
+    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha4"
     
 In your `kotlin-platform-android` module, add an `expectedBy` dependency on the common module as well as the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha3"
+    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha4"
     
 In your `konan` module, add an `expectedBy` dependency on the common module as well as separate artifacts for the targets `ios_arm64` (physical device) and `ios_x64` (emulator). The syntax here is not particularly well-documented, but here's an example to illustrate. Assume you want to expose a framework named `MyKotlinFramework` to your ios project.
 
@@ -25,14 +25,14 @@ In your `konan` module, add an `expectedBy` dependency on the common module as w
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha3"
+                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha4"
             }
         }
         framework('MyKotlinFramework_ios_x64', targets: ['ios_x64']) {
             enableMultiplatform true
             artifactName 'MyKotlinFramework'
             dependencies {
-                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha3"
+                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha4"
             }
         }
     }
