@@ -1,6 +1,6 @@
 # Multiplatform Settings
 
-This is a Kotlin library for Multiplatform mobile apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and UserDefaults on iOS. 
+This is a Kotlin library for Multiplatform mobile apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and NSUserDefaults on iOS. 
 
 ## Adding to your project
 First, add the multiplatform-settings bintray url to the `repositories` block of any module using it.
@@ -18,24 +18,9 @@ In your `kotlin-platform-android` module, add an `expectedBy` dependency on the 
 
     implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha4"
     
-In your `konan` module, add an `expectedBy` dependency on the common module as well as separate artifacts for the targets `ios_arm64` (physical device) and `ios_x64` (emulator). The syntax here is not particularly well-documented, but here's an example to illustrate. Assume you want to expose a framework named `MyKotlinFramework` to your ios project.
+In your `konan` module, add an `expectedBy` dependency on the common module as well as an artifact dependency, Assuming you want to expose a framework named `MyKotlinFramework` to your ios project, this would look like
 
-    konanArtifacts {
-        framework('MyKotlinFramework_ios_arm64', targets: ['ios_arm64']) {
-            enableMultiplatform true
-            artifactName 'MyKotlinFramework'
-            dependencies {
-                artifactMyKotlinFramework_ios_arm64 "com.russhwolf:multiplatform-settings-ios_arm64:0.1-alpha4"
-            }
-        }
-        framework('MyKotlinFramework_ios_x64', targets: ['ios_x64']) {
-            enableMultiplatform true
-            artifactName 'MyKotlinFramework'
-            dependencies {
-                artifactMyKotlinFramework_ios_x64 "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha4"
-            }
-        }
-    }
+    artifactMyKotlinFramework "com.russhwolf:multiplatform-settings-ios:0.1-alpha4"
 
 See also the sample project, which uses this structure.
 
@@ -45,14 +30,14 @@ The `Settings` interface is implemented by the `PlatformSettings` class, which h
 
     val context: Context = ...
     val factory: Settings.Factory = PlatformSettings.Factory(context)
-    val settings: Settings = factory.create("my_settings_name")
     
 On iOS, the factory can be instantiated without passing any parameter
 
     val factory: Settings.Factory = PlatformSettings.Factory()
-    val settings = factory.create("my_settings_name")
     
-On both platforms, the name argument to `Factory.create()` can be omitted, and a platform-specific default will be used.
+Using a factory allows for creating a `Settings` instance using the same `name` parameter on both platforms. This parameter is optional and a platform-specific default will be used if it is absent.
+
+    val settings: Settings = factory.create("my_settings_name")
 
 Alternatively, you can create a `PlatformSettings` instance by passing the platform-specific delegate class that `PlatformSettings` wraps around. On Android, 
 
@@ -101,9 +86,9 @@ The library logic lives in the module `multiplatform-settings` and its `common`,
 
 Some simple unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the platform-specific behavior, and use the `macos` target to run the native tests.
 
-There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. It also includes an `app-android` module which consumes `shared:android` and defines an Android UI, as well as an Xcode project in the `app-ios` directory which consumes the framework exported from `shared:ios` and holds an iOS UI.
-
-In order to build the library, you must supply a file in the root directory called `keys.properties`, which defines the properties `bintrayUser` and `bintrayKey`. These are used to upload build artifacts to bintray. The sample project can be built separately and shouldn't need any additional configuration.
+There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared:android` and provides an Android UI. The `shared:ios` module produces a framework which is then consumed by an Xcode project in the `app-ios` directory, which defines iOS UI in the usual way.
+ 
+ The `shared:common` module includes some simple unit tests to demonstrate a way to mock out the `Settings` interface when testing code that interacts with it. The `shared:android` and `shared:ios` modules include gradle configuration to run these tests on each respective platform.
 
 ## License
         
