@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("KDocMissingDocumentation", "unused")
+
 package com.russhwolf.settings
 
 import kotlin.reflect.KClass

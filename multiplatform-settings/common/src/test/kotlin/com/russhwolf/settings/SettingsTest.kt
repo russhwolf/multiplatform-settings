@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// TODO We shouldn't need this, but common module test sources aren't making it to the IDE test scope at the moment
+@file:Suppress("KDocMissingDocumentation")
+
 package com.russhwolf.settings
 
 import kotlin.test.BeforeTest
@@ -116,9 +119,9 @@ class SettingsTest {
         var a by settings.nullableInt("Nullable Int")
         assertEquals(null, a)
         a = 2
-        assertEquals(2, a)
+        assertEquals(2.asNullableType(), a)
         a = 0
-        assertEquals(0, a)
+        assertEquals(0.asNullableType(), a)
         a = null
         assertEquals(null, a)
     }
@@ -128,9 +131,9 @@ class SettingsTest {
         var a by settings.nullableLong("Nullable Long")
         assertEquals(null, a)
         a = 2
-        assertEquals(2, a)
+        assertEquals(2L.asNullableType(), a)
         a = 0
-        assertEquals(0, a)
+        assertEquals(0L.asNullableType(), a)
         a = null
         assertEquals(null, a)
     }
@@ -140,7 +143,7 @@ class SettingsTest {
         var a by settings.nullableString("Nullable String")
         assertEquals(null, a)
         a = "value"
-        assertEquals("value", a)
+        assertEquals("value".asNullableType(), a)
         a = null
         assertEquals(null, a)
     }
@@ -150,9 +153,9 @@ class SettingsTest {
         var a by settings.nullableFloat("Nullable Float")
         assertEquals(null, a)
         a = 2f
-        assertEquals(2f, a)
+        assertEquals(2f.asNullableType(), a)
         a = 0f
-        assertEquals(0f, a)
+        assertEquals(0f.asNullableType(), a)
         a = null
         assertEquals(null, a)
     }
@@ -162,9 +165,9 @@ class SettingsTest {
         var a by settings.nullableDouble("Nullable Double")
         assertEquals(null, a)
         a = 2.0
-        assertEquals(2.0, a)
+        assertEquals(2.0.asNullableType(), a)
         a = 0.0
-        assertEquals(0.0, a)
+        assertEquals(0.0.asNullableType(), a)
         a = null
         assertEquals(null, a)
     }
@@ -174,8 +177,15 @@ class SettingsTest {
         var a by settings.nullableBoolean("Nullable Boolean")
         assertEquals(null, a)
         a = true
-        assertEquals(true, a)
+        assertEquals(true.asNullableType(), a)
         a = null
         assertEquals(null, a)
     }
 }
+
+/**
+ * Cast a value of type `T` to `T?`
+ *
+ * Helper function to avoid deprecated smart-casts when asserting non-null values of nullable delegates
+ */
+private fun <T : Any> T.asNullableType() = this as T?
