@@ -15,7 +15,7 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.2.51'
+    ext.kotlin_version = '1.2.60'
     repositories {
         google()
         jcenter()
@@ -24,7 +24,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.8"
+        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.8.1"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.2-SNAPSHOT"
     }
 }
@@ -37,7 +37,8 @@ allprojects {
 }
 
 def keyProps = new Properties()
-file("../keys.properties").withInputStream { keyProps.load(it) }
+def keyFile = file("../keys.properties")
+if (keyFile.exists()) keyFile.withInputStream { keyProps.load(it) }
 
 subprojects {
     apply plugin: 'maven-publish'
