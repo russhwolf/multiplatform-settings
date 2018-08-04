@@ -16,15 +16,32 @@
 
 apply plugin: 'konan'
 
-konan.targets = ['ios_arm64', 'ios_x64']
+konan.targets = ['ios_arm64', 'ios_x64', 'macos']
 
 konanArtifacts {
-    framework('Shared') {
+    framework('Shared', targets: ['ios_arm64', 'ios_x64']) {
         enableMultiplatform true
+    }
+
+    library('SharedLib', targets: ['macos']) {
+        enableMultiplatform true
+    }
+
+    program('SharedTest', targets: ['macos']) {
+        enableMultiplatform true
+        srcDir 'src/test/kotlin'
+        commonSourceSet 'test'
+        libraries {
+            artifact 'SharedLib'
+        }
+        extraOpts '-tr'
     }
 }
 
 dependencies {
     expectedBy project(':shared:common')
     artifactShared "com.russhwolf:multiplatform-settings-ios:$library_version"
+    artifactSharedLib "com.russhwolf:multiplatform-settings-ios:$library_version"
 }
+
+task test(dependsOn: run)
