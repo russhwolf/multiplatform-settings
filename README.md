@@ -12,15 +12,15 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
 
 In your `kotlin-platform-common` module, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha4"
+    implementation "com.russhwolf:multiplatform-settings-common:0.1-alpha5"
     
 In your `kotlin-platform-android` module, add an `expectedBy` dependency on the common module as well as the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha4"
+    implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha5"
     
 In your `konan` module, add an `expectedBy` dependency on the common module as well as an artifact dependency, Assuming you want to expose a framework named `MyKotlinFramework` to your ios project, this would look like
 
-    artifactMyKotlinFramework "com.russhwolf:multiplatform-settings-ios:0.1-alpha4"
+    artifactMyKotlinFramework "com.russhwolf:multiplatform-settings-ios:0.1-alpha5"
 
 See also the sample project, which uses this structure.
 

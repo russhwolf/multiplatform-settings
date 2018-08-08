@@ -44,7 +44,7 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
 
-    version '0.1-alpha4'
+    version '0.1-alpha5'
     group 'com.russhwolf'
 
     publishing {
