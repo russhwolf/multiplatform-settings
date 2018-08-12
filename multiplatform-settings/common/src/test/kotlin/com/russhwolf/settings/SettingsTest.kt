@@ -34,7 +34,6 @@ class SettingsTest {
     @BeforeTest
     fun setup() {
         settings = settingsFactory.create()
-        settings.clear()
     }
 
     @Test
@@ -180,6 +179,24 @@ class SettingsTest {
         assertEquals(true.asNullableType(), a)
         a = null
         assertEquals(null, a)
+    }
+
+    @Test
+    fun multipleDifferentInstances() {
+        val settingsA = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
+        val settingsB = settingsFactory.create("com.russhwolf.multiplatform-settings.test.B")
+        settingsA["a"] = 1
+        assertEquals(1, settingsA["a", -1])
+        assertEquals(-1, settingsB["a", -1])
+    }
+
+    @Test
+    fun multipleSameInstances() {
+        val settingsA = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
+        val settingsB = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
+        settingsA["a"] = 1
+        assertEquals(1, settingsA["a", -1])
+        assertEquals(1, settingsB["a", -1])
     }
 }
 

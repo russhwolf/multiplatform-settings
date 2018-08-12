@@ -16,19 +16,18 @@
 
 apply plugin: 'konan'
 
-konan.targets = ['ios_arm64', 'ios_x64', 'macos']
+konan.targets = ['ios_arm64', 'ios_x64']
 
 konanArtifacts {
-    framework('Shared', targets: ['ios_arm64', 'ios_x64']) {
+    framework('Shared') {
         enableMultiplatform true
     }
 
-    library('SharedLib', targets: ['macos']) {
+    library('SharedLib', targets: ['ios_x64']) {
         enableMultiplatform true
     }
 
-    program('SharedTest', targets: ['macos']) {
-        enableMultiplatform true
+    program('SharedTest', targets: ['ios_x64']) {
         srcDir 'src/test/kotlin'
         commonSourceSet 'test'
         libraries {
@@ -44,4 +43,7 @@ dependencies {
     artifactSharedLib "com.russhwolf:multiplatform-settings-ios:$library_version"
 }
 
-task test(dependsOn: run)
+task test(dependsOn: 'compileKonanSharedTestIos_x64', type: Exec) {
+    def textExecutable = tasks["compileKonanSharedTestIos_x64"].artifactPath
+    commandLine("xcrun", "simctl", "spawn", "iPhone 8", textExecutable)
+}

@@ -18,4 +18,11 @@ package com.russhwolf.settings
 
 import org.robolectric.RuntimeEnvironment
 
-actual val settingsFactory: Settings.Factory = PlatformSettings.Factory(RuntimeEnvironment.application)
+actual val settingsFactory: Settings.Factory = object : Settings.Factory {
+    private val platformFactory = PlatformSettings.Factory(RuntimeEnvironment.application)
+    override fun create(name: String?): Settings {
+        val settings = platformFactory.create(name)
+        settings.clear()
+        return settings
+    }
+}

@@ -16,7 +16,7 @@
 
 apply plugin: 'konan'
 
-konan.targets = ['ios_arm64', 'ios_x64', 'macos']
+konan.targets = ['ios_arm64', 'ios_x64']
 
 konanArtifacts {
     library('multiplatform-settings-ios') {
@@ -24,8 +24,7 @@ konanArtifacts {
         artifactName 'MultiplatformSettingsIos'
     }
 
-    program('multiplatform-settings-ios-test', targets: ['macos']) {
-        enableMultiplatform true
+    program('multiplatform-settings-ios-test', targets: ['ios_x64']) {
         srcDir 'src/test/kotlin'
         commonSourceSet 'test'
         libraries {
@@ -39,4 +38,7 @@ dependencies {
     expectedBy project(':multiplatform-settings:common')
 }
 
-task test(dependsOn: run)
+task test(dependsOn: 'compileKonanMultiplatform-settings-ios-testIos_x64', type: Exec) {
+    def textExecutable = tasks["compileKonanMultiplatform-settings-ios-testIos_x64"].artifactPath
+    commandLine("xcrun", "simctl", "spawn", "iPhone 8", textExecutable)
+}

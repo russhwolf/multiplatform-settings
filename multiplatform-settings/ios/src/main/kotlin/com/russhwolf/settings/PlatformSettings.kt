@@ -59,7 +59,7 @@ actual class PlatformSettings public constructor(private val delegate: NSUserDef
          * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
          */
         actual override fun create(name: String?): Settings {
-            val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(name)
+            val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
             return PlatformSettings(delegate)
         }
     }
