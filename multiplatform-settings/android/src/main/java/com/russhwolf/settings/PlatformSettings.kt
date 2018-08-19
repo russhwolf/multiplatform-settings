@@ -77,6 +77,40 @@ actual class PlatformSettings public constructor(private val delegate: SharedPre
     }
 
     /**
+     *
+     */
+    private val prefsListenerCache = mutableMapOf<String, SharedPreferences.OnSharedPreferenceChangeListener>()
+    private val valueCache = mutableMapOf<String, Any>()
+
+    actual override fun addListener(key: String, listener: () -> Unit) {
+        removeListener(key)
+
+        val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, updatedKey: String ->
+            if (updatedKey != key) return@OnSharedPreferenceChangeListener
+
+            /*
+             According to the OnSharedPreferenceChangeListener contract, we might get called for an update even
+             if the value didn't change. We hold a cache to ensure that the user-supplied callback only updates on
+             actual changes, in order to ensure that we match iOS behavior
+             */
+            val prev = valueCache[key]
+            val current = delegate.all[key]
+            if (prev != current) {
+                listener()
+                current?.let { valueCache[key] = it }
+            }
+        }
+        delegate.all[key]?.let { valueCache[key] = it }
+        delegate.registerOnSharedPreferenceChangeListener(prefsListener)
+        prefsListenerCache[key] = prefsListener
+    }
+
+    actual override fun removeListener(key: String) {
+        prefsListenerCache.remove(key)?.let { delegate.unregisterOnSharedPreferenceChangeListener(it) }
+        valueCache.remove(key)
+    }
+
+    /**
      * Clears all values stored in this [Settings] instance.
      */
     actual override fun clear(): Unit = delegate.edit().clear().apply()

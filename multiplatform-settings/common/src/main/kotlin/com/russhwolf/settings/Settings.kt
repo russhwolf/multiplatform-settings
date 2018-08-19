@@ -121,4 +121,13 @@ public interface Settings {
      */
     public fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
 
+    /**
+     * Adds a listener which will call the supplied lambda anytime the value at [key] changes.
+     */
+    public fun addListener(key: String, listener: () -> Unit)
+
+    /**
+     * Removes the listener monitoring changes to the value at [key]
+     */
+    public fun removeListener(key: String)
 }

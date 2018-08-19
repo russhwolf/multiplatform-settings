@@ -18,6 +18,7 @@ package com.russhwolf.settings
 
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSBundle
+import platform.Foundation.*
 
 /**
  * A collection of storage-backed key-value data
@@ -62,6 +63,39 @@ actual class PlatformSettings public constructor(private val delegate: NSUserDef
             val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
             return PlatformSettings(delegate)
         }
+    }
+
+    private val observerCache = mutableMapOf<String, Any>()
+    private val valueCache = mutableMapOf<String, Any>()
+
+    actual override fun addListener(key: String, listener: () -> Unit) {
+        removeListener(key)
+
+        val block = { _: NSNotification? ->
+            /*
+             We'll get called here on any update to the underlying NSUserDefaults delegate. We use a cache to determine
+             whether the value at this listener's key changed before calling the user-supplied callback.
+             */
+            val prev = valueCache[key]
+            val current = delegate.objectForKey(key)
+            if (prev != current) {
+                listener()
+                current?.let { valueCache[key] = it }
+            }
+        }
+        delegate.objectForKey(key)?.let { valueCache[key] = it }
+        val observer = NSNotificationCenter.defaultCenter.addObserverForName(
+            name = NSUserDefaultsDidChangeNotification,
+            `object` = delegate,
+            queue = null,
+            usingBlock = block
+        )
+        observerCache[key] = observer
+    }
+
+    actual override fun removeListener(key: String) {
+        observerCache.remove(key)?.let { NSNotificationCenter.defaultCenter.removeObserver(it) }
+        valueCache.remove(key)
     }
 
     /**

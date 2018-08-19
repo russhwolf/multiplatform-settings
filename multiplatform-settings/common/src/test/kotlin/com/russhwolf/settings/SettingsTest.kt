@@ -198,6 +198,63 @@ class SettingsTest {
         assertEquals(1, settingsA["a", -1])
         assertEquals(1, settingsB["a", -1])
     }
+
+    @Test
+    fun listener() {
+        var invokationCount = 0
+        val listener = { invokationCount += 1 }
+
+        // No invocation for call before listener was set
+        settings["a"] = 1
+        settings.addListener("a", listener)
+        assertEquals(0, invokationCount)
+
+        // New invocation on set
+        settings["a"] = 0
+        assertEquals(1, invokationCount)
+
+        // New invocation on value change
+        settings["a"] = 1
+        assertEquals(2, invokationCount)
+
+        // No invocation if value unchanged
+        settings["a"] = 1
+        assertEquals(2, invokationCount)
+
+        // New invocation on remove
+        settings -= "a"
+        assertEquals(3, invokationCount)
+
+        // New invocation on re-add
+        settings["a"] = 0
+        assertEquals(4, invokationCount)
+
+        // No invocation on other key change
+        settings["b"] = 1
+        assertEquals(4, invokationCount)
+
+        // Second listener at the same key clobbers first one
+        settings.addListener("a") { /* Do nothing */ }
+        settings["a"] = 3
+        assertEquals(4, invokationCount)
+
+        // Set correct listener and verify once more
+        settings.addListener("a", listener)
+        settings["a"] = 1
+        assertEquals(5, invokationCount)
+
+        // No invocation after listener is removed
+        settings.removeListener("a")
+        settings["a"] = 2
+        assertEquals(5, invokationCount)
+    }
+
+    @Test
+    fun unregisterInvalidListener() {
+        settings.removeListener("a")
+        // Don't crash
+    }
+
 }
 
 /**
