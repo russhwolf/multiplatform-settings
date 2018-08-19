@@ -157,4 +157,6 @@ actual class PlatformSettings public constructor(private val delegate: SharedPre
      * type was stored at `key`, the behavior is not defined.
      */
     actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate.getBoolean(key, defaultValue)
+
+    public actual override fun keys(): Set<String> = delegate.all.keys
 }

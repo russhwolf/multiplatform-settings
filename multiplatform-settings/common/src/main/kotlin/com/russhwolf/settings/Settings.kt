@@ -121,4 +121,6 @@ public interface Settings {
      */
     public fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
 
+    public fun keys() : Set<String>
+
 }

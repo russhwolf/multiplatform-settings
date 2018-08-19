@@ -154,4 +154,6 @@ actual class PlatformSettings public constructor(private val delegate: NSUserDef
      */
     actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         if (hasKey(key)) delegate.boolForKey(key) else defaultValue
+
+    public actual override fun keys(): Set<String> = delegate.dictionaryRepresentation().keys as Set<String>
 }

@@ -36,6 +36,14 @@ class SettingsTest {
         settings = settingsFactory.create()
     }
 
+    @Test fun keys() {
+        val initialSize = settings.keys().size // TODO would like this to be 0 but iOS
+        settings.putInt("a", 5)
+        assertEquals(initialSize + 1, settings.keys().size)
+        settings.clear()
+        assertEquals(initialSize, settings.keys().size)
+    }
+
     @Test
     fun clear() {
         settings.putInt("a", 5)

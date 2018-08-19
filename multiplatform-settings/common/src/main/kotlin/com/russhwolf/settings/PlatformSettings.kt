@@ -61,5 +61,6 @@ public expect class PlatformSettings : Settings {
     public override fun getDouble(key: String, defaultValue: Double): Double
     public override fun putBoolean(key: String, value: Boolean)
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean
+    public override fun keys(): Set<String>
 }
 
