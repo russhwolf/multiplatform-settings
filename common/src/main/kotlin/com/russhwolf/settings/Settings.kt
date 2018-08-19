@@ -121,4 +121,29 @@ public interface Settings {
      */
     public fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
 
+    /**
+     * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [Listener]
+     * reference is returned which should be passed to [removeListener] when you no longer need it so that the
+     * associated platform resources can be cleaned up.
+     *
+     * A strong reference should be held to the `Listener` returned by this method in order to avoid it being
+     * garbage-collected on Android.
+     *
+     * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
+     * it's recommended that interaction with the listener APIs be confined to the main UI thread.
+     */
+    @ExperimentalListener
+    public fun addListener(key: String, callback: () -> Unit) : Listener
+
+    /**
+     * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
+     */
+    @ExperimentalListener
+    public fun removeListener(listener: Listener)
+
+    /**
+     * A handle to a listener instance returned by [addListener] so it can be passed to [removeListener].
+     */
+    @ExperimentalListener
+    interface Listener
 }

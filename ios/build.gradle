@@ -39,3 +39,10 @@ afterEvaluate { project ->
         commandLine("xcrun", "simctl", "spawn", "iPhone 8", testExecutable)
     }
 }
+
+components.main {
+    extraOpts '-Xuse-experimental=kotlin.Experimental'
+}
+components.test {
+    extraOpts '-Xuse-experimental=kotlin.Experimental'
+}

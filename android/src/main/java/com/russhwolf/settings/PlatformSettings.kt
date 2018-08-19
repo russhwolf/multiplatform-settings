@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.russhwolf.settings.Settings.Listener
 
 /**
  * A collection of storage-backed key-value data
@@ -116,7 +117,8 @@ public actual class PlatformSettings public constructor(private val delegate: Sh
     /**
      * Stores the `String` [value] at [key].
      */
-    public actual override fun putString(key: String, value: String): Unit = delegate.edit().putString(key, value).apply()
+    public actual override fun putString(key: String, value: String): Unit =
+        delegate.edit().putString(key, value).apply()
 
     /**
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
@@ -152,11 +154,70 @@ public actual class PlatformSettings public constructor(private val delegate: Sh
     /**
      * Stores the `Boolean` [value] at [key].
      */
-    public actual override fun putBoolean(key: String, value: Boolean): Unit = delegate.edit().putBoolean(key, value).apply()
+    public actual override fun putBoolean(key: String, value: Boolean): Unit =
+        delegate.edit().putBoolean(key, value).apply()
 
     /**
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate.getBoolean(key, defaultValue)
+    public actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+        delegate.getBoolean(key, defaultValue)
+
+    /**
+     * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [Listener]
+     * reference is returned which should be passed to [removeListener] when you no longer need it so that the
+     * associated platform resources can be cleaned up.
+     *
+     * A strong reference should be held to the `Listener` returned by this method in order to avoid it being
+     * garbage-collected on Android.
+     *
+     * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
+     * it's recommended that interaction with the listener APIs be confined to the main UI thread.
+     */
+    @ExperimentalListener
+    actual override fun addListener(key: String, callback: () -> Unit): Settings.Listener {
+        val cache = Listener.Cache(delegate.all[key])
+
+        val prefsListener =
+            SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, updatedKey: String ->
+                if (updatedKey != key) return@OnSharedPreferenceChangeListener
+
+                /*
+                 According to the OnSharedPreferenceChangeListener contract, we might get called for an update even
+                 if the value didn't change. We hold a cache to ensure that the user-supplied callback only updates on
+                 actual changes, in order to ensure that we match iOS behavior
+                 */
+                val prev = cache.value
+                val current = delegate.all[key]
+                if (prev != current) {
+                    callback()
+                    cache.value = current
+                }
+            }
+        delegate.registerOnSharedPreferenceChangeListener(prefsListener)
+        return Listener(prefsListener)
+    }
+
+    /**
+     * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
+     */
+    @ExperimentalListener
+    actual override fun removeListener(listener: Settings.Listener) {
+        val platformListener = listener as? Listener
+        val listenerDelegate = platformListener?.delegate
+        listenerDelegate?.let(delegate::unregisterOnSharedPreferenceChangeListener)
+    }
+
+    /**
+     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     *
+     * On the Android platform, this is a wrapper around [SharedPreferences.OnSharedPreferenceChangeListener].
+     */
+    @ExperimentalListener
+    actual class Listener internal constructor(
+        internal val delegate: SharedPreferences.OnSharedPreferenceChangeListener
+    ) : Settings.Listener {
+        internal class Cache(var value: Any?)
+    }
 }

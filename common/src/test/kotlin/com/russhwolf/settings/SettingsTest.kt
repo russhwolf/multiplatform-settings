@@ -198,4 +198,55 @@ class SettingsTest {
         assertEquals(1, settingsA["a", -1])
         assertEquals(1, settingsB["a", -1])
     }
+
+    @Test
+    @UseExperimental(ExperimentalListener::class)
+    fun listener() {
+        var invocationCount = 0
+        val callback = { invocationCount += 1 }
+
+        // No invocation for call before listener was set
+        settings["a"] = 2
+        val listener = settings.addListener("a", callback)
+        assertEquals(0, invocationCount)
+
+        // No invocation on set to existing value
+        settings["a"] = 2
+        assertEquals(0, invocationCount)
+
+        // New invocation on value change
+        settings["a"] = 1
+        assertEquals(1, invocationCount)
+
+        // No invocation if value unchanged
+        settings["a"] = 1
+        assertEquals(1, invocationCount)
+
+        // New invocation on remove
+        settings -= "a"
+        assertEquals(2, invocationCount)
+
+        // New invocation on re-add with same value
+        settings["a"] = 1
+        assertEquals(3, invocationCount)
+
+        // No invocation on other key change
+        settings["b"] = 1
+        assertEquals(3, invocationCount)
+
+        // Second listener at the same key also gets called
+        var invokationCount2 = 0
+        val callback2 = { invokationCount2 += 1 }
+        settings.addListener("a", callback2)
+        settings["a"] = 3
+        assertEquals(4, invocationCount)
+        assertEquals(1, invokationCount2)
+
+        // No invocation on listener which is removed
+        settings.removeListener(listener)
+        settings["a"] = 2
+        assertEquals(4, invocationCount)
+        assertEquals(2, invokationCount2)
+    }
+
 }

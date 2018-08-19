@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings.example
 
+import com.russhwolf.settings.ExperimentalListener
 import kotlin.properties.ReadWriteProperty
 
 import com.russhwolf.settings.Settings
@@ -66,6 +67,7 @@ class SettingsRepository(factory: Settings.Factory) {
  * This class wraps all of the different operations that might be performed on a given [key], and adds an interface to
  * get and set it as a [String] value..
  */
+@UseExperimental(ExperimentalListener::class)
 sealed class SettingConfig<T>(
     private val settings: Settings,
     val key: String,
@@ -74,6 +76,7 @@ sealed class SettingConfig<T>(
     private val toType: String.() -> T
 ) {
     private var value: T by settings.delegate(key, defaultValue)
+    private var listener: Settings.Listener? = null
 
     fun remove() {
         settings -= key
@@ -89,6 +92,17 @@ sealed class SettingConfig<T>(
             false
         }
     }
+
+    var isLoggingEnabled: Boolean
+        get() = listener != null
+        set(value) {
+            listener = if (value) {
+                settings.addListener(key) { println("$key = ${get()}") }
+            } else {
+                listener?.let { settings.removeListener(it) }
+                null
+            }
+        }
 
     override fun toString() = key
 }

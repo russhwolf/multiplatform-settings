@@ -29,3 +29,8 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon) { task ->
+    kotlinOptions {
+        freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
+    }
+}

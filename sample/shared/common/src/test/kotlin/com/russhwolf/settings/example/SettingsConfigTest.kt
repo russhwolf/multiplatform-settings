@@ -1,5 +1,6 @@
 package com.russhwolf.settings.example
 
+import com.russhwolf.settings.ExperimentalListener
 import com.russhwolf.settings.Settings
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,7 +14,7 @@ private const val VALUE = "My String Value"
 class SettingsConfigTest {
     @Test
     fun stringConfig_get() {
-        val settings = object : MockSettings() {
+        val settings = object : StubSettings() {
             override fun getString(key: String, defaultValue: String): String = if (key == KEY) VALUE else defaultValue
             override fun hasKey(key: String): Boolean = key == KEY
         }
@@ -32,7 +33,7 @@ class SettingsConfigTest {
     @Test
     fun stringConfig_set() {
         var verifier: Pair<String?, String?> = null to null
-        val settings = object : MockSettings() {
+        val settings = object : StubSettings() {
             override fun putString(key: String, value: String) {
                 verifier = key to value
             }
@@ -44,7 +45,7 @@ class SettingsConfigTest {
     }
 }
 
-open class MockSettings: Settings {
+open class StubSettings: Settings {
     override fun clear() = STUB
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean = STUB
     override fun getDouble(key: String, defaultValue: Double): Double = STUB
@@ -60,6 +61,10 @@ open class MockSettings: Settings {
     override fun putLong(key: String, value: Long): Unit = STUB
     override fun putString(key: String, value: String): Unit = STUB
     override fun remove(key: String): Unit = STUB
+    @ExperimentalListener
+    override fun addListener(key: String, callback: () -> Unit): Settings.Listener = STUB
+    @ExperimentalListener
+    override fun removeListener(listener: Settings.Listener): Unit = STUB
 }
 
 val STUB: Nothing get() = throw NotImplementedError("Stub!")

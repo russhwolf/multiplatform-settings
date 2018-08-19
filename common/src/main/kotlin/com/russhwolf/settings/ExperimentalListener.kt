@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-apply plugin: 'kotlin-platform-common'
+package com.russhwolf.settings
 
-dependencies {
-    implementation "com.russhwolf:multiplatform-settings-common:$library_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon) { task ->
-    kotlinOptions {
-        freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
-    }
-}
+/**
+ * Annotation to mark listener functionality as experimental.
+ */
+@Experimental
+annotation class ExperimentalListener

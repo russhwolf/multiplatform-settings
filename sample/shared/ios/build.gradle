@@ -55,3 +55,10 @@ task copyFramework() { project ->
         }
     }
 }
+
+components.main {
+    extraOpts '-Xuse-experimental=kotlin.Experimental'
+}
+components.test {
+    extraOpts '-Xuse-experimental=kotlin.Experimental'
+}

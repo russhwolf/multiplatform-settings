@@ -16,8 +16,11 @@
 
 package com.russhwolf.settings
 
+import platform.Foundation.NSNotification
+import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
-import platform.Foundation.NSBundle
+import platform.Foundation.NSUserDefaultsDidChangeNotification
+import platform.darwin.NSObjectProtocol
 
 /**
  * A collection of storage-backed key-value data
@@ -154,4 +157,57 @@ public actual class PlatformSettings public constructor(private val delegate: NS
      */
     public actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         if (hasKey(key)) delegate.boolForKey(key) else defaultValue
+
+    /**
+     * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [Listener]
+     * reference is returned which should be passed to [removeListener] when you no longer need it so that the
+     * associated platform resources can be cleaned up.
+     *
+     * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
+     * it's recommended that interaction with the listener APIs be confined to the main UI thread.
+     */
+    @ExperimentalListener
+    actual override fun addListener(key: String, callback: () -> Unit): Settings.Listener {
+        val cache = Listener.Cache(delegate.objectForKey(key))
+
+        val block = { _: NSNotification? ->
+            /*
+             We'll get called here on any update to the underlying NSUserDefaults delegate. We use a cache to determine
+             whether the value at this listener's key changed before calling the user-supplied callback.
+             */
+            val prev = cache.value
+            val current = delegate.objectForKey(key)
+            if (prev != current) {
+                callback()
+                cache.value = current
+            }
+        }
+        val observer = NSNotificationCenter.defaultCenter.addObserverForName(
+            name = NSUserDefaultsDidChangeNotification,
+            `object` = delegate,
+            queue = null,
+            usingBlock = block
+        )
+        return Listener(observer)
+    }
+
+    /**
+     * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
+     */
+    @ExperimentalListener
+    actual override fun removeListener(listener: Settings.Listener) {
+        val platformListener = listener as? Listener
+        val listenerDelegate = platformListener?.delegate
+        listenerDelegate?.let(NSNotificationCenter.defaultCenter::removeObserver)
+    }
+
+    /**
+     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     *
+     * On the iOS platform, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
+     */
+    @ExperimentalListener
+    actual class Listener internal constructor(internal val delegate: NSObjectProtocol) : Settings.Listener {
+        internal class Cache(var value: Any?)
+    }
 }

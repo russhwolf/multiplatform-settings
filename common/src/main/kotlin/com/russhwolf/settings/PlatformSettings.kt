@@ -61,5 +61,16 @@ public expect class PlatformSettings : Settings {
     public override fun getDouble(key: String, defaultValue: Double): Double
     public override fun putBoolean(key: String, value: Boolean)
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean
+
+    @ExperimentalListener
+    public override fun addListener(key: String, callback: () -> Unit): Settings.Listener
+    @ExperimentalListener
+    public override fun removeListener(listener: Settings.Listener)
+
+    /**
+     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     */
+    @ExperimentalListener
+    public class Listener : Settings.Listener
 }
 

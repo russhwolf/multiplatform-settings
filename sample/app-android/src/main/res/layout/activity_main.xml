@@ -66,6 +66,13 @@
         android:text="Clear All Values"
         />
 
+    <CheckBox
+        android:id="@+id/logger_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Logging"
+        />
+
     <TextView
         android:id="@+id/output"
         android:layout_width="wrap_content"

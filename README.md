@@ -80,6 +80,22 @@ Existence of a key can be queried
  Finally, all values in a `Settings` instance can be removed
       
     settings.clear()
+    
+## Experimental API
+
+### Listeners
+
+Update listeners are available using an experimental API. 
+
+    val settingsListener: SettingsListener = settings.addListener(key) { ... }
+    
+The `SettingsListener` returned from the call should be used to signal when you're done listening:
+
+    settings.removeListener(settingsListener)
+    
+This initial listener implementation is not designed with any sort of thread-safety so it's recommended to only interact with these APIs from the main thread of your application.
+
+The listener APIs make use of the Kotlin `@Experimental` annotation. All usages must be marked with `@ExperimentalListener` or `@UseExperimental(ExperimentalListener::class)`.
 
 ## Project Structure
 The library logic lives in the `common`, `android`, and `ios` modules. The common module holds `expect` declarations for the `Settings` class, which can persist values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. It also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.

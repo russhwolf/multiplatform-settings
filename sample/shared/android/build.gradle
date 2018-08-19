@@ -42,3 +42,9 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) { task ->
+    kotlinOptions {
+        freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
+    }
+}
