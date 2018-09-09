@@ -40,7 +40,7 @@ configure(subprojects.findAll { libs.contains(it.name) }) {
     def platform = platformOf(project)
 
     group 'com.russhwolf'
-    version '0.1-alpha5'
+    version '0.1'
 
     repositories {
         google()
