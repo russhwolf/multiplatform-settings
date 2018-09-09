@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4610481020BBD19C00E44AE7 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4610480920BBD19B00E44AE7 /* Shared.framework */; };
-		4610481120BBD19C00E44AE7 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4610480920BBD19B00E44AE7 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		463ED3D12145986F006F428F /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 463ED3BC2145986F006F428F /* Shared.framework */; };
+		463ED3D22145986F006F428F /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 463ED3BC2145986F006F428F /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		46D39ECE209D76D00080F90D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D39ECD209D76D00080F90D /* AppDelegate.swift */; };
 		46D39ED0209D76D00080F90D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D39ECF209D76D00080F90D /* ViewController.swift */; };
 		46D39ED3209D76D10080F90D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D39ED1209D76D10080F90D /* Main.storyboard */; };
@@ -19,11 +19,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4610480E20BBD19C00E44AE7 /* PBXContainerItemProxy */ = {
+		463ED3CF2145986F006F428F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 46D39EC2209D76D00080F90D /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4610480820BBD19B00E44AE7;
+			remoteGlobalIDString = 463ED3BB2145986F006F428F;
 			remoteInfo = Shared;
 		};
 		46D39EDF209D76D30080F90D /* PBXContainerItemProxy */ = {
@@ -49,7 +49,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4610481120BBD19C00E44AE7 /* Shared.framework in Embed Frameworks */,
+				463ED3D22145986F006F428F /* Shared.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,11 +57,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4610480920BBD19B00E44AE7 /* Shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4610480B20BBD19C00E44AE7 /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
-		4610480C20BBD19C00E44AE7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4610481D20BBD2EB00E44AE7 /* SettingsRepository.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SettingsRepository.kt; sourceTree = "<group>"; };
-		4610482A20BBD30000E44AE7 /* SettingsRepository.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SettingsRepository.kt; sourceTree = "<group>"; };
+		463ED3BC2145986F006F428F /* Shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		463ED3BE2145986F006F428F /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
+		463ED3BF2145986F006F428F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46D39ECA209D76D00080F90D /* SettingsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SettingsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D39ECD209D76D00080F90D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46D39ECF209D76D00080F90D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -82,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4610481020BBD19C00E44AE7 /* Shared.framework in Frameworks */,
+				463ED3D12145986F006F428F /* Shared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,169 +101,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4610480A20BBD19B00E44AE7 /* Shared */ = {
+		463ED3BD2145986F006F428F /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				4610480B20BBD19C00E44AE7 /* Shared.h */,
-				4610481620BBD2EB00E44AE7 /* src */,
-				4610481E20BBD30000E44AE7 /* src */,
-				4610480C20BBD19C00E44AE7 /* Info.plist */,
+				463ED3BE2145986F006F428F /* Shared.h */,
+				463ED3BF2145986F006F428F /* Info.plist */,
 			);
 			path = Shared;
-			sourceTree = "<group>";
-		};
-		4610481620BBD2EB00E44AE7 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				4610481720BBD2EB00E44AE7 /* main */,
-			);
-			name = src;
-			path = ../../shared/ios/src;
-			sourceTree = "<group>";
-		};
-		4610481720BBD2EB00E44AE7 /* main */ = {
-			isa = PBXGroup;
-			children = (
-				4610481820BBD2EB00E44AE7 /* kotlin */,
-			);
-			path = main;
-			sourceTree = "<group>";
-		};
-		4610481820BBD2EB00E44AE7 /* kotlin */ = {
-			isa = PBXGroup;
-			children = (
-				4610481920BBD2EB00E44AE7 /* com */,
-			);
-			path = kotlin;
-			sourceTree = "<group>";
-		};
-		4610481920BBD2EB00E44AE7 /* com */ = {
-			isa = PBXGroup;
-			children = (
-				4610481A20BBD2EB00E44AE7 /* russhwolf */,
-			);
-			path = com;
-			sourceTree = "<group>";
-		};
-		4610481A20BBD2EB00E44AE7 /* russhwolf */ = {
-			isa = PBXGroup;
-			children = (
-				4610481B20BBD2EB00E44AE7 /* settings */,
-			);
-			path = russhwolf;
-			sourceTree = "<group>";
-		};
-		4610481B20BBD2EB00E44AE7 /* settings */ = {
-			isa = PBXGroup;
-			children = (
-				4610481C20BBD2EB00E44AE7 /* example */,
-			);
-			path = settings;
-			sourceTree = "<group>";
-		};
-		4610481C20BBD2EB00E44AE7 /* example */ = {
-			isa = PBXGroup;
-			children = (
-				4610481D20BBD2EB00E44AE7 /* SettingsRepository.kt */,
-			);
-			path = example;
-			sourceTree = "<group>";
-		};
-		4610481E20BBD30000E44AE7 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				4610481F20BBD30000E44AE7 /* test */,
-				4610482420BBD30000E44AE7 /* main */,
-			);
-			name = src;
-			path = ../../shared/common/src;
-			sourceTree = "<group>";
-		};
-		4610481F20BBD30000E44AE7 /* test */ = {
-			isa = PBXGroup;
-			children = (
-				4610482020BBD30000E44AE7 /* kotlin */,
-			);
-			path = test;
-			sourceTree = "<group>";
-		};
-		4610482020BBD30000E44AE7 /* kotlin */ = {
-			isa = PBXGroup;
-			children = (
-				4610482120BBD30000E44AE7 /* com */,
-			);
-			path = kotlin;
-			sourceTree = "<group>";
-		};
-		4610482120BBD30000E44AE7 /* com */ = {
-			isa = PBXGroup;
-			children = (
-				4610482220BBD30000E44AE7 /* russhwolf */,
-			);
-			path = com;
-			sourceTree = "<group>";
-		};
-		4610482220BBD30000E44AE7 /* russhwolf */ = {
-			isa = PBXGroup;
-			children = (
-				4610482320BBD30000E44AE7 /* settings */,
-			);
-			path = russhwolf;
-			sourceTree = "<group>";
-		};
-		4610482320BBD30000E44AE7 /* settings */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = settings;
-			sourceTree = "<group>";
-		};
-		4610482420BBD30000E44AE7 /* main */ = {
-			isa = PBXGroup;
-			children = (
-				4610482520BBD30000E44AE7 /* kotlin */,
-			);
-			path = main;
-			sourceTree = "<group>";
-		};
-		4610482520BBD30000E44AE7 /* kotlin */ = {
-			isa = PBXGroup;
-			children = (
-				4610482620BBD30000E44AE7 /* com */,
-			);
-			path = kotlin;
-			sourceTree = "<group>";
-		};
-		4610482620BBD30000E44AE7 /* com */ = {
-			isa = PBXGroup;
-			children = (
-				4610482720BBD30000E44AE7 /* russhwolf */,
-			);
-			path = com;
-			sourceTree = "<group>";
-		};
-		4610482720BBD30000E44AE7 /* russhwolf */ = {
-			isa = PBXGroup;
-			children = (
-				4610482820BBD30000E44AE7 /* settings */,
-			);
-			path = russhwolf;
-			sourceTree = "<group>";
-		};
-		4610482820BBD30000E44AE7 /* settings */ = {
-			isa = PBXGroup;
-			children = (
-				4610482920BBD30000E44AE7 /* example */,
-			);
-			path = settings;
-			sourceTree = "<group>";
-		};
-		4610482920BBD30000E44AE7 /* example */ = {
-			isa = PBXGroup;
-			children = (
-				4610482A20BBD30000E44AE7 /* SettingsRepository.kt */,
-			);
-			path = example;
 			sourceTree = "<group>";
 		};
 		46D39EC1209D76D00080F90D = {
@@ -274,7 +116,7 @@
 				46D39ECC209D76D00080F90D /* SettingsDemo */,
 				46D39EE1209D76D30080F90D /* SettingsDemoTests */,
 				46D39EEC209D76D30080F90D /* SettingsDemoUITests */,
-				4610480A20BBD19B00E44AE7 /* Shared */,
+				463ED3BD2145986F006F428F /* Shared */,
 				46D39ECB209D76D00080F90D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -285,7 +127,7 @@
 				46D39ECA209D76D00080F90D /* SettingsDemo.app */,
 				46D39EDE209D76D30080F90D /* SettingsDemoTests.xctest */,
 				46D39EE9209D76D30080F90D /* SettingsDemoUITests.xctest */,
-				4610480920BBD19B00E44AE7 /* Shared.framework */,
+				463ED3BC2145986F006F428F /* Shared.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -324,11 +166,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4610480820BBD19B00E44AE7 /* Shared */ = {
+		463ED3BB2145986F006F428F /* Shared */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4610481220BBD19C00E44AE7 /* Build configuration list for PBXNativeTarget "Shared" */;
+			buildConfigurationList = 463ED3D32145986F006F428F /* Build configuration list for PBXNativeTarget "Shared" */;
 			buildPhases = (
-				4610481520BBD27E00E44AE7 /* ShellScript */,
+				463ED3D921459C7A006F428F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -336,7 +178,7 @@
 			);
 			name = Shared;
 			productName = Shared;
-			productReference = 4610480920BBD19B00E44AE7 /* Shared.framework */;
+			productReference = 463ED3BC2145986F006F428F /* Shared.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		46D39EC9209D76D00080F90D /* SettingsDemo */ = {
@@ -351,7 +193,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				4610480F20BBD19C00E44AE7 /* PBXTargetDependency */,
+				463ED3D02145986F006F428F /* PBXTargetDependency */,
 			);
 			name = SettingsDemo;
 			productName = SettingsDemo;
@@ -400,12 +242,12 @@
 		46D39EC2209D76D00080F90D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0930;
+				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Russell Wolf";
 				TargetAttributes = {
-					4610480820BBD19B00E44AE7 = {
-						CreatedOnToolsVersion = 9.3.1;
+					463ED3BB2145986F006F428F = {
+						CreatedOnToolsVersion = 9.4.1;
 					};
 					46D39EC9209D76D00080F90D = {
 						CreatedOnToolsVersion = 9.3;
@@ -436,7 +278,7 @@
 				46D39EC9209D76D00080F90D /* SettingsDemo */,
 				46D39EDD209D76D30080F90D /* SettingsDemoTests */,
 				46D39EE8209D76D30080F90D /* SettingsDemoUITests */,
-				4610480820BBD19B00E44AE7 /* Shared */,
+				463ED3BB2145986F006F428F /* Shared */,
 			);
 		};
 /* End PBXProject section */
@@ -469,7 +311,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4610481520BBD27E00E44AE7 /* ShellScript */ = {
+		463ED3D921459C7A006F428F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -480,7 +322,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../shared/ios\" \"$KONAN_TASK\" \\\n-Pkonan.configuration.build.dir=\"$CONFIGURATION_BUILD_DIR\"        \\\n-Pkonan.debugging.symbols=\"$DEBUGGING_SYMBOLS\"                    \\\n-Pkonan.optimizations.enable=\"$KONAN_ENABLE_OPTIMIZATIONS\"";
+			shellScript = "\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../shared/ios\" \"$KOTLIN_TASK\" copyFramework \\\n-PbuildDir=\"$CONFIGURATION_BUILD_DIR\"        \\\n-PbuildTask=\"$KOTLIN_TASK\"        \\\n-Pkonan.debugging.symbols=\"$DEBUGGING_SYMBOLS\"                    \\\n-Pkonan.optimizations.enable=\"$KOTLIN_ENABLE_OPTIMIZATIONS\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -513,10 +355,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4610480F20BBD19C00E44AE7 /* PBXTargetDependency */ = {
+		463ED3D02145986F006F428F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4610480820BBD19B00E44AE7 /* Shared */;
-			targetProxy = 4610480E20BBD19C00E44AE7 /* PBXContainerItemProxy */;
+			target = 463ED3BB2145986F006F428F /* Shared */;
+			targetProxy = 463ED3CF2145986F006F428F /* PBXContainerItemProxy */;
 		};
 		46D39EE0209D76D30080F90D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -550,7 +392,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		4610481320BBD19C00E44AE7 /* Debug */ = {
+		463ED3D42145986F006F428F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -563,10 +405,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Shared/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				KONAN_ENABLE_OPTIMIZATIONS = NO;
-				KONAN_TASK = "";
-				"KONAN_TASK[sdk=iphoneos*]" = compileKonanSharedIos_arm64;
-				"KONAN_TASK[sdk=iphonesimulator*]" = compileKonanSharedIos_x64;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				KOTLIN_ENABLE_OPTIMIZATIONS = NO;
+				KOTLIN_TASK = "";
+				"KOTLIN_TASK[sdk=iphoneos*]" = compileDebugIos_arm64KotlinNative;
+				"KOTLIN_TASK[sdk=iphonesimulator*]" = compileDebugIos_x64KotlinNative;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -582,7 +425,7 @@
 			};
 			name = Debug;
 		};
-		4610481420BBD19C00E44AE7 /* Release */ = {
+		463ED3D52145986F006F428F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -595,10 +438,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Shared/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				KONAN_ENABLE_OPTIMIZATIONS = YES;
-				KONAN_TASK = "";
-				"KONAN_TASK[sdk=iphoneos*]" = compileKonanSharedIos_arm64;
-				"KONAN_TASK[sdk=iphonesimulator*]" = compileKonanSharedIos_x64;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				KOTLIN_ENABLE_OPTIMIZATIONS = YES;
+				KOTLIN_TASK = "";
+				"KOTLIN_TASK[sdk=iphoneos*]" = compileReleaseIos_arm64KotlinNative;
+				"KOTLIN_TASK[sdk=iphonesimulator*]" = compileReleaseIos_x64KotlinNative;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -861,11 +705,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4610481220BBD19C00E44AE7 /* Build configuration list for PBXNativeTarget "Shared" */ = {
+		463ED3D32145986F006F428F /* Build configuration list for PBXNativeTarget "Shared" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4610481320BBD19C00E44AE7 /* Debug */,
-				4610481420BBD19C00E44AE7 /* Release */,
+				463ED3D42145986F006F428F /* Debug */,
+				463ED3D52145986F006F428F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

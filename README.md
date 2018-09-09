@@ -18,9 +18,9 @@ In your `kotlin-platform-android` module, add an `expectedBy` dependency on the 
 
     implementation "com.russhwolf:multiplatform-settings-android:0.1-alpha5"
     
-In your `konan` module, add an `expectedBy` dependency on the common module as well as an artifact dependency, Assuming you want to expose a framework named `MyKotlinFramework` to your ios project, this would look like
+In your `kotlin-platform-ios` module, add an `expectedBy` dependency on the common module as well the dependency
 
-    artifactMyKotlinFramework "com.russhwolf:multiplatform-settings-ios:0.1-alpha5"
+    implementation "com.russhwolf:multiplatform-settings-ios:0.1-alpha5"
 
 See also the sample project, which uses this structure.
 
@@ -82,9 +82,9 @@ Existence of a key can be queried
     settings.clear()
 
 ## Project Structure
-The library logic lives in the module `multiplatform-settings` and its `common`, `android`, and `ios` submodules. The common module holds `expect` declarations for the `Settings` class, which can persist values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. It also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
+The library logic lives in the `common`, `android`, and `ios` modules. The common module holds `expect` declarations for the `Settings` class, which can persist values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. It also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
 
-Some simple unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the platform-specific behavior, and use the `macos` target to run the native tests.
+Some simple unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the android-specific behavior, and use the ios simulator to run the native tests.
 
 There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared:android` and provides an Android UI. The `shared:ios` module produces a framework which is then consumed by an Xcode project in the `app-ios` directory, which defines iOS UI in the usual way.
  

@@ -14,5 +14,18 @@
  * limitations under the License.
  */
 
-enableFeaturePreview('GRADLE_METADATA')
-include ':android', ':ios', ':common'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId "multiplatform-settings-common"
+        }
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
+}
+

@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-apply plugin: 'kotlin-platform-common'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-platform-android'
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+task sourcesJar(type: Jar) {
     classifier = 'sources'
-    from sourceSets.main.allSource
+    from android.sourceSets.main.java.srcDirs
 }
 
 artifacts {
@@ -27,18 +28,31 @@ artifacts {
 
 publishing {
     publications {
-        common(MavenPublication) {
-            artifact("$buildDir/libs/common-${version}.jar")
+        android(MavenPublication) {
+            artifact("$buildDir/outputs/aar/android-release.aar")
             artifact sourcesJar
             groupId
-            artifactId 'multiplatform-settings-common'
+            artifactId 'multiplatform-settings-android'
             version this.version
         }
     }
 }
 
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 15
+    }
+}
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
+    expectedBy project(':common')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testImplementation "org.robolectric:robolectric:3.8"
+
 }

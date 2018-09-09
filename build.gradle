@@ -1,0 +1,68 @@
+/*
+ * Copyright 2018 Russell Wolf
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+buildscript {
+    repositories {
+        maven { url 'https://dl.bintray.com/jetbrains/kotlin-native-dependencies' }
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:$kotlin_native_version"
+        classpath "com.android.tools.build:gradle:$gradle_android_version"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintray_plugin_version"
+    }
+}
+
+static def platformOf(project) {
+    if (project.name.endsWith('common')) return 'common'
+    if (project.name.endsWith('ios')) return 'native'
+    if (project.name.endsWith('android')) return 'android'
+    return 'common'
+}
+
+def libs = ['common', 'ios', 'android']
+configure(subprojects.findAll { libs.contains(it.name) }) {
+    def platform = platformOf(project)
+
+    group 'com.russhwolf'
+    version '0.1-alpha5'
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    if (platform != 'android') {
+        apply plugin: "kotlin-platform-$platform"
+    }
+
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
+
+    tasks.withType(Test) {
+        testLogging {
+            showStandardStreams = true
+            events 'passed', 'failed'
+        }
+    }
+}
+
+configure(subprojects.findAll { libs.contains(it.name) }) { project ->
+    apply from: rootProject.file('gradle/publish.gradle')
+}

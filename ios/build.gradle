@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-apply plugin: 'kotlin-platform-native'
-
 sourceSets {
     main {
         component {
-            baseName.set("Shared")
+            baseName.set("multiplatform-settings-ios")
             targets = ['ios_arm64', 'ios_x64']
-            outputKinds = [FRAMEWORK]
+            outputKinds = [KLIBRARY]
         }
     }
     test {
@@ -32,26 +30,12 @@ sourceSets {
 }
 
 dependencies {
-    expectedBy project(':shared:common')
-    implementation "com.russhwolf:multiplatform-settings-ios:$library_version"
+    expectedBy project(':common')
 }
 
 afterEvaluate { project ->
     project.task('test', dependsOn: 'compileTestDebugKotlinNative', type: Exec, overwrite: true) {
-        def textExecutable = tasks["compileTestDebugKotlinNative"].outputFile
-        commandLine("xcrun", "simctl", "spawn", "iPhone 8", textExecutable)
-    }
-}
-
-task copyFramework() { project ->
-    doLast {
-        def srcFile = tasks[getProperty("buildTask")].outputFile
-        def targetDir = getProperty("buildDir")
-        copy {
-            from srcFile.parent
-            into targetDir
-            include 'Shared.framework/**'
-            include 'Shared.framework.dSYM'
-        }
+        def testExecutable = tasks["compileTestDebugKotlinNative"].outputFile
+        commandLine("xcrun", "simctl", "spawn", "iPhone 8", testExecutable)
     }
 }
