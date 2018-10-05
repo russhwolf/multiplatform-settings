@@ -39,7 +39,7 @@ import android.preference.PreferenceManager
  * On the Android platform, this class can be created by passing a [SharedPreferences] instance which will be used as a
  * delegate. Thus two `Settings` instances created using the same [delegate] will be backed by the same data.
  */
-actual class PlatformSettings public constructor(private val delegate: SharedPreferences) : Settings {
+public actual class PlatformSettings public constructor(private val delegate: SharedPreferences) : Settings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -53,7 +53,7 @@ actual class PlatformSettings public constructor(private val delegate: SharedPre
      * [applicationContext][Context.getApplicationContext] property of the supplied `context` and will use that to
      * create [SharedPreferences] objects.
      */
-    actual class Factory(context: Context) : Settings.Factory {
+    public actual class Factory(context: Context) : Settings.Factory {
         private val appContext = context.applicationContext
 
         /**
@@ -66,7 +66,7 @@ actual class PlatformSettings public constructor(private val delegate: SharedPre
          * On the Android platform, this is implemented by calling [Context.getSharedPreferences] and passing [name]. If
          * `name` is `null` then [PreferenceManager.getDefaultSharedPreferences] will be used instead.
          */
-        actual override fun create(name: String?): Settings {
+        public actual override fun create(name: String?): Settings {
             val delegate = if (name == null) {
                 PreferenceManager.getDefaultSharedPreferences(appContext)
             } else {
@@ -79,82 +79,84 @@ actual class PlatformSettings public constructor(private val delegate: SharedPre
     /**
      * Clears all values stored in this [Settings] instance.
      */
-    actual override fun clear(): Unit = delegate.edit().clear().apply()
+    public actual override fun clear(): Unit = delegate.edit().clear().apply()
 
     /**
      * Removes the value stored at [key].
      */
-    actual override fun remove(key: String): Unit = delegate.edit().remove(key).apply()
+    public actual override fun remove(key: String): Unit = delegate.edit().remove(key).apply()
 
     /**
      * Returns `true` if there is a value stored at [key], or `false` otherwise.
      */
-    actual override fun hasKey(key: String): Boolean = delegate.contains(key)
+    public actual override fun hasKey(key: String): Boolean = delegate.contains(key)
 
     /**
      * Stores the `Int` [value] at [key].
      */
-    actual override fun putInt(key: String, value: Int): Unit = delegate.edit().putInt(key, value).apply()
+    public actual override fun putInt(key: String, value: Int): Unit = delegate.edit().putInt(key, value).apply()
 
     /**
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual override fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
+    public actual override fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
 
     /**
      * Stores the `Long` [value] at [key].
      */
-    actual override fun putLong(key: String, value: Long): Unit = delegate.edit().putLong(key, value).apply()
+    public actual override fun putLong(key: String, value: Long): Unit = delegate.edit().putLong(key, value).apply()
 
     /**
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual override fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
+    public actual override fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
 
     /**
      * Stores the `String` [value] at [key].
      */
-    actual override fun putString(key: String, value: String): Unit = delegate.edit().putString(key, value).apply()
+    public actual override fun putString(key: String, value: String): Unit = delegate.edit().putString(key, value).apply()
 
     /**
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual override fun getString(key: String, defaultValue: String): String = delegate.getString(key, defaultValue)
+    public actual override fun getString(key: String, defaultValue: String): String =
+        delegate.getString(key, defaultValue) ?: defaultValue
 
     /**
      * Stores the `Float` [value] at [key].
      */
-    actual override fun putFloat(key: String, value: Float): Unit = delegate.edit().putFloat(key, value).apply()
+    public actual override fun putFloat(key: String, value: Float): Unit = delegate.edit().putFloat(key, value).apply()
 
     /**
      * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual override fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
+    public actual override fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
 
     /**
      * Stores the `Double` [value] at [key].
      */
-    actual override fun putDouble(key: String, value: Double): Unit = delegate.edit().putLong(key, value.toRawBits()).apply()
+    public actual override fun putDouble(key: String, value: Double): Unit =
+        delegate.edit().putLong(key, value.toRawBits()).apply()
 
     /**
      * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual override fun getDouble(key: String, defaultValue: Double): Double =
+    public actual override fun getDouble(key: String, defaultValue: Double): Double =
         Double.fromBits(delegate.getLong(key, defaultValue.toRawBits()))
 
     /**
      * Stores the `Boolean` [value] at [key].
      */
-    actual override fun putBoolean(key: String, value: Boolean): Unit = delegate.edit().putBoolean(key, value).apply()
+    public actual override fun putBoolean(key: String, value: Boolean): Unit = delegate.edit().putBoolean(key, value).apply()
 
     /**
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate.getBoolean(key, defaultValue)
+    public actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate.getBoolean(key, defaultValue)
 }
