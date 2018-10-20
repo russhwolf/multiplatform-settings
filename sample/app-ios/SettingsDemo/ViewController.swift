@@ -23,7 +23,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet var valueInput: UITextField?
     @IBOutlet var outputText: UILabel?
 
-    lazy var settingsRepository: SharedSettingsRepository = Shared.settingsRepository()
+    lazy var settingsRepository: SettingsRepository = SettingsRepositoryExtensionsKt.settingsRepository()
 
     override func viewDidLoad() {
         super.viewDidLoad()

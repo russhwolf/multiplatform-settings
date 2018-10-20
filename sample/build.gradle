@@ -15,17 +15,17 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.2.61'
-    ext.library_version = '0.1'
+    ext.kotlin_version = '1.3.0-rc-190'
+    ext.library_version = '0.1.1'
     repositories {
         google()
         jcenter()
         maven { url "https://dl.bintray.com/jetbrains/kotlin-native-dependencies" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.9"
+        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:1.3.0-rc-190-native-1.0-rc2-4523"
     }
 }
 
