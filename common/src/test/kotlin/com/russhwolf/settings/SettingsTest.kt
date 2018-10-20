@@ -118,9 +118,9 @@ class SettingsTest {
         var a by settings.nullableInt("Nullable Int")
         assertEquals(null, a)
         a = 2
-        assertEquals(2.asNullableType(), a)
+        assertEquals(2, a)
         a = 0
-        assertEquals(0.asNullableType(), a)
+        assertEquals(0, a)
         a = null
         assertEquals(null, a)
     }
@@ -130,9 +130,9 @@ class SettingsTest {
         var a by settings.nullableLong("Nullable Long")
         assertEquals(null, a)
         a = 2
-        assertEquals(2L.asNullableType(), a)
+        assertEquals(2L, a)
         a = 0
-        assertEquals(0L.asNullableType(), a)
+        assertEquals(0L, a)
         a = null
         assertEquals(null, a)
     }
@@ -142,7 +142,7 @@ class SettingsTest {
         var a by settings.nullableString("Nullable String")
         assertEquals(null, a)
         a = "value"
-        assertEquals("value".asNullableType(), a)
+        assertEquals("value", a)
         a = null
         assertEquals(null, a)
     }
@@ -152,9 +152,9 @@ class SettingsTest {
         var a by settings.nullableFloat("Nullable Float")
         assertEquals(null, a)
         a = 2f
-        assertEquals(2f.asNullableType(), a)
+        assertEquals(2f, a)
         a = 0f
-        assertEquals(0f.asNullableType(), a)
+        assertEquals(0f, a)
         a = null
         assertEquals(null, a)
     }
@@ -164,9 +164,9 @@ class SettingsTest {
         var a by settings.nullableDouble("Nullable Double")
         assertEquals(null, a)
         a = 2.0
-        assertEquals(2.0.asNullableType(), a)
+        assertEquals(2.0, a)
         a = 0.0
-        assertEquals(0.0.asNullableType(), a)
+        assertEquals(0.0, a)
         a = null
         assertEquals(null, a)
     }
@@ -176,7 +176,7 @@ class SettingsTest {
         var a by settings.nullableBoolean("Nullable Boolean")
         assertEquals(null, a)
         a = true
-        assertEquals(true.asNullableType(), a)
+        assertEquals(true, a)
         a = null
         assertEquals(null, a)
     }
@@ -199,10 +199,3 @@ class SettingsTest {
         assertEquals(1, settingsB["a", -1])
     }
 }
-
-/**
- * Cast a value of type `T` to `T?`
- *
- * Helper function to avoid deprecated smart-casts when asserting non-null values of nullable delegates
- */
-private fun <T : Any> T.asNullableType() = this as T?
