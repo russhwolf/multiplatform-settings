@@ -43,6 +43,7 @@ android {
     defaultConfig {
         minSdkVersion 15
     }
+    testOptions.unitTests.includeAndroidResources = true
 }
 
 dependencies {
@@ -51,8 +52,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testImplementation 'junit:junit:4.12'
+    testImplementation "androidx.test:core:1.0.0"
+    testImplementation "androidx.test.ext:junit:1.0.0"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-    testImplementation "org.robolectric:robolectric:3.8"
-
+    testImplementation "org.robolectric:robolectric:4.0"
 }

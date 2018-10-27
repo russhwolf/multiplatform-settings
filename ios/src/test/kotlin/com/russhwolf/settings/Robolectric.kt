@@ -20,8 +20,4 @@ import kotlin.reflect.KClass
 
 actual annotation class RunWith(actual val value: KClass<out Runner>)
 actual abstract class Runner
-actual class RobolectricTestRunner : SandboxTestRunner()
-actual open class SandboxTestRunner : BlockJUnit4ClassRunner()
-actual open class BlockJUnit4ClassRunner : ParentRunner<FrameworkMethod>()
-actual class FrameworkMethod()
-actual abstract class ParentRunner<T> : Runner()
+actual class AndroidJUnit4 : Runner()

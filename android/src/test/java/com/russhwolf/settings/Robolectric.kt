@@ -18,8 +18,4 @@ package com.russhwolf.settings
 
 actual typealias RunWith = org.junit.runner.RunWith
 actual typealias Runner = org.junit.runner.Runner
-actual typealias RobolectricTestRunner = org.robolectric.RobolectricTestRunner
-actual typealias SandboxTestRunner = org.robolectric.internal.SandboxTestRunner
-actual typealias BlockJUnit4ClassRunner = org.junit.runners.BlockJUnit4ClassRunner
-actual typealias ParentRunner<T> = org.junit.runners.ParentRunner<T>
-actual typealias FrameworkMethod = org.junit.runners.model.FrameworkMethod
+actual typealias AndroidJUnit4 = androidx.test.ext.junit.runners.AndroidJUnit4

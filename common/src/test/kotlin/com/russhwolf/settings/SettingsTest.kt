@@ -27,7 +27,7 @@ import kotlin.test.assertTrue
 
 expect val settingsFactory: Settings.Factory
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class SettingsTest {
     private lateinit var settings: Settings
 

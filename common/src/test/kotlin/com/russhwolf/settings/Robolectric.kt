@@ -26,8 +26,4 @@ These expect declarations allow our unit tests to run using Robolectric on the j
 
 expect annotation class RunWith(val value: KClass<out Runner>)
 expect abstract class Runner
-expect class RobolectricTestRunner : SandboxTestRunner
-expect open class SandboxTestRunner : BlockJUnit4ClassRunner
-expect open class BlockJUnit4ClassRunner : ParentRunner<FrameworkMethod>
-expect class FrameworkMethod
-expect abstract class ParentRunner<T> : Runner
+expect class AndroidJUnit4 : Runner

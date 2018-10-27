@@ -16,10 +16,10 @@
 
 package com.russhwolf.settings
 
-import org.robolectric.RuntimeEnvironment
+import androidx.test.core.app.ApplicationProvider
 
 actual val settingsFactory: Settings.Factory = object : Settings.Factory {
-    private val platformFactory = PlatformSettings.Factory(RuntimeEnvironment.application)
+    private val platformFactory = PlatformSettings.Factory(ApplicationProvider.getApplicationContext())
     override fun create(name: String?): Settings {
         val settings = platformFactory.create(name)
         settings.clear()
