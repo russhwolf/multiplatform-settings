@@ -1,0 +1,127 @@
+/*
+ * Copyright 2018 Russell Wolf
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'com.android.library'
+
+kotlin {
+    targets {
+        final def iosTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") ? presets.iosArm64 : presets.iosX64
+
+        fromPreset(iosTarget, 'ios') {
+            compilations.main.outputKinds('FRAMEWORK')
+        }
+
+        fromPreset(presets.android, 'android') {
+            compilations.all {
+                tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) { task ->
+                    kotlinOptions {
+                        freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
+                    }
+                }
+            }
+        }
+
+        all { target ->
+            if (target.name == 'android') return // Android handles this differently
+            compilations.all { compilation ->
+                tasks[compileKotlinTaskName].kotlinOptions {
+                    freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
+                }
+            }
+        }
+    }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation "com.russhwolf:multiplatform-settings-common:$library_version"
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+                implementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+            }
+        }
+
+        androidMain {
+            dependencies {
+                implementation "com.russhwolf:multiplatform-settings-android:$library_version"
+                implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            }
+        }
+        androidTest {
+            dependencies {
+                implementation "com.russhwolf:multiplatform-settings-android:$library_version"
+                implementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+            }
+        }
+
+        iosMain {
+            dependencies {
+                implementation "com.russhwolf:multiplatform-settings-ios:$library_version"
+            }
+        }
+        iosTest {
+            dependencies {
+            }
+        }
+    }
+}
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 15
+    }
+}
+
+task packForXCode(type: Sync) {
+    final File frameworkDir = new File(buildDir, "xcode-frameworks")
+    final String mode = System.getenv('CONFIGURATION')?.toUpperCase() ?: 'DEBUG'
+
+    inputs.property "mode", mode
+    dependsOn kotlin.targets.ios.compilations.main.linkTaskName("FRAMEWORK", mode)
+
+    from { kotlin.targets.ios.compilations.main.getBinary("FRAMEWORK", mode).parentFile }
+    into frameworkDir
+
+    doLast {
+        new File(frameworkDir, 'gradlew').with {
+            text = "#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n"
+            setExecutable(true)
+        }
+    }
+}
+tasks.build.dependsOn packForXCode
+
+task iosTest(dependsOn: 'linkTestDebugExecutableIos') {
+    doLast {
+        def binary = kotlin.targets.ios.compilations.test.getBinary('EXECUTABLE', 'DEBUG')
+        exec {
+            commandLine 'xcrun', 'simctl', 'spawn', "iPhone 8", binary.absolutePath
+        }
+    }
+}
+tasks.check.dependsOn iosTest
+
+// workaround for https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+    compileClasspath
+}

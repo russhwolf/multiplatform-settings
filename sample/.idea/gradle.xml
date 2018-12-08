@@ -10,9 +10,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app-android" />
             <option value="$PROJECT_DIR$/shared" />
-            <option value="$PROJECT_DIR$/shared/android" />
-            <option value="$PROJECT_DIR$/shared/common" />
-            <option value="$PROJECT_DIR$/shared/ios" />
           </set>
         </option>
       </GradleProjectSettings>

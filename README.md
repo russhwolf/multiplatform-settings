@@ -10,17 +10,17 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
         maven { url = 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
     }
 
-In your `kotlin-platform-common` module, add the dependency
+In your common source-set, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-common:0.1"
+    implementation "com.russhwolf:multiplatform-settings-common:0.1.1"
     
-In your `kotlin-platform-android` module, add an `expectedBy` dependency on the common module as well as the dependency
+In your android source-set, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-android:0.1"
+    implementation "com.russhwolf:multiplatform-settings-android:0.1.1"
     
-In your `kotlin-platform-ios` module, add an `expectedBy` dependency on the common module as well the dependency
+In your ios source-set, add the dependency
 
-    implementation "com.russhwolf:multiplatform-settings-ios:0.1"
+    implementation "com.russhwolf:multiplatform-settings-ios:0.1.1"
 
 See also the sample project, which uses this structure.
 
