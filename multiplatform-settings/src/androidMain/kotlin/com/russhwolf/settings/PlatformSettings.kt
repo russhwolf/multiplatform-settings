@@ -20,7 +20,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.russhwolf.settings.Settings.Listener
+import com.russhwolf.settings.PlatformSettings.Factory
 
 /**
  * A collection of storage-backed key-value data

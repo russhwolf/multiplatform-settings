@@ -16,44 +16,22 @@
 
 buildscript {
     repositories {
-        maven { url 'https://dl.bintray.com/jetbrains/kotlin-native-dependencies' }
         google()
+        maven { url 'https://dl.bintray.com/jetbrains/kotlin-native-dependencies' }
         jcenter()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:$kotlin_version"
         classpath "com.android.tools.build:gradle:$gradle_android_version"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintray_plugin_version"
     }
 }
 
-static def platformOf(project) {
-    if (project.name.endsWith('common')) return 'common'
-    if (project.name.endsWith('ios')) return 'native'
-    if (project.name.endsWith('android')) return 'android'
-    return 'common'
-}
-
-def libs = ['common', 'ios', 'android']
-configure(subprojects.findAll { libs.contains(it.name) }) {
-    def platform = platformOf(project)
-
-    group 'com.russhwolf'
-    version '0.1.1'
-
+subprojects {
+    
     repositories {
         google()
         jcenter()
     }
-
-    if (platform != 'android') {
-        apply plugin: "kotlin-platform-$platform"
-    }
-
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
-    apply plugin: 'com.jfrog.bintray'
 
     tasks.withType(Test) {
         testLogging {
@@ -61,8 +39,4 @@ configure(subprojects.findAll { libs.contains(it.name) }) {
             events 'passed', 'failed'
         }
     }
-}
-
-configure(subprojects.findAll { libs.contains(it.name) }) { project ->
-    apply from: rootProject.file('gradle/publish.gradle')
 }

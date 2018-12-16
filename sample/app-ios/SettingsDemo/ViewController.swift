@@ -15,7 +15,7 @@
  */
 
 import UIKit
-import shared
+import Shared
 
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
 
