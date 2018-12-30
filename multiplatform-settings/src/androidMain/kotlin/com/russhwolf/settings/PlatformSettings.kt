@@ -80,7 +80,15 @@ public actual class PlatformSettings public constructor(private val delegate: Sh
     /**
      * Clears all values stored in this [Settings] instance.
      */
-    public actual override fun clear(): Unit = delegate.edit().clear().apply()
+    public actual override fun clear() {
+        // Note: we call remove() on all keys instead of calling clear() in order to match listener behavior to iOS
+        // See issue #9
+        delegate.edit().apply {
+            for (key in delegate.all.keys) {
+                remove(key)
+            }
+        }.apply()
+    }
 
     /**
      * Removes the value stored at [key].

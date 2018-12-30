@@ -234,18 +234,22 @@ class SettingsTest {
         settings["b"] = 1
         assertEquals(3, invocationCount)
 
+        // New invocation on clear
+        settings.clear()
+        assertEquals(4, invocationCount)
+
         // Second listener at the same key also gets called
         var invokationCount2 = 0
         val callback2 = { invokationCount2 += 1 }
         settings.addListener("a", callback2)
         settings["a"] = 3
-        assertEquals(4, invocationCount)
+        assertEquals(5, invocationCount)
         assertEquals(1, invokationCount2)
 
         // No invocation on listener which is removed
         settings.removeListener(listener)
         settings["a"] = 2
-        assertEquals(4, invocationCount)
+        assertEquals(5, invocationCount)
         assertEquals(2, invokationCount2)
     }
 
