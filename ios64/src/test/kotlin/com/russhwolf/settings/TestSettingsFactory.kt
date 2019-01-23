@@ -14,5 +14,13 @@
  * limitations under the License.
  */
 
-enableFeaturePreview('GRADLE_METADATA')
-include ':android', ':ios64', ':ios32', ':common'
+package com.russhwolf.settings
+
+actual val settingsFactory: Settings.Factory = object : Settings.Factory {
+    private val platformFactory = PlatformSettings.Factory()
+    override fun create(name: String?): Settings {
+        val settings = platformFactory.create(name)
+        settings.clear()
+        return settings
+    }
+}

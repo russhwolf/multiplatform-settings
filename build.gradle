@@ -30,12 +30,13 @@ buildscript {
 
 static def platformOf(project) {
     if (project.name.endsWith('common')) return 'common'
-    if (project.name.endsWith('ios')) return 'native'
+    if (project.name.endsWith('ios64')) return 'native'
+    if (project.name.endsWith('ios32')) return 'native'
     if (project.name.endsWith('android')) return 'android'
     return 'common'
 }
 
-def libs = ['common', 'ios', 'android']
+def libs = ['common', 'ios64', 'ios32', 'android']
 configure(subprojects.findAll { libs.contains(it.name) }) {
     def platform = platformOf(project)
 

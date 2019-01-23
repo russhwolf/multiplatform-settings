@@ -14,5 +14,10 @@
  * limitations under the License.
  */
 
-enableFeaturePreview('GRADLE_METADATA')
-include ':android', ':ios64', ':ios32', ':common'
+package com.russhwolf.settings
+
+import kotlin.reflect.KClass
+
+actual annotation class RunWith(actual val value: KClass<out Runner>)
+actual abstract class Runner
+actual class AndroidJUnit4 : Runner()

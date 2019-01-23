@@ -17,8 +17,8 @@
 sourceSets {
     main {
         component {
-            baseName.set("multiplatform-settings-ios")
-            targets = ['ios_arm32', 'ios_arm64', 'ios_x64']
+            baseName.set("multiplatform-settings-ios64")
+            targets = ['ios_arm32', 'ios_x64']
             outputKinds = [KLIBRARY]
         }
     }
@@ -36,7 +36,7 @@ dependencies {
 afterEvaluate { project ->
     project.task('test', dependsOn: 'compileTestDebugKotlinNative', type: Exec, overwrite: true) {
         def testExecutable = tasks["compileTestDebugKotlinNative"].outputFile
-        commandLine("xcrun", "simctl", "spawn", "iPhone 8", testExecutable)
+        commandLine("xcrun", "simctl", "spawn", "iPhone SE", testExecutable)
     }
 }
 
