@@ -1,6 +1,5 @@
 package com.russhwolf.settings.example
 
-import com.russhwolf.settings.ExperimentalListener
 import com.russhwolf.settings.Settings
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -61,10 +60,6 @@ open class StubSettings: Settings {
     override fun putLong(key: String, value: Long): Unit = STUB
     override fun putString(key: String, value: String): Unit = STUB
     override fun remove(key: String): Unit = STUB
-    @ExperimentalListener
-    override fun addListener(key: String, callback: () -> Unit): Settings.Listener = STUB
-    @ExperimentalListener
-    override fun removeListener(listener: Settings.Listener): Unit = STUB
 }
 
 val STUB: Nothing get() = throw NotImplementedError("Stub!")

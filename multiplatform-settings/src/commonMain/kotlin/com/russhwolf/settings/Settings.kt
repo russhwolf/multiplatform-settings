@@ -133,13 +133,16 @@ public interface Settings {
      * it's recommended that interaction with the listener APIs be confined to the main UI thread.
      */
     @ExperimentalListener
-    public fun addListener(key: String, callback: () -> Unit) : Listener
+    public fun addListener(key: String, callback: () -> Unit): Listener =
+        throw NotImplementedError("Unimplemented experimental API!")
 
     /**
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
     @ExperimentalListener
-    public fun removeListener(listener: Listener)
+    public fun removeListener(listener: Listener) {
+        throw NotImplementedError("Unimplemented experimental API!")
+    }
 
     /**
      * A handle to a listener instance returned by [addListener] so it can be passed to [removeListener].
