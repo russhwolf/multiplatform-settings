@@ -10,18 +10,10 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
         maven { url = 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
     }
 
-In your common source-set, add the dependency
+Then, simply add the dependency to your common source-set dependencies
 
-    implementation "com.russhwolf:multiplatform-settings-common:0.1.1"
+    implementation "com.russhwolf:multiplatform-settings:0.2"
     
-In your android source-set, add the dependency
-
-    implementation "com.russhwolf:multiplatform-settings-android:0.1.1"
-    
-In your ios source-set, add the dependency
-
-    implementation "com.russhwolf:multiplatform-settings-ios:0.1.1"
-
 See also the sample project, which uses this structure.
 
 ## Usage
@@ -98,13 +90,13 @@ This initial listener implementation is not designed with any sort of thread-saf
 The listener APIs make use of the Kotlin `@Experimental` annotation. All usages must be marked with `@ExperimentalListener` or `@UseExperimental(ExperimentalListener::class)`.
 
 ## Project Structure
-The library logic lives in the `common`, `android`, and `ios` modules. The common module holds `expect` declarations for the `Settings` class, which can persist values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. It also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
+The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface and an `expect` implementation called `PlatformSettings`. These expose apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
 
 Some simple unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the android-specific behavior, and use the ios simulator to run the native tests.
 
-There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with `common`, `android`, and `ios` submodules, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared:android` and provides an Android UI. The `shared:ios` module produces a framework which is then consumed by an Xcode project in the `app-ios` directory, which defines iOS UI in the usual way.
+There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with common and platform sources, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared` and provides an Android UI. The `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced by `shared`.
  
- The `shared:common` module includes some simple unit tests to demonstrate a way to mock out the `Settings` interface when testing code that interacts with it. The `shared:android` and `shared:ios` modules include gradle configuration to run these tests on each respective platform.
+ The `shared` module includes some simple unit tests in common code to demonstrate a way to mock out the `Settings` interface when testing code that interacts with it.
 
 ## License
         
