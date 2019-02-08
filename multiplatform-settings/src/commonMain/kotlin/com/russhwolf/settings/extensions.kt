@@ -42,6 +42,19 @@ public inline operator fun Settings.get(key: String, defaultValue: Double): Doub
 /** Equivalent to [Settings.getBoolean]*/
 public inline operator fun Settings.get(key: String, defaultValue: Boolean): Boolean = getBoolean(key, defaultValue)
 
+/** Find the proper getter by the reified [V] */
+public inline operator fun <reified V: Any?> Settings.get(key: String ): V? {
+    return when ( V::class ) {
+        Int::class ->       getInt( key )
+        Long::class ->      getLong( key )
+        String::class ->    getString( key )
+        Float::class ->     getFloat( key )
+        Double::class ->    getDouble( key )
+        Boolean::class ->   getBoolean( key )
+        else -> throw IllegalArgumentException( "Type '${V::class.qualifiedName}' is not a valid type" )
+    } as V
+}
+
 /** Equivalent to [Settings.putInt]*/
 public inline operator fun Settings.set(key: String, value: Int): Unit = putInt(key, value)
 
@@ -59,3 +72,17 @@ public inline operator fun Settings.set(key: String, value: Double): Unit = putD
 
 /** Equivalent to [Settings.putBoolean]*/
 public inline operator fun Settings.set(key: String, value: Boolean): Unit = putBoolean(key, value)
+
+/** Internal use only. Find the proper setter by the reified [V] */
+@PublishedApi
+internal inline operator fun <reified V: Any?> Settings.set( key: String, value: V ) {
+    when ( V::class ) {
+        Int::class ->       set( key, value as Int )
+        Long::class ->      set( key, value as Long )
+        String::class ->    set( key, value as String )
+        Float::class ->     set( key, value as Float )
+        Double::class ->    set( key, value as Double )
+        Boolean::class ->   set( key, value as Boolean )
+        else -> throw IllegalArgumentException( "Type '${V::class.qualifiedName}' is not a valid type" )
+    }
+}

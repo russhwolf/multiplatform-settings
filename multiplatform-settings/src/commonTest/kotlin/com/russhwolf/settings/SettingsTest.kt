@@ -58,6 +58,28 @@ class SettingsTest {
     }
 
     @Test
+    fun reifiedDelegate() {
+        var a by settings( defaultValue = 5 )
+        assertEquals(5, a )
+        a = 2
+        assertEquals(2, a )
+        a = 0
+        assertEquals(0, a )
+    }
+
+    @Test
+    fun nullableReifiedDelegate() {
+        var a by settings<Int?>()
+        assertEquals(null, a )
+        a = 2
+        assertEquals(2, a )
+        a = 0
+        assertEquals(0, a )
+        a = null
+        assertEquals(null, a )
+    }
+
+    @Test
     fun intDelegate() {
         var a by settings.int("Int", 5)
         assertEquals(5, a)

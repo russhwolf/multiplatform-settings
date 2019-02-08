@@ -14,215 +14,124 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package com.russhwolf.settings
 
+import kotlin.jvm.JvmName
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-/**
- * Returns an [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
- */
+/** Returns an [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue] */
 public fun Settings.int(key: String? = null, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
-    IntDelegate(this, key, defaultValue)
+        SettingsDelegate( key, defaultValue, getter(), setter() )
 
-/**
- * Returns a [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
- */
+/** Returns a [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue] */
 public fun Settings.long(key: String? = null, defaultValue: Long = 0): ReadWriteProperty<Any?, Long> =
-    LongDelegate(this, key, defaultValue)
+        SettingsDelegate( key, defaultValue, getter(), setter() )
 
-/**
- * Returns a [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
- */
+/** Returns a [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue] */
 public fun Settings.string(key: String? = null, defaultValue: String = ""): ReadWriteProperty<Any?, String> =
-    StringDelegate(this, key, defaultValue)
+        SettingsDelegate( key, defaultValue, getter(), setter() )
 
-/**
- * Returns a [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
- */
+/** Returns a [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue] */
 public fun Settings.float(key: String? = null, defaultValue: Float = 0f): ReadWriteProperty<Any?, Float> =
-    FloatDelegate(this, key, defaultValue)
+        SettingsDelegate( key, defaultValue, getter(), setter() )
 
-/**
- * Returns a [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
- */
+/** Returns a [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue] */
 public fun Settings.double(key: String? = null, defaultValue: Double = 0.0): ReadWriteProperty<Any?, Double> =
-    DoubleDelegate(this, key, defaultValue)
+        SettingsDelegate( key, defaultValue, getter(), setter() )
 
-/**
- * Returns a [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
- */
+/** Returns a [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue] */
 public fun Settings.boolean(key: String? = null, defaultValue: Boolean = false): ReadWriteProperty<Any?, Boolean> =
-    BooleanDelegate(this, key, defaultValue)
+        SettingsDelegate( key, defaultValue, getter(), setter() )
+
+/** Returns a nullable [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null */
+public fun Settings.nullableInt(key: String? = null): ReadWriteProperty<Any?, Int?> =
+        OptSettingsDelegate<Int?>( key, getter(), setter() )
+
+/** Returns a nullable [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null */
+public fun Settings.nullableLong(key: String? = null): ReadWriteProperty<Any?, Long?> =
+        OptSettingsDelegate<Long?>( key, getter(), setter() )
+
+/** Returns a nullable [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null */
+public fun Settings.nullableString(key: String? = null): ReadWriteProperty<Any?, String?> =
+        OptSettingsDelegate<String?>( key, getter(), setter() )
+
+/** Returns a nullable [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null */
+public fun Settings.nullableFloat(key: String? = null): ReadWriteProperty<Any?, Float?> =
+        OptSettingsDelegate<Float?>( key, getter(), setter() )
+
+/** Returns a nullable [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null */
+public fun Settings.nullableDouble(key: String? = null): ReadWriteProperty<Any?, Double?> =
+        OptSettingsDelegate<Double?>( key, getter(), setter() )
+
+/** Returns a nullable [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null */
+public fun Settings.nullableBoolean(key: String? = null): ReadWriteProperty<Any?, Boolean?> =
+        OptSettingsDelegate<Boolean?>( key, getter(), setter() )
+
+
+/** Returns an [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue] */
+public inline operator fun <reified V: Any> Settings.invoke( key: String? = null, defaultValue: V ): ReadWriteProperty<Any?, V> =
+        SettingsDelegate( key, defaultValue , getter(), setter() )
 
 /**
- * Returns a nullable [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ * Returns a nullable [V] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ * @throws IllegalArgumentException if [V] is not nullable.
  */
-public fun Settings.nullableInt(key: String? = null): ReadWriteProperty<Any?, Int?> = NullableIntDelegate(this, key)
+public inline operator fun <reified V: Any?> Settings.invoke( key: String? = null ): ReadWriteProperty<Any?, V?> {
+    if ( null !is V /* T is not nullable */ )
+        throw IllegalArgumentException(
+                "A default value must be declared if return type `${V::class.qualifiedName}` is not nullable"
+        )
+    return OptSettingsDelegate<V>( key , getter(), setter() )
+}
+
+@PublishedApi
+internal inline fun <reified V: Any?> Settings.getter(): (String) -> V? = { key -> get<V>( key ) }
+@PublishedApi
+internal inline fun <reified V: Any?> Settings.setter(): (String, V) -> Unit = { key, value -> set( key, value ) }
 
 /**
- * Returns a nullable [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ * An [OptKeyDelegate] for a NOT NULLABLE [V] value of [Settings]. Injected [getter] and [setter] are required because
+ * class is not inlined, so it can't hold a *reified* [V], which a function can.
  */
-public fun Settings.nullableLong(key: String? = null): ReadWriteProperty<Any?, Long?> = NullableLongDelegate(this, key)
+@PublishedApi
+internal class SettingsDelegate<V: Any>(
+        key: String?,
+        private val default: V,
+        private val getter: (String) -> V?,
+        private val setter: (String, V) -> Unit
+): OptKeyDelegate<V>( key ) {
+
+    override fun getValue( key: String ): V = getter( key ) ?: default
+    override fun setValue( key: String, value: V ) {
+        setter( key, value )
+    }
+}
 
 /**
- * Returns a nullable [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
+ * An [OptKeyDelegate] for a NULLABLE [V] value of [Settings]. Injected [getter] and [setter] are required because
+ * class is not inlined, so it can't hold a *reified* [V], which a function can.
  */
-public fun Settings.nullableString(key: String? = null): ReadWriteProperty<Any?, String?> = NullableStringDelegate(this, key)
+@PublishedApi
+internal open class OptSettingsDelegate<V: Any?>(
+        key: String?,
+        private val getter: (String) -> V?,
+        private val setter: (String, V?) -> Unit
+): OptKeyDelegate<V?>( key ) {
 
-/**
- * Returns a nullable [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
- */
-public fun Settings.nullableFloat(key: String? = null): ReadWriteProperty<Any?, Float?> = NullableFloatDelegate(this, key)
-
-/**
- * Returns a nullable [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
- */
-public fun Settings.nullableDouble(key: String? = null): ReadWriteProperty<Any?, Double?> = NullableDoubleDelegate(this, key)
-
-/**
- * Returns a nullable [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
- */
-public fun Settings.nullableBoolean(key: String? = null): ReadWriteProperty<Any?, Boolean?> = NullableBooleanDelegate(this, key)
-
-private class IntDelegate(
-    private val settings: Settings,
-    key: String?,
-    private val defaultValue: Int
-) : OptKeyDelegate<Int>( key ) {
-    override fun getValue(key: String): Int = settings[key, defaultValue]
-    override fun setValue(key: String, value: Int) {
-        settings[key] = value
+    override fun getValue( key: String ): V? = getter( key )
+    override fun setValue( key: String, value: V? ) {
+        setter( key, value )
     }
-}
-
-private class LongDelegate(
-    private val settings: Settings,
-    key: String?,
-    private val defaultValue: Long
-) : OptKeyDelegate<Long>( key ) {
-    override fun getValue(key: String): Long = settings[key, defaultValue]
-    override fun setValue(key: String, value: Long) {
-        settings[key] = value
-    }
-}
-
-private class StringDelegate(
-    private val settings: Settings,
-    key: String?,
-    private val defaultValue: String
-) : OptKeyDelegate<String>( key ) {
-    override fun getValue(key: String): String = settings[key, defaultValue]
-    override fun setValue(key: String, value: String) {
-        settings[key] = value
-    }
-}
-
-private class FloatDelegate(
-    private val settings: Settings,
-    key: String?,
-    private val defaultValue: Float
-) : OptKeyDelegate<Float>( key ) {
-    override fun getValue(key: String): Float = settings[key, defaultValue]
-    override fun setValue(key: String, value: Float) {
-        settings[key] = value
-    }
-}
-
-private class DoubleDelegate(
-    private val settings: Settings,
-    key: String?,
-    private val defaultValue: Double
-) : OptKeyDelegate<Double>( key ) {
-    override fun getValue(key: String): Double = settings[key, defaultValue]
-    override fun setValue(key: String, value: Double) {
-        settings[key] = value
-    }
-}
-
-private class BooleanDelegate(
-    private val settings: Settings,
-    key: String?,
-    private val defaultValue: Boolean
-) : OptKeyDelegate<Boolean>( key ) {
-    override fun getValue(key: String): Boolean = settings[key, defaultValue]
-    override fun setValue(key: String, value: Boolean) {
-        settings[key] = value
-    }
-}
-
-private class NullableIntDelegate(
-    private val settings: Settings,
-    key: String?
-) : OptKeyDelegate<Int?>( key ) {
-    override fun getValue(key: String): Int? {
-        return if (key in settings) settings[key, 0] else null
-    }
-
-    override fun setValue(key: String, value: Int?) =
-        if (value != null) settings[key] = value else settings -= key
-}
-
-private class NullableLongDelegate(
-    private val settings: Settings,
-    key: String?
-) : OptKeyDelegate<Long?>( key ) {
-    override fun getValue(key: String): Long? =
-        if (key in settings) settings[key, 0L] else null
-
-    override fun setValue(key: String, value: Long?) =
-        if (value != null) settings[key] = value else settings -= key
-}
-
-private class NullableStringDelegate(
-    private val settings: Settings,
-    key: String?
-) : OptKeyDelegate<String?>( key ) {
-    override fun getValue(key: String): String? =
-        if (key in settings) settings[key, ""] else null
-
-    override fun setValue(key: String, value: String?) =
-        if (value != null) settings[key] = value else settings -= key
-}
-
-private class NullableFloatDelegate(
-    private val settings: Settings,
-    key: String?
-) : OptKeyDelegate<Float?>( key ) {
-    override fun getValue(key: String): Float? =
-        if (key in settings) settings[key, 0f] else null
-
-    override fun setValue(key: String, value: Float?) =
-        if (value != null) settings[key] = value else settings -= key
-}
-
-private class NullableDoubleDelegate(
-    private val settings: Settings,
-    key: String?
-) : OptKeyDelegate<Double?>( key ) {
-    override fun getValue(key: String): Double? =
-        if (key in settings) settings[key, 0.0] else null
-
-    override fun setValue(key: String, value: Double?) =
-        if (value != null) settings[key] = value else settings -= key
-}
-
-private class NullableBooleanDelegate(
-    private val settings: Settings,
-    key: String?
-) : OptKeyDelegate<Boolean?>( key ) {
-    override fun getValue(key: String): Boolean? =
-        if (key in settings) settings[key, false] else null
-
-    override fun setValue(key: String, value: Boolean?) =
-        if (value != null) settings[key] = value else settings -= key
 }
 
 /**
  * A [ReadWriteProperty] that `get` and `set` through a [String] key.
- * @param _key an OPTIONAl key [String], it this value is null, the name [KProperty.name] will be used as key.
+ * @param _key an OPTIONAl key [String], if this value is null, the name [KProperty.name] will be used as key.
  */
-abstract class OptKeyDelegate<T>( _key: String? ): ReadWriteProperty<Any?, T> {
+internal abstract class OptKeyDelegate<T: Any?>( _key: String? ): ReadWriteProperty<Any?, T> {
     private var finalKey: String? = _key
     private val KProperty<*>.key: String get() {
         if ( finalKey == null ) finalKey = name
