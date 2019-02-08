@@ -22,199 +22,223 @@ import kotlin.reflect.KProperty
 /**
  * Returns an [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.int(key: String, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
+public fun Settings.int(key: String? = null, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
     IntDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.long(key: String, defaultValue: Long = 0): ReadWriteProperty<Any?, Long> =
+public fun Settings.long(key: String? = null, defaultValue: Long = 0): ReadWriteProperty<Any?, Long> =
     LongDelegate(this, key, defaultValue)
 
 /**
  * Returns a [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.string(key: String, defaultValue: String = ""): ReadWriteProperty<Any?, String> =
+public fun Settings.string(key: String? = null, defaultValue: String = ""): ReadWriteProperty<Any?, String> =
     StringDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.float(key: String, defaultValue: Float = 0f): ReadWriteProperty<Any?, Float> =
+public fun Settings.float(key: String? = null, defaultValue: Float = 0f): ReadWriteProperty<Any?, Float> =
     FloatDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.double(key: String, defaultValue: Double = 0.0): ReadWriteProperty<Any?, Double> =
+public fun Settings.double(key: String? = null, defaultValue: Double = 0.0): ReadWriteProperty<Any?, Double> =
     DoubleDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.boolean(key: String, defaultValue: Boolean = false): ReadWriteProperty<Any?, Boolean> =
+public fun Settings.boolean(key: String? = null, defaultValue: Boolean = false): ReadWriteProperty<Any?, Boolean> =
     BooleanDelegate(this, key, defaultValue)
 
 /**
  * Returns a nullable [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-public fun Settings.nullableInt(key: String): ReadWriteProperty<Any?, Int?> = NullableIntDelegate(this, key)
+public fun Settings.nullableInt(key: String? = null): ReadWriteProperty<Any?, Int?> = NullableIntDelegate(this, key)
 
 /**
  * Returns a nullable [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-public fun Settings.nullableLong(key: String): ReadWriteProperty<Any?, Long?> = NullableLongDelegate(this, key)
+public fun Settings.nullableLong(key: String? = null): ReadWriteProperty<Any?, Long?> = NullableLongDelegate(this, key)
 
 /**
  * Returns a nullable [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-public fun Settings.nullableString(key: String): ReadWriteProperty<Any?, String?> = NullableStringDelegate(this, key)
+public fun Settings.nullableString(key: String? = null): ReadWriteProperty<Any?, String?> =
+    NullableStringDelegate(this, key)
 
 /**
  * Returns a nullable [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-public fun Settings.nullableFloat(key: String): ReadWriteProperty<Any?, Float?> = NullableFloatDelegate(this, key)
+public fun Settings.nullableFloat(key: String? = null): ReadWriteProperty<Any?, Float?> =
+    NullableFloatDelegate(this, key)
 
 /**
  * Returns a nullable [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-public fun Settings.nullableDouble(key: String): ReadWriteProperty<Any?, Double?> = NullableDoubleDelegate(this, key)
+public fun Settings.nullableDouble(key: String? = null): ReadWriteProperty<Any?, Double?> =
+    NullableDoubleDelegate(this, key)
 
 /**
  * Returns a nullable [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value `null`
  */
-public fun Settings.nullableBoolean(key: String): ReadWriteProperty<Any?, Boolean?> = NullableBooleanDelegate(this, key)
+public fun Settings.nullableBoolean(key: String? = null): ReadWriteProperty<Any?, Boolean?> =
+    NullableBooleanDelegate(this, key)
 
 private class IntDelegate(
     private val settings: Settings,
-    private val key: String,
+    key: String?,
     private val defaultValue: Int
-) : ReadWriteProperty<Any?, Int> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Int = settings[key, defaultValue]
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Int) {
+) : OptKeyDelegate<Int>(key) {
+    override fun getValue(key: String): Int = settings[key, defaultValue]
+    override fun setValue(key: String, value: Int) {
         settings[key] = value
     }
 }
 
 private class LongDelegate(
     private val settings: Settings,
-    private val key: String,
+    key: String?,
     private val defaultValue: Long
-) : ReadWriteProperty<Any?, Long> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Long = settings[key, defaultValue]
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Long) {
+) : OptKeyDelegate<Long>(key) {
+    override fun getValue(key: String): Long = settings[key, defaultValue]
+    override fun setValue(key: String, value: Long) {
         settings[key] = value
     }
 }
 
 private class StringDelegate(
     private val settings: Settings,
-    private val key: String,
+    key: String?,
     private val defaultValue: String
-) : ReadWriteProperty<Any?, String> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): String = settings[key, defaultValue]
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+) : OptKeyDelegate<String>(key) {
+    override fun getValue(key: String): String = settings[key, defaultValue]
+    override fun setValue(key: String, value: String) {
         settings[key] = value
     }
 }
 
 private class FloatDelegate(
     private val settings: Settings,
-    private val key: String,
+    key: String?,
     private val defaultValue: Float
-) : ReadWriteProperty<Any?, Float> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Float = settings[key, defaultValue]
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Float) {
+) : OptKeyDelegate<Float>(key) {
+    override fun getValue(key: String): Float = settings[key, defaultValue]
+    override fun setValue(key: String, value: Float) {
         settings[key] = value
     }
 }
 
 private class DoubleDelegate(
     private val settings: Settings,
-    private val key: String,
+    key: String?,
     private val defaultValue: Double
-) : ReadWriteProperty<Any?, Double> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Double = settings[key, defaultValue]
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Double) {
+) : OptKeyDelegate<Double>(key) {
+    override fun getValue(key: String): Double = settings[key, defaultValue]
+    override fun setValue(key: String, value: Double) {
         settings[key] = value
     }
 }
 
 private class BooleanDelegate(
     private val settings: Settings,
-    private val key: String,
+    key: String?,
     private val defaultValue: Boolean
-) : ReadWriteProperty<Any?, Boolean> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Boolean = settings[key, defaultValue]
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Boolean) {
+) : OptKeyDelegate<Boolean>(key) {
+    override fun getValue(key: String): Boolean = settings[key, defaultValue]
+    override fun setValue(key: String, value: Boolean) {
         settings[key] = value
     }
 }
 
 private class NullableIntDelegate(
     private val settings: Settings,
-    private val key: String
-) : ReadWriteProperty<Any?, Int?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Int? {
+    key: String?
+) : OptKeyDelegate<Int?>(key) {
+    override fun getValue(key: String): Int? {
         return if (key in settings) settings[key, 0] else null
     }
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Int?) =
+    override fun setValue(key: String, value: Int?) =
         if (value != null) settings[key] = value else settings -= key
 }
 
 private class NullableLongDelegate(
     private val settings: Settings,
-    private val key: String
-) : ReadWriteProperty<Any?, Long?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Long? =
+    key: String?
+) : OptKeyDelegate<Long?>(key) {
+    override fun getValue(key: String): Long? =
         if (key in settings) settings[key, 0L] else null
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Long?) =
+    override fun setValue(key: String, value: Long?) =
         if (value != null) settings[key] = value else settings -= key
 }
 
 private class NullableStringDelegate(
     private val settings: Settings,
-    private val key: String
-) : ReadWriteProperty<Any?, String?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): String? =
+    key: String?
+) : OptKeyDelegate<String?>(key) {
+    override fun getValue(key: String): String? =
         if (key in settings) settings[key, ""] else null
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: String?) =
+    override fun setValue(key: String, value: String?) =
         if (value != null) settings[key] = value else settings -= key
 }
 
 private class NullableFloatDelegate(
     private val settings: Settings,
-    private val key: String
-) : ReadWriteProperty<Any?, Float?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Float? =
+    key: String?
+) : OptKeyDelegate<Float?>(key) {
+    override fun getValue(key: String): Float? =
         if (key in settings) settings[key, 0f] else null
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Float?) =
+    override fun setValue(key: String, value: Float?) =
         if (value != null) settings[key] = value else settings -= key
 }
 
 private class NullableDoubleDelegate(
     private val settings: Settings,
-    private val key: String
-) : ReadWriteProperty<Any?, Double?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Double? =
+    key: String?
+) : OptKeyDelegate<Double?>(key) {
+    override fun getValue(key: String): Double? =
         if (key in settings) settings[key, 0.0] else null
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Double?) =
+    override fun setValue(key: String, value: Double?) =
         if (value != null) settings[key] = value else settings -= key
 }
 
 private class NullableBooleanDelegate(
     private val settings: Settings,
-    private val key: String
-) : ReadWriteProperty<Any?, Boolean?> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Boolean? =
+    key: String?
+) : OptKeyDelegate<Boolean?>(key) {
+    override fun getValue(key: String): Boolean? =
         if (key in settings) settings[key, false] else null
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Boolean?) =
+    override fun setValue(key: String, value: Boolean?) =
         if (value != null) settings[key] = value else settings -= key
 }
 
+/**
+ * A [ReadWriteProperty] that `get` and `set` through a [String] key.
+ * @param _key an OPTIONAl key [String], it this value is null, the name [KProperty.name] will be used as key.
+ */
+abstract class OptKeyDelegate<T>(_key: String?) : ReadWriteProperty<Any?, T> {
+    private var finalKey: String? = _key
+    private val KProperty<*>.key: String
+        get() {
+            if (finalKey == null) finalKey = name
+            return finalKey!!
+        }
+
+    abstract fun getValue(key: String): T
+    abstract fun setValue(key: String, value: T)
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T = getValue(property.key)
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        setValue(property.key, value)
+    }
+}
