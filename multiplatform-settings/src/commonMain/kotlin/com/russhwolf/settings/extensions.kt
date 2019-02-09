@@ -42,17 +42,37 @@ public inline operator fun Settings.get(key: String, defaultValue: Double): Doub
 /** Equivalent to [Settings.getBoolean]*/
 public inline operator fun Settings.get(key: String, defaultValue: Boolean): Boolean = getBoolean(key, defaultValue)
 
-/** Find the proper getter by the reified [V] */
-public inline operator fun <reified V: Any?> Settings.get(key: String ): V? {
+/**
+ * @return NOT NULL [V].
+ * Find the proper getter by the reified [V]
+ */
+public inline operator fun <reified V: Any> Settings.get( key: String, defaultValue: V ): V {
     return when ( V::class ) {
-        Int::class ->       getInt( key )
-        Long::class ->      getLong( key )
-        String::class ->    getString( key )
-        Float::class ->     getFloat( key )
-        Double::class ->    getDouble( key )
-        Boolean::class ->   getBoolean( key )
-        else -> throw IllegalArgumentException( "Type '${V::class.qualifiedName}' is not a valid type" )
-    } as V
+        Int::class ->       getInt( key, defaultValue as Int ) as V
+        Long::class ->      getLong( key, defaultValue as Long ) as V
+        String::class ->    getString( key, defaultValue as String ) as V
+        Float::class ->     getFloat( key, defaultValue as Float ) as V
+        Double::class ->    getDouble( key, defaultValue as Double ) as V
+        Boolean::class ->   getBoolean( key, defaultValue as Boolean ) as V
+        else -> throw IllegalArgumentException( "Type '${V::class.qualifiedName}' is not a supported type" )
+    }
+}
+
+/**
+ * @return NULLABLE [V].
+ * Find the proper getter by the reified [V]
+ */
+public inline operator fun <reified V: Any?> Settings.get( key: String ): V? {
+    if ( key !in this ) return null
+    return when ( V::class ) {
+        Int::class ->       getInt( key ) as V
+        Long::class ->      getLong( key ) as V
+        String::class ->    getString( key ) as V
+        Float::class ->     getFloat( key ) as V
+        Double::class ->    getDouble( key ) as V
+        Boolean::class ->   getBoolean( key ) as V
+        else -> throw IllegalArgumentException( "Type '${V::class.qualifiedName}' is not a supported type" )
+    }
 }
 
 /** Equivalent to [Settings.putInt]*/
@@ -76,6 +96,10 @@ public inline operator fun Settings.set(key: String, value: Boolean): Unit = put
 /** Internal use only. Find the proper setter by the reified [V] */
 @PublishedApi
 internal inline operator fun <reified V: Any?> Settings.set( key: String, value: V ) {
+    if ( value == null ) {
+        remove( key )
+        return
+    }
     when ( V::class ) {
         Int::class ->       set( key, value as Int )
         Long::class ->      set( key, value as Long )

@@ -18,7 +18,6 @@
 
 package com.russhwolf.settings
 
-import kotlin.jvm.JvmName
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
