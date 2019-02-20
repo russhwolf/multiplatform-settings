@@ -15,7 +15,7 @@
  */
 
 plugins {
-    id 'kotlin-multiplatform' version '1.3.20'
+    id 'kotlin-multiplatform' version '1.3.21'
 }
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
@@ -23,32 +23,21 @@ apply plugin: 'com.jfrog.bintray'
 apply from: rootProject.file('gradle/publish.gradle')
 
 group 'com.russhwolf'
-version '0.2'
+version '0.2.1'
 
 kotlin {
     android {
-        compilations.all {
-            tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) { task ->
-                kotlinOptions {
-                    freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
-                }
-            }
-        }
-        publishLibraryVariants("release")
+        publishAllLibraryVariants()
     }
     iosArm64("ios")
     iosX64("iosSim")
 
-    targets.all { target ->
-        if (target.name == 'android') return // Android handles this differently
-        compilations.all { compilation ->
-            tasks[compileKotlinTaskName].kotlinOptions {
-                freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
+    sourceSets {
+        all {
+            languageSettings {
+                useExperimentalAnnotation('kotlin.Experimental')
             }
         }
-    }
-
-    sourceSets {
         commonMain {
             dependencies {
                 implementation kotlin("stdlib-common")

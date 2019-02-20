@@ -7,7 +7,7 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
 
     repositories {
         ...
-        maven { url = 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
+        maven { url 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
     }
 
 Then, simply add the dependency to your common source-set dependencies
@@ -100,7 +100,7 @@ There is also a sample project to demonstrate usage, which is configured as a se
 
 ## License
         
-    Copyright 2018 Russell Wolf
+    Copyright 2018-2019 Russell Wolf
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
