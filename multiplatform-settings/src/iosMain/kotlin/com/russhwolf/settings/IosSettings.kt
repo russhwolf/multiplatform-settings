@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings
 
+import com.russhwolf.settings.IosSettings.Factory
 import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
@@ -38,7 +39,7 @@ import platform.darwin.NSObjectProtocol
  * On the iOS platform, this class can be created by passing a [NSUserDefaults] instance which will be used as a
  * delegate, or via a [Factory].
  */
-public actual class PlatformSettings public constructor(private val delegate: NSUserDefaults) : Settings {
+public class IosSettings public constructor(private val delegate: NSUserDefaults) : Settings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -49,7 +50,7 @@ public actual class PlatformSettings public constructor(private val delegate: NS
      *
      * On the iOS platform, this class creates `Settings` objects backed by [NSUserDefaults].
      */
-    public actual class Factory : Settings.Factory {
+    public class Factory : Settings.Factory {
 
         /**
          * Creates a [Settings] object associated with the provided [name].
@@ -61,16 +62,16 @@ public actual class PlatformSettings public constructor(private val delegate: NS
          * On the iOS platform, this is implemented by calling [NSUserDefaults.init] and passing [name]. If `name` is
          * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
          */
-        public actual override fun create(name: String?): Settings {
+        public override fun create(name: String?): Settings {
             val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
-            return PlatformSettings(delegate)
+            return IosSettings(delegate)
         }
     }
 
     /**
      * Clears all values stored in this [Settings] instance.
      */
-    public actual override fun clear() {
+    public override fun clear() {
         for (key in delegate.dictionaryRepresentation().keys) {
             remove(key as String)
         }
@@ -79,83 +80,83 @@ public actual class PlatformSettings public constructor(private val delegate: NS
     /**
      * Removes the value stored at [key].
      */
-    public actual override fun remove(key: String): Unit = delegate.removeObjectForKey(key)
+    public override fun remove(key: String): Unit = delegate.removeObjectForKey(key)
 
     /**
      * Returns `true` if there is a value stored at [key], or `false` otherwise.
      */
-    public actual override fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
+    public override fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
 
     /**
      * Stores the `Int` [value] at [key].
      */
-    public actual override fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), key)
+    public override fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), key)
 
     /**
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public actual override fun getInt(key: String, defaultValue: Int): Int =
+    public override fun getInt(key: String, defaultValue: Int): Int =
         if (hasKey(key)) delegate.integerForKey(key).toInt() else defaultValue
 
     /**
      * Stores the `Long` [value] at [key].
      */
-    public actual override fun putLong(key: String, value: Long): Unit = delegate.setInteger(value, key)
+    public override fun putLong(key: String, value: Long): Unit = delegate.setInteger(value, key)
 
     /**
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public actual override fun getLong(key: String, defaultValue: Long): Long =
+    public override fun getLong(key: String, defaultValue: Long): Long =
         if (hasKey(key)) delegate.integerForKey(key) else defaultValue
 
     /**
      * Stores the `String` [value] at [key].
      */
-    public actual override fun putString(key: String, value: String): Unit = delegate.setObject(value, key)
+    public override fun putString(key: String, value: String): Unit = delegate.setObject(value, key)
 
     /**
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public actual override fun getString(key: String, defaultValue: String): String =
+    public override fun getString(key: String, defaultValue: String): String =
         delegate.stringForKey(key) ?: defaultValue
 
     /**
      * Stores the `Float` [value] at [key].
      */
-    public actual override fun putFloat(key: String, value: Float): Unit = delegate.setFloat(value, key)
+    public override fun putFloat(key: String, value: Float): Unit = delegate.setFloat(value, key)
 
     /**
      * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public actual override fun getFloat(key: String, defaultValue: Float): Float =
+    public override fun getFloat(key: String, defaultValue: Float): Float =
         if (hasKey(key)) delegate.floatForKey(key) else defaultValue
 
     /**
      * Stores the `Double` [value] at [key].
      */
-    public actual override fun putDouble(key: String, value: Double): Unit = delegate.setDouble(value, key)
+    public override fun putDouble(key: String, value: Double): Unit = delegate.setDouble(value, key)
 
     /**
      * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public actual override fun getDouble(key: String, defaultValue: Double): Double =
+    public override fun getDouble(key: String, defaultValue: Double): Double =
         if (hasKey(key)) delegate.doubleForKey(key) else defaultValue
 
     /**
      * Stores the `Boolean` [value] at [key].
      */
-    public actual override fun putBoolean(key: String, value: Boolean): Unit = delegate.setBool(value, key)
+    public override fun putBoolean(key: String, value: Boolean): Unit = delegate.setBool(value, key)
 
     /**
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+    public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         if (hasKey(key)) delegate.boolForKey(key) else defaultValue
 
     /**
@@ -167,7 +168,7 @@ public actual class PlatformSettings public constructor(private val delegate: NS
      * it's recommended that interaction with the listener APIs be confined to the main UI thread.
      */
     @ExperimentalListener
-    actual override fun addListener(key: String, callback: () -> Unit): Settings.Listener {
+    override fun addListener(key: String, callback: () -> Unit): Settings.Listener {
         val cache = Listener.Cache(delegate.objectForKey(key))
 
         val block = { _: NSNotification? ->
@@ -195,7 +196,7 @@ public actual class PlatformSettings public constructor(private val delegate: NS
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
     @ExperimentalListener
-    actual override fun removeListener(listener: Settings.Listener) {
+    override fun removeListener(listener: Settings.Listener) {
         val platformListener = listener as? Listener
         val listenerDelegate = platformListener?.delegate
         listenerDelegate?.let(NSNotificationCenter.defaultCenter::removeObserver)
@@ -207,7 +208,7 @@ public actual class PlatformSettings public constructor(private val delegate: NS
      * On the iOS platform, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
      */
     @ExperimentalListener
-    actual class Listener internal constructor(internal val delegate: NSObjectProtocol) : Settings.Listener {
+    class Listener internal constructor(internal val delegate: NSObjectProtocol) : Settings.Listener {
         internal class Cache(var value: Any?)
     }
 }

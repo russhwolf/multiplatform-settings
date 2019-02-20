@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-// TODO We shouldn't need this, but common module test sources aren't making it to the IDE test scope at the moment
-@file:Suppress("KDocMissingDocumentation")
-
 package com.russhwolf.settings
 
 import kotlin.test.BeforeTest
@@ -25,11 +22,15 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-expect val settingsFactory: Settings.Factory
+expect val platformFactory: Settings.Factory
 
 @RunWith(AndroidJUnit4::class)
 class SettingsTest {
     private lateinit var settings: Settings
+
+    private val settingsFactory = object : Settings.Factory {
+        override fun create(name: String?): Settings = platformFactory.create(name).also { it.clear() }
+    }
 
     @BeforeTest
     fun setup() {
