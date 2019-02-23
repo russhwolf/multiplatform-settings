@@ -31,6 +31,7 @@ kotlin {
     }
     iosArm64("ios")
     iosX64("iosSim")
+    macosX64("macos")
 
     sourceSets {
         all {
@@ -68,6 +69,8 @@ kotlin {
 
         iosSimMain.dependsOn iosMain
         iosSimTest.dependsOn iosTest
+        macosMain.dependsOn iosMain
+        macosTest.dependsOn iosTest
 
     }
 }
