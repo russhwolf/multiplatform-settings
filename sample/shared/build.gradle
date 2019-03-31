@@ -103,7 +103,7 @@ task iosTest(dependsOn: 'linkTestDebugExecutableIos') {
     doLast {
         def binary = kotlin.targets.ios.compilations.test.getBinary('EXECUTABLE', 'DEBUG')
         exec {
-            commandLine 'xcrun', 'simctl', 'spawn', "iPhone XR", binary.absolutePath
+            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", binary.absolutePath
         }
     }
 }
