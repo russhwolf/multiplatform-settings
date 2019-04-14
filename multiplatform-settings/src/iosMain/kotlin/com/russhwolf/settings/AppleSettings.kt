@@ -16,7 +16,7 @@
 
 package com.russhwolf.settings
 
-import com.russhwolf.settings.IosSettings.Factory
+import com.russhwolf.settings.AppleSettings.Factory
 import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
@@ -36,11 +36,11 @@ import platform.darwin.NSObjectProtocol
  * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  *
- * On the iOS platform, this class can be created by passing a [NSUserDefaults] instance which will be used as a
+ * On the iOS and macOS platforms, this class can be created by passing a [NSUserDefaults] instance which will be used as a
  * delegate, or via a [Factory].
  */
 @UseExperimental(ExperimentalListener::class)
-public class IosSettings public constructor(private val delegate: NSUserDefaults) : ListenableSettings {
+public class AppleSettings public constructor(private val delegate: NSUserDefaults) : ListenableSettings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -49,7 +49,7 @@ public class IosSettings public constructor(private val delegate: NSUserDefaults
      * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
      * multiple `Settings` objects is the one-time creation of a single `Factory`.
      *
-     * On the iOS platform, this class creates `Settings` objects backed by [NSUserDefaults].
+     * On the iOS and macOS platforms, this class creates `Settings` objects backed by [NSUserDefaults].
      */
     public class Factory : Settings.Factory {
 
@@ -60,12 +60,12 @@ public class IosSettings public constructor(private val delegate: NSUserDefaults
          * data, while distinct `name`s will use different data. If `name` is `null` then a platform-specific default
          * will be used.
          *
-         * On the iOS platform, this is implemented by calling [NSUserDefaults.init] and passing [name]. If `name` is
+         * On the iOS and macOS platforms, this is implemented by calling [NSUserDefaults.init] and passing [name]. If `name` is
          * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
          */
         public override fun create(name: String?): Settings {
             val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
-            return IosSettings(delegate)
+            return AppleSettings(delegate)
         }
     }
 
@@ -206,7 +206,7 @@ public class IosSettings public constructor(private val delegate: NSUserDefaults
     /**
      * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
      *
-     * On the iOS platform, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
+     * On the iOS and macOS platforms, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
      */
     @ExperimentalListener
     class Listener internal constructor(internal val delegate: NSObjectProtocol) : SettingsListener {

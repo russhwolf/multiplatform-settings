@@ -16,4 +16,4 @@
 
 package com.russhwolf.settings
 
-actual val platformFactory: Settings.Factory = IosSettings.Factory()
+actual val platformFactory: Settings.Factory = AppleSettings.Factory()
