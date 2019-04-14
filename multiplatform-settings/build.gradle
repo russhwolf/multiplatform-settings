@@ -29,6 +29,7 @@ kotlin {
     android {
         publishAllLibraryVariants()
     }
+    jvm()
     iosArm64("ios")
     iosX64("iosSim")
     macosX64("macos")
@@ -73,6 +74,19 @@ kotlin {
                 implementation "androidx.test:core:1.1.0"
                 implementation "androidx.test.ext:junit:1.1.0"
                 implementation "org.robolectric:robolectric:4.0"
+            }
+        }
+        
+        jvmMain {
+            dependencies {
+                implementation kotlin("stdlib")
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation kotlin("test")
+                implementation kotlin("test-junit")
+                implementation 'junit:junit:4.12'
             }
         }
 
