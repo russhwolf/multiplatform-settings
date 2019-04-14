@@ -39,7 +39,8 @@ import platform.darwin.NSObjectProtocol
  * On the iOS platform, this class can be created by passing a [NSUserDefaults] instance which will be used as a
  * delegate, or via a [Factory].
  */
-public class IosSettings public constructor(private val delegate: NSUserDefaults) : Settings {
+@UseExperimental(ExperimentalListener::class)
+public class IosSettings public constructor(private val delegate: NSUserDefaults) : ListenableSettings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -168,7 +169,7 @@ public class IosSettings public constructor(private val delegate: NSUserDefaults
      * it's recommended that interaction with the listener APIs be confined to the main UI thread.
      */
     @ExperimentalListener
-    override fun addListener(key: String, callback: () -> Unit): Settings.Listener {
+    override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val cache = Listener.Cache(delegate.objectForKey(key))
 
         val block = { _: NSNotification? ->
@@ -196,10 +197,10 @@ public class IosSettings public constructor(private val delegate: NSUserDefaults
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
     @ExperimentalListener
-    override fun removeListener(listener: Settings.Listener) {
-        val platformListener = listener as? Listener
-        val listenerDelegate = platformListener?.delegate
-        listenerDelegate?.let(NSNotificationCenter.defaultCenter::removeObserver)
+    override fun removeListener(listener: SettingsListener) {
+        val platformListener = listener as? Listener ?: return
+        val listenerDelegate = platformListener.delegate
+        NSNotificationCenter.defaultCenter.removeObserver(listenerDelegate)
     }
 
     /**
@@ -208,7 +209,7 @@ public class IosSettings public constructor(private val delegate: NSUserDefaults
      * On the iOS platform, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
      */
     @ExperimentalListener
-    class Listener internal constructor(internal val delegate: NSObjectProtocol) : Settings.Listener {
+    class Listener internal constructor(internal val delegate: NSObjectProtocol) : SettingsListener {
         internal class Cache(var value: Any?)
     }
 }

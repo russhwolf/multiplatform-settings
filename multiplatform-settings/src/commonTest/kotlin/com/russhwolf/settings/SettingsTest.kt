@@ -203,6 +203,8 @@ class SettingsTest {
     @Test
     @UseExperimental(ExperimentalListener::class)
     fun listener() {
+        val settings = settings as? ListenableSettings ?: return // no-op on platforms that don't implement listeners
+
         var invocationCount = 0
         val callback = { invocationCount += 1 }
 

@@ -40,7 +40,8 @@ import com.russhwolf.settings.AndroidSettings.Factory
  * On the Android platform, this class can be created by passing a [SharedPreferences] instance which will be used as a
  * delegate. Thus two `Settings` instances created using the same [delegate] will be backed by the same data.
  */
-public class AndroidSettings public constructor(private val delegate: SharedPreferences) : Settings {
+@UseExperimental(ExperimentalListener::class)
+public class AndroidSettings public constructor(private val delegate: SharedPreferences) : ListenableSettings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -177,14 +178,14 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
      * reference is returned which should be passed to [removeListener] when you no longer need it so that the
      * associated platform resources can be cleaned up.
      *
-     * A strong reference should be held to the `Listener` returned by this method in order to avoid it being
+     * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected on Android.
      *
      * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
      * it's recommended that interaction with the listener APIs be confined to the main UI thread.
      */
     @ExperimentalListener
-    override fun addListener(key: String, callback: () -> Unit): Settings.Listener {
+    override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val cache = Listener.Cache(delegate.all[key])
 
         val prefsListener =
@@ -211,10 +212,10 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
     @ExperimentalListener
-    override fun removeListener(listener: Settings.Listener) {
-        val platformListener = listener as? Listener
-        val listenerDelegate = platformListener?.delegate
-        listenerDelegate?.let(delegate::unregisterOnSharedPreferenceChangeListener)
+    override fun removeListener(listener: SettingsListener) {
+        val platformListener = listener as? Listener ?: return
+        val listenerDelegate = platformListener.delegate
+        delegate.unregisterOnSharedPreferenceChangeListener(listenerDelegate)
     }
 
     /**
@@ -225,7 +226,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
     @ExperimentalListener
     class Listener internal constructor(
         internal val delegate: SharedPreferences.OnSharedPreferenceChangeListener
-    ) : Settings.Listener {
+    ) : SettingsListener {
         internal class Cache(var value: Any?)
     }
 }
