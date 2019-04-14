@@ -183,6 +183,7 @@ class SettingsTest {
     }
 
     @Test
+    @JsIgnore // Ignored in JS because name isn't implemented
     fun multipleDifferentInstances() {
         val settingsA = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
         val settingsB = settingsFactory.create("com.russhwolf.multiplatform-settings.test.B")
@@ -192,6 +193,7 @@ class SettingsTest {
     }
 
     @Test
+    @JsIgnore // Ignored in JS because name isn't implemented
     fun multipleSameInstances() {
         val settingsA = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
         val settingsB = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
@@ -201,9 +203,11 @@ class SettingsTest {
     }
 
     @Test
+    @JsIgnore // Ignored in JS because listener isn't implemented
     @UseExperimental(ExperimentalListener::class)
     fun listener() {
-        val settings = settings as? ListenableSettings ?: return // no-op on platforms that don't implement listeners
+        val settings = settings as? ListenableSettings
+            ?: throw IllegalStateException("Must implement ListenableSettings or ignore this test")
 
         var invocationCount = 0
         val callback = { invocationCount += 1 }

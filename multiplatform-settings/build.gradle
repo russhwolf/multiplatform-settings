@@ -32,6 +32,15 @@ kotlin {
     iosArm64("ios")
     iosX64("iosSim")
     macosX64("macos")
+    js {
+        configure([compilations.main, compilations.test]) {
+            tasks.getByName(compileKotlinTaskName).kotlinOptions {
+                metaInfo = true
+                sourceMap = true
+                moduleKind = 'umd'
+            }
+        }
+    }
 
     sourceSets {
         all {
@@ -72,6 +81,16 @@ kotlin {
         macosMain.dependsOn iosMain
         macosTest.dependsOn iosTest
 
+        jsMain {
+            dependencies {
+                implementation kotlin('stdlib-js')
+            }
+        }
+        jsTest {
+            dependencies {
+                implementation kotlin('test-js')
+            }
+        }
     }
 }
 
@@ -99,3 +118,6 @@ tasks.check.dependsOn iosTest
 configurations {
     compileClasspath
 }
+
+apply from: rootProject.file('node-js.gradle')
+apply from: rootProject.file('test-mocha-js.gradle')
