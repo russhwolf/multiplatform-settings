@@ -194,8 +194,6 @@ class SettingsTest {
     }
 
     @Test
-    @JsIgnore // Ignored in JS because name isn't implemented
-    @JvmIgnore // Ignored in JVM because name isn't implemented
     fun multipleSameInstances() {
         val settingsA = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
         val settingsB = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")

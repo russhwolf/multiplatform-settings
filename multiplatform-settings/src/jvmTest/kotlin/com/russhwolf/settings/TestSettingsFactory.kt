@@ -19,8 +19,10 @@ package com.russhwolf.settings
 import java.util.Properties
 
 actual val platformFactory: Settings.Factory = object : Settings.Factory {
+    private val properties = Properties()
+
     @UseExperimental(ExperimentalJvm::class)
     override fun create(name: String?): JvmSettings {
-        return JvmSettings(Properties())
+        return JvmSettings(properties)
     }
 }
