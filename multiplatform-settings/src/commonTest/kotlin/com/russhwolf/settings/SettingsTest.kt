@@ -118,6 +118,31 @@ class SettingsTest {
     }
 
     @Test
+    fun intDelegateDefaultKey() {
+        var a by settings.int(defaultValue = 5)
+        assertEquals(5, a)
+        a = 2
+        assertEquals(2, a)
+        a = 0
+        assertEquals(0, a)
+
+        val b by settings.int()
+        assertEquals(0, b)
+    }
+
+    @Test
+    fun intNullableDelegateDefaultKey() {
+        var a by settings.nullableInt()
+        assertEquals(null, a)
+        a = 2
+        assertEquals(2, a)
+        a = 0
+        assertEquals(0, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
     fun longBasic() {
         assertEquals(0, settings.getLong("a"))
         settings.putLong("a", 2)
@@ -165,6 +190,31 @@ class SettingsTest {
     }
 
     @Test
+    fun longDelegateDefaultKey() {
+        var a by settings.long(defaultValue = 5)
+        assertEquals(5, a)
+        a = 2
+        assertEquals(2, a)
+        a = 0
+        assertEquals(0, a)
+
+        val b by settings.long()
+        assertEquals(0, b)
+    }
+
+    @Test
+    fun longNullableDelegateDefaultKey() {
+        var a by settings.nullableLong()
+        assertEquals(null, a)
+        a = 2
+        assertEquals(2, a)
+        a = 0
+        assertEquals(0, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
     fun stringBasic() {
         assertEquals("", settings.getString("a"))
         settings.putString("a", "value")
@@ -197,6 +247,31 @@ class SettingsTest {
 
     @Test
     fun stringNullableDelegate() {
+        var a by settings.nullableString("a")
+        assertEquals(null, a)
+        a = "value"
+        assertEquals("value", a)
+        a = ""
+        assertEquals("", a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
+    fun stringDelegateDefaultKey() {
+        var a by settings.string("a", "default")
+        assertEquals("default", a)
+        a = "value"
+        assertEquals("value", a)
+        a = ""
+        assertEquals("", a)
+
+        val b by settings.string("b")
+        assertEquals("", b)
+    }
+
+    @Test
+    fun stringNullableDelegateDefaultKey() {
         var a by settings.nullableString("a")
         assertEquals(null, a)
         a = "value"
@@ -261,6 +336,31 @@ class SettingsTest {
     }
 
     @Test
+    fun floatDelegateDefaultKey() {
+        var a by settings.float(defaultValue = 5f)
+        assertEquals(5f, a)
+        a = 2f
+        assertEquals(2f, a)
+        a = 0f
+        assertEquals(0f, a)
+
+        val b by settings.float()
+        assertEquals(0f, b)
+    }
+
+    @Test
+    fun floatNullableDelegateDefaultKey() {
+        var a by settings.nullableFloat()
+        assertEquals(null, a)
+        a = 2f
+        assertEquals(2f, a)
+        a = 0f
+        assertEquals(0f, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
     fun doubleBasic() {
         assertEquals(0.0, settings.getDouble("a"))
         settings.putDouble("a", 2.0)
@@ -314,6 +414,31 @@ class SettingsTest {
     }
 
     @Test
+    fun doubleDelegateDefaultKey() {
+        var a by settings.double(defaultValue = 5.0)
+        assertEquals(5.0, a)
+        a = 2.0
+        assertEquals(2.0, a)
+        a = 0.0
+        assertEquals(0.0, a)
+
+        val b by settings.double()
+        assertEquals(0.0, b)
+    }
+
+    @Test
+    fun doubleNullableDelegateDefaultKey() {
+        var a by settings.nullableDouble()
+        assertEquals(null, a)
+        a = 2.0
+        assertEquals(2.0, a)
+        a = 0.0
+        assertEquals(0.0, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
     fun booleanBasic() {
         assertEquals(false, settings.getBoolean("a"))
         settings.putBoolean("a", true)
@@ -348,6 +473,41 @@ class SettingsTest {
         assertEquals(false, a)
         a = null
         assertEquals(null, a)
+    }
+
+    @Test
+    fun booleanDelegateDefaultKey() {
+        var a by settings.boolean(defaultValue = true)
+        assertEquals(true, a)
+        a = false
+        assertEquals(false, a)
+
+        val b by settings.boolean()
+        assertEquals(false, b)
+    }
+
+    @Test
+    fun booleanNullableDelegateDefaultKey() {
+        var a by settings.nullableBoolean()
+        assertEquals(null, a)
+        a = false
+        assertEquals(false, a)
+        a = null
+        assertEquals(null, a)
+    }
+
+    @Test
+    fun delegateReuseTest() {
+        // Is this a reasonable use-case? Might as well protect it for now. That way if we break it later it'll be on
+        // purpose instead of by accident
+        val delegate = settings.int()
+        var a by delegate
+        var b by delegate
+
+        a = 1
+        b = 2
+        assertEquals(1, a)
+        assertEquals(2, b)
     }
 
     @Test
