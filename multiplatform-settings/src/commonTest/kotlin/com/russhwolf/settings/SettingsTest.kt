@@ -497,6 +497,14 @@ class SettingsTest {
     }
 
     @Test
+    @Suppress("UNUSED_VALUE", "ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    fun defaultKey() {
+        var a by settings.string()
+        a = "value"
+        assertEquals("value", settings.getString("a"))
+    }
+
+    @Test
     fun delegateReuseTest() {
         // Is this a reasonable use-case? Might as well protect it for now. That way if we break it later it'll be on
         // purpose instead of by accident
