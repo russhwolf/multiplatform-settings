@@ -16,11 +16,4 @@
 
 package com.russhwolf.settings
 
-actual val settingsFactory: Settings.Factory = object : Settings.Factory {
-    private val platformFactory = PlatformSettings.Factory()
-    override fun create(name: String?): Settings {
-        val settings = platformFactory.create(name)
-        settings.clear()
-        return settings
-    }
-}
+actual val platformFactory: Settings.Factory = AppleSettings.Factory()

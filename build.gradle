@@ -17,17 +17,18 @@
 buildscript {
     repositories {
         google()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url 'https://dl.bintray.com/jetbrains/kotlin-native-dependencies' }
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.3.0"
+        classpath "com.android.tools.build:gradle:3.3.2"
+        classpath "com.moowork.gradle:gradle-node-plugin:1.3.1"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4-jetbrains-3"
     }
 }
 
 subprojects {
-    
     repositories {
         google()
         jcenter()

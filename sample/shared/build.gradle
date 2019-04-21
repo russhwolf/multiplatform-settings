@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-apply plugin: 'kotlin-multiplatform'
+plugins {
+    id 'kotlin-multiplatform'
+}
 apply plugin: 'com.android.library'
 
 kotlin {
-    android {
-        compilations.all {
-            tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) { task ->
-                kotlinOptions {
-                    freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
-                }
-            }
-        }
-    }
+    android()
 
     def iosTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") ? presets.iosArm64 : presets.iosX64
     targetFromPreset(iosTarget, "ios") {
@@ -34,21 +28,18 @@ kotlin {
             framework("Shared")
         }
     }
-    
-    targets.all { target ->
-        if (target.name == 'android') return // Android handles this differently
-        compilations.all { compilation ->
-            tasks[compileKotlinTaskName].kotlinOptions {
-                freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
-            }
-        }
-    }
 
     sourceSets {
+        all {
+            languageSettings {
+                useExperimentalAnnotation('kotlin.Experimental')
+            }
+        }
+        
         commonMain {
             dependencies {
                 implementation "com.russhwolf:multiplatform-settings:$library_version"
-                implementation "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+                implementation kotlin('stdlib-common')
             }
         }
         commonTest {
@@ -56,19 +47,19 @@ kotlin {
                 // Android needs to see this dependency in test sources as workaround for https://youtrack.jetbrains.com/issue/KT-29343
                 implementation "com.russhwolf:multiplatform-settings:$library_version"
                 
-                implementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-                implementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+                implementation kotlin('test')
+                implementation kotlin('test-annotations-common')
             }
         }
 
         androidMain {
             dependencies {
-                implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+                implementation kotlin('stdlib')
             }
         }
         androidTest {
             dependencies {
-                implementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+                implementation kotlin('test-junit')
             }
         }
 
@@ -88,12 +79,6 @@ android {
 
     defaultConfig {
         minSdkVersion 15
-    }
-    buildTypes {
-        debug {
-            // MPP libraries don't currently get this resolution automatically
-            matchingFallbacks = ['release']
-        }
     }
 }
 
@@ -118,7 +103,7 @@ task iosTest(dependsOn: 'linkTestDebugExecutableIos') {
     doLast {
         def binary = kotlin.targets.ios.compilations.test.getBinary('EXECUTABLE', 'DEBUG')
         exec {
-            commandLine 'xcrun', 'simctl', 'spawn', "iPhone XR", binary.absolutePath
+            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", binary.absolutePath
         }
     }
 }

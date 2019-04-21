@@ -16,6 +16,6 @@
 
 package com.russhwolf.settings.example
 
-import com.russhwolf.settings.PlatformSettings
+import com.russhwolf.settings.AppleSettings
 
-fun settingsRepository() = SettingsRepository(PlatformSettings.Factory())
+fun settingsRepository() = SettingsRepository(AppleSettings.Factory())

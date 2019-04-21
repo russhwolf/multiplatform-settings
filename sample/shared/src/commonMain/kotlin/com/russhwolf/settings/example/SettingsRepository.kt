@@ -17,9 +17,11 @@
 package com.russhwolf.settings.example
 
 import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.ListenableSettings
 import kotlin.properties.ReadWriteProperty
 
 import com.russhwolf.settings.Settings
+import com.russhwolf.settings.SettingsListener
 import com.russhwolf.settings.boolean
 import com.russhwolf.settings.contains
 import com.russhwolf.settings.double
@@ -76,7 +78,7 @@ sealed class SettingConfig<T>(
     private val toType: String.() -> T
 ) {
     private var value: T by settings.delegate(key, defaultValue)
-    private var listener: Settings.Listener? = null
+    private var listener: SettingsListener? = null
 
     fun remove() {
         settings -= key
@@ -96,6 +98,7 @@ sealed class SettingConfig<T>(
     var isLoggingEnabled: Boolean
         get() = listener != null
         set(value) {
+            val settings = settings as? ListenableSettings ?: return
             listener = if (value) {
                 settings.addListener(key) { println("$key = ${get()}") }
             } else {

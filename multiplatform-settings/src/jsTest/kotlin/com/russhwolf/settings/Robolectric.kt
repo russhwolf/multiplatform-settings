@@ -13,19 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "kotlin-multiplatform") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
-            }
-        }
-    }
 
-    repositories {
-        mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' }
-    }
-}
-enableFeaturePreview('GRADLE_METADATA')
-include ':shared',':app-android'
+package com.russhwolf.settings
+
+import kotlin.reflect.KClass
+
+actual annotation class RunWith(actual val value: KClass<out Runner>)
+actual abstract class Runner
+actual class AndroidJUnit4 : Runner()

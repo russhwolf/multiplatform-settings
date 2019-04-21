@@ -18,11 +18,4 @@ package com.russhwolf.settings
 
 import androidx.test.core.app.ApplicationProvider
 
-actual val settingsFactory: Settings.Factory = object : Settings.Factory {
-    private val platformFactory = PlatformSettings.Factory(ApplicationProvider.getApplicationContext())
-    override fun create(name: String?): Settings {
-        val settings = platformFactory.create(name)
-        settings.clear()
-        return settings
-    }
-}
+actual val platformFactory: Settings.Factory = AndroidSettings.Factory(ApplicationProvider.getApplicationContext())

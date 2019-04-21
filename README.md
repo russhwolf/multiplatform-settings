@@ -1,46 +1,35 @@
 # Multiplatform Settings
 
-This is a Kotlin library for Multiplatform mobile apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and NSUserDefaults on iOS. 
+This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and NSUserDefaults on iOS. 
 
 ## Adding to your project
 First, add the multiplatform-settings bintray url to the `repositories` block of any module using it.
 
     repositories {
         ...
-        maven { url = 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
+        maven { url 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
     }
 
 Then, simply add the dependency to your common source-set dependencies
 
-    implementation "com.russhwolf:multiplatform-settings:0.2"
+    implementation "com.russhwolf:multiplatform-settings:0.3"
     
 See also the sample project, which uses this structure.
 
 ## Usage
 
-The `Settings` interface is implemented by the `PlatformSettings` class, which has separate implementations for Android and iOS. A `PlatformSettings` instance can be created using a platform-specific factory. On Android, this factory needs a `Context` parameter
+The `Settings` interface has implementations on the Android, iOS (arm64 and x64), macOS (x64), JVM, and JS platforms. (Note that the JVM and JS implementations are currently marked as experimental.)
 
-    val context: Context = ...
-    val factory: Settings.Factory = PlatformSettings.Factory(context)
-    
-On iOS, the factory can be instantiated without passing any parameter
-
-    val factory: Settings.Factory = PlatformSettings.Factory()
-    
-Using a factory allows for creating a `Settings` instance using the same `name` parameter on both platforms. This parameter is optional and a platform-specific default will be used if it is absent.
-
-    val settings: Settings = factory.create("my_settings_name")
-
-Alternatively, you can create a `PlatformSettings` instance by passing the platform-specific delegate class that `PlatformSettings` wraps around. On Android, 
+The Android implementation is `AndroidSettings`, which wraps `SharedPreferences`.
 
     val delegate: SharedPreferences = ...
-    val settings: Settings = PlatformSettings(delegate)
-    
-And on iOS,
+    val settings: Settings = AndroidSettings(delegate)
+
+On iOS or macOS, `AppleSettings` wraps `NSUserDefaults`.
 
     val delegate: NSUserDefaults = ...
-    val settings: Settings = PlatformSettings(delegate)    
-    
+    val settings: Settings = AppleSettings(delegate)
+        
 Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
 
     settings.putInt("key", 3)
@@ -57,7 +46,13 @@ The `getXXX()` and `putXXX()` operation for a given key can be wrapped using a p
     val a: Int by settings.int("key")
     val b: Int by settings.int("key", defaultValue = -1)
     
-    val c: Int? by settings.nullableInt("another_key")
+Nullable delegates exists so that absence of a key can be indicated by `null` instead of a default value
+    
+    val a: Int? by settings.nullableInt("key")
+    
+The `key` parameter can be omitted for delegates, and the property name will be reflectively used instead.
+
+    val a: Int by settings.int() // internally, key is "a"
     
 Existence of a key can be queried
      
@@ -72,12 +67,37 @@ Existence of a key can be queried
  Finally, all values in a `Settings` instance can be removed
       
     settings.clear()
+
+For the Android, iOS, and macOS platforms, a `Factory` class also exists, so that multiple named `Settings` instances can coexist with the names being controlled from common code.
+
+On Android, this factory needs a `Context` parameter
+
+    val context: Context = ...
+    val factory: Settings.Factory = AndroidSettings.Factory(context)
+    
+On iOS and macOS, the factory can be instantiated without passing any parameter
+
+    val factory: Settings.Factory = AppleSettings.Factory()
     
 ## Experimental API
 
+### Experimental Platforms
+
+A pure-JVM implementation exists which wraps the Java Properties API. Its experimental status is marked with the `@ExperimentalJvm` annotation
+
+    val delegate: Properties = ...
+    val settings: Settings = JvmSettings(delegate)
+    
+A JS implementation exists which wraps the `Storage` API. Its experimental status is marked with the `@ExperimentalJvm` annotation
+
+    val delegate: Storage = ...
+    val settings: Settings = JsSettings(delegate)
+    
+    val settings: Settings = JsSettings() // use localStorage by default
+    
 ### Listeners
 
-Update listeners are available using an experimental API. 
+Update listeners are available using an experimental API, only on Android, iOS, and macOS. These platforms are marked with the `ListenableSettings` interface, which includes `addListener()` and `removeListener()` methods.
 
     val settingsListener: SettingsListener = settings.addListener(key) { ... }
     
@@ -85,22 +105,22 @@ The `SettingsListener` returned from the call should be used to signal when you'
 
     settings.removeListener(settingsListener)
     
-This initial listener implementation is not designed with any sort of thread-safety so it's recommended to only interact with these APIs from the main thread of your application.
+This current listener implementation is not designed with any sort of thread-safety so it's recommended to only interact with these APIs from the main thread of your application.
 
 The listener APIs make use of the Kotlin `@Experimental` annotation. All usages must be marked with `@ExperimentalListener` or `@UseExperimental(ExperimentalListener::class)`.
 
 ## Project Structure
-The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface and an `expect` implementation called `PlatformSettings`. These expose apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios modules then hold `actual` declarations, delegating to `SharedPreferences` or `NSUserDefaults`.
+The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface which exposes apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The android and ios sources then hold implementations, delegating to `SharedPreferences` or `NSUserDefaults`. The macOS platform reads from the same sources as iOS. The experimental JVM and JS implementations reside in the `jvmMain` and `jsMain` sources, respectively
 
-Some simple unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the android-specific behavior, and use the ios simulator to run the native tests.
+Some unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the android-specific behavior, and use the ios simulator to run the ios tests. The macOS tests run natively on macOS hosts. The experimental JS implementation is configured to run tests with Mocha, and the experimental JVM implementation runs standard junit tests.
 
-There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with common and platform sources, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared` and provides an Android UI. The `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced by `shared`.
+There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with common, android, and ios sources, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared` and provides an Android UI. The `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced by `shared`. The sample project does not currently have implementations on macOS, JVM, or JS.
  
- The `shared` module includes some simple unit tests in common code to demonstrate a way to mock out the `Settings` interface when testing code that interacts with it.
+ The `shared` module includes some simple unit tests in common code to demonstrate manually mocking out the `Settings` interface when testing code that interacts with it.
 
 ## License
         
-    Copyright 2018 Russell Wolf
+    Copyright 2018-2019 Russell Wolf
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

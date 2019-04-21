@@ -27,28 +27,28 @@ version '0.3'
 
 kotlin {
     android {
-        compilations.all {
-            tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) { task ->
-                kotlinOptions {
-                    freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
-                }
-            }
-        }
-        publishLibraryVariants("release")
+        publishAllLibraryVariants()
     }
+    jvm()
     iosArm64("ios")
     iosX64("iosSim")
-
-    targets.all { target ->
-        if (target.name == 'android') return // Android handles this differently
-        compilations.all { compilation ->
-            tasks[compileKotlinTaskName].kotlinOptions {
-                freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
+    macosX64("macos")
+    js {
+        configure([compilations.main, compilations.test]) {
+            tasks.getByName(compileKotlinTaskName).kotlinOptions {
+                metaInfo = true
+                sourceMap = true
+                moduleKind = 'umd'
             }
         }
     }
 
     sourceSets {
+        all {
+            languageSettings {
+                useExperimentalAnnotation('kotlin.Experimental')
+            }
+        }
         commonMain {
             dependencies {
                 implementation kotlin("stdlib-common")
@@ -76,10 +76,35 @@ kotlin {
                 implementation "org.robolectric:robolectric:4.0"
             }
         }
+        
+        jvmMain {
+            dependencies {
+                implementation kotlin("stdlib")
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation kotlin("test")
+                implementation kotlin("test-junit")
+                implementation 'junit:junit:4.12'
+            }
+        }
 
         iosSimMain.dependsOn iosMain
         iosSimTest.dependsOn iosTest
+        macosMain.dependsOn iosMain
+        macosTest.dependsOn iosTest
 
+        jsMain {
+            dependencies {
+                implementation kotlin('stdlib-js')
+            }
+        }
+        jsTest {
+            dependencies {
+                implementation kotlin('test-js')
+            }
+        }
     }
 }
 
@@ -97,7 +122,7 @@ task iosTest(dependsOn: 'linkTestDebugExecutableIosSim') {
     doLast {
         def binary = kotlin.targets.iosSim.compilations.test.getBinary('EXECUTABLE', 'DEBUG')
         exec {
-            commandLine 'xcrun', 'simctl', 'spawn', "iPhone XR", binary.absolutePath
+            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", binary.absolutePath
         }
     }
 }
@@ -107,3 +132,6 @@ tasks.check.dependsOn iosTest
 configurations {
     compileClasspath
 }
+
+apply from: rootProject.file('node-js.gradle')
+apply from: rootProject.file('test-mocha-js.gradle')
