@@ -23,7 +23,7 @@ apply plugin: 'com.jfrog.bintray'
 apply from: rootProject.file('gradle/publish.gradle')
 
 group 'com.russhwolf'
-version '0.3'
+version '0.3.1'
 
 kotlin {
     android {
