@@ -497,6 +497,20 @@ class SettingsTest {
     }
 
     @Test
+    fun delegateReuseTest() {
+        // Is this a reasonable use-case? Might as well protect it for now. That way if we break it later it'll be on
+        // purpose instead of by accident
+        val delegate = settings.int()
+        var a by delegate
+        var b by delegate
+
+        a = 1
+        b = 2
+        assertEquals(1, a)
+        assertEquals(2, b)
+    }
+
+    @Test
     @JsIgnore // Ignored in JS because name isn't implemented
     @JvmIgnore // Ignored in JVM because name isn't implemented
     fun multipleDifferentInstances() {
