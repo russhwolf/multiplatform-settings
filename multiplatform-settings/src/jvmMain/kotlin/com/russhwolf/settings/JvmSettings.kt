@@ -67,7 +67,7 @@ public class JvmSettings public constructor(private val delegate: Properties) : 
 
 
     public override fun putString(key: String, value: String) {
-        delegate[key] = value
+        delegate.setProperty(key, value)
     }
 
     public override fun getString(key: String, defaultValue: String): String =
