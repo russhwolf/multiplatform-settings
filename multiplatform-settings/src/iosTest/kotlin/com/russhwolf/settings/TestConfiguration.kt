@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2018 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,6 @@
 
 package com.russhwolf.settings
 
-import java.util.Properties
-
-actual val platformFactory: Settings.Factory = object : Settings.Factory {
-    private val properties = Properties()
-
-    @UseExperimental(ExperimentalJvm::class)
-    override fun create(name: String?): JvmSettings {
-        return JvmSettings(properties)
-    }
-}
+actual val platformFactory: Settings.Factory = AppleSettings.Factory()
+actual val hasNamedInstances: Boolean = true
+actual val hasListeners: Boolean = true

@@ -19,7 +19,7 @@ repositories.whenObjectAdded {
 
 // Configures testing for JS modules
 task prepareNodePackage(type: Copy) {
-    from("npm") {
+    from(rootProject.file("npm")) {
         include 'package.json'
         include 'package-lock.json'
         expand(project.properties + [kotlinDependency: ""])

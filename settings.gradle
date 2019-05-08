@@ -28,4 +28,4 @@ pluginManagement {
     }
 }
 enableFeaturePreview('GRADLE_METADATA')
-include ':multiplatform-settings'
+include ':multiplatform-settings', ':multiplatform-settings-test', ':tests:'

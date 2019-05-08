@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,4 +16,13 @@
 
 package com.russhwolf.settings
 
-actual val platformFactory: Settings.Factory = AppleSettings.Factory()
+import kotlin.browser.localStorage
+
+actual val platformFactory: Settings.Factory = object : Settings.Factory {
+    @UseExperimental(ExperimentalJs::class)
+    override fun create(name: String?): JsSettings {
+        return JsSettings(localStorage)
+    }
+}
+actual val hasNamedInstances: Boolean = false
+actual val hasListeners: Boolean = false

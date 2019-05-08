@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2018 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package com.russhwolf.settings
 
-import org.junit.Ignore
+import androidx.test.core.app.ApplicationProvider
 
-actual typealias JvmIgnore = Ignore
+actual val platformFactory: Settings.Factory = AndroidSettings.Factory(ApplicationProvider.getApplicationContext())
+actual val hasNamedInstances: Boolean = true
+actual val hasListeners: Boolean = true

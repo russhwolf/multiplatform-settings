@@ -1,6 +1,8 @@
 package com.russhwolf.settings.example
 
+import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.Settings
+import com.russhwolf.settings.get
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,10 +15,7 @@ private const val VALUE = "My String Value"
 class SettingsConfigTest {
     @Test
     fun stringConfig_get() {
-        val settings = object : StubSettings() {
-            override fun getString(key: String, defaultValue: String): String = if (key == KEY) VALUE else defaultValue
-            override fun hasKey(key: String): Boolean = key == KEY
-        }
+        val settings = MockSettings(KEY to VALUE)
 
         val config1 = StringSettingConfig(settings, KEY)
         val nullableConfig1 = NullableStringSettingConfig(settings, KEY)
@@ -31,35 +30,10 @@ class SettingsConfigTest {
 
     @Test
     fun stringConfig_set() {
-        var verifier: Pair<String?, String?> = null to null
-        val settings = object : StubSettings() {
-            override fun putString(key: String, value: String) {
-                verifier = key to value
-            }
-        }
+        val settings = MockSettings()
 
         val config = StringSettingConfig(settings, KEY)
         config.set(VALUE)
-        assertEquals(KEY to VALUE, verifier)
+        assertEquals(VALUE, settings[KEY, ""])
     }
 }
-
-open class StubSettings: Settings {
-    override fun clear() = STUB
-    override fun getBoolean(key: String, defaultValue: Boolean): Boolean = STUB
-    override fun getDouble(key: String, defaultValue: Double): Double = STUB
-    override fun getFloat(key: String, defaultValue: Float): Float = STUB
-    override fun getInt(key: String, defaultValue: Int): Int = STUB
-    override fun getLong(key: String, defaultValue: Long): Long = STUB
-    override fun getString(key: String, defaultValue: String): String = STUB
-    override fun hasKey(key: String): Boolean = STUB
-    override fun putBoolean(key: String, value: Boolean): Unit = STUB
-    override fun putDouble(key: String, value: Double): Unit = STUB
-    override fun putFloat(key: String, value: Float): Unit = STUB
-    override fun putInt(key: String, value: Int): Unit = STUB
-    override fun putLong(key: String, value: Long): Unit = STUB
-    override fun putString(key: String, value: String): Unit = STUB
-    override fun remove(key: String): Unit = STUB
-}
-
-val STUB: Nothing get() = throw NotImplementedError("Stub!")

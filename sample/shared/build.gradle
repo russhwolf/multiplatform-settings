@@ -46,6 +46,7 @@ kotlin {
             dependencies {
                 // Android needs to see this dependency in test sources as workaround for https://youtrack.jetbrains.com/issue/KT-29343
                 implementation "com.russhwolf:multiplatform-settings:$library_version"
+                implementation "com.russhwolf:multiplatform-settings-test:$library_version"
                 
                 implementation kotlin('test')
                 implementation kotlin('test-annotations-common')

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ kotlin {
             }
         }
     }
-
     sourceSets {
         all {
             languageSettings {
@@ -49,12 +48,14 @@ kotlin {
         commonMain {
             dependencies {
                 implementation kotlin("stdlib-common")
+                
+                implementation project(":multiplatform-settings")
             }
         }
         commonTest {
             dependencies {
                 implementation project(":tests")
-
+                
                 implementation kotlin("test-common")
                 implementation kotlin("test-annotations-common")
             }
@@ -70,9 +71,10 @@ kotlin {
                 implementation kotlin("test")
                 implementation kotlin("test-junit")
                 implementation 'junit:junit:4.12'
-                implementation "androidx.test:core:1.1.0"
-                implementation "androidx.test.ext:junit:1.1.0"
-                implementation "org.robolectric:robolectric:4.0"
+                
+                // TODO below dependencies can be removed after KT-29343 is fixed
+                implementation project(":multiplatform-settings")
+                implementation project(":tests")
             }
         }
         
@@ -113,8 +115,6 @@ android {
     defaultConfig {
         minSdkVersion 15
     }
-
-    testOptions.unitTests.includeAndroidResources = true
 }
 
 task iosTest(dependsOn: 'linkTestDebugExecutableIosSim') {

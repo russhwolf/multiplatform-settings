@@ -16,11 +16,15 @@
 
 package com.russhwolf.settings
 
-import kotlin.browser.localStorage
+import java.util.Properties
 
 actual val platformFactory: Settings.Factory = object : Settings.Factory {
-    @UseExperimental(ExperimentalJs::class)
-    override fun create(name: String?): JsSettings {
-        return JsSettings(localStorage)
+    private val properties = Properties()
+
+    @UseExperimental(ExperimentalJvm::class)
+    override fun create(name: String?): JvmSettings {
+        return JvmSettings(properties)
     }
 }
+actual val hasNamedInstances: Boolean = false
+actual val hasListeners: Boolean = false
