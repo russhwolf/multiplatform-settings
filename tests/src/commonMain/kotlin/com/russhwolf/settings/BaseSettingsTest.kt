@@ -548,55 +548,53 @@ abstract class BaseSettingsTest(
         val settings = settings as? ListenableSettings
             ?: throw IllegalStateException("Must implement ListenableSettings or ignore this test")
 
-        var invocationCount = 0
-        val callback = { invocationCount += 1 }
+        val verifier = ListenerVerifier()
 
         // No invocation for call before listener was set
         settings["a"] = 2
-        val listener = settings.addListener("a", callback)
-        assertEquals(0, invocationCount)
+        val listener = settings.addListener("a", verifier.listener)
+        verifier.assertNotInvoked()
 
         // No invocation on set to existing value
         settings["a"] = 2
-        assertEquals(0, invocationCount)
+        verifier.assertNotInvoked()
 
         // New invocation on value change
         settings["a"] = 1
-        assertEquals(1, invocationCount)
+        verifier.assertInvoked()
 
         // No invocation if value unchanged
         settings["a"] = 1
-        assertEquals(1, invocationCount)
+        verifier.assertNotInvoked()
 
         // New invocation on remove
         settings -= "a"
-        assertEquals(2, invocationCount)
+        verifier.assertInvoked()
 
         // New invocation on re-add with same value
         settings["a"] = 1
-        assertEquals(3, invocationCount)
+        verifier.assertInvoked()
 
         // No invocation on other key change
         settings["b"] = 1
-        assertEquals(3, invocationCount)
+        verifier.assertNotInvoked()
 
         // New invocation on clear
         settings.clear()
-        assertEquals(4, invocationCount)
+        verifier.assertInvoked()
 
         // Second listener at the same key also gets called
-        var invokationCount2 = 0
-        val callback2 = { invokationCount2 += 1 }
-        settings.addListener("a", callback2)
+        val verifier2 = ListenerVerifier()
+        settings.addListener("a", verifier2.listener)
         settings["a"] = 3
-        assertEquals(5, invocationCount)
-        assertEquals(1, invokationCount2)
+        verifier.assertInvoked()
+        verifier2.assertInvoked()
 
         // No invocation on listener which is removed
         settings.removeListener(listener)
         settings["a"] = 2
-        assertEquals(5, invocationCount)
-        assertEquals(2, invokationCount2)
+        verifier.assertNotInvoked()
+        verifier2.assertInvoked()
     }
 
 }
