@@ -26,16 +26,22 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
      * A factory that can produce [Settings] instances.
      *
      * This implementation will use the same backing [Map] if the same `name` parameter is passed to [create].
+     *
+     * By default the backing maps produced by this `Factory` are created using the [mutableMapOf] function, but this
+     * is configurable by changing the [mapFactory] parameter. The [delegateCache] parameter can be used to control the
+     * `Map` implementation used by the cache that stores these delegates.
      */
-    public class Factory : Settings.Factory {
-        private val delegateCache = mutableMapOf<String?, MutableMap<String, Any>>()
+    public class Factory(
+        private val mapFactory: () -> MutableMap<String, Any> = ::mutableMapOf,
+        private val delegateCache: MutableMap<String?, MutableMap<String, Any>> = mutableMapOf()
+    ) : Settings.Factory {
 
         /**
          * Assigns the values in [delegate] to the cache that will be used to back any [MockSettings] this factory
          * creates named [name]
          */
         public fun setCacheValues(name: String?, delegate: Map<String, Any>) {
-            val map = delegateCache.getOrPut(name) { mutableMapOf() }
+            val map = delegateCache.getOrPut(name, mapFactory)
             map.clear()
             map.putAll(delegate)
         }
@@ -45,11 +51,11 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
          * creates named [name]
          */
         public fun setCacheValues(name: String?, vararg items: Pair<String, Any>) {
-            setCacheValues(name, mutableMapOf(*items))
+            setCacheValues(name, mapFactory().apply { putAll(items) })
         }
 
         public override fun create(name: String?): Settings {
-            val delegate = delegateCache.getOrPut(name) { mutableMapOf() }
+            val delegate = delegateCache.getOrPut(name, mapFactory)
             return MockSettings(delegate)
         }
     }
