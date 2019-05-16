@@ -126,7 +126,7 @@ public interface Settings {
  * An extension to the [Settings] interface to include update listener functionality
  */
 @ExperimentalListener
-public interface ListenableSettings : Settings {
+public interface ObservableSettings : Settings {
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
      * reference is returned which should be passed to [removeListener] when you no longer need it so that the
@@ -148,6 +148,15 @@ public interface ListenableSettings : Settings {
     public fun removeListener(listener: SettingsListener)
 
 }
+
+@Deprecated(
+    "ListenableSettings has been renamed ObservableSettings",
+    replaceWith = ReplaceWith("ObservableSettings", "com.russhwolf.settings.ObservableSettings"),
+    level = DeprecationLevel.WARNING
+)
+@ExperimentalListener
+@Suppress("UNUSED", "KDocMissingDocumentation")
+public typealias ListenableSettings = ObservableSettings
 
 /**
  * A handle to a listener instance returned by [addListener] so it can be passed to [removeListener].

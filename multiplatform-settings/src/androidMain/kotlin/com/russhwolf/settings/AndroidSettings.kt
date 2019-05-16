@@ -41,7 +41,7 @@ import com.russhwolf.settings.AndroidSettings.Factory
  * delegate. Thus two `Settings` instances created using the same [delegate] will be backed by the same data.
  */
 @UseExperimental(ExperimentalListener::class)
-public class AndroidSettings public constructor(private val delegate: SharedPreferences) : ListenableSettings {
+public class AndroidSettings public constructor(private val delegate: SharedPreferences) : ObservableSettings {
 
     /**
      * A factory that can produce [Settings] instances.

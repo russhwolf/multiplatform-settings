@@ -17,7 +17,7 @@
 package com.russhwolf.settings.example
 
 import com.russhwolf.settings.ExperimentalListener
-import com.russhwolf.settings.ListenableSettings
+import com.russhwolf.settings.ObservableSettings
 import kotlin.properties.ReadWriteProperty
 
 import com.russhwolf.settings.Settings
@@ -98,7 +98,7 @@ sealed class SettingConfig<T>(
     var isLoggingEnabled: Boolean
         get() = listener != null
         set(value) {
-            val settings = settings as? ListenableSettings ?: return
+            val settings = settings as? ObservableSettings ?: return
             listener = if (value) {
                 settings.addListener(key) { println("$key = ${get()}") }
             } else {

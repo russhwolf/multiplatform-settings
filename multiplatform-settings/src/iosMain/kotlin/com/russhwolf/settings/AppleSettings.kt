@@ -40,7 +40,7 @@ import platform.darwin.NSObjectProtocol
  * delegate, or via a [Factory].
  */
 @UseExperimental(ExperimentalListener::class)
-public class AppleSettings public constructor(private val delegate: NSUserDefaults) : ListenableSettings {
+public class AppleSettings public constructor(private val delegate: NSUserDefaults) : ObservableSettings {
 
     /**
      * A factory that can produce [Settings] instances.

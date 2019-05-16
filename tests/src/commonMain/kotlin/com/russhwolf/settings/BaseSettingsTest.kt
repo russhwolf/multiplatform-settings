@@ -545,8 +545,8 @@ abstract class BaseSettingsTest(
     fun listener() {
         if (!hasListeners) return
 
-        val settings = settings as? ListenableSettings
-            ?: throw IllegalStateException("Must implement ListenableSettings or ignore this test")
+        val settings = settings as? ObservableSettings
+            ?: throw IllegalStateException("Must implement ObservableSettings or ignore this test")
 
         val verifier = ListenerVerifier()
 

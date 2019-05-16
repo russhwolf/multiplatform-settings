@@ -16,7 +16,7 @@ package com.russhwolf.settings
  */
 @UseExperimental(ExperimentalListener::class)
 public class MockSettings public constructor(private val delegate: MutableMap<String, Any> = mutableMapOf()) :
-    ListenableSettings {
+    ObservableSettings {
     private val listeners = mutableListOf<() -> Any>()
     private fun invokeListeners() = listeners.forEach { it() }
 
