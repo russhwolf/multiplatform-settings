@@ -27,14 +27,14 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
      *
      * This implementation will use the same backing [Map] if the same `name` parameter is passed to [create].
      */
-    class Factory : Settings.Factory {
+    public class Factory : Settings.Factory {
         private val delegateCache = mutableMapOf<String?, MutableMap<String, Any>>()
 
         /**
          * Assigns the values in [delegate] to the cache that will be used to back any [MockSettings] this factory
          * creates named [name]
          */
-        fun setCacheValues(name: String?, delegate: Map<String, Any>) {
+        public fun setCacheValues(name: String?, delegate: Map<String, Any>) {
             val map = delegateCache.getOrPut(name) { mutableMapOf() }
             map.clear()
             map.putAll(delegate)
@@ -44,72 +44,73 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
          * Assigns the values in [items] to the cache that will be used to back any [MockSettings] this factory
          * creates named [name]
          */
-        fun setCacheValues(name: String?, vararg items: Pair<String, Any>) {
+        public fun setCacheValues(name: String?, vararg items: Pair<String, Any>) {
             setCacheValues(name, mutableMapOf(*items))
         }
 
-        override fun create(name: String?): Settings {
+        public override fun create(name: String?): Settings {
             val delegate = delegateCache.getOrPut(name) { mutableMapOf() }
             return MockSettings(delegate)
         }
     }
 
-    override fun clear() {
+    public override fun clear() {
         delegate.clear()
         invokeListeners()
     }
 
-    override fun remove(key: String) {
+    public override fun remove(key: String) {
         delegate -= key
         invokeListeners()
     }
 
-    override fun hasKey(key: String): Boolean = key in delegate
+    public override fun hasKey(key: String): Boolean = key in delegate
 
-    override fun putInt(key: String, value: Int) {
+    public override fun putInt(key: String, value: Int) {
         delegate[key] = value
         invokeListeners()
     }
 
-    override fun getInt(key: String, defaultValue: Int): Int = delegate[key] as? Int ?: defaultValue
+    public override fun getInt(key: String, defaultValue: Int): Int = delegate[key] as? Int ?: defaultValue
 
-    override fun putLong(key: String, value: Long) {
+    public override fun putLong(key: String, value: Long) {
         delegate[key] = value
         invokeListeners()
     }
 
-    override fun getLong(key: String, defaultValue: Long): Long = delegate[key] as? Long ?: defaultValue
+    public override fun getLong(key: String, defaultValue: Long): Long = delegate[key] as? Long ?: defaultValue
 
-    override fun putString(key: String, value: String) {
+    public override fun putString(key: String, value: String) {
         delegate[key] = value
         invokeListeners()
     }
 
-    override fun getString(key: String, defaultValue: String): String = delegate[key] as? String ?: defaultValue
+    public override fun getString(key: String, defaultValue: String): String = delegate[key] as? String ?: defaultValue
 
-    override fun putFloat(key: String, value: Float) {
+    public override fun putFloat(key: String, value: Float) {
         delegate[key] = value
         invokeListeners()
     }
 
-    override fun getFloat(key: String, defaultValue: Float): Float = delegate[key] as? Float ?: defaultValue
+    public override fun getFloat(key: String, defaultValue: Float): Float = delegate[key] as? Float ?: defaultValue
 
-    override fun putDouble(key: String, value: Double) {
+    public override fun putDouble(key: String, value: Double) {
         delegate[key] = value
         invokeListeners()
     }
 
-    override fun getDouble(key: String, defaultValue: Double): Double = delegate[key] as? Double ?: defaultValue
+    public override fun getDouble(key: String, defaultValue: Double): Double = delegate[key] as? Double ?: defaultValue
 
-    override fun putBoolean(key: String, value: Boolean) {
+    public override fun putBoolean(key: String, value: Boolean) {
         delegate[key] = value
         invokeListeners()
     }
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate[key] as? Boolean ?: defaultValue
+    public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+        delegate[key] as? Boolean ?: defaultValue
 
     @ExperimentalListener
-    override fun addListener(key: String, callback: () -> Unit): SettingsListener {
+    public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val cache = Listener.Cache(delegate[key])
 
         val listener = {
@@ -125,7 +126,7 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
     }
 
     @ExperimentalListener
-    override fun removeListener(listener: SettingsListener) {
+    public override fun removeListener(listener: SettingsListener) {
         val platformListener = listener as? Listener ?: return
         listeners -= platformListener.delegate
     }

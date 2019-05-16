@@ -185,7 +185,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
      * it's recommended that interaction with the listener APIs be confined to the main UI thread.
      */
     @ExperimentalListener
-    override fun addListener(key: String, callback: () -> Unit): SettingsListener {
+    public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val cache = Listener.Cache(delegate.all[key])
 
         val prefsListener =
@@ -212,7 +212,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
     @ExperimentalListener
-    override fun removeListener(listener: SettingsListener) {
+    public override fun removeListener(listener: SettingsListener) {
         val platformListener = listener as? Listener ?: return
         val listenerDelegate = platformListener.delegate
         delegate.unregisterOnSharedPreferenceChangeListener(listenerDelegate)
@@ -224,7 +224,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
      * On the Android platform, this is a wrapper around [SharedPreferences.OnSharedPreferenceChangeListener].
      */
     @ExperimentalListener
-    class Listener internal constructor(
+    public class Listener internal constructor(
         internal val delegate: SharedPreferences.OnSharedPreferenceChangeListener
     ) : SettingsListener {
         internal class Cache(var value: Any?)

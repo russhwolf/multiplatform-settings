@@ -126,7 +126,7 @@ public interface Settings {
  * An extension to the [Settings] interface to include update listener functionality
  */
 @ExperimentalListener
-interface ListenableSettings : Settings {
+public interface ListenableSettings : Settings {
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
      * reference is returned which should be passed to [removeListener] when you no longer need it so that the
@@ -153,4 +153,4 @@ interface ListenableSettings : Settings {
  * A handle to a listener instance returned by [addListener] so it can be passed to [removeListener].
  */
 @ExperimentalListener
-interface SettingsListener
+public interface SettingsListener
