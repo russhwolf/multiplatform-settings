@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="multiplatform-settings-test_jvmMain" target="1.6" />
+      <module name="multiplatform-settings-test_jvmTest" target="1.6" />
+      <module name="multiplatform-settings_jvmMain" target="1.6" />
+      <module name="multiplatform-settings_jvmTest" target="1.6" />
+      <module name="tests_jvmMain" target="1.6" />
+      <module name="tests_jvmTest" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
