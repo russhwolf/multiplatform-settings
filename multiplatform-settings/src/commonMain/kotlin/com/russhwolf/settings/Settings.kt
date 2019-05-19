@@ -159,7 +159,8 @@ public interface ObservableSettings : Settings {
 public typealias ListenableSettings = ObservableSettings
 
 /**
- * A handle to a listener instance returned by [addListener] so it can be passed to [removeListener].
+ * A handle to a listener instance returned by [ObservableSettings.addListener] so it can be passed to
+ * [ObservableSettings.removeListener].
  */
 @ExperimentalListener
 public interface SettingsListener

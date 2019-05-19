@@ -31,8 +31,6 @@ import java.util.Properties
  * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  *
- * This class can be instantiated via a platform-specific constructor or via a [Factory].
- *
  * On the JVM platform, this class can be created by passing a [Properties] instance which will be used as a delegate.
  *
  * Unlike the implementations on Android and iOS, `JvmSettings` does not include a [Settings.Factory] because

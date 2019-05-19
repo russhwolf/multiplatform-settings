@@ -22,6 +22,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+/**
+ * Test cases shared between actual implementations on each platform as well as `MockSettings` test implementation.
+ */
 @Suppress("KDocMissingDocumentation")
 abstract class BaseSettingsTest(
     platformFactory: Settings.Factory,

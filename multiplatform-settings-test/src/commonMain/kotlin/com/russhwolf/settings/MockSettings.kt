@@ -13,6 +13,9 @@ package com.russhwolf.settings
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  *
  * This class can be instantiated by wrapping a [MutableMap] or set of [Pair] entries, or via a [Factory].
+ *
+ * This implementation is verified against the same test suite as the real platform-specific implementations to ensure
+ * it shares the same behavior, assuming the default [mutableMapOf] delegate is used.
  */
 @UseExperimental(ExperimentalListener::class)
 public class MockSettings public constructor(private val delegate: MutableMap<String, Any> = mutableMapOf()) :
@@ -140,8 +143,9 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
     /**
      * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
      *
-     * In the [MockSettings] implementation this simply wraps a lambda parameter which is being called whenever the
-     * underlying map changes.
+     * In the [MockSettings] implementation this simply wraps a lambda parameter which is being called whenever a
+     * mutating API is called. Unlike platform implementations, this listener will NOT be called if the underlying map
+     * is mutated by something other than the `MockSettings` instance that originally created the listener.
      */
     @ExperimentalListener
     public class Listener internal constructor(
