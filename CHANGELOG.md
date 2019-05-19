@@ -1,5 +1,10 @@
 # Changelog #
 
+## v0.3.1 *(2019-05-19)* ##
+- Add `multiplatform-settings-test` dependency with `MockSettings` implementation
+- Update to Kotlin 1.3.31 and Gradle 5.4.1
+- Rename `ListenableSettings` to `ObservableSettings`
+
 ## v0.3 *(2019-04-21)* ##
 - Update to Kotlin 1.3.30 and Gradle 5.3.1
 - Remove redundant `PlatformSettings` expect declarations
