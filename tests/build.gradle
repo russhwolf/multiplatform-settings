@@ -20,15 +20,13 @@ plugins {
 apply plugin: 'com.android.library'
 
 kotlin {
-    android {
-        publishAllLibraryVariants()
-    }
+    android()
     jvm()
     iosArm64("ios")
     iosX64("iosSim")
     macosX64("macos")
     js {
-        configure([compilations.main, compilations.test]) {
+        compilations.main {
             tasks.getByName(compileKotlinTaskName).kotlinOptions {
                 metaInfo = true
                 sourceMap = true
@@ -99,4 +97,3 @@ configurations {
     compileClasspath
 }
 
-apply from: rootProject.file('node-js.gradle')
