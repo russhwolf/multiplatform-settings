@@ -30,7 +30,7 @@ import kotlin.annotation.AnnotationTarget.VALUE_PARAMETER
 /**
  * Annotation to mark listener functionality as experimental.
  */
-@Experimental
+@Experimental(level = Experimental.Level.WARNING)
 @Target(
     CLASS,
     PROPERTY,
