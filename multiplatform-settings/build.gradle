@@ -31,6 +31,7 @@ kotlin {
     iosX64("iosSim")
     macosX64("macos")
     js {
+        browser()
         configure([compilations.main, compilations.test]) {
             tasks.getByName(compileKotlinTaskName).kotlinOptions {
                 metaInfo = true
@@ -53,11 +54,14 @@ kotlin {
         }
         commonTest {
             dependencies {
-                implementation project(":tests")
+                // TODO re-add ':tests' as gradle module once KT-31917 and KT-32170 are fixed
+//                implementation project(":tests")
 
                 implementation kotlin("test-common")
                 implementation kotlin("test-annotations-common")
             }
+            // TODO Can remove once ':tests:' is re-added as gradle module
+            kotlin.srcDir('../tests/src/commonMain/kotlin')
         }
 
         androidMain {
@@ -117,20 +121,17 @@ android {
     testOptions.unitTests.includeAndroidResources = true
 }
 
-task iosTest(dependsOn: 'linkTestDebugExecutableIosSim') {
+task iosTest(dependsOn: 'linkDebugTestIosSim') {
     doLast {
-        def binary = kotlin.targets.iosSim.compilations.test.getBinary('EXECUTABLE', 'DEBUG')
+        def testBinaryPath = kotlin.targets.iosSim.binaries.getTest('DEBUG').outputFile.absolutePath
         exec {
-            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", binary.absolutePath
+            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", testBinaryPath
         }
     }
 }
-tasks.check.dependsOn iosTest
+tasks.allTests.dependsOn iosTest
 
 // workaround for https://youtrack.jetbrains.com/issue/KT-27170
 configurations {
     compileClasspath
 }
-
-apply from: rootProject.file('node-js.gradle')
-apply from: rootProject.file('test-mocha-js.gradle')

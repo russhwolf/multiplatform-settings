@@ -100,11 +100,11 @@ task copyFramework {
     }
 }
 
-task iosTest(dependsOn: 'linkTestDebugExecutableIos') {
+task iosTest(dependsOn: 'linkDebugTestIos') {
     doLast {
-        def binary = kotlin.targets.ios.compilations.test.getBinary('EXECUTABLE', 'DEBUG')
+        def testBinaryPath = kotlin.targets.ios.binaries.getTest('DEBUG').outputFile.absolutePath
         exec {
-            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", binary.absolutePath
+            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", testBinaryPath
         }
     }
 }

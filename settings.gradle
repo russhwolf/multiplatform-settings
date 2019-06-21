@@ -28,4 +28,5 @@ pluginManagement {
     }
 }
 enableFeaturePreview('GRADLE_METADATA')
-include ':multiplatform-settings', ':multiplatform-settings-test', ':tests'
+// TODO re-add ':tests' as gradle module once KT-31917 and KT-32170 are fixed
+include ':multiplatform-settings', ':multiplatform-settings-test' //, ':tests'
