@@ -12,7 +12,7 @@ First, add the multiplatform-settings bintray url to the `repositories` block of
 
 Then, simply add the dependency to your common source-set dependencies
 
-    implementation "com.russhwolf:multiplatform-settings:0.3.1"
+    implementation "com.russhwolf:multiplatform-settings:0.3.2"
     
 See also the sample project, which uses this structure.
 
@@ -83,7 +83,7 @@ On iOS and macOS, the factory can be instantiated without passing any parameter
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
-    implementation "com.russhwolf:multiplatform-settings-test:0.3.1"
+    implementation "com.russhwolf:multiplatform-settings-test:0.3.2"
     
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
     
