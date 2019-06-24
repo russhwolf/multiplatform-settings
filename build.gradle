@@ -39,7 +39,7 @@ subprojects {
         jcenter()
     }
 
-    tasks.withType(Test) {
+    tasks.withType(AbstractTestTask) {
         testLogging {
             showStandardStreams = true
             events 'passed', 'failed'
