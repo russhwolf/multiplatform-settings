@@ -1,5 +1,10 @@
 # Changelog #
 
+## v0.3.2 *(2019-06-23)* ##
+- Update to Kotlin 1.3.40
+- Use new automated JS configuration
+- Reduce `@Experimental` annotations to warning status
+
 ## v0.3.1 *(2019-05-19)* ##
 - Add `multiplatform-settings-test` dependency with `MockSettings` implementation
 - Update to Kotlin 1.3.31 and Gradle 5.4.1
