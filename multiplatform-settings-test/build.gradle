@@ -55,14 +55,11 @@ kotlin {
         }
         commonTest {
             dependencies {
-                // TODO re-add ':tests' as gradle module once KT-31917 and KT-32170 are fixed
-//                implementation project(":tests")
+                implementation project(":tests")
                 
                 implementation kotlin("test-common")
                 implementation kotlin("test-annotations-common")
             }
-            // TODO Can remove once ':tests:' is re-added as gradle module
-            kotlin.srcDir('../tests/src/commonMain/kotlin')
         }
 
         androidMain {
@@ -75,10 +72,6 @@ kotlin {
                 implementation kotlin("test")
                 implementation kotlin("test-junit")
                 implementation 'junit:junit:4.12'
-                
-                // TODO below dependencies can be removed after KT-29343 is fixed
-                implementation project(":multiplatform-settings")
-//                implementation project(":tests")
             }
         }
         
