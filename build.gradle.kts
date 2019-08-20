@@ -14,35 +14,27 @@
  * limitations under the License.
  */
 
-buildscript {
-    ext.kotlin_version = '1.3.50'
-    repositories {
-        google()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://dl.bintray.com/jetbrains/kotlin-native-dependencies' }
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.android.tools.build:gradle:3.4.1"
-        classpath "com.moowork.gradle:gradle-node-plugin:1.3.1"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4-jetbrains-3"
-    }
+plugins {
+    kotlin("multiplatform").version("1.3.50").apply(false)
+    id("com.android.library").version("3.4.1").apply(false)
 }
 
 subprojects {
-    group 'com.russhwolf'
-    version '0.3.2'
+    group = "com.russhwolf"
+    version = "0.3.3"
 
     repositories {
         google()
         jcenter()
     }
 
-    tasks.withType(AbstractTestTask) {
+    tasks.withType(AbstractTestTask::class) {
         testLogging {
             showStandardStreams = true
-            events 'passed', 'failed'
+            events("passed", "failed")
         }
     }
+
+    // workaround for https://youtrack.jetbrains.com/issue/KT-27170
+    configurations.create("compileClasspath")
 }

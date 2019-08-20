@@ -13,19 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "kotlin-multiplatform") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
-            }
-        }
-    }
+
+plugins {
+    kotlin("multiplatform").version("1.3.50").apply(false)
+    kotlin("android").version("1.3.50").apply(false)
+    id("com.android.library").version("3.4.1").apply(false)
+    id("com.android.application").version("3.4.1").apply(false)
+}
+
+allprojects {
+    ext["library_version"] = "0.3.3"
 
     repositories {
+        mavenLocal()
+        google()
         mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' }
+        maven(url = "https://dl.bintray.com/russhwolf/multiplatform-settings")
+        jcenter()
     }
+
+    // workaround for https://youtrack.jetbrains.com/issue/KT-27170
+    configurations.create("compileClasspath")
 }
-enableFeaturePreview('GRADLE_METADATA')
-include ':multiplatform-settings', ':multiplatform-settings-test', ':tests'
+
+task(name = "clean", type = Delete::class) {
+    delete(rootProject.buildDir)
+}

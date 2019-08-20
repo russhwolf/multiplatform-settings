@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            when (requested.id.id) {
+                "org.jetbrains.kotlin.multiplatform",
+                "org.jetbrains.kotlin.android"-> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+                "com.android.library",
+                "com.android.application" -> useModule("com.android.tools.build:gradle:${requested.version}")
+            }
+        }
+    }
 
-buildscript {
-    ext.kotlin_version = '1.3.50'
-    ext.library_version = '0.3.2'
     repositories {
         google()
+        mavenCentral()
+        maven(url = "https://plugins.gradle.org/m2/")
         jcenter()
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
 }
-
-allprojects {
-    repositories {
-        mavenLocal()
-        google()
-        jcenter()
-        maven { url 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+include(":shared", ":app-android")
