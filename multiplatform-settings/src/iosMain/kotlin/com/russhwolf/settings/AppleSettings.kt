@@ -17,6 +17,7 @@
 package com.russhwolf.settings
 
 import com.russhwolf.settings.AppleSettings.Factory
+import kotlinx.cinterop.convert
 import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
@@ -91,26 +92,26 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
     /**
      * Stores the `Int` [value] at [key].
      */
-    public override fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.toLong(), key)
+    public override fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.convert(), key)
 
     /**
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
     public override fun getInt(key: String, defaultValue: Int): Int =
-        if (hasKey(key)) delegate.integerForKey(key).toInt() else defaultValue
+        if (hasKey(key)) delegate.integerForKey(key).convert() else defaultValue
 
     /**
      * Stores the `Long` [value] at [key].
      */
-    public override fun putLong(key: String, value: Long): Unit = delegate.setInteger(value, key)
+    public override fun putLong(key: String, value: Long): Unit = delegate.setInteger(value.convert(), key)
 
     /**
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
     public override fun getLong(key: String, defaultValue: Long): Long =
-        if (hasKey(key)) delegate.integerForKey(key) else defaultValue
+        if (hasKey(key)) delegate.integerForKey(key).convert() else defaultValue
 
     /**
      * Stores the `String` [value] at [key].

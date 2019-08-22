@@ -31,6 +31,7 @@ kotlin {
     }
     jvm()
     iosArm64("ios")
+    iosArm32("ios32")
     iosX64("iosSim")
     macosX64("macos")
     js {
@@ -97,7 +98,12 @@ kotlin {
 
         val iosMain by getting
         val iosTest by getting
-
+        val ios32Main by getting {
+            dependsOn(iosMain)
+        }
+        val ios32Test by getting {
+            dependsOn(iosTest)
+        }
         val iosSimMain by getting {
             dependsOn(iosMain)
         }
