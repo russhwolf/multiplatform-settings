@@ -1,5 +1,9 @@
 # Changelog #
 
+## v0.3.3 *(2019-08-22)* ##
+- Update to Kotlin 1.3.50
+- Convert build scripts to Kotlin
+
 ## v0.3.2 *(2019-06-23)* ##
 - Update to Kotlin 1.3.40
 - Use new automated JS configuration
