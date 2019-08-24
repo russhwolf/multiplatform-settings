@@ -36,10 +36,12 @@ kotlin {
     js {
         browser()
         compilations.all {
-            (tasks.getByName(compileKotlinTaskName) as Kotlin2JsCompile).kotlinOptions {
-                metaInfo = true
-                sourceMap = true
-                moduleKind = "umd"
+            tasks.withType<Kotlin2JsCompile> {
+                kotlinOptions {
+                    metaInfo = true
+                    sourceMap = true
+                    moduleKind = "umd"
+                }
             }
         }
     }
