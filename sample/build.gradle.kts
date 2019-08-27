@@ -28,7 +28,6 @@ allprojects {
         mavenLocal()
         google()
         mavenCentral()
-        maven(url = "https://dl.bintray.com/russhwolf/multiplatform-settings")
         jcenter()
     }
 

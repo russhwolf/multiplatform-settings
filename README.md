@@ -3,16 +3,21 @@
 This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and NSUserDefaults on iOS. 
 
 ## Adding to your project
-First, add the multiplatform-settings bintray url to the `repositories` block of any module using it.
+Multiplatform Settings is currently published to jcenter, so add that to repositories.
 
     repositories {
         ...
-        maven { url 'https://dl.bintray.com/russhwolf/multiplatform-settings' }
+        jcenter()
     }
 
 Then, simply add the dependency to your common source-set dependencies
 
-    implementation "com.russhwolf:multiplatform-settings:0.3.3"
+    commonMain {
+        dependencies {
+            ...
+            implementation "com.russhwolf:multiplatform-settings:0.3.3"
+        }
+    }
     
 See also the sample project, which uses this structure.
 
