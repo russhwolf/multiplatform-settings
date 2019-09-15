@@ -32,4 +32,4 @@ pluginManagement {
         jcenter()
     }
 }
-include(":shared", ":app-android")
+include(":shared", ":app-android", ":app-tornadofx")

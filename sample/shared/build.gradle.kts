@@ -23,6 +23,7 @@ plugins {
 
 kotlin {
     android()
+    jvm()
 
     val iosTarget = if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true) {
         presets.getByName("iosArm64")
@@ -64,6 +65,17 @@ kotlin {
             }
         }
         val androidTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib"))
+            }
+        }
+        val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
