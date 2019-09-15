@@ -20,7 +20,9 @@ import com.russhwolf.settings.ExperimentalJvm
 import com.russhwolf.settings.JvmSettings
 import com.russhwolf.settings.Settings
 import java.io.File
+import java.io.IOException
 import java.util.Properties
+import java.util.concurrent.Executors
 
 fun settingsRepository() = SettingsRepository(JvmSettingsFactory)
 
@@ -29,9 +31,30 @@ object JvmSettingsFactory : Settings.Factory {
     override fun create(name: String?): Settings {
         val properties = Properties()
         val file = File("$name.properties")
+
+        val ioExecutor = Executors.newSingleThreadExecutor()
         if (file.exists()) {
-            properties.load(file.reader())
+            ioExecutor.submit {
+                try {
+                    properties.load(file.bufferedReader())
+                } catch (e: IOException) {
+                    System.err.println("Failed to load properties!")
+                    e.printStackTrace()
+                }
+            }
         }
-        return JvmSettings(properties)
+
+        val onModify: (Properties) -> Unit = {
+            ioExecutor.submit {
+                try {
+                    it.store(file.bufferedWriter(), null)
+                } catch (e: IOException) {
+                    System.err.println("Failed to save properties!")
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        return JvmSettings(properties, onModify)
     }
 }

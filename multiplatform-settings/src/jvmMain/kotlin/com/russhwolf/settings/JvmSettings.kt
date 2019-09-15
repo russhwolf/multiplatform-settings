@@ -32,25 +32,36 @@ import java.util.Properties
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  *
  * On the JVM platform, this class can be created by passing a [Properties] instance which will be used as a delegate.
+ * Since the [Properties] doesn't perform the serialization and writing of the data by itself, a callback [onModify] can
+ * be added which will allow serialization or other work to occur after any write operation is performed.
  *
  * Unlike the implementations on Android and iOS, `JvmSettings` does not include a [Settings.Factory] because
  * the `Properties` API does not provide a natural way to create multiple named instances.
  *
  * This class is experimental as marked by the [ExperimentalJvm] annotation.
- *
  * The experimental listener APIs are not implemented in `JvmSettings`.
  */
 @ExperimentalJvm
-public class JvmSettings public constructor(private val delegate: Properties) : Settings {
-    public override fun clear(): Unit = delegate.clear()
+public class JvmSettings public constructor(
+    private val delegate: Properties,
+    private val onModify: (Properties) -> Unit = {}
+) : Settings {
+
+    public override fun clear(): Unit {
+        delegate.clear()
+        onModify(delegate)
+    }
+
     public override fun remove(key: String) {
         delegate.remove(key)
+        onModify(delegate)
     }
 
     public override fun hasKey(key: String): Boolean = delegate[key] != null
 
     public override fun putInt(key: String, value: Int) {
         delegate.setProperty(key, value.toString())
+        onModify(delegate)
     }
 
     public override fun getInt(key: String, defaultValue: Int): Int =
@@ -58,6 +69,7 @@ public class JvmSettings public constructor(private val delegate: Properties) : 
 
     public override fun putLong(key: String, value: Long) {
         delegate.setProperty(key, value.toString())
+        onModify(delegate)
     }
 
     public override fun getLong(key: String, defaultValue: Long): Long =
@@ -66,6 +78,7 @@ public class JvmSettings public constructor(private val delegate: Properties) : 
 
     public override fun putString(key: String, value: String) {
         delegate.setProperty(key, value)
+        onModify(delegate)
     }
 
     public override fun getString(key: String, defaultValue: String): String =
@@ -74,6 +87,7 @@ public class JvmSettings public constructor(private val delegate: Properties) : 
 
     public override fun putFloat(key: String, value: Float) {
         delegate.setProperty(key, value.toString())
+        onModify(delegate)
     }
 
     public override fun getFloat(key: String, defaultValue: Float): Float =
@@ -82,6 +96,7 @@ public class JvmSettings public constructor(private val delegate: Properties) : 
 
     public override fun putDouble(key: String, value: Double) {
         delegate.setProperty(key, value.toString())
+        onModify(delegate)
     }
 
     public override fun getDouble(key: String, defaultValue: Double): Double =
@@ -90,6 +105,7 @@ public class JvmSettings public constructor(private val delegate: Properties) : 
 
     public override fun putBoolean(key: String, value: Boolean) {
         delegate.setProperty(key, value.toString())
+        onModify(delegate)
     }
 
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
