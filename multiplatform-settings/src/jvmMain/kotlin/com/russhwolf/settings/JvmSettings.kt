@@ -32,21 +32,20 @@ import java.util.Properties
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  *
  * On the JVM platform, this class can be created by passing a [Properties] instance which will be used as a delegate.
- * Since the [Properties] doesn't perform the serialization and writing of the data by itself, a callback needs to be
- * added, which makes the user of this class responsible for persisting the data every time the data set is updated.
+ * Since the [Properties] doesn't perform the serialization and writing of the data by itself, a callback [onModify] can
+ * be added which will allow serialization or other work to occur after any write operation is performed.
  *
  * Unlike the implementations on Android and iOS, `JvmSettings` does not include a [Settings.Factory] because
  * the `Properties` API does not provide a natural way to create multiple named instances.
  *
  * This class is experimental as marked by the [ExperimentalJvm] annotation.
  * The experimental listener APIs are not implemented in `JvmSettings`.
- *
- * @param delegate The [Properties] object to wrap
- * @param onModify The callback that is responsible for saving the changes to the disk
  */
 @ExperimentalJvm
-public class JvmSettings public constructor(private val delegate: Properties,
-                                            private val onModify: (Properties) -> Unit) : Settings {
+public class JvmSettings public constructor(
+    private val delegate: Properties,
+    private val onModify: (Properties) -> Unit = {}
+) : Settings {
 
     public override fun clear(): Unit {
         delegate.clear()
