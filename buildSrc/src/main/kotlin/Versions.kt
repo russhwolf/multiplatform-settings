@@ -27,8 +27,10 @@ object Versions {
     const val androidxTest = "1.3.0"
     const val androidxTestExt = "1.1.2"
     const val binaryCompatibilityValidator = "0.2.4"
+    const val coroutines = "1.4.1"
     const val junit = "4.13"
     const val robolectric = "4.4"
     const val serializationPlugin = "1.4.20"
     const val serializationRuntime = "1.0.1"
+    const val turbine = "0.3.0"
 }

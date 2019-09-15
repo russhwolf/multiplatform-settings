@@ -267,6 +267,19 @@ The project includes multiple CI jobs configured using Azure pipelines. On PRs o
 
 An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This builds the library for all platforms and uploads artifacts to Bintray. Uploaded artifacts must still be published manually.
 
+### Flows
+
+Flow APIs exist which use the listener APIs internally. These require a separate dependency
+
+    implementation "com.russhwolf:multiplatform-settings-coroutines:0.4"
+    
+This adds flow extensions for all types.
+
+    val flow: Flow<Int> by settings.intFlow("key", defaultValue)
+    val nullableFlow: Flow<Int?> by settings.intOrNullFlow("key")
+
+Usage requires accepting both the `@ExperimentalListener` and `@ExperimentalCoroutinesApi` annotations.
+
 ## Project Structure
 The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface which exposes apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The platform sources then hold implementations, delegating to whichever delegate that platform uses. The macOS platform reads from the same sources as iOS. The experimental JVM and JS implementations reside in the `jvmMain` and `jsMain` sources, respectively
 
