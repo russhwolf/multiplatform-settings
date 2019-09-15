@@ -40,6 +40,7 @@ private val Project.android: BaseExtension
     get() = extensions.getByType(BaseExtension::class.java)
 
 fun Project.standardConfiguration(
+    // This is ugly but string-matching lets us share configuration more easily between modules
     vararg presetNames: String = kotlin.presets.map { it.name }.toTypedArray(),
     isTestModule: Boolean = false
 ) {
@@ -62,11 +63,16 @@ private val KotlinTarget.isJsTarget: Boolean
     get() = this is KotlinJsTarget || this is KotlinJsIrTarget
 
 private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDomainObjectCollection<KotlinTargetPreset<*>>) {
-    android {
-        publishAllLibraryVariants()
+    if (targetPresets.findByName("android") != null) {
+        android {
+            publishAllLibraryVariants()
+        }
     }
-    js {
-        browser()
+    if (targetPresets.findByName("js") != null) {
+        // TODO include nodejs somehow?
+        js {
+            browser()
+        }
     }
 
     // Create empty targets for presets with no specific configuration

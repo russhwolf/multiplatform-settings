@@ -1,0 +1,21 @@
+public final class com/russhwolf/settings/coroutines/CoroutineExtensionsKt {
+	public static final fun booleanFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Z)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun booleanFlow$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun booleanOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun doubleFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;D)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun doubleFlow$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;DILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun doubleOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun floatFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;F)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun floatFlow$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;FILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun floatOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun intFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;I)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun intFlow$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun intOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun longFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;J)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun longFlow$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;JILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun longOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun stringFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun stringFlow$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun stringOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+}
+
