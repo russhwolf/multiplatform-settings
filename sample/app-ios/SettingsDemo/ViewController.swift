@@ -24,8 +24,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet var outputText: UILabel?
     @IBOutlet var loggingSwitch: UISwitch?
 
-    lazy var settingsRepository: SettingsRepository = SettingsRepositoryExtensionsKt.settingsRepository()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -104,3 +102,5 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         settingsRepository.mySettings[row].isLoggingEnabled = loggingSwitch?.isOn ?? false
     }
 }
+
+let settingsRepository: SettingsRepository = SettingsRepository(settings: AppleSettings(delegate: UserDefaults.standard))

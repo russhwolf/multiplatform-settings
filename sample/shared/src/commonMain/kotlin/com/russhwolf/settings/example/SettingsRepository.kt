@@ -37,15 +37,11 @@ import com.russhwolf.settings.nullableLong
 import com.russhwolf.settings.nullableString
 import com.russhwolf.settings.string
 
-private val SETTINGS_NAME: String? = "MY_SETTINGS_NAME"
-
 /**
- * This class demonstrates `kotlin-platform-common` code exercising all of the functionality of the [Settings] class.
+ * This class demonstrates common code exercising all of the functionality of the [Settings] class.
  * The majority of this functionality is delegated to [SettingConfig] subclasses for each supported type.
  */
-class SettingsRepository(factory: Settings.Factory) {
-
-    private val settings = factory.create(SETTINGS_NAME)
+class SettingsRepository(private val settings: Settings) {
 
     val mySettings: List<SettingConfig<*>> = listOf(
         StringSettingConfig(settings, "MY_STRING", "default"),
@@ -69,7 +65,6 @@ class SettingsRepository(factory: Settings.Factory) {
  * This class wraps all of the different operations that might be performed on a given [key], and adds an interface to
  * get and set it as a [String] value..
  */
-@UseExperimental(ExperimentalListener::class)
 sealed class SettingConfig<T>(
     private val settings: Settings,
     val key: String,
@@ -78,6 +73,8 @@ sealed class SettingConfig<T>(
     private val toType: String.() -> T
 ) {
     private var value: T by settings.delegate(key, defaultValue)
+
+    @ExperimentalListener
     private var listener: SettingsListener? = null
 
     fun remove() {
@@ -95,6 +92,7 @@ sealed class SettingConfig<T>(
         }
     }
 
+    @ExperimentalListener
     var isLoggingEnabled: Boolean
         get() = listener != null
         set(value) {

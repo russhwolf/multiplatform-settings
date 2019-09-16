@@ -25,7 +25,8 @@ kotlin {
     android()
     jvm()
 
-    val iosTarget = if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true) {
+    val isDevice = System.getenv("SDK_NAME")?.startsWith("iphoneos") == true
+    val iosTarget = if (isDevice) {
         presets.getByName("iosArm64")
     } else {
         presets.getByName("iosX64")
@@ -33,7 +34,14 @@ kotlin {
     targetFromPreset(iosTarget, "ios") {
         this as KotlinNativeTarget
         binaries {
-            framework("Shared")
+            framework("Shared") {
+                export("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
+                if (isDevice) {
+                    export("com.russhwolf:multiplatform-settings-ios:${rootProject.ext["library_version"]}")
+                } else {
+                    export("com.russhwolf:multiplatform-settings-iossim:${rootProject.ext["library_version"]}")
+                }
+            }
         }
     }
 
@@ -46,7 +54,7 @@ kotlin {
         
         commonMain {
             dependencies {
-                implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
+                api("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
                 implementation(kotlin("stdlib-common"))
             }
         }

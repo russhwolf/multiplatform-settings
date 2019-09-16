@@ -16,6 +16,8 @@
 
 package com.russhwolf.settings.example
 
+import com.russhwolf.settings.ExperimentalJvm
+import com.russhwolf.settings.JvmSettings
 import javafx.collections.FXCollections
 import javafx.scene.Parent
 import tornadofx.App
@@ -25,18 +27,19 @@ import tornadofx.button
 import tornadofx.combobox
 import tornadofx.label
 import tornadofx.launch
-import tornadofx.select
 import tornadofx.selectedItem
 import tornadofx.textfield
 import tornadofx.vbox
+import java.io.File
+import java.io.IOException
+import java.util.Properties
+import java.util.concurrent.Executors
 
 fun main() = launch<SettingsDemoApp>()
 
 class SettingsDemoApp : App(SettingsDemoView::class)
 
 class SettingsDemoView : View() {
-    private val settingsRepository = settingsRepository()
-
     override val root: Parent = vbox {
         val combobox = combobox(
             values = FXCollections.observableArrayList(settingsRepository.mySettings)
@@ -67,4 +70,36 @@ class SettingsDemoView : View() {
             output.text = "Settings cleared!"
         }
     }
+}
+
+@UseExperimental(ExperimentalJvm::class)
+val settingsRepository: SettingsRepository by lazy {
+    val properties = Properties()
+    val file = File("SettingsDemo.properties")
+    val ioExecutor = Executors.newSingleThreadExecutor()
+
+    if (file.exists()) {
+        ioExecutor.submit {
+            try {
+                properties.load(file.bufferedReader())
+            } catch (e: IOException) {
+                System.err.println("Failed to load properties!")
+                e.printStackTrace()
+            }
+        }
+    }
+
+    val onModify: (Properties) -> Unit = {
+        ioExecutor.submit {
+            try {
+                it.store(file.bufferedWriter(), null)
+            } catch (e: IOException) {
+                System.err.println("Failed to save properties!")
+                e.printStackTrace()
+            }
+        }
+    }
+
+    val settings = JvmSettings(properties, onModify)
+    SettingsRepository(settings)
 }
