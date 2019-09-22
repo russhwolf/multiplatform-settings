@@ -159,67 +159,61 @@ private class NullableIntDelegate(
     private val settings: Settings,
     key: String?
 ) : OptionalKeyDelegate<Int?>(key) {
-    override fun getValue(key: String): Int? {
-        return if (key in settings) settings[key, 0] else null
+    override fun getValue(key: String): Int? = settings[key]
+    override fun setValue(key: String, value: Int?) {
+        settings[key] = value
     }
-
-    override fun setValue(key: String, value: Int?) =
-        if (value != null) settings[key] = value else settings -= key
 }
 
 private class NullableLongDelegate(
     private val settings: Settings,
     key: String?
 ) : OptionalKeyDelegate<Long?>(key) {
-    override fun getValue(key: String): Long? =
-        if (key in settings) settings[key, 0L] else null
-
-    override fun setValue(key: String, value: Long?) =
-        if (value != null) settings[key] = value else settings -= key
+    override fun getValue(key: String): Long? = settings[key]
+    override fun setValue(key: String, value: Long?) {
+        settings[key] = value
+    }
 }
 
 private class NullableStringDelegate(
     private val settings: Settings,
     key: String?
 ) : OptionalKeyDelegate<String?>(key) {
-    override fun getValue(key: String): String? =
-        if (key in settings) settings[key, ""] else null
+    override fun getValue(key: String): String? = settings[key]
 
-    override fun setValue(key: String, value: String?) =
-        if (value != null) settings[key] = value else settings -= key
+    override fun setValue(key: String, value: String?) {
+        settings[key] = value
+    }
 }
 
 private class NullableFloatDelegate(
     private val settings: Settings,
     key: String?
 ) : OptionalKeyDelegate<Float?>(key) {
-    override fun getValue(key: String): Float? =
-        if (key in settings) settings[key, 0f] else null
-
-    override fun setValue(key: String, value: Float?) =
-        if (value != null) settings[key] = value else settings -= key
+    override fun getValue(key: String): Float? = settings[key]
+    override fun setValue(key: String, value: Float?) {
+        settings[key] = value
+    }
 }
 
 private class NullableDoubleDelegate(
     private val settings: Settings,
     key: String?
 ) : OptionalKeyDelegate<Double?>(key) {
-    override fun getValue(key: String): Double? =
-        if (key in settings) settings[key, 0.0] else null
-
-    override fun setValue(key: String, value: Double?) =
-        if (value != null) settings[key] = value else settings -= key
+    override fun getValue(key: String): Double? = settings[key]
+    override fun setValue(key: String, value: Double?) {
+        settings[key] = value
+    }
 }
 
 private class NullableBooleanDelegate(
     private val settings: Settings,
     key: String?
 ) : OptionalKeyDelegate<Boolean?>(key) {
-    override fun getValue(key: String): Boolean? =
-        if (key in settings) settings[key, false] else null
-
-    override fun setValue(key: String, value: Boolean?) =
-        if (value != null) settings[key] = value else settings -= key
+    override fun getValue(key: String): Boolean? = settings[key]
+    override fun setValue(key: String, value: Boolean?) {
+        settings[key] = value
+    }
 }
 
 /**

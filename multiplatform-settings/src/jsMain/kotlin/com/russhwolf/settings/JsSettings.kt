@@ -58,6 +58,9 @@ public class JsSettings(private val delegate: Storage = localStorage) : Settings
     public override fun getInt(key: String, defaultValue: Int): Int =
         delegate[key]?.toInt() ?: defaultValue
 
+    public override fun getIntOrNull(key: String): Int? =
+        delegate[key]?.toIntOrNull()
+
     public override fun putLong(key: String, value: Long) {
         delegate[key] = value.toString()
     }
@@ -65,14 +68,17 @@ public class JsSettings(private val delegate: Storage = localStorage) : Settings
     public override fun getLong(key: String, defaultValue: Long): Long =
         delegate[key]?.toLong() ?: defaultValue
 
+    public override fun getLongOrNull(key: String): Long? =
+        delegate[key]?.toLongOrNull()
+
 
     public override fun putString(key: String, value: String) {
         delegate[key] = value
     }
 
-    public override fun getString(key: String, defaultValue: String): String =
-        delegate[key] ?: defaultValue
+    public override fun getString(key: String, defaultValue: String): String = delegate[key] ?: defaultValue
 
+    public override fun getStringOrNull(key: String): String? = delegate[key]
 
     public override fun putFloat(key: String, value: Float) {
         delegate[key] = value.toString()
@@ -81,6 +87,8 @@ public class JsSettings(private val delegate: Storage = localStorage) : Settings
     public override fun getFloat(key: String, defaultValue: Float): Float =
         delegate[key]?.toFloat() ?: defaultValue
 
+    public override fun getFloatOrNull(key: String): Float? =
+        delegate[key]?.toFloatOrNull()
 
     public override fun putDouble(key: String, value: Double) {
         delegate[key] = value.toString()
@@ -89,6 +97,8 @@ public class JsSettings(private val delegate: Storage = localStorage) : Settings
     public override fun getDouble(key: String, defaultValue: Double): Double =
         delegate[key]?.toDouble() ?: defaultValue
 
+    public override fun getDoubleOrNull(key: String): Double? =
+        delegate[key]?.toDoubleOrNull()
 
     public override fun putBoolean(key: String, value: Boolean) {
         delegate[key] = value.toString()
@@ -96,4 +106,7 @@ public class JsSettings(private val delegate: Storage = localStorage) : Settings
 
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         delegate[key]?.toBoolean() ?: defaultValue
+
+    public override fun getBooleanOrNull(key: String): Boolean? =
+        delegate[key]?.toBoolean()
 }

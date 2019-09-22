@@ -70,105 +70,63 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
         }
     }
 
-    /**
-     * Clears all values stored in this [Settings] instance.
-     */
     public override fun clear() {
         for (key in delegate.dictionaryRepresentation().keys) {
             remove(key as String)
         }
     }
 
-    /**
-     * Removes the value stored at [key].
-     */
     public override fun remove(key: String): Unit = delegate.removeObjectForKey(key)
 
-    /**
-     * Returns `true` if there is a value stored at [key], or `false` otherwise.
-     */
     public override fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
 
-    /**
-     * Stores the `Int` [value] at [key].
-     */
     public override fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.convert(), key)
 
-    /**
-     * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getInt(key: String, defaultValue: Int): Int =
         if (hasKey(key)) delegate.integerForKey(key).convert() else defaultValue
 
-    /**
-     * Stores the `Long` [value] at [key].
-     */
+    public override fun getIntOrNull(key: String): Int? =
+        if (hasKey(key)) delegate.integerForKey(key).convert() else null
+
     public override fun putLong(key: String, value: Long): Unit = delegate.setInteger(value.convert(), key)
 
-    /**
-     * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getLong(key: String, defaultValue: Long): Long =
         if (hasKey(key)) delegate.integerForKey(key).convert() else defaultValue
 
-    /**
-     * Stores the `String` [value] at [key].
-     */
+    public override fun getLongOrNull(key: String): Long? =
+        if (hasKey(key)) delegate.integerForKey(key).convert() else null
+
     public override fun putString(key: String, value: String): Unit = delegate.setObject(value, key)
 
-    /**
-     * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getString(key: String, defaultValue: String): String =
         delegate.stringForKey(key) ?: defaultValue
 
-    /**
-     * Stores the `Float` [value] at [key].
-     */
+    public override fun getStringOrNull(key: String): String? = delegate.stringForKey(key)
+
     public override fun putFloat(key: String, value: Float): Unit = delegate.setFloat(value, key)
 
-    /**
-     * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getFloat(key: String, defaultValue: Float): Float =
         if (hasKey(key)) delegate.floatForKey(key) else defaultValue
 
-    /**
-     * Stores the `Double` [value] at [key].
-     */
+    public override fun getFloatOrNull(key: String): Float? =
+        if (hasKey(key)) delegate.floatForKey(key) else null
+
     public override fun putDouble(key: String, value: Double): Unit = delegate.setDouble(value, key)
 
-    /**
-     * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getDouble(key: String, defaultValue: Double): Double =
         if (hasKey(key)) delegate.doubleForKey(key) else defaultValue
 
-    /**
-     * Stores the `Boolean` [value] at [key].
-     */
+    public override fun getDoubleOrNull(key: String): Double? =
+        if (hasKey(key)) delegate.doubleForKey(key) else null
+
     public override fun putBoolean(key: String, value: Boolean): Unit = delegate.setBool(value, key)
 
-    /**
-     * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         if (hasKey(key)) delegate.boolForKey(key) else defaultValue
 
-    /**
-     * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [Listener]
-     * reference is returned which should be passed to [removeListener] when you no longer need it so that the
-     * associated platform resources can be cleaned up.
-     *
-     * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
-     * it's recommended that interaction with the listener APIs be confined to the main UI thread.
-     */
+    public override fun getBooleanOrNull(key: String): Boolean? =
+        if (hasKey(key)) delegate.boolForKey(key) else null
+
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val cache = Listener.Cache(delegate.objectForKey(key))
@@ -194,9 +152,6 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
         return Listener(observer)
     }
 
-    /**
-     * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
-     */
     @ExperimentalListener
     public override fun removeListener(listener: SettingsListener) {
         val platformListener = listener as? Listener ?: return

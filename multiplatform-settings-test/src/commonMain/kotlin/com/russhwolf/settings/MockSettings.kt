@@ -82,12 +82,16 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
 
     public override fun getInt(key: String, defaultValue: Int): Int = delegate[key] as? Int ?: defaultValue
 
+    public override fun getIntOrNull(key: String): Int? = delegate[key] as? Int
+
     public override fun putLong(key: String, value: Long) {
         delegate[key] = value
         invokeListeners()
     }
 
     public override fun getLong(key: String, defaultValue: Long): Long = delegate[key] as? Long ?: defaultValue
+
+    public override fun getLongOrNull(key: String): Long? = delegate[key] as? Long
 
     public override fun putString(key: String, value: String) {
         delegate[key] = value
@@ -96,12 +100,16 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
 
     public override fun getString(key: String, defaultValue: String): String = delegate[key] as? String ?: defaultValue
 
+    public override fun getStringOrNull(key: String): String? = delegate[key] as? String
+
     public override fun putFloat(key: String, value: Float) {
         delegate[key] = value
         invokeListeners()
     }
 
     public override fun getFloat(key: String, defaultValue: Float): Float = delegate[key] as? Float ?: defaultValue
+
+    public override fun getFloatOrNull(key: String): Float? = delegate[key] as? Float
 
     public override fun putDouble(key: String, value: Double) {
         delegate[key] = value
@@ -110,6 +118,8 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
 
     public override fun getDouble(key: String, defaultValue: Double): Double = delegate[key] as? Double ?: defaultValue
 
+    public override fun getDoubleOrNull(key: String): Double? = delegate[key] as? Double
+
     public override fun putBoolean(key: String, value: Boolean) {
         delegate[key] = value
         invokeListeners()
@@ -117,6 +127,8 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
 
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         delegate[key] as? Boolean ?: defaultValue
+
+    public override fun getBooleanOrNull(key: String): Boolean? = delegate[key] as? Boolean
 
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {

@@ -19,6 +19,7 @@ package com.russhwolf.settings
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -90,12 +91,27 @@ abstract class BaseSettingsTest(
     }
 
     @Test
+    fun intOrNull() {
+        assertEquals(null, settings.getIntOrNull("a"))
+        settings.putInt("a", 2)
+        assertEquals(2, settings.getIntOrNull("a"))
+    }
+
+    @Test
     fun intOperator() {
         assertEquals(5, settings["a", 5])
         settings["a"] = 2
         assertEquals(2, settings["a", 5])
         settings["a"] = 0
         assertEquals(0, settings["a", 5])
+    }
+
+    @Test
+    fun intOrNullOperator() {
+        settings["a"] = 2 as Int?
+        assertEquals<Int?>(2, settings["a"])
+        settings["a"] = null as Int?
+        assertEquals<Int?>(null, settings["a"])
     }
 
     @Test
@@ -150,47 +166,62 @@ abstract class BaseSettingsTest(
 
     @Test
     fun longBasic() {
-        assertEquals(0, settings.getLong("a"))
-        settings.putLong("a", 2)
-        assertEquals(2, settings.getLong("a"))
+        assertEquals(0L, settings.getLong("a"))
+        settings.putLong("a", 2L)
+        assertEquals(2L, settings.getLong("a"))
         settings.putLong("a", Long.MIN_VALUE)
         assertEquals(Long.MIN_VALUE, settings.getLong("a"))
         settings.putLong("a", Long.MAX_VALUE)
         assertEquals(Long.MAX_VALUE, settings.getLong("a"))
 
-        assertEquals(5, settings.getLong("b", 5))
+        assertEquals(5L, settings.getLong("b", 5L))
+    }
+
+    @Test
+    fun longOrNull() {
+        assertEquals(null, settings.getLongOrNull("a"))
+        settings.putLong("a", 2L)
+        assertEquals(2L, settings.getLongOrNull("a"))
     }
 
     @Test
     fun longOperator() {
-        assertEquals(5, settings["a", 5])
-        settings["a"] = 2
-        assertEquals(2, settings["a", 5])
-        settings["a"] = 0
-        assertEquals(0, settings["a", 5])
+        assertEquals(5L, settings["a", 5L])
+        settings["a"] = 2L
+        assertEquals(2L, settings["a", 5L])
+        settings["a"] = 0L
+        assertEquals(0L, settings["a", 5L])
+    }
+
+    @Test
+    fun longOrNullOperator() {
+        settings["a"] = 2L as Long?
+        assertEquals<Long?>(2L, settings["a"])
+        settings["a"] = null as Long?
+        assertEquals<Long?>(null, settings["a"])
     }
 
     @Test
     fun longDelegate() {
         var a by settings.long("a", 5)
-        assertEquals(5, a)
-        a = 2
-        assertEquals(2, a)
-        a = 0
-        assertEquals(0, a)
+        assertEquals(5L, a)
+        a = 2L
+        assertEquals(2L, a)
+        a = 0L
+        assertEquals(0L, a)
 
         val b by settings.long("b")
-        assertEquals(0, b)
+        assertEquals(0L, b)
     }
 
     @Test
     fun longNullableDelegate() {
         var a by settings.nullableLong("a")
         assertEquals(null, a)
-        a = 2
-        assertEquals(2, a)
-        a = 0
-        assertEquals(0, a)
+        a = 2L
+        assertEquals(2L, a)
+        a = 0L
+        assertEquals(0L, a)
         a = null
         assertEquals(null, a)
     }
@@ -198,24 +229,24 @@ abstract class BaseSettingsTest(
     @Test
     fun longDelegateDefaultKey() {
         var a by settings.long(defaultValue = 5)
-        assertEquals(5, a)
-        a = 2
-        assertEquals(2, a)
-        a = 0
-        assertEquals(0, a)
+        assertEquals(5L, a)
+        a = 2L
+        assertEquals(2L, a)
+        a = 0L
+        assertEquals(0L, a)
 
         val b by settings.long()
-        assertEquals(0, b)
+        assertEquals(0L, b)
     }
 
     @Test
     fun longNullableDelegateDefaultKey() {
         var a by settings.nullableLong()
         assertEquals(null, a)
-        a = 2
-        assertEquals(2, a)
-        a = 0
-        assertEquals(0, a)
+        a = 2L
+        assertEquals(2L, a)
+        a = 0L
+        assertEquals(0L, a)
         a = null
         assertEquals(null, a)
     }
@@ -230,12 +261,27 @@ abstract class BaseSettingsTest(
     }
 
     @Test
+    fun stringOrNull() {
+        assertEquals(null, settings.getStringOrNull("a"))
+        settings.putString("a", "value")
+        assertEquals("value", settings.getStringOrNull("a"))
+    }
+
+    @Test
     fun stringOperator() {
         assertEquals("default", settings["a", "default"])
         settings["a"] = "value"
         assertEquals("value", settings["a", "default"])
         settings["a"] = ""
         assertEquals("", settings["a", "default"])
+    }
+
+    @Test
+    fun stringOrNullOperator() {
+        settings["a"] = "value" as String?
+        assertEquals<String?>("value", settings["a"])
+        settings["a"] = null as String?
+        assertEquals<String?>(null, settings["a"])
     }
 
     @Test
@@ -265,7 +311,7 @@ abstract class BaseSettingsTest(
 
     @Test
     fun stringDelegateDefaultKey() {
-        var a by settings.string("a", "default")
+        var a by settings.string(defaultValue = "default")
         assertEquals("default", a)
         a = "value"
         assertEquals("value", a)
@@ -278,7 +324,7 @@ abstract class BaseSettingsTest(
 
     @Test
     fun stringNullableDelegateDefaultKey() {
-        var a by settings.nullableString("a")
+        var a by settings.nullableString()
         assertEquals(null, a)
         a = "value"
         assertEquals("value", a)
@@ -308,12 +354,27 @@ abstract class BaseSettingsTest(
     }
 
     @Test
+    fun floatOrNull() {
+        assertEquals(null, settings.getFloatOrNull("a"))
+        settings.putFloat("a", 2f)
+        assertEquals(2f, settings.getFloatOrNull("a"))
+    }
+
+    @Test
     fun floatOperator() {
         assertEquals(5f, settings["a", 5f])
         settings["a"] = 2f
         assertEquals(2f, settings["a", 5f])
         settings["a"] = 0f
         assertEquals(0f, settings["a", 5f])
+    }
+
+    @Test
+    fun floatOrNullOperator() {
+        settings["a"] = 2f as Float?
+        assertEquals<Float?>(2f, settings["a"])
+        settings["a"] = null as Float?
+        assertEquals<Float?>(null, settings["a"])
     }
 
     @Test
@@ -385,6 +446,14 @@ abstract class BaseSettingsTest(
         assertEquals(5.0, settings.getDouble("b", 5.0))
     }
 
+
+    @Test
+    fun doubleOrNull() {
+        assertEquals(null, settings.getDoubleOrNull("a"))
+        settings.putDouble("a", 2.0)
+        assertEquals(2.0, settings.getDoubleOrNull("a"))
+    }
+
     @Test
     fun doubleOperator() {
         assertEquals(5.0, settings["a", 5.0])
@@ -392,6 +461,14 @@ abstract class BaseSettingsTest(
         assertEquals(2.0, settings["a", 5.0])
         settings["a"] = 0.0
         assertEquals(0.0, settings["a", 5.0])
+    }
+
+    @Test
+    fun doubleOrNullOperator() {
+        settings["a"] = 2.0 as Double?
+        assertEquals<Double?>(2.0, settings["a"])
+        settings["a"] = null as Double?
+        assertEquals<Double?>(null, settings["a"])
     }
 
     @Test
@@ -454,10 +531,25 @@ abstract class BaseSettingsTest(
     }
 
     @Test
+    fun booleanOrNull() {
+        assertEquals(null, settings.getBooleanOrNull("a"))
+        settings.putBoolean("a", true)
+        assertEquals(true, settings.getBooleanOrNull("a"))
+    }
+
+    @Test
     fun booleanOperator() {
         assertEquals(true, settings["a", true])
         settings["a"] = false
         assertEquals(false, settings["a", true])
+    }
+
+    @Test
+    fun booleanOrNullOperator() {
+        settings["a"] = true as Boolean?
+        assertEquals<Boolean?>(true, settings["a"])
+        settings["a"] = null as Boolean?
+        assertEquals<Boolean?>(null, settings["a"])
     }
 
     @Test
@@ -500,6 +592,21 @@ abstract class BaseSettingsTest(
         assertEquals(false, a)
         a = null
         assertEquals(null, a)
+    }
+
+    @Test
+    @Suppress("UNUSED_VARIABLE")
+    fun invalidOperatorGet() {
+        assertFailsWith(IllegalArgumentException::class) {
+            val a: Char? = settings["a"]
+        }
+    }
+
+    @Test
+    fun invalidOperatorSet() {
+        assertFailsWith(IllegalArgumentException::class) {
+            settings["a"] = 'a'
+        }
     }
 
     @Test

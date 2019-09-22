@@ -67,6 +67,12 @@ public interface Settings {
     public fun getInt(key: String, defaultValue: Int = 0): Int
 
     /**
+     * Returns the `Int` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
+    public fun getIntOrNull(key: String): Int?
+
+    /**
      * Stores the `Long` [value] at [key].
      */
     public fun putLong(key: String, value: Long)
@@ -76,6 +82,12 @@ public interface Settings {
      * type was stored at `key`, the behavior is not defined.
      */
     public fun getLong(key: String, defaultValue: Long = 0): Long
+
+    /**
+     * Returns the `Long` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
+    public fun getLongOrNull(key: String): Long?
 
     /**
      * Stores the `String` [value] at [key].
@@ -89,6 +101,12 @@ public interface Settings {
     public fun getString(key: String, defaultValue: String = ""): String
 
     /**
+     * Returns the `String` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
+    public fun getStringOrNull(key: String): String?
+
+    /**
      * Stores the `Float` [value] at [key].
      */
     public fun putFloat(key: String, value: Float)
@@ -98,6 +116,12 @@ public interface Settings {
      * type was stored at `key`, the behavior is not defined.
      */
     public fun getFloat(key: String, defaultValue: Float = 0f): Float
+
+    /**
+     * Returns the `Float` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
+    public fun getFloatOrNull(key: String): Float?
 
     /**
      * Stores the `Double` [value] at [key].
@@ -111,6 +135,12 @@ public interface Settings {
     public fun getDouble(key: String, defaultValue: Double = 0.0): Double
 
     /**
+     * Returns the `Double` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
+    public fun getDoubleOrNull(key: String): Double?
+
+    /**
      * Stores the `Boolean` [value] at [key].
      */
     public fun putBoolean(key: String, value: Boolean)
@@ -120,6 +150,12 @@ public interface Settings {
      * type was stored at `key`, the behavior is not defined.
      */
     public fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
+
+    /**
+     * Returns the `Boolean` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
+    public fun getBooleanOrNull(key: String): Boolean?
 }
 
 /**

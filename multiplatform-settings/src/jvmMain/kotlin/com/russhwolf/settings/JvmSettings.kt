@@ -79,6 +79,9 @@ public class JvmPropertiesSettings public constructor(
     public override fun getInt(key: String, defaultValue: Int): Int =
         delegate.getProperty(key)?.toInt() ?: defaultValue
 
+    public override fun getIntOrNull(key: String): Int? =
+        delegate.getProperty(key)?.toInt()
+
     public override fun putLong(key: String, value: Long) {
         delegate.setProperty(key, value.toString())
         onModify(delegate)
@@ -87,6 +90,8 @@ public class JvmPropertiesSettings public constructor(
     public override fun getLong(key: String, defaultValue: Long): Long =
         delegate.getProperty(key)?.toLong() ?: defaultValue
 
+    public override fun getLongOrNull(key: String): Long? =
+        delegate.getProperty(key)?.toLong()
 
     public override fun putString(key: String, value: String) {
         delegate.setProperty(key, value)
@@ -96,6 +101,8 @@ public class JvmPropertiesSettings public constructor(
     public override fun getString(key: String, defaultValue: String): String =
         delegate.getProperty(key) ?: defaultValue
 
+    public override fun getStringOrNull(key: String): String? =
+        delegate.getProperty(key)
 
     public override fun putFloat(key: String, value: Float) {
         delegate.setProperty(key, value.toString())
@@ -105,6 +112,8 @@ public class JvmPropertiesSettings public constructor(
     public override fun getFloat(key: String, defaultValue: Float): Float =
         delegate.getProperty(key)?.toFloat() ?: defaultValue
 
+    public override fun getFloatOrNull(key: String): Float? =
+        delegate.getProperty(key)?.toFloat()
 
     public override fun putDouble(key: String, value: Double) {
         delegate.setProperty(key, value.toString())
@@ -114,6 +123,8 @@ public class JvmPropertiesSettings public constructor(
     public override fun getDouble(key: String, defaultValue: Double): Double =
         delegate.getProperty(key)?.toDouble() ?: defaultValue
 
+    public override fun getDoubleOrNull(key: String): Double? =
+        delegate.getProperty(key)?.toDouble()
 
     public override fun putBoolean(key: String, value: Boolean) {
         delegate.setProperty(key, value.toString())
@@ -122,6 +133,9 @@ public class JvmPropertiesSettings public constructor(
 
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         delegate.getProperty(key)?.toBoolean() ?: defaultValue
+
+    public override fun getBooleanOrNull(key: String): Boolean? =
+        delegate.getProperty(key)?.toBoolean()
 }
 
 /**
@@ -173,25 +187,43 @@ public class JvmPreferencesSettings public constructor(
 
     public override fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
 
+    public override fun getIntOrNull(key: String): Int? =
+        if (delegate.keys().contains(key)) delegate.getInt(key, 0) else null
+
     public override fun putLong(key: String, value: Long): Unit = delegate.putLong(key, value)
 
     public override fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
+
+    public override fun getLongOrNull(key: String): Long? =
+        if (delegate.keys().contains(key)) delegate.getLong(key, 0L) else null
 
     public override fun putString(key: String, value: String): Unit = delegate.put(key, value)
 
     public override fun getString(key: String, defaultValue: String): String = delegate.get(key, defaultValue)
 
+    public override fun getStringOrNull(key: String): String? =
+        if (delegate.keys().contains(key)) delegate.get(key, "") else null
+
     public override fun putFloat(key: String, value: Float): Unit = delegate.putFloat(key, value)
 
     public override fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
+
+    public override fun getFloatOrNull(key: String): Float? =
+        if (delegate.keys().contains(key)) delegate.getFloat(key, 0f) else null
 
     public override fun putDouble(key: String, value: Double): Unit = delegate.putDouble(key, value)
 
     public override fun getDouble(key: String, defaultValue: Double): Double = delegate.getDouble(key, defaultValue)
 
+    public override fun getDoubleOrNull(key: String): Double? =
+        if (delegate.keys().contains(key)) delegate.getDouble(key, 0.0) else null
+
     public override fun putBoolean(key: String, value: Boolean): Unit = delegate.putBoolean(key, value)
 
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate.getBoolean(key, defaultValue)
+
+    public override fun getBooleanOrNull(key: String): Boolean? =
+        if (delegate.keys().contains(key)) delegate.getBoolean(key, false) else null
 
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {

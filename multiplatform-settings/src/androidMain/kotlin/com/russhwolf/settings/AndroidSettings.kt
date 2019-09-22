@@ -78,9 +78,6 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
         }
     }
 
-    /**
-     * Clears all values stored in this [Settings] instance.
-     */
     public override fun clear() {
         // Note: we call remove() on all keys instead of calling clear() in order to match listener behavior to iOS
         // See issue #9
@@ -91,99 +88,58 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
         }.apply()
     }
 
-    /**
-     * Removes the value stored at [key].
-     */
     public override fun remove(key: String): Unit = delegate.edit().remove(key).apply()
 
-    /**
-     * Returns `true` if there is a value stored at [key], or `false` otherwise.
-     */
     public override fun hasKey(key: String): Boolean = delegate.contains(key)
 
-    /**
-     * Stores the `Int` [value] at [key].
-     */
     public override fun putInt(key: String, value: Int): Unit = delegate.edit().putInt(key, value).apply()
 
-    /**
-     * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
 
-    /**
-     * Stores the `Long` [value] at [key].
-     */
+    public override fun getIntOrNull(key: String): Int? =
+        if (delegate.contains(key)) delegate.getInt(key, 0) else null
+
     public override fun putLong(key: String, value: Long): Unit = delegate.edit().putLong(key, value).apply()
 
-    /**
-     * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
 
-    /**
-     * Stores the `String` [value] at [key].
-     */
+    public override fun getLongOrNull(key: String): Long? =
+        if (delegate.contains(key)) delegate.getLong(key, 0L) else null
+
     public override fun putString(key: String, value: String): Unit =
         delegate.edit().putString(key, value).apply()
 
-    /**
-     * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getString(key: String, defaultValue: String): String =
         delegate.getString(key, defaultValue) ?: defaultValue
 
-    /**
-     * Stores the `Float` [value] at [key].
-     */
+    public override fun getStringOrNull(key: String): String? =
+        if (delegate.contains(key)) delegate.getString(key, "") else null
+
     public override fun putFloat(key: String, value: Float): Unit = delegate.edit().putFloat(key, value).apply()
 
-    /**
-     * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
 
-    /**
-     * Stores the `Double` [value] at [key].
-     */
+    public override fun getFloatOrNull(key: String): Float? =
+        if (delegate.contains(key)) delegate.getFloat(key, 0f) else null
+
     public override fun putDouble(key: String, value: Double): Unit =
         delegate.edit().putLong(key, value.toRawBits()).apply()
 
-    /**
-     * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getDouble(key: String, defaultValue: Double): Double =
         Double.fromBits(delegate.getLong(key, defaultValue.toRawBits()))
 
-    /**
-     * Stores the `Boolean` [value] at [key].
-     */
+    public override fun getDoubleOrNull(key: String): Double? =
+        if (delegate.contains(key)) Double.fromBits(delegate.getLong(key, 0.0.toRawBits())) else null
+
     public override fun putBoolean(key: String, value: Boolean): Unit =
         delegate.edit().putBoolean(key, value).apply()
 
-    /**
-     * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
-     * type was stored at `key`, the behavior is not defined.
-     */
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         delegate.getBoolean(key, defaultValue)
 
-    /**
-     * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [Listener]
-     * reference is returned which should be passed to [removeListener] when you no longer need it so that the
-     * associated platform resources can be cleaned up.
-     *
-     * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
-     * garbage-collected on Android.
-     *
-     * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
-     * it's recommended that interaction with the listener APIs be confined to the main UI thread.
-     */
+    public override fun getBooleanOrNull(key: String): Boolean? =
+        if (delegate.contains(key)) delegate.getBoolean(key, false) else null
+
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val cache = Listener.Cache(delegate.all[key])
@@ -208,9 +164,6 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
         return Listener(prefsListener)
     }
 
-    /**
-     * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
-     */
     @ExperimentalListener
     public override fun removeListener(listener: SettingsListener) {
         val platformListener = listener as? Listener ?: return
