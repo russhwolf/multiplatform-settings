@@ -29,7 +29,8 @@ import kotlin.test.assertTrue
 abstract class BaseSettingsTest(
     platformFactory: Settings.Factory,
     private val hasNamedInstances: Boolean = true,
-    private val hasListeners: Boolean = true
+    private val hasListeners: Boolean = true,
+    private val syncListeners: () -> Unit = {}
 ) {
     private lateinit var settings: Settings
 
@@ -556,48 +557,66 @@ abstract class BaseSettingsTest(
         // No invocation for call before listener was set
         settings["a"] = 2
         val listener = settings.addListener("a", verifier.listener)
-        verifier.assertNotInvoked()
+        try {
+            syncListeners()
+            verifier.assertNotInvoked()
 
-        // No invocation on set to existing value
-        settings["a"] = 2
-        verifier.assertNotInvoked()
+            // No invocation on set to existing value
+            settings["a"] = 2
+            syncListeners()
+            verifier.assertNotInvoked()
 
-        // New invocation on value change
-        settings["a"] = 1
-        verifier.assertInvoked()
+            // New invocation on value change
+            settings["a"] = 1
+            syncListeners()
+            verifier.assertInvoked()
 
-        // No invocation if value unchanged
-        settings["a"] = 1
-        verifier.assertNotInvoked()
+            // No invocation if value unchanged
+            settings["a"] = 1
+            syncListeners()
+            verifier.assertNotInvoked()
 
-        // New invocation on remove
-        settings -= "a"
-        verifier.assertInvoked()
+            // New invocation on remove
+            settings -= "a"
+            syncListeners()
+            verifier.assertInvoked()
 
-        // New invocation on re-add with same value
-        settings["a"] = 1
-        verifier.assertInvoked()
+            // New invocation on re-add with same value
+            settings["a"] = 1
+            syncListeners()
+            verifier.assertInvoked()
 
-        // No invocation on other key change
-        settings["b"] = 1
-        verifier.assertNotInvoked()
+            // No invocation on other key change
+            settings["b"] = 1
+            syncListeners()
+            verifier.assertNotInvoked()
 
-        // New invocation on clear
-        settings.clear()
-        verifier.assertInvoked()
+            // New invocation on clear
+            settings.clear()
+            syncListeners()
+            verifier.assertInvoked()
 
-        // Second listener at the same key also gets called
-        val verifier2 = ListenerVerifier()
-        settings.addListener("a", verifier2.listener)
-        settings["a"] = 3
-        verifier.assertInvoked()
-        verifier2.assertInvoked()
+            // Second listener at the same key also gets called
+            val verifier2 = ListenerVerifier()
+            val listener2 = settings.addListener("a", verifier2.listener)
+            try {
+                settings["a"] = 3
+                syncListeners()
+                verifier.assertInvoked()
+                verifier2.assertInvoked()
 
-        // No invocation on listener which is removed
-        settings.removeListener(listener)
-        settings["a"] = 2
-        verifier.assertNotInvoked()
-        verifier2.assertInvoked()
+                // No invocation on listener which is removed
+                settings.removeListener(listener)
+                settings["a"] = 2
+                syncListeners()
+                verifier.assertNotInvoked()
+                verifier2.assertInvoked()
+            } finally {
+                settings.removeListener(listener2)
+            }
+        } finally {
+            settings.removeListener(listener)
+        }
     }
 
 }

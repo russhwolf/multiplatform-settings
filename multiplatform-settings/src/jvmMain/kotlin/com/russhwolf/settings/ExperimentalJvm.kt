@@ -20,4 +20,16 @@ package com.russhwolf.settings
  * Annotation to mark JVM functionality as experimental.
  */
 @Experimental(level = Experimental.Level.WARNING)
+@Target(
+    AnnotationTarget.CLASS,
+    AnnotationTarget.PROPERTY,
+    AnnotationTarget.FIELD,
+    AnnotationTarget.LOCAL_VARIABLE,
+    AnnotationTarget.VALUE_PARAMETER,
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER,
+    AnnotationTarget.TYPEALIAS
+)
 annotation class ExperimentalJvm

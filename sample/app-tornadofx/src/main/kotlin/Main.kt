@@ -17,32 +17,36 @@
 package com.russhwolf.settings.example
 
 import com.russhwolf.settings.ExperimentalJvm
-import com.russhwolf.settings.JvmSettings
+import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.JvmPreferencesSettings
+import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.scene.Parent
 import tornadofx.App
 import tornadofx.View
 import tornadofx.action
 import tornadofx.button
+import tornadofx.checkbox
 import tornadofx.combobox
 import tornadofx.label
 import tornadofx.launch
+import tornadofx.onChange
 import tornadofx.selectedItem
 import tornadofx.textfield
 import tornadofx.vbox
-import java.io.File
-import java.io.IOException
-import java.util.Properties
-import java.util.concurrent.Executors
+import java.util.prefs.Preferences
 
 fun main() = launch<SettingsDemoApp>()
 
 class SettingsDemoApp : App(SettingsDemoView::class)
 
+@UseExperimental(ExperimentalListener::class)
 class SettingsDemoView : View() {
     override val root: Parent = vbox {
+        val selectedItem = SimpleObjectProperty<SettingConfig<*>>()
         val combobox = combobox(
-            values = FXCollections.observableArrayList(settingsRepository.mySettings)
+            values = FXCollections.observableArrayList(settingsRepository.mySettings),
+            property = selectedItem
         )
         val input = textfield()
         val setButton = button("Set Value")
@@ -50,7 +54,11 @@ class SettingsDemoView : View() {
         val removeButton = button("Remove Value")
         val clearButton = button("Clear All Values")
         val output = label()
+        val checkbox = checkbox("Enable Listener")
 
+        selectedItem.onChange {
+            checkbox.isSelected = it?.isLoggingEnabled == true
+        }
         setButton.action {
             if (combobox.selectedItem?.set(input.text) == true) {
                 output.text = ""
@@ -69,37 +77,15 @@ class SettingsDemoView : View() {
             settingsRepository.clear()
             output.text = "Settings cleared!"
         }
+        checkbox.action {
+            combobox.selectedItem?.isLoggingEnabled = checkbox.isSelected
+        }
     }
 }
 
 @UseExperimental(ExperimentalJvm::class)
 val settingsRepository: SettingsRepository by lazy {
-    val properties = Properties()
-    val file = File("SettingsDemo.properties")
-    val ioExecutor = Executors.newSingleThreadExecutor()
-
-    if (file.exists()) {
-        ioExecutor.submit {
-            try {
-                properties.load(file.bufferedReader())
-            } catch (e: IOException) {
-                System.err.println("Failed to load properties!")
-                e.printStackTrace()
-            }
-        }
-    }
-
-    val onModify: (Properties) -> Unit = {
-        ioExecutor.submit {
-            try {
-                it.store(file.bufferedWriter(), null)
-            } catch (e: IOException) {
-                System.err.println("Failed to save properties!")
-                e.printStackTrace()
-            }
-        }
-    }
-
-    val settings = JvmSettings(properties, onModify)
+    val preferences = Preferences.userRoot()
+    val settings = JvmPreferencesSettings(preferences)
     SettingsRepository(settings)
 }

@@ -17,6 +17,17 @@
 package com.russhwolf.settings
 
 import java.util.Properties
+import java.util.prefs.PreferenceChangeEvent
+import java.util.prefs.PreferenceChangeListener
+import java.util.prefs.Preferences
+
+@Deprecated(
+    message = "Use JvmPropertiesSettings or JvmPreferencesSettings to disambiguate usage.",
+    replaceWith = ReplaceWith("JvmPropertiesSettings", "com.russhwolf.settings.JvmPropertiesSettings")
+)
+@ExperimentalJvm
+@Suppress("UNUSED", "KDocMissingDocumentation")
+typealias JvmSettings = JvmPropertiesSettings
 
 /**
  * A collection of storage-backed key-value data
@@ -35,14 +46,15 @@ import java.util.Properties
  * Since the [Properties] doesn't perform the serialization and writing of the data by itself, a callback [onModify] can
  * be added which will allow serialization or other work to occur after any write operation is performed.
  *
- * Unlike the implementations on Android and iOS, `JvmSettings` does not include a [Settings.Factory] because
+ * Unlike the implementations on Android and iOS, `JvmPropertiesSettings` does not include a [Settings.Factory] because
  * the `Properties` API does not provide a natural way to create multiple named instances.
  *
  * This class is experimental as marked by the [ExperimentalJvm] annotation.
- * The experimental listener APIs are not implemented in `JvmSettings`.
+ *
+ * The experimental listener APIs are not implemented in `JvmPropertiesSettings`.
  */
 @ExperimentalJvm
-public class JvmSettings public constructor(
+public class JvmPropertiesSettings public constructor(
     private val delegate: Properties,
     private val onModify: (Properties) -> Unit = {}
 ) : Settings {
@@ -110,4 +122,127 @@ public class JvmSettings public constructor(
 
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         delegate.getProperty(key)?.toBoolean() ?: defaultValue
+}
+
+/**
+ * A collection of storage-backed key-value data
+ *
+ * This class allows storage of values with the [Int], [Long], [String], [Float], [Double], or [Boolean] types, using a
+ * [String] reference as a key. Values will be persisted across app launches.
+ *
+ * The specific persistence mechanism is defined using a platform-specific implementation, so certain behavior may vary
+ * across platforms. In general, updates will be reflected immediately in-memory, but will be persisted to disk
+ * asynchronously.
+ *
+ * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
+ * syntax and better type-safety when interacting with values stored in a `Settings` instance.
+ *
+ * On the JVM platform, this class can be created by passing a [Preferences] instance which will be used as a delegate.
+ *
+ * This class is experimental as marked by the [ExperimentalJvm] annotation.
+ */
+@ExperimentalJvm
+@UseExperimental(ExperimentalListener::class)
+public class JvmPreferencesSettings public constructor(
+    private val delegate: Preferences
+) : ObservableSettings {
+
+    /**
+     * A factory that can produce [Settings] instances.
+     *
+     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
+     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
+     * multiple `Settings` objects is the one-time creation of a single `Factory`.
+     *
+     * On the JVM platform, this class creates `Settings` objects backed by [Preferences].
+     */
+    class Factory(private val rootPreferences: Preferences = Preferences.userRoot()) : Settings.Factory {
+        public override fun create(name: String?): Settings {
+            val preferences = if (name != null) rootPreferences.node(name) else rootPreferences
+            return JvmPreferencesSettings(preferences)
+        }
+    }
+
+    public override fun clear(): Unit = delegate.clear()
+
+    public override fun remove(key: String): Unit = delegate.remove(key)
+
+    public override fun hasKey(key: String): Boolean = delegate.keys().contains(key)
+
+    public override fun putInt(key: String, value: Int): Unit = delegate.putInt(key, value)
+
+    public override fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
+
+    public override fun putLong(key: String, value: Long): Unit = delegate.putLong(key, value)
+
+    public override fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
+
+    public override fun putString(key: String, value: String): Unit = delegate.put(key, value)
+
+    public override fun getString(key: String, defaultValue: String): String = delegate.get(key, defaultValue)
+
+    public override fun putFloat(key: String, value: Float): Unit = delegate.putFloat(key, value)
+
+    public override fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
+
+    public override fun putDouble(key: String, value: Double): Unit = delegate.putDouble(key, value)
+
+    public override fun getDouble(key: String, defaultValue: Double): Double = delegate.getDouble(key, defaultValue)
+
+    public override fun putBoolean(key: String, value: Boolean): Unit = delegate.putBoolean(key, value)
+
+    public override fun getBoolean(key: String, defaultValue: Boolean): Boolean = delegate.getBoolean(key, defaultValue)
+
+    @ExperimentalListener
+    public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
+        val cache = Listener.Cache(delegate.get(key, null))
+        val callerThread = Thread.currentThread()
+
+        val prefsListener =
+            PreferenceChangeListener { event: PreferenceChangeEvent ->
+                val updatedKey = event.key
+                if (updatedKey != key) return@PreferenceChangeListener
+
+                /*
+                 We'll get called here on any update to the underlying Preferences delegate. We use a cache to determine
+                 whether the value at this listener's key changed before calling the user-supplied callback.
+                 */
+                val prev = cache.value
+                val current = event.newValue
+                if (prev != current) {
+                    cache.value = current
+                    /*
+                    PreferenceChangeListeners are called from a different thread. To match behavior of other platforms,
+                    we try to switch back to the original caller thread to execute the callback.
+                     */
+                    val callbackThread = if (callerThread.isAlive) callerThread else Thread.currentThread()
+                    callbackThread.run { callback() }
+                }
+            }
+        delegate.addPreferenceChangeListener(prefsListener)
+        return Listener(prefsListener)
+    }
+
+    @ExperimentalListener
+    public override fun removeListener(listener: SettingsListener) {
+        val platformListener = listener as? Listener ?: return
+        val listenerDelegate = platformListener.delegate
+        try {
+            delegate.removePreferenceChangeListener(listenerDelegate)
+        } catch (e: IllegalArgumentException) {
+            // Ignore error due to unregistered listener to match behavior of other platforms
+        }
+    }
+
+    /**
+     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     *
+     * On the JVM platform, this is a wrapper around [PreferenceChangeListener].
+     */
+    @ExperimentalListener
+    public class Listener internal constructor(
+        internal val delegate: PreferenceChangeListener
+    ) : SettingsListener {
+        internal class Cache(var value: Any?)
+    }
 }
