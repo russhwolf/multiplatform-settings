@@ -80,6 +80,8 @@ class SettingsDemoView : View() {
         checkbox.action {
             combobox.selectedItem?.isLoggingEnabled = checkbox.isSelected
         }
+
+        selectedItem.value = settingsRepository.mySettings.first()
     }
 }
 
