@@ -42,7 +42,7 @@ kotlin {
                 useExperimentalAnnotation("kotlin.Experimental")
             }
         }
-        
+
         commonMain {
             dependencies {
                 implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
@@ -52,7 +52,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation("com.russhwolf:multiplatform-settings-test:${rootProject.ext["library_version"]}")
-                
+
                 implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
             }
@@ -106,7 +106,7 @@ task("copyFramework") {
 }
 
 task("iosTest") {
-    onlyIf { System.getProperty("os.name").toLowerCase().contains("mac") }
+    onlyIf { System.getProperty("os.name").toLowerCase().contains("mac") && System.getenv("CI") != "true" }
     dependsOn("linkDebugTestIos")
     doLast {
         val testBinaryPath =

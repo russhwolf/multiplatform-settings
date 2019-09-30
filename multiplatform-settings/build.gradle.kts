@@ -135,7 +135,7 @@ android {
 }
 
 task("iosTest") {
-    onlyIf { System.getProperty("os.name").toLowerCase().contains("mac") }
+    onlyIf { System.getProperty("os.name").toLowerCase().contains("mac") && System.getenv("CI") != "true" }
     dependsOn("linkDebugTestIosSim")
     doLast {
         val testBinaryPath =
