@@ -106,6 +106,7 @@ task("copyFramework") {
 }
 
 task("iosTest") {
+    onlyIf { System.getProperty("os.name").toLowerCase().contains("mac") }
     dependsOn("linkDebugTestIos")
     doLast {
         val testBinaryPath =

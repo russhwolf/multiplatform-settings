@@ -135,6 +135,7 @@ android {
 }
 
 task("iosTest") {
+    onlyIf { System.getProperty("os.name").toLowerCase().contains("mac") }
     dependsOn("linkDebugTestIosSim")
     doLast {
         val testBinaryPath =
