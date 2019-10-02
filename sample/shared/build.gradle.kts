@@ -131,7 +131,7 @@ task("iosTest") {
         val testBinaryPath =
             (kotlin.targets["ios"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
         exec {
-            commandLine("xcrun", "simctl", "spawn", "iPhone Xʀ", testBinaryPath)
+            commandLine("xcrun", "simctl", "spawn", "--standalone", "iPhone Xʀ", testBinaryPath)
         }
     }
 }

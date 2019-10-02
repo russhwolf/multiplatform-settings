@@ -79,7 +79,7 @@ kotlin {
                 implementation("junit:junit:4.12")
                 implementation("androidx.test:core:1.2.0")
                 implementation("androidx.test.ext:junit:1.1.1")
-                implementation("org.robolectric:robolectric:4.0")
+                implementation("org.robolectric:robolectric:4.3")
             }
         }
 
@@ -146,7 +146,7 @@ task("iosTest") {
         val testBinaryPath =
             (kotlin.targets["iosSim"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
         exec {
-            commandLine("xcrun", "simctl", "spawn", "iPhone Xʀ", testBinaryPath)
+            commandLine("xcrun", "simctl", "spawn", "--standalone", "iPhone Xʀ", testBinaryPath)
         }
     }
 }
