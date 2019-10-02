@@ -1,5 +1,13 @@
 # Changelog #
 
+## v0.4 *(2019-10-??)* ##
+- Add new `JvmPreferencesSettings` implementation for JVM target, using `Preferences` APIs.
+    - To continue with the existing `Properties` implementation, use `JvmPropertiesSettings`. This implementation may be deprecated and removed in the future.
+- Add optional persistence callback in `JvmPropertiesSettings`
+- Add iosArm32 support.
+- Add new nullable get APIs (eg `Settings.getIntOrNull(key)`)
+- Add JVM sample
+
 ## v0.3.3 *(2019-08-22)* ##
 - Update to Kotlin 1.3.50
 - Convert build scripts to Kotlin

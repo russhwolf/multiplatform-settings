@@ -23,7 +23,7 @@ See also the sample project, which uses this structure.
 
 ## Usage
 
-The `Settings` interface has implementations on the Android, iOS (arm64 and x64), macOS (x64), JVM, and JS platforms. (Note that the JVM and JS implementations are currently marked as experimental.)
+The `Settings` interface has implementations on the Android, iOS (arm64, arm32, and x64), macOS (x64), JVM, and JS platforms. (Note that the JVM and JS implementations are currently marked as experimental.)
 
 The Android implementation is `AndroidSettings`, which wraps `SharedPreferences`.
 
@@ -96,10 +96,13 @@ This includes a `MockSettings` implementation of the `Settings` interface, which
 
 ### Experimental Platforms
 
-A pure-JVM implementation exists which wraps the Java Properties API. Its experimental status is marked with the `@ExperimentalJvm` annotation
+Two pure-JVM implementations exist. `JvmPreferencesSettings` wraps `Preferences` and `JvmPropertiesSettings` wraps `Properties`. Their experimental status is marked with the `@ExperimentalJvm` annotation. 
+
+    val delegate: Preferences = ...
+    val settings: Settings = JvmPreferencesSettings(delegate)
 
     val delegate: Properties = ...
-    val settings: Settings = JvmSettings(delegate)
+    val settings: Settings = JvmPropertiesSettings(delegate)
     
 A JS implementation exists which wraps the `Storage` API. Its experimental status is marked with the `@ExperimentalJvm` annotation
 
@@ -110,7 +113,7 @@ A JS implementation exists which wraps the `Storage` API. Its experimental statu
     
 ### Listeners
 
-Update listeners are available using an experimental API, only on Android, iOS, and macOS. These platforms are marked with the `ObservableSettings` interface, which includes `addListener()` and `removeListener()` methods.
+Update listeners are available using an experimental API, only for the `AndroidSettings`, `AppleSettings`, and `JvmPreferencesSettings` implementations. These are marked with the `ObservableSettings` interface, which includes `addListener()` and `removeListener()` methods.
 
     val settingsListener: SettingsListener = settings.addListener(key) { ... }
     
@@ -127,7 +130,7 @@ The library logic lives in the `commonMain`, `androidMain`, and `iosMain` source
 
 Some unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the android-specific behavior, and use the ios simulator to run the ios tests. The macOS tests run natively on macOS hosts. The experimental JS implementation is configured to run tests with Mocha, and the experimental JVM implementation runs standard junit tests.
 
-There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with common, android, and ios sources, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared` and provides an Android UI. The `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced by `shared`. The sample project does not currently have implementations on macOS, JVM, or JS.
+There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with common, android, and ios sources, to demo a shared logic layer consuming the library. The `app-android` module consumes `shared` and provides an Android UI. The `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced by `shared`. The `app-tornadofx` module consumes `shared` and produces a TornadoFX UI. The sample project does not currently have implementations on macOS or JS.
  
  The `shared` module includes some simple unit tests in common code to demonstrate manually mocking out the `Settings` interface when testing code that interacts with it.
 
