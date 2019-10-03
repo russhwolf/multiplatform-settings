@@ -19,7 +19,6 @@ package com.russhwolf.settings
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import com.russhwolf.settings.AndroidSettings.Factory
 
 /**
@@ -66,14 +65,12 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
          * will be used.
          *
          * On the Android platform, this is implemented by calling [Context.getSharedPreferences] and passing [name]. If
-         * `name` is `null` then [PreferenceManager.getDefaultSharedPreferences] will be used instead.
+         * `name` is `null` then a default package-specific name will be used instead.
          */
         public override fun create(name: String?): Settings {
-            val delegate = if (name == null) {
-                PreferenceManager.getDefaultSharedPreferences(appContext)
-            } else {
-                appContext.getSharedPreferences(name, MODE_PRIVATE)
-            }
+            // For null name, match the behavior of PreferenceManager.getDefaultSharedPreferences()
+            val preferencesName = name ?: "${appContext.packageName}_preferences"
+            val delegate = appContext.getSharedPreferences(preferencesName, MODE_PRIVATE)
             return AndroidSettings(delegate)
         }
     }
