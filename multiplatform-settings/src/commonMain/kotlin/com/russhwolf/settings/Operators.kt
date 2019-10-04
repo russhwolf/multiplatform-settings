@@ -21,43 +21,43 @@ package com.russhwolf.settings
 /** Equivalent to [Settings.hasKey] */
 public inline operator fun Settings.contains(key: String): Boolean = hasKey(key)
 
-/** Equivalent to [Settings.remove]*/
+/** Equivalent to [Settings.remove] */
 public inline operator fun Settings.minusAssign(key: String): Unit = remove(key)
 
-/** Equivalent to [Settings.getInt]*/
+/** Equivalent to [Settings.getInt] */
 public inline operator fun Settings.get(key: String, defaultValue: Int): Int = getInt(key, defaultValue)
 
-/** Equivalent to [Settings.getLong]*/
+/** Equivalent to [Settings.getLong] */
 public inline operator fun Settings.get(key: String, defaultValue: Long): Long = getLong(key, defaultValue)
 
-/** Equivalent to [Settings.getString]*/
+/** Equivalent to [Settings.getString] */
 public inline operator fun Settings.get(key: String, defaultValue: String): String = getString(key, defaultValue)
 
-/** Equivalent to [Settings.getFloat]*/
+/** Equivalent to [Settings.getFloat] */
 public inline operator fun Settings.get(key: String, defaultValue: Float): Float = getFloat(key, defaultValue)
 
-/** Equivalent to [Settings.getDouble]*/
+/** Equivalent to [Settings.getDouble] */
 public inline operator fun Settings.get(key: String, defaultValue: Double): Double = getDouble(key, defaultValue)
 
-/** Equivalent to [Settings.getBoolean]*/
+/** Equivalent to [Settings.getBoolean] */
 public inline operator fun Settings.get(key: String, defaultValue: Boolean): Boolean = getBoolean(key, defaultValue)
 
-/** Equivalent to [Settings.putInt]*/
+/** Equivalent to [Settings.putInt] */
 public inline operator fun Settings.set(key: String, value: Int): Unit = putInt(key, value)
 
-/** Equivalent to [Settings.putLong]*/
+/** Equivalent to [Settings.putLong] */
 public inline operator fun Settings.set(key: String, value: Long): Unit = putLong(key, value)
 
-/** Equivalent to [Settings.putString]*/
+/** Equivalent to [Settings.putString] */
 public inline operator fun Settings.set(key: String, value: String): Unit = putString(key, value)
 
-/** Equivalent to [Settings.putFloat]*/
+/** Equivalent to [Settings.putFloat] */
 public inline operator fun Settings.set(key: String, value: Float): Unit = putFloat(key, value)
 
-/** Equivalent to [Settings.putDouble]*/
+/** Equivalent to [Settings.putDouble] */
 public inline operator fun Settings.set(key: String, value: Double): Unit = putDouble(key, value)
 
-/** Equivalent to [Settings.putBoolean]*/
+/** Equivalent to [Settings.putBoolean] */
 public inline operator fun Settings.set(key: String, value: Boolean): Unit = putBoolean(key, value)
 
 /**
@@ -78,7 +78,7 @@ public inline operator fun <reified T : Any> Settings.get(key: String): T? = whe
  * Stores a typed value at [key], or remove what's there if [value] is null. Throws [IllegalArgumentException] if [T] is
  * not one of `Int`, `Long`, `String`, `Float`, `Double`, or `Boolean`.
  */
-public inline operator fun <reified T> Settings.set(key: String, value: T?): Unit =
+public inline operator fun <reified T : Any> Settings.set(key: String, value: T?): Unit =
     if (value == null) {
         this -= key
     } else when (T::class) {
@@ -90,3 +90,6 @@ public inline operator fun <reified T> Settings.set(key: String, value: T?): Uni
         Boolean::class -> putBoolean(key, value as Boolean)
         else -> throw IllegalArgumentException("Invalid type!")
     }
+
+/** Equivalent to [Settings.remove] */
+public inline operator fun Settings.set(key: String, @Suppress("UNUSED_PARAMETER") value: Nothing?): Unit = remove(key)

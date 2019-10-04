@@ -66,6 +66,9 @@ abstract class BaseSettingsTest(
         settings -= "a"
         assertEquals(-1, settings["a", -1])
         assertEquals("value", settings["b", "default"])
+
+        settings["b"] = null
+        assertEquals("default", settings["b", "default"])
     }
 
     @Test
