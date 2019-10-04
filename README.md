@@ -46,6 +46,11 @@ You can retrieve stored values via the `getXXX()` methods or their operator shor
     val b: Int = settings.getInt("key", defaultValue = -1) 
     val c: Int = settings["key", -1]
     
+Nullable methods are also available to avoid the need to use a default value. Instead, `null` will be returned if a key is not present.
+
+    val a: Int? = settings.getIntOrNull("key")
+    val b: Int? = settings["key"]
+    
 The `getXXX()` and `putXXX()` operation for a given key can be wrapped using a property delegate. This has the advantage of ensuring that the key is always accessed with a consistent type.
 
     val a: Int by settings.int("key")
@@ -67,7 +72,8 @@ Existence of a key can be queried
  Values can also be removed by key
   
     settings.remove("key")
-    settings -= "key"  
+    settings -= "key"
+    settings["key"] = null
   
  Finally, all values in a `Settings` instance can be removed
       
