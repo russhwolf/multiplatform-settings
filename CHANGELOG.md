@@ -1,6 +1,6 @@
 # Changelog #
 
-## v0.4 *(2019-10-??)* ##
+## v0.4 *(2019-10-04)* ##
 - Add new `JvmPreferencesSettings` implementation for JVM target, using `Preferences` APIs.
     - To continue with the existing `Properties` implementation, use `JvmPropertiesSettings`. This implementation may be deprecated and removed in the future.
 - Add optional persistence callback in `JvmPropertiesSettings`
