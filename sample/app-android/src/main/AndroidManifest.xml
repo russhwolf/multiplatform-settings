@@ -16,7 +16,8 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.russhwolf.settings.example">
+    package="com.russhwolf.settings.example.android"
+    >
 
     <application
         android:allowBackup="true"

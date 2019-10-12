@@ -15,13 +15,13 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "1.3.50" apply false
+    kotlin("multiplatform") version "1.3.60" apply false
     id("com.android.library") version "3.5.0" apply false
 }
 
 subprojects {
     group = "com.russhwolf"
-    version = "0.4"
+    version = "0.4.1"
 
     repositories {
         google()
