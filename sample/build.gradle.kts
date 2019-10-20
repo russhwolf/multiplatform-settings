@@ -30,9 +30,6 @@ allprojects {
         mavenCentral()
         jcenter()
     }
-
-    // workaround for https://youtrack.jetbrains.com/issue/KT-27170
-    configurations.create("compileClasspath")
 }
 
 task(name = "clean", type = Delete::class) {

@@ -34,7 +34,4 @@ subprojects {
             events("passed", "failed")
         }
     }
-
-    // workaround for https://youtrack.jetbrains.com/issue/KT-27170
-    configurations.create("compileClasspath")
 }
