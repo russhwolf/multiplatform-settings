@@ -10,3 +10,6 @@
 .externalNativeBuild
 /.idea/caches/build_file_checksums.ser
 /.idea/runConfigurations.xml
+/.idea/jarRepositories.xml
+/.idea/uiDesigner.xml.xml
+/.idea/artifacts

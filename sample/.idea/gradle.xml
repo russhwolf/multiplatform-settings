@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app-android" />
+            <option value="$PROJECT_DIR$/app-browser" />
             <option value="$PROJECT_DIR$/app-tornadofx" />
             <option value="$PROJECT_DIR$/shared" />
           </set>

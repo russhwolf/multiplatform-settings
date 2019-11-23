@@ -24,6 +24,9 @@ plugins {
 kotlin {
     android()
     jvm()
+    js {
+        browser()
+    }
 
     val isDevice = System.getenv("SDK_NAME")?.startsWith("iphoneos") == true
     val iosTarget = if (isDevice) {
@@ -86,6 +89,17 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-js"))
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
             }
         }
 

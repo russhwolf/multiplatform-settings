@@ -32,4 +32,5 @@ pluginManagement {
         jcenter()
     }
 }
-include(":shared", ":app-android", ":app-tornadofx")
+enableFeaturePreview("GRADLE_METADATA")
+include(":shared", ":app-android", ":app-tornadofx", ":app-browser")

@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +17,22 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "1.3.60" apply false
-    kotlin("android") version "1.3.60" apply false
-    id("com.android.library") version "3.5.0" apply false
-    id("com.android.application") version "3.5.0" apply false
+    kotlin("js")
 }
 
-allprojects {
-    ext["library_version"] = "0.4.1"
-
-    repositories {
-        mavenLocal()
-        google()
-        mavenCentral()
-        jcenter()
+kotlin.target.browser {
+    runTask {
+        outputFileName = "settings-demo.js"
     }
+}
+
+dependencies {
+    implementation(project(":shared"))
+    implementation(kotlin("stdlib-js"))
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
+    implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
+}
+
+tasks.withType<KotlinJsCompile> {
+    kotlinOptions.freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
 }
