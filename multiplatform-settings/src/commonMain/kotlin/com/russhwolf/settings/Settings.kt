@@ -43,6 +43,16 @@ public interface Settings {
     }
 
     /**
+     * Returns a `Set` containing all the keys present in this [Settings].
+     */
+    public val keys: Set<String>
+
+    /**
+     * Returns the number of key-value pairs present in this [Settings].
+     */
+    public val size: Int
+
+    /**
      * Clears all values stored in this [Settings] instance.
      */
     public fun clear()

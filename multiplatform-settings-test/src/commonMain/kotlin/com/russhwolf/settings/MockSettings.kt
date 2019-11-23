@@ -79,6 +79,9 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
         }
     }
 
+    public override val keys: Set<String> get() = delegate.keys
+    public override val size: Int get() = delegate.size
+
     public override fun clear() {
         delegate.clear()
         invokeListeners()

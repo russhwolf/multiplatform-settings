@@ -45,6 +45,30 @@ abstract class BaseSettingsTest(
     }
 
     @Test
+    fun keys() {
+        val initialSize = settings.keys.size // Note this might be nonempty on initialization (eg iOS)
+        assertFalse("a" in settings.keys)
+        settings.putInt("a", 5)
+        assertTrue("a" in settings.keys)
+        assertEquals(initialSize + 1, settings.keys.size)
+        settings.clear()
+        assertFalse("a" in settings.keys)
+        assertEquals(initialSize, settings.keys.size)
+    }
+
+    @Test
+    fun size() {
+        val initialSize = settings.size // Note this might be nonzero on initialization (eg iOS)
+        assertEquals(settings.size, settings.keys.size)
+        settings.putInt("a", 5)
+        assertEquals(initialSize + 1, settings.size)
+        assertEquals(settings.size, settings.keys.size)
+        settings.clear()
+        assertEquals(initialSize, settings.size)
+        assertEquals(settings.size, settings.keys.size)
+    }
+
+    @Test
     fun clear() {
         settings.putInt("a", 4)
         settings.putString("b", "value")

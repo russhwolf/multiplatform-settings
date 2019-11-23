@@ -44,6 +44,9 @@ import kotlin.browser.localStorage
  */
 public class JsSettings(private val delegate: Storage = localStorage) : Settings {
 
+    public override val keys: Set<String> get() = List(size) { delegate.key(it)!! }.toSet()
+    public override val size: Int get() = delegate.length
+
     public override fun clear(): Unit = delegate.clear()
     public override fun remove(key: String): Unit = delegate.removeItem(key)
     public override fun hasKey(key: String): Boolean = delegate[key] != null

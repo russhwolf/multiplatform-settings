@@ -187,7 +187,15 @@ Finally, all values in a `Settings` instance can be removed
 
 ```kotlin     
 settings.clear()
-``` 
+```
+
+The set of keys and amount of entries can be retrieved
+
+```kotlin
+val keys: Set<String> = settings.keys
+val size: Int = settings.size
+```
+Note that for the `AppleSettings` implementation, some entries are unremovable and therefore may still be present after a `clear()` call. Thus, `size` is not generally guaranteed to be zero after a `clear()`.
 
 ## Testing
 

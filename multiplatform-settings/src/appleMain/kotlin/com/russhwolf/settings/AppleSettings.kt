@@ -87,6 +87,9 @@ public class AppleSettings public constructor(
         }
     }
 
+    public override val keys: Set<String> get() = delegate.dictionaryRepresentation().keys as Set<String>
+    public override val size: Int get() = delegate.dictionaryRepresentation().keys.count()
+
     public override fun clear() {
         for (key in delegate.dictionaryRepresentation().keys) {
             remove(key as String)

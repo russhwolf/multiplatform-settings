@@ -75,6 +75,9 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
         }
     }
 
+    public override val keys: Set<String> get() = delegate.all.keys
+    public override val size: Int get() = delegate.all.size
+
     public override fun clear() {
         // Note: we call remove() on all keys instead of calling clear() in order to match listener behavior to iOS
         // See issue #9

@@ -43,8 +43,10 @@ public final class com/russhwolf/settings/JvmPreferencesSettings : com/russhwolf
 	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
 	public fun getInt (Ljava/lang/String;I)I
 	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
 	public fun getLong (Ljava/lang/String;J)J
 	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getSize ()I
 	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
 	public fun hasKey (Ljava/lang/String;)Z
@@ -81,8 +83,10 @@ public final class com/russhwolf/settings/JvmPropertiesSettings : com/russhwolf/
 	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
 	public fun getInt (Ljava/lang/String;I)I
 	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
 	public fun getLong (Ljava/lang/String;J)J
 	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getSize ()I
 	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
 	public fun hasKey (Ljava/lang/String;)Z
@@ -133,8 +137,10 @@ public abstract interface class com/russhwolf/settings/Settings {
 	public abstract fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
 	public abstract fun getInt (Ljava/lang/String;I)I
 	public abstract fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public abstract fun getKeys ()Ljava/util/Set;
 	public abstract fun getLong (Ljava/lang/String;J)J
 	public abstract fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public abstract fun getSize ()I
 	public abstract fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public abstract fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
 	public abstract fun hasKey (Ljava/lang/String;)Z

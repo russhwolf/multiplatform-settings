@@ -60,7 +60,10 @@ public class JvmPropertiesSettings public constructor(
     private val onModify: (Properties) -> Unit = {}
 ) : Settings {
 
-    public override fun clear(): Unit {
+    public override val keys: Set<String> get() = delegate.propertyNames().toList().toSet() as Set<String>
+    public override val size: Int get() = delegate.size
+
+    public override fun clear() {
         delegate.clear()
         onModify(delegate)
     }
@@ -180,6 +183,9 @@ public class JvmPreferencesSettings public constructor(
             return JvmPreferencesSettings(preferences)
         }
     }
+
+    public override val keys: Set<String> get() = delegate.keys().toSet()
+    public override val size: Int get() = delegate.keys().size
 
     public override fun clear(): Unit = delegate.clear()
 

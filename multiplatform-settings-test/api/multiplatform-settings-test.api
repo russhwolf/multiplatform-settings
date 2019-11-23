@@ -13,8 +13,10 @@ public final class com/russhwolf/settings/MockSettings : com/russhwolf/settings/
 	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
 	public fun getInt (Ljava/lang/String;I)I
 	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
 	public fun getLong (Ljava/lang/String;J)J
 	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getSize ()I
 	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
 	public fun hasKey (Ljava/lang/String;)Z
