@@ -153,7 +153,9 @@ public class JvmPropertiesSettings public constructor(
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  *
  * On the JVM platform, this class can be created by passing a [Preferences] instance which will be used as a delegate,
- * or via a [Factory]
+ * or via a [Factory].
+ *
+ * Note that listener callbacks passed to [addListener] will run on a background thread in this implementation
  *
  * This class is experimental as marked by the [ExperimentalJvm] annotation.
  */
@@ -230,7 +232,6 @@ public class JvmPreferencesSettings public constructor(
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val cache = Listener.Cache(delegate.get(key, null))
-        val callerThread = Thread.currentThread()
 
         val prefsListener =
             PreferenceChangeListener { event: PreferenceChangeEvent ->
@@ -245,12 +246,7 @@ public class JvmPreferencesSettings public constructor(
                 val current = event.newValue
                 if (prev != current) {
                     cache.value = current
-                    /*
-                    PreferenceChangeListeners are called from a different thread. To match behavior of other platforms,
-                    we try to switch back to the original caller thread to execute the callback.
-                     */
-                    val callbackThread = if (callerThread.isAlive) callerThread else Thread.currentThread()
-                    callbackThread.run { callback() }
+                    callback()
                 }
             }
         delegate.addPreferenceChangeListener(prefsListener)

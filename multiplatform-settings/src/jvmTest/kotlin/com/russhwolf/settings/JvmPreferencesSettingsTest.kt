@@ -45,20 +45,22 @@ class JvmPreferencesSettingsTest : BaseSettingsTest(
 }
 
 /**
- * This is a mildly flaky workaround for the fact that Preferences listeners are forcibly executed on a background
- * thread. We call this function before verifying listener calls in our test in order to give that background thread a
- * chance to run first. This should clear out the listener queue because the internal listener here is being added last,
- * but it occasionally seems to fail.
+ * This is a workaround for the fact that Preferences listeners are forcibly executed on a background thread. We call
+ * this function before verifying listener calls in our test in order to give that background thread a chance to run
+ * first. This should clear out the listener queue because the internal listener here is being added last.
  */
 private fun Preferences.syncListeners() {
     val latch = CountDownLatch(1)
+    val newValue = 1 + getInt("sync", 0)
     val preferenceChangeListener = object : PreferenceChangeListener {
         override fun preferenceChange(it: PreferenceChangeEvent) {
-            removePreferenceChangeListener(this)
-            latch.countDown()
+            if (it.key == "sync" && it.newValue == newValue.toString()) {
+                latch.countDown()
+                removePreferenceChangeListener(this)
+            }
         }
     }
     addPreferenceChangeListener(preferenceChangeListener)
-    putInt("sync", 1 + getInt("sync", 0))
+    putInt("sync", newValue)
     latch.await()
 }
