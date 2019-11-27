@@ -139,7 +139,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
 
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
-        val cache = Listener.Cache(delegate.all[key])
+        var prev = delegate.all[key]
 
         val prefsListener =
             SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, updatedKey: String ->
@@ -150,22 +150,14 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
                  if the value didn't change. We hold a cache to ensure that the user-supplied callback only updates on
                  changes, in order to ensure that we match iOS behavior
                  */
-                val prev = cache.value
                 val current = delegate.all[key]
                 if (prev != current) {
                     callback()
-                    cache.value = current
+                    prev = current
                 }
             }
         delegate.registerOnSharedPreferenceChangeListener(prefsListener)
-        return Listener(prefsListener)
-    }
-
-    @ExperimentalListener
-    public override fun removeListener(listener: SettingsListener) {
-        val platformListener = listener as? Listener ?: return
-        val listenerDelegate = platformListener.delegate
-        delegate.unregisterOnSharedPreferenceChangeListener(listenerDelegate)
+        return Listener(delegate, prefsListener)
     }
 
     /**
@@ -175,8 +167,11 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
      */
     @ExperimentalListener
     public class Listener internal constructor(
-        internal val delegate: SharedPreferences.OnSharedPreferenceChangeListener
+        private val preferences: SharedPreferences,
+        private val listener: SharedPreferences.OnSharedPreferenceChangeListener
     ) : SettingsListener {
-        internal class Cache(var value: Any?)
+        override fun deactivate() {
+            preferences.unregisterOnSharedPreferenceChangeListener(listener)
+        }
     }
 }

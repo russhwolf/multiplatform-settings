@@ -716,16 +716,16 @@ abstract class BaseSettingsTest(
                 verifier2.assertInvoked()
 
                 // No invocation on listener which is removed
-                settings.removeListener(listener)
+                listener.deactivate()
                 settings["a"] = 2
                 syncListeners()
                 verifier.assertNotInvoked()
                 verifier2.assertInvoked()
             } finally {
-                settings.removeListener(listener2)
+                listener2.deactivate()
             }
         } finally {
-            settings.removeListener(listener)
+            listener.deactivate()
         }
     }
 

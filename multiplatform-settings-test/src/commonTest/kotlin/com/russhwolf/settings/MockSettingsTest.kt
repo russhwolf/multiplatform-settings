@@ -189,7 +189,7 @@ class MockSettingsTest {
         verifierA.assertInvoked()
         verifierB.assertInvoked()
 
-        settings.removeListener(listenerA)
+        listenerA.deactivate()
 
         settings.putInt("a", 3)
         verifierA.assertNotInvoked()

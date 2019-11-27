@@ -132,24 +132,17 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
 
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
-        val cache = Listener.Cache(delegate[key])
+        var prev = delegate[key]
 
         val listener = {
-            val prev = cache.value
             val current = delegate[key]
             if (prev != current) {
                 callback()
-                cache.value = current
+                prev = current
             }
         }
         listeners += listener
-        return Listener(listener)
-    }
-
-    @ExperimentalListener
-    public override fun removeListener(listener: SettingsListener) {
-        val platformListener = listener as? Listener ?: return
-        listeners -= platformListener.delegate
+        return Listener(listeners, listener)
     }
 
     /**
@@ -161,8 +154,11 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
      */
     @ExperimentalListener
     public class Listener internal constructor(
-        internal val delegate: () -> Unit
+        private val listeners: MutableList<() -> Any>,
+        private val listener: () -> Unit
     ) : SettingsListener {
-        internal class Cache(var value: Any?)
+        override fun deactivate() {
+            listeners -= listener
+        }
     }
 }

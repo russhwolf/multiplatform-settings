@@ -181,7 +181,12 @@ public interface ObservableSettings : Settings {
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
     @ExperimentalListener
-    public fun removeListener(listener: SettingsListener)
+    @Deprecated(
+        message = "Use SettingsListener.deactivate() instead",
+        replaceWith = ReplaceWith("listener.deactivate()"),
+        level = DeprecationLevel.WARNING
+    )
+    public fun removeListener(listener: SettingsListener) = listener.deactivate()
 
 }
 
@@ -195,8 +200,12 @@ public interface ObservableSettings : Settings {
 public typealias ListenableSettings = ObservableSettings
 
 /**
- * A handle to a listener instance returned by [ObservableSettings.addListener] so it can be passed to
- * [ObservableSettings.removeListener].
+ * A handle to a listener instance returned by [ObservableSettings.addListener] so it can be deactivated as needed
  */
 @ExperimentalListener
-public interface SettingsListener
+public interface SettingsListener {
+    /**
+     * Unsubscribes this [SettingsListener] from receiving updates to the value at the key it monitors
+     */
+    fun deactivate()
+}

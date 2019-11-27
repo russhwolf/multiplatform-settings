@@ -129,18 +129,17 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
 
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
-        val cache = Listener.Cache(delegate.objectForKey(key))
+        var prev = delegate.objectForKey(key)
 
         val block = { _: NSNotification? ->
             /*
              We'll get called here on any update to the underlying NSUserDefaults delegate. We use a cache to determine
              whether the value at this listener's key changed before calling the user-supplied callback.
              */
-            val prev = cache.value
             val current = delegate.objectForKey(key)
             if (prev != current) {
                 callback()
-                cache.value = current
+                prev = current
             }
         }
         val observer = NSNotificationCenter.defaultCenter.addObserverForName(
@@ -152,20 +151,17 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
         return Listener(observer)
     }
 
-    @ExperimentalListener
-    public override fun removeListener(listener: SettingsListener) {
-        val platformListener = listener as? Listener ?: return
-        val listenerDelegate = platformListener.delegate
-        NSNotificationCenter.defaultCenter.removeObserver(listenerDelegate)
-    }
-
     /**
      * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
      *
      * On the iOS and macOS platforms, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
      */
     @ExperimentalListener
-    public class Listener internal constructor(internal val delegate: NSObjectProtocol) : SettingsListener {
-        internal class Cache(var value: Any?)
+    public class Listener internal constructor(
+        private val delegate: NSObjectProtocol
+    ) : SettingsListener {
+        override fun deactivate() {
+            NSNotificationCenter.defaultCenter.removeObserver(delegate)
+        }
     }
 }

@@ -231,7 +231,7 @@ public class JvmPreferencesSettings public constructor(
 
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
-        val cache = Listener.Cache(delegate.get(key, null))
+        var prev = delegate.get(key, null)
 
         val prefsListener =
             PreferenceChangeListener { event: PreferenceChangeEvent ->
@@ -242,26 +242,14 @@ public class JvmPreferencesSettings public constructor(
                  We'll get called here on any update to the underlying Preferences delegate. We use a cache to determine
                  whether the value at this listener's key changed before calling the user-supplied callback.
                  */
-                val prev = cache.value
                 val current = event.newValue
                 if (prev != current) {
-                    cache.value = current
                     callback()
+                    prev = current
                 }
             }
         delegate.addPreferenceChangeListener(prefsListener)
-        return Listener(prefsListener)
-    }
-
-    @ExperimentalListener
-    public override fun removeListener(listener: SettingsListener) {
-        val platformListener = listener as? Listener ?: return
-        val listenerDelegate = platformListener.delegate
-        try {
-            delegate.removePreferenceChangeListener(listenerDelegate)
-        } catch (e: IllegalArgumentException) {
-            // Ignore error due to unregistered listener to match behavior of other platforms
-        }
+        return Listener(delegate, prefsListener)
     }
 
     /**
@@ -271,8 +259,15 @@ public class JvmPreferencesSettings public constructor(
      */
     @ExperimentalListener
     public class Listener internal constructor(
-        internal val delegate: PreferenceChangeListener
+        private val preferences: Preferences,
+        private val listener: PreferenceChangeListener
     ) : SettingsListener {
-        internal class Cache(var value: Any?)
+        override fun deactivate() {
+            try {
+                preferences.removePreferenceChangeListener(listener)
+            } catch (e: IllegalArgumentException) {
+                // Ignore error due to unregistered listener to match behavior of other platforms
+            }
+        }
     }
 }

@@ -100,7 +100,7 @@ sealed class SettingConfig<T>(
             listener = if (value) {
                 settings.addListener(key) { println("$key = ${get()}") }
             } else {
-                listener?.let { settings.removeListener(it) }
+                listener?.deactivate()
                 null
             }
         }
