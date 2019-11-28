@@ -27,14 +27,15 @@ import kotlin.reflect.KProperty
  * This is just living in tests, but note that this pattern can lead to memory leaks if the reference isn't nulled out
  * when no longer being used.
  */
-internal actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
-    private val reference = AtomicReference(initialValue.freeze())
+internal actual fun <T> threadSafeReference(initialValue: T): ReadWriteProperty<Any?, T> =
+    object : ReadWriteProperty<Any?, T> {
+        private val reference = AtomicReference(initialValue.freeze())
 
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
-        return reference.value
-    }
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+            return reference.value
+        }
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
-        reference.value = value.freeze()
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+            reference.value = value.freeze()
+        }
     }
-}

@@ -99,6 +99,27 @@ public final class com/russhwolf/settings/JvmPropertiesSettings : com/russhwolf/
 	public fun remove (Ljava/lang/String;)V
 }
 
+public final class com/russhwolf/settings/ListenerExtensionsKt {
+	public static final fun addBooleanListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static synthetic fun addBooleanListener$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addBooleanOrNullListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addDoubleListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;DLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static synthetic fun addDoubleListener$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;DLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addDoubleOrNullListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addFloatListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;FLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static synthetic fun addFloatListener$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;FLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addFloatOrNullListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addIntListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;ILkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static synthetic fun addIntListener$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addIntOrNullListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addLongListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;JLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static synthetic fun addLongListener$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;JLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addLongOrNullListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addStringListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public static synthetic fun addStringListener$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/russhwolf/settings/SettingsListener;
+	public static final fun addStringOrNullListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+}
+
 public abstract interface class com/russhwolf/settings/ObservableSettings : com/russhwolf/settings/Settings {
 	public abstract fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
 	public abstract synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V

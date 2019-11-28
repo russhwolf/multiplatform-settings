@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+@file:Suppress("KDocMissingDocumentation")
+
 package com.russhwolf.settings
 
 import kotlin.test.assertEquals
+import kotlin.test.fail
 
-@Suppress("KDocMissingDocumentation")
 class ListenerVerifier {
-    val listener: () -> Unit = { invokeCount = invokeCount?.plus(1) }
+    val listener: () -> Unit = { invokeCount = invokeCount.plus(1) }
 
     private var invokeCount by threadSafeReference(0)
 
@@ -31,5 +33,29 @@ class ListenerVerifier {
 
     fun assertNotInvoked(message: String? = null) {
         assertInvoked(0, message)
+    }
+}
+
+@OptIn(ExperimentalListener::class)
+class ListenerValueVerifier<T> {
+    val listener: (T) -> Unit = {
+        if (state != State.Empty) fail("ListenerValueVerifier was invoked a second time without clearing last value")
+        state = State.Value(it)
+    }
+
+    private var state: State<T?> by threadSafeReference(State.Empty)
+
+    fun assertLastValue(value: T, message: String? = null) {
+        assertEquals(State.Value(value), state, message)
+        state = State.Empty
+    }
+
+    fun assertNoValue(message: String? = null) {
+        assertEquals(State.Empty, state, message)
+    }
+
+    private sealed class State<out T> {
+        object Empty : State<Nothing>()
+        data class Value<T>(private val value: T) : State<T>()
     }
 }

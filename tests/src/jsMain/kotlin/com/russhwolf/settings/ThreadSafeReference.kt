@@ -22,14 +22,15 @@ import kotlin.reflect.KProperty
 /**
  * JS equivalent of atomics is just wrapping a reference because the world is single-threaded
  */
-internal actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
-    private var reference: T? = initialValue
+internal actual fun <T> threadSafeReference(initialValue: T): ReadWriteProperty<Any?, T> =
+    object : ReadWriteProperty<Any?, T> {
+        private var reference: T = initialValue
 
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
-        return reference
-    }
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+            return reference
+        }
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
-        reference = value
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+            reference = value
+        }
     }
-}

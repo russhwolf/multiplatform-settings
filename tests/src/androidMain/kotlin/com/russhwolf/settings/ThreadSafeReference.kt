@@ -23,15 +23,15 @@ import kotlin.reflect.KProperty
 /**
  * Test helper atomic delegate.
  */
-internal actual fun <T> threadSafeReference(initialValue: T?): ReadWriteProperty<Any?, T?> =
-    object : ReadWriteProperty<Any?, T?> {
-        private val reference = AtomicReference<T?>(initialValue)
+internal actual fun <T> threadSafeReference(initialValue: T): ReadWriteProperty<Any?, T> =
+    object : ReadWriteProperty<Any?, T> {
+        private val reference = AtomicReference(initialValue)
 
-        override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T {
             return reference.get()
         }
 
-        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
             reference.set(value)
         }
     }

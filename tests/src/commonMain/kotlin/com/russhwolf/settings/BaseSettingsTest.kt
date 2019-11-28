@@ -755,4 +755,88 @@ abstract class BaseSettingsTest(
         }
     }
 
+
+    @OptIn(ExperimentalListener::class)
+    private inline fun <reified T> typedListenerTest(
+        defaultValue: T,
+        otherValue: T,
+        addTypedListener: ObservableSettings.(String, T, (T) -> Unit) -> SettingsListener
+    ) {
+        if (!hasListeners) return
+
+        val settings = settings as? ObservableSettings
+            ?: throw IllegalStateException("Must implement ObservableSettings or ignore this test")
+
+        val verifier = ListenerValueVerifier<T>()
+
+        val listener = settings.addTypedListener("key", defaultValue, verifier.listener)
+        try {
+            verifier.assertNoValue()
+
+            settings["key"] = otherValue
+            syncListeners()
+            verifier.assertLastValue(otherValue)
+
+            settings -= "key"
+            syncListeners()
+            verifier.assertLastValue(defaultValue)
+        } finally {
+            listener.deactivate()
+        }
+    }
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun intListener() = typedListenerTest(-1, 1, ObservableSettings::addIntListener)
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun intOrNullListener() =
+        typedListenerTest(null, 1) { key, _, block -> addIntOrNullListener(key, block) }
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun longListener() = typedListenerTest(-1L, 1L, ObservableSettings::addLongListener)
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun longOrNullListener() =
+        typedListenerTest(null, 1L) { key, _, block -> addLongOrNullListener(key, block) }
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun stringListener() = typedListenerTest("default", "foo", ObservableSettings::addStringListener)
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun stringOrNullListener() =
+        typedListenerTest(null, "foo") { key, _, block -> addStringOrNullListener(key, block) }
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun floatListener() = typedListenerTest(-1f, 1f, ObservableSettings::addFloatListener)
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun floatOrNullListener() =
+        typedListenerTest(null, 1f) { key, _, block -> addFloatOrNullListener(key, block) }
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun doubleListener() = typedListenerTest(-1.0, 1.0, ObservableSettings::addDoubleListener)
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun doubleOrNullListener() =
+        typedListenerTest(null, 1.0) { key, _, block -> addDoubleOrNullListener(key, block) }
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun booleanListener() = typedListenerTest(true, false, ObservableSettings::addBooleanListener)
+
+    @Test
+    @OptIn(ExperimentalListener::class)
+    fun booleanOrNullListener() =
+        typedListenerTest(null, false) { key, _, block -> addBooleanOrNullListener(key, block) }
+
 }
