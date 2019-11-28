@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -186,7 +186,7 @@ public interface ObservableSettings : Settings {
         replaceWith = ReplaceWith("listener.deactivate()"),
         level = DeprecationLevel.WARNING
     )
-    public fun removeListener(listener: SettingsListener) = listener.deactivate()
+    public fun removeListener(listener: SettingsListener): Unit = listener.deactivate()
 
 }
 
