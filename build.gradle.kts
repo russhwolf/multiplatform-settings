@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 plugins {
     kotlin("multiplatform") version "1.3.60" apply false
     id("com.android.library") version "3.5.0" apply false
+    id("org.jetbrains.dokka") version "0.10.0" apply false
 }
 
 subprojects {

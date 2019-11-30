@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("org.jetbrains.dokka")
     id("maven-publish")
     id("com.jfrog.bintray") version "1.8.4-jetbrains-3"
 }
@@ -125,6 +127,19 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
+    }
+}
+
+val dokka by tasks.getting(DokkaTask::class) {
+    multiplatform {
+        val common by creating
+        val android by creating
+        val jvm by creating
+        val ios by creating
+        val ios32 by creating
+        val iosSim by creating
+        val macos by creating
+        val js by creating
     }
 }
 
