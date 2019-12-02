@@ -165,4 +165,6 @@ task("iosTest") {
         }
     }
 }
-tasks["allTests"].dependsOn("iosTest")
+if (System.getProperty("os.name").contains("mac", ignoreCase = true)) {
+    tasks["allTests"].dependsOn("iosTest")
+}
