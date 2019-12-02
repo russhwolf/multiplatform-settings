@@ -1,14 +1,18 @@
-# Gradle
-# Build your Java project and run tests with Gradle using a Gradle wrapper script.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
-  - azure
+  branches:
+    include:
+      - master
+pr:
+  branches:
+    include:
+      - master
 
 jobs:
   - job: "General"
     steps:
+      # Default environments in Azure don't include JavaFX which we need for JVM sample,
+      # so we install and use a version that does.
+      # Running general build on Linux because JS was having trouble on Mac
       - task: Bash@3
         inputs:
           targetType: 'inline'
@@ -47,7 +51,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean build check'
+          tasks: 'clean build check assemble'
 
     pool:
       vmImage: 'ubuntu-18.04'
@@ -64,8 +68,8 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean macosTest iosTest publishMetadataPublicationToMavenLocal publishIos32PublicationToMavenLocal publishIosPublicationToMavenLocal publishIosSimPublicationToMavenLocal publishMacosPublicationToMavenLocal'
-
+          tasks: 'clean macosX64Test iosTest publishKotlinMultiplatformPublicationToMavenLocal publishMetadataPublicationToMavenLocal publishIosArm32PublicationToMavenLocal publishIosArm64PublicationToMavenLocal publishIosX64PublicationToMavenLocal publishMacosX64PublicationToMavenLocal'
+          
       - task: Gradle@2
         inputs:
           workingDirectory: 'sample'
@@ -78,5 +82,38 @@ jobs:
           testResultsFiles: '**/TEST-*.xml'
           tasks: 'clean iosTest'
 
+      - task: Xcode@5
+        inputs:
+          actions: 'build'
+          configuration: 'Debug'
+          scheme: 'SettingsDemo'
+          sdk: 'iphoneos13.1'
+          packageApp: false
+
+      - task: Xcode@5
+        inputs:
+          actions: 'build'
+          configuration: 'Debug'
+          scheme: 'SettingsDemo'
+          sdk: 'iphonesimulator13.1'
+          packageApp: false
+
     pool:
       vmImage: 'macos-10.14'
+
+  - job: "Windows"
+    steps:
+      - task: Gradle@2
+        inputs:
+          workingDirectory: ''
+          gradleWrapperFile: 'gradlew'
+          gradleOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          tasks: 'clean publishKotlinMultiplatformPublicationToMavenLocal publishMetadataPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal'
+
+    pool:
+      vmImage: 'windows-2019'

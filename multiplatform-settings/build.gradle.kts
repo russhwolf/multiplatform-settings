@@ -32,10 +32,10 @@ kotlin {
         publishAllLibraryVariants()
     }
     jvm()
-    iosArm64("ios")
-    iosArm32("ios32")
-    iosX64("iosSim")
-    macosX64("macos")
+    iosArm64()
+    iosArm32()
+    iosX64()
+    macosX64()
     js {
         browser()
         compilations.all {
@@ -46,6 +46,14 @@ kotlin {
                     moduleKind = "umd"
                 }
             }
+        }
+    }
+
+    // Create empty targets for all other presets. These will build interfaces but no platform-specific implementation
+    presets.forEach {
+        if (it.name == "jvmWithJava") return@forEach // Probably don't need this, and it chokes on Android plugin
+        if (targets.findByName(it.name) == null) {
+            targetFromPreset(it)
         }
     }
 
@@ -98,25 +106,25 @@ kotlin {
             }
         }
 
-        val iosMain by getting
-        val iosTest by getting
-        val ios32Main by getting {
-            dependsOn(iosMain)
+        val iosArm64Main by getting
+        val iosArm64Test by getting
+        val iosArm32Main by getting {
+            dependsOn(iosArm64Main)
         }
-        val ios32Test by getting {
-            dependsOn(iosTest)
+        val iosArm32Test by getting {
+            dependsOn(iosArm64Test)
         }
-        val iosSimMain by getting {
-            dependsOn(iosMain)
+        val iosX64Main by getting {
+            dependsOn(iosArm64Main)
         }
-        val iosSimTest by getting {
-            dependsOn(iosTest)
+        val iosX64Test by getting {
+            dependsOn(iosArm64Test)
         }
-        val macosMain by getting {
-            dependsOn(iosMain)
+        val macosX64Main by getting {
+            dependsOn(iosArm64Main)
         }
-        val macosTest by getting {
-            dependsOn(iosTest)
+        val macosX64Test by getting {
+            dependsOn(iosArm64Test)
         }
 
         val jsMain by getting {
@@ -137,10 +145,10 @@ val dokka by tasks.getting(DokkaTask::class) {
         val common by creating
         val android by creating
         val jvm by creating
-        val ios by creating
-        val ios32 by creating
-        val iosSim by creating
-        val macos by creating
+        val iosArm64 by creating
+        val iosArm32 by creating
+        val iosX64 by creating
+        val macosX64 by creating
         val js by creating
     }
 }
@@ -156,10 +164,10 @@ android {
 }
 
 task("iosTest") {
-    dependsOn("linkDebugTestIosSim")
+    dependsOn("linkDebugTestIosX64")
     doLast {
         val testBinaryPath =
-            (kotlin.targets["iosSim"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
+            (kotlin.targets["iosX64"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
         exec {
             commandLine("xcrun", "simctl", "spawn", "--standalone", "iPhone 11", testBinaryPath)
         }

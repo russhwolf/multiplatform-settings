@@ -40,9 +40,9 @@ kotlin {
             framework("Shared") {
                 export("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
                 if (isDevice) {
-                    export("com.russhwolf:multiplatform-settings-ios:${rootProject.ext["library_version"]}")
+                    export("com.russhwolf:multiplatform-settings-iosarm64:${rootProject.ext["library_version"]}")
                 } else {
-                    export("com.russhwolf:multiplatform-settings-iossim:${rootProject.ext["library_version"]}")
+                    export("com.russhwolf:multiplatform-settings-iosx64:${rootProject.ext["library_version"]}")
                 }
             }
         }

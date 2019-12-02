@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-
 /*
  * Copyright 2019 Russell Wolf
  *
@@ -16,6 +14,8 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -24,10 +24,10 @@ plugins {
 kotlin {
     android()
     jvm()
-    iosArm64("ios")
-    iosArm32("ios32")
-    iosX64("iosSim")
-    macosX64("macos")
+    iosArm64()
+    iosArm32()
+    iosX64()
+    macosX64()
     js {
         browser()
         compilations.all {
@@ -40,6 +40,15 @@ kotlin {
             }
         }
     }
+
+    // Create empty targets for all other presets. These will build interfaces but no platform-specific implementation
+    presets.forEach {
+        if (it.name == "jvmWithJava") return@forEach // Probably don't need this, and it chokes on Android plugin
+        if (targets.findByName(it.name) == null) {
+            targetFromPreset(it)
+        }
+    }
+
     sourceSets {
         all {
             languageSettings.apply {
@@ -77,15 +86,15 @@ kotlin {
             }
         }
 
-        val iosMain by getting
-        val ios32Main by getting {
-            dependsOn(iosMain)
+        val iosArm64Main by getting
+        val iosArm32Main by getting {
+            dependsOn(iosArm64Main)
         }
-        val iosSimMain by getting {
-            dependsOn(iosMain)
+        val iosX64Main by getting {
+            dependsOn(iosArm64Main)
         }
-        val macosMain by getting {
-            dependsOn(iosMain)
+        val macosX64Main by getting {
+            dependsOn(iosArm64Main)
         }
 
         val jsMain by getting {
