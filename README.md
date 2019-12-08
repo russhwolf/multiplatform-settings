@@ -15,7 +15,7 @@ Then, simply add the dependency to your common source-set dependencies
     commonMain {
         dependencies {
             ...
-            implementation "com.russhwolf:multiplatform-settings:0.5"
+            implementation "com.russhwolf:multiplatform-settings:0.4.1"
         }
     }
     
@@ -94,7 +94,7 @@ On iOS and macOS, the factory can be instantiated without passing any parameter
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
-    implementation "com.russhwolf:multiplatform-settings-test:0.5"
+    implementation "com.russhwolf:multiplatform-settings-test:0.4.1"
     
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
     
