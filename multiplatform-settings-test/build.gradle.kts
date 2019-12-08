@@ -17,6 +17,7 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.konan.target.Family
 
 plugins {
     kotlin("multiplatform")
@@ -32,10 +33,15 @@ kotlin {
         publishAllLibraryVariants()
     }
     jvm()
-    iosArm64("ios")
-    iosArm32("ios32")
-    iosX64("iosSim")
-    macosX64("macos")
+    iosArm64()
+    iosArm32()
+    iosX64()
+    watchosArm32()
+    watchosArm64()
+    watchosX86()
+    tvosArm64()
+    tvosX64()
+    macosX64()
     js {
         browser()
         compilations.all {
@@ -48,6 +54,15 @@ kotlin {
             }
         }
     }
+
+    // Create empty targets for all other presets. These will build interfaces but no platform-specific implementation
+    presets.forEach {
+        if (it.name == "jvmWithJava") return@forEach // Probably don't need this, and it chokes on Android plugin
+        if (targets.findByName(it.name) == null) {
+            targetFromPreset(it)
+        }
+    }
+
     sourceSets {
         all {
             languageSettings.apply {
@@ -96,26 +111,16 @@ kotlin {
             }
         }
 
-        val iosMain by getting
-        val iosTest by getting
-        val ios32Main by getting {
-            dependsOn(iosMain)
-        }
-        val ios32Test by getting {
-            dependsOn(iosTest)
-        }
-        val iosSimMain by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimTest by getting {
-            dependsOn(iosTest)
-        }
-        val macosMain by getting {
-            dependsOn(iosMain)
-        }
-        val macosTest by getting {
-            dependsOn(iosTest)
-        }
+        val appleMain by creating
+        val appleTest by creating
+
+        targets
+            .withType(KotlinNativeTarget::class)
+            .matching { it.konanTarget.family in listOf(Family.IOS, Family.OSX, Family.WATCHOS, Family.TVOS) }
+            .configureEach {
+                compilations["main"].defaultSourceSet.dependsOn(appleMain)
+                compilations["test"].defaultSourceSet.dependsOn(appleTest)
+            }
 
         val jsMain by getting {
             dependencies {
@@ -135,10 +140,10 @@ val dokka by tasks.getting(DokkaTask::class) {
         val common by creating
         val android by creating
         val jvm by creating
-        val ios by creating
-        val ios32 by creating
-        val iosSim by creating
-        val macos by creating
+        val iosArm64 by creating
+        val iosArm32 by creating
+        val iosX64 by creating
+        val macosX64 by creating
         val js by creating
     }
 }
@@ -152,13 +157,15 @@ android {
 }
 
 task("iosTest") {
-    dependsOn("linkDebugTestIosSim")
+    dependsOn("linkDebugTestIosX64")
     doLast {
         val testBinaryPath =
-            (kotlin.targets["iosSim"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
+            (kotlin.targets["iosX64"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
         exec {
             commandLine("xcrun", "simctl", "spawn", "--standalone", "iPhone 11", testBinaryPath)
         }
     }
 }
-tasks["allTests"].dependsOn("iosTest")
+if (System.getProperty("os.name").contains("mac", ignoreCase = true)) {
+    tasks["allTests"].dependsOn("iosTest")
+}

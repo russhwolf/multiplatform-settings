@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +13,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
@@ -41,6 +41,10 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
+    }
+
+    packagingOptions {
+        exclude("META-INF/*.kotlin_module")
     }
 }
 

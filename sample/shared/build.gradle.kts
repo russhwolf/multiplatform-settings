@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +13,8 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     id("com.android.library")
@@ -40,9 +40,9 @@ kotlin {
             framework("Shared") {
                 export("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
                 if (isDevice) {
-                    export("com.russhwolf:multiplatform-settings-ios:${rootProject.ext["library_version"]}")
+                    export("com.russhwolf:multiplatform-settings-iosarm64:${rootProject.ext["library_version"]}")
                 } else {
-                    export("com.russhwolf:multiplatform-settings-iossim:${rootProject.ext["library_version"]}")
+                    export("com.russhwolf:multiplatform-settings-iosx64:${rootProject.ext["library_version"]}")
                 }
             }
         }
@@ -54,7 +54,7 @@ kotlin {
                 useExperimentalAnnotation("kotlin.Experimental")
             }
         }
-        
+
         commonMain {
             dependencies {
                 api("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
@@ -64,7 +64,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation("com.russhwolf:multiplatform-settings-test:${rootProject.ext["library_version"]}")
-                
+
                 implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
             }
@@ -149,4 +149,6 @@ task("iosTest") {
         }
     }
 }
-tasks["check"].dependsOn("iosTest")
+if (System.getProperty("os.name").contains("mac", ignoreCase = true)) {
+    tasks["allTests"].dependsOn("iosTest")
+}
