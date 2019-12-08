@@ -168,7 +168,7 @@ android {
     testOptions.unitTests.isIncludeAndroidResources = true
 }
 
-task("iosX64Test") {
+task("iosTest") {
     dependsOn("linkDebugTestIosX64")
     doLast {
         val testBinaryPath =
