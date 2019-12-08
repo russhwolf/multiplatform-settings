@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,6 @@
 
 package com.russhwolf.settings.example
 
-import com.russhwolf.settings.ExperimentalJs
 import com.russhwolf.settings.JsSettings
 import kotlinx.html.INPUT
 import kotlinx.html.InputType
@@ -102,5 +101,4 @@ fun showOutput(value: String) {
     document.getElementById("output").asDynamic().value = value
 }
 
-@UseExperimental(ExperimentalJs::class)
 private val settingsRepository: SettingsRepository by lazy { SettingsRepository(JsSettings()) }

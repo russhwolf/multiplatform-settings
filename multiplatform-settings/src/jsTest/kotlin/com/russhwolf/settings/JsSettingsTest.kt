@@ -21,7 +21,6 @@ import kotlin.browser.localStorage
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@UseExperimental(ExperimentalJs::class)
 class JsSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): JsSettings {

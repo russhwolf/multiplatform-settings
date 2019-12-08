@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,11 +40,8 @@ import kotlin.browser.localStorage
  * Unlike the implementations on Android and iOS, `JsSettings` does not include a [Settings.Factory] because
  * the `Storage` API does not provide a way to create multiple named instances.
  *
- * This class is experimental as marked by the [ExperimentalJs] annotation.
- *
  * The experimental listener APIs are not implemented in `JsSettings`.
  */
-@ExperimentalJs
 public class JsSettings(private val delegate: Storage = localStorage) : Settings {
 
     public override fun clear(): Unit = delegate.clear()

@@ -23,17 +23,24 @@ See also the sample project, which uses this structure.
 
 ## Usage
 
-The `Settings` interface has implementations on the Android, iOS (arm64, arm32, and x64), macOS (x64), JVM, and JS platforms. (Note that the JVM and JS implementations are currently marked as experimental.)
+The `Settings` interface has implementations on the Android, iOS, macOS, watchOOS, tvOS, JS, and JVM platforms. (Note that the two JVM implementations are currently marked as experimental.)
 
 The Android implementation is `AndroidSettings`, which wraps `SharedPreferences`.
 
     val delegate: SharedPreferences = ...
     val settings: Settings = AndroidSettings(delegate)
 
-On iOS or macOS, `AppleSettings` wraps `NSUserDefaults`.
+On iOS, macOS, tvOS, or watchOS, `AppleSettings` wraps `NSUserDefaults`.
 
     val delegate: NSUserDefaults = ...
     val settings: Settings = AppleSettings(delegate)
+    
+On JS, `JsSettings` wraps `Storage`.
+    
+    val delegate: Storage = ...
+    val settings: Settings = JsSettings(delegate)
+    
+    val settings: Settings = JsSettings() // use localStorage by default
         
 Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
 
@@ -109,14 +116,7 @@ Two pure-JVM implementations exist. `JvmPreferencesSettings` wraps `Preferences`
 
     val delegate: Properties = ...
     val settings: Settings = JvmPropertiesSettings(delegate)
-    
-A JS implementation exists which wraps the `Storage` API. Its experimental status is marked with the `@ExperimentalJvm` annotation
-
-    val delegate: Storage = ...
-    val settings: Settings = JsSettings(delegate)
-    
-    val settings: Settings = JsSettings() // use localStorage by default
-    
+        
 ### Listeners
 
 Update listeners are available using an experimental API, only for the `AndroidSettings`, `AppleSettings`, and `JvmPreferencesSettings` implementations. These are marked with the `ObservableSettings` interface, which includes `addListener()` and `removeListener()` methods.
