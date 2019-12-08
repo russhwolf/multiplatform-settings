@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2019 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ plugins {
 }
 
 allprojects {
-    ext["library_version"] = "0.4.1"
+    ext["library_version"] = "0.5"
 
     repositories {
         mavenLocal()
