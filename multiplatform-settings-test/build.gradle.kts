@@ -17,6 +17,7 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.konan.target.Family
 
 plugins {
     kotlin("multiplatform")
@@ -35,6 +36,11 @@ kotlin {
     iosArm64()
     iosArm32()
     iosX64()
+    watchosArm32()
+    watchosArm64()
+    watchosX86()
+    tvosArm64()
+    tvosX64()
     macosX64()
     js {
         browser()
@@ -105,26 +111,16 @@ kotlin {
             }
         }
 
-        val iosArm64Main by getting
-        val iosArm64Test by getting
-        val iosArm32Main by getting {
-            dependsOn(iosArm64Main)
-        }
-        val iosArm32Test by getting {
-            dependsOn(iosArm64Test)
-        }
-        val iosX64Main by getting {
-            dependsOn(iosArm64Main)
-        }
-        val iosX64Test by getting {
-            dependsOn(iosArm64Test)
-        }
-        val macosX64Main by getting {
-            dependsOn(iosArm64Main)
-        }
-        val macosX64Test by getting {
-            dependsOn(iosArm64Test)
-        }
+        val appleMain by creating
+        val appleTest by creating
+
+        targets
+            .withType(KotlinNativeTarget::class)
+            .matching { it.konanTarget.family in listOf(Family.IOS, Family.OSX, Family.WATCHOS, Family.TVOS) }
+            .configureEach {
+                compilations["main"].defaultSourceSet.dependsOn(appleMain)
+                compilations["test"].defaultSourceSet.dependsOn(appleTest)
+            }
 
         val jsMain by getting {
             dependencies {

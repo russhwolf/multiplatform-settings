@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.konan.target.Family
 
 plugins {
     kotlin("multiplatform")
@@ -27,6 +29,11 @@ kotlin {
     iosArm64()
     iosArm32()
     iosX64()
+    watchosArm32()
+    watchosArm64()
+    watchosX86()
+    tvosArm64()
+    tvosX64()
     macosX64()
     js {
         browser()
@@ -86,16 +93,14 @@ kotlin {
             }
         }
 
-        val iosArm64Main by getting
-        val iosArm32Main by getting {
-            dependsOn(iosArm64Main)
-        }
-        val iosX64Main by getting {
-            dependsOn(iosArm64Main)
-        }
-        val macosX64Main by getting {
-            dependsOn(iosArm64Main)
-        }
+        val appleMain by creating
+
+        targets
+            .withType(KotlinNativeTarget::class)
+            .matching { it.konanTarget.family in listOf(Family.IOS, Family.OSX, Family.WATCHOS, Family.TVOS) }
+            .configureEach {
+                compilations["main"].defaultSourceSet.dependsOn(appleMain)
+            }
 
         val jsMain by getting {
             dependencies {
