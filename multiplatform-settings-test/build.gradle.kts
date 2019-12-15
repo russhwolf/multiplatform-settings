@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.konan.target.Family
+import com.russhwolf.settings.build.standardConfiguration
 
 plugins {
     kotlin("multiplatform")
@@ -28,47 +25,10 @@ plugins {
 }
 apply(from = "../gradle/publish.gradle")
 
+standardConfiguration()
+
 kotlin {
-    android {
-        publishAllLibraryVariants()
-    }
-    jvm()
-    iosArm64()
-    iosArm32()
-    iosX64()
-    watchosArm32()
-    watchosArm64()
-    watchosX86()
-    tvosArm64()
-    tvosX64()
-    macosX64()
-    js {
-        browser()
-        compilations.all {
-            tasks.withType<Kotlin2JsCompile> {
-                kotlinOptions {
-                    metaInfo = true
-                    sourceMap = true
-                    moduleKind = "umd"
-                }
-            }
-        }
-    }
-
-    // Create empty targets for all other presets. These will build interfaces but no platform-specific implementation
-    presets.forEach {
-        if (it.name == "jvmWithJava") return@forEach // Probably don't need this, and it chokes on Android plugin
-        if (targets.findByName(it.name) == null) {
-            targetFromPreset(it)
-        }
-    }
-
     sourceSets {
-        all {
-            languageSettings.apply {
-                useExperimentalAnnotation("kotlin.Experimental")
-            }
-        }
         commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
@@ -111,17 +71,6 @@ kotlin {
             }
         }
 
-        val appleMain by creating
-        val appleTest by creating
-
-        targets
-            .withType(KotlinNativeTarget::class)
-            .matching { it.konanTarget.family in listOf(Family.IOS, Family.OSX, Family.WATCHOS, Family.TVOS) }
-            .configureEach {
-                compilations["main"].defaultSourceSet.dependsOn(appleMain)
-                compilations["test"].defaultSourceSet.dependsOn(appleTest)
-            }
-
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
@@ -133,39 +82,4 @@ kotlin {
             }
         }
     }
-}
-
-val dokka by tasks.getting(DokkaTask::class) {
-    multiplatform {
-        val common by creating
-        val android by creating
-        val jvm by creating
-        val iosArm64 by creating
-        val iosArm32 by creating
-        val iosX64 by creating
-        val macosX64 by creating
-        val js by creating
-    }
-}
-
-android {
-    compileSdkVersion(29)
-
-    defaultConfig {
-        minSdkVersion(15)
-    }
-}
-
-task("iosTest") {
-    dependsOn("linkDebugTestIosX64")
-    doLast {
-        val testBinaryPath =
-            (kotlin.targets["iosX64"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
-        exec {
-            commandLine("xcrun", "simctl", "spawn", "--standalone", "iPhone 11", testBinaryPath)
-        }
-    }
-}
-if (System.getProperty("os.name").contains("mac", ignoreCase = true)) {
-    tasks["allTests"].dependsOn("iosTest")
 }

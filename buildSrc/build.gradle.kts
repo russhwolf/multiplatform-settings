@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-allprojects {
-    group = "com.russhwolf"
-    version = "0.5"
+plugins {
+    `kotlin-dsl`
+}
 
-    repositories {
-        google()
-        mavenCentral()
-        jcenter()
-    }
+repositories {
+    google()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
+    implementation("com.android.tools.build:gradle:3.5.3")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.10.0")
 }

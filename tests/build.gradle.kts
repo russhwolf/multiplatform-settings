@@ -14,54 +14,17 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.konan.target.Family
+import com.russhwolf.settings.build.standardConfiguration
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
 }
 
+standardConfiguration(isTestModule = true)
+
 kotlin {
-    android()
-    jvm()
-    iosArm64()
-    iosArm32()
-    iosX64()
-    watchosArm32()
-    watchosArm64()
-    watchosX86()
-    tvosArm64()
-    tvosX64()
-    macosX64()
-    js {
-        browser()
-        compilations.all {
-            tasks.withType<Kotlin2JsCompile> {
-                kotlinOptions {
-                    metaInfo = true
-                    sourceMap = true
-                    moduleKind = "umd"
-                }
-            }
-        }
-    }
-
-    // Create empty targets for all other presets. These will build interfaces but no platform-specific implementation
-    presets.forEach {
-        if (it.name == "jvmWithJava") return@forEach // Probably don't need this, and it chokes on Android plugin
-        if (targets.findByName(it.name) == null) {
-            targetFromPreset(it)
-        }
-    }
-
     sourceSets {
-        all {
-            languageSettings.apply {
-                useExperimentalAnnotation("kotlin.Experimental")
-            }
-        }
         commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
@@ -93,15 +56,6 @@ kotlin {
             }
         }
 
-        val appleMain by creating
-
-        targets
-            .withType(KotlinNativeTarget::class)
-            .matching { it.konanTarget.family in listOf(Family.IOS, Family.OSX, Family.WATCHOS, Family.TVOS) }
-            .configureEach {
-                compilations["main"].defaultSourceSet.dependsOn(appleMain)
-            }
-
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
@@ -109,13 +63,5 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
-    }
-}
-
-android {
-    compileSdkVersion(29)
-
-    defaultConfig {
-        minSdkVersion(15)
     }
 }

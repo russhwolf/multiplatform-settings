@@ -17,7 +17,6 @@
 package com.russhwolf.settings
 
 import com.russhwolf.settings.AppleSettings.Factory
-import kotlinx.cinterop.convert
 import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
@@ -80,21 +79,21 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
 
     public override fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
 
-    public override fun putInt(key: String, value: Int): Unit = delegate.setInteger(value.convert(), key)
+    public override fun putInt(key: String, value: Int): Unit = delegate.setInt(value, key)
 
     public override fun getInt(key: String, defaultValue: Int): Int =
-        if (hasKey(key)) delegate.integerForKey(key).convert() else defaultValue
+        if (hasKey(key)) delegate.intForKey(key) else defaultValue
 
     public override fun getIntOrNull(key: String): Int? =
-        if (hasKey(key)) delegate.integerForKey(key).convert() else null
+        if (hasKey(key)) delegate.intForKey(key) else null
 
-    public override fun putLong(key: String, value: Long): Unit = delegate.setInteger(value.convert(), key)
+    public override fun putLong(key: String, value: Long): Unit = delegate.setLong(value, key)
 
     public override fun getLong(key: String, defaultValue: Long): Long =
-        if (hasKey(key)) delegate.integerForKey(key).convert() else defaultValue
+        if (hasKey(key)) delegate.longForKey(key) else defaultValue
 
     public override fun getLongOrNull(key: String): Long? =
-        if (hasKey(key)) delegate.integerForKey(key).convert() else null
+        if (hasKey(key)) delegate.longForKey(key) else null
 
     public override fun putString(key: String, value: String): Unit = delegate.setObject(value, key)
 
@@ -165,3 +164,8 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
         }
     }
 }
+
+internal expect fun NSUserDefaults.intForKey(defaultName: String): Int
+internal expect fun NSUserDefaults.setInt(value: Int, forKey: String)
+internal expect fun NSUserDefaults.longForKey(defaultName: String): Long
+internal expect fun NSUserDefaults.setLong(value: Long, forKey: String)

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-allprojects {
-    group = "com.russhwolf"
-    version = "0.5"
+package com.russhwolf.settings
 
-    repositories {
-        google()
-        mavenCentral()
-        jcenter()
-    }
-}
+import platform.Foundation.NSUserDefaults
+
+internal actual fun NSUserDefaults.intForKey(defaultName: String): Int = integerForKey(defaultName)
+internal actual fun NSUserDefaults.setInt(value: Int, forKey: String) = setInteger(value, forKey)
+internal actual fun NSUserDefaults.longForKey(defaultName: String): Long = stringForKey(defaultName)?.toLong() ?: 0L
+internal actual fun NSUserDefaults.setLong(value: Long, forKey: String) = setObject(value.toString(), forKey)
