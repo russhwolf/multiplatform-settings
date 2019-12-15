@@ -1,0 +1,76 @@
+trigger:
+  tags:
+    include:
+      - "*"
+
+jobs:
+  - job: "General"
+    steps:
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "bintrayUser=$(bintrayUser)
+            bintrayKey=$(bintrayKey)" > keys.properties
+
+      - task: Gradle@2
+        inputs:
+          workingDirectory: ''
+          gradleWrapperFile: 'gradlew'
+          gradleOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          tasks: 'clean publishToMavenLocal bintrayUpload'
+
+    pool:
+      vmImage: 'ubuntu-18.04'
+
+  - job: "Mac"
+    steps:
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "bintrayUser=$(bintrayUser)
+            bintrayKey=$(bintrayKey)" > keys.properties
+
+      - task: Gradle@2
+        inputs:
+          workingDirectory: ''
+          gradleWrapperFile: 'gradlew'
+          gradleOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          tasks: 'clean publishIosArm32PublicationToMavenLocal publishIosArm64PublicationToMavenLocal publishIosX64PublicationToMavenLocal publishMacosX64PublicationToMavenLocal publishWatchosArm32PublicationToMavenLocal publishWatchosArm64PublicationToMavenLocal publishWatchosX86PublicationToMavenLocal publishTvosArm64PublicationToMavenLocal publishTvosX64PublicationToMavenLocal bintrayUpload'
+
+    pool:
+      vmImage: 'macos-10.14'
+
+  - job: "Windows"
+    steps:
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "bintrayUser=$(bintrayUser)
+            bintrayKey=$(bintrayKey)" > keys.properties
+      - task: Gradle@2
+        inputs:
+          workingDirectory: ''
+          gradleWrapperFile: 'gradlew'
+          gradleOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          tasks: 'clean publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal bintrayUpload'
+
+    pool:
+      vmImage: 'windows-2019'
