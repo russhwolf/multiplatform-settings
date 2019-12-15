@@ -15,7 +15,7 @@ Then, simply add the dependency to your common source-set dependencies
     commonMain {
         dependencies {
             ...
-            implementation "com.russhwolf:multiplatform-settings:0.4.1"
+            implementation "com.russhwolf:multiplatform-settings:0.5"
         }
     }
     
@@ -101,11 +101,17 @@ On iOS and macOS, the factory can be instantiated without passing any parameter
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
-    implementation "com.russhwolf:multiplatform-settings-test:0.4.1"
+    implementation "com.russhwolf:multiplatform-settings-test:0.5"
     
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
+
+## Other platforms
+
+The `Settings` interface is published to all available platforms. Developers who desire implementations outside of the defaults provided are free to add their own implementations, and welcome to make pull requests if the implementation might be generally useful to others. Note that implementations which require external dependencies should be places in a separate gradle module in order to keep the core `multiplatform-settings` module dependency-free.
     
 ## Experimental API
+
+This is a pre-1.0 library based on an experimental framework, so some occasional API breakage may occur. However certain APIs are marked with explicit experimental annotations to highlight areas that might have more risk of API changes or unexpected behavior.
 
 ### Experimental Platforms
 
@@ -125,11 +131,17 @@ Update listeners are available using an experimental API, only for the `AndroidS
     
 The `SettingsListener` returned from the call should be used to signal when you're done listening:
 
-    settings.removeListener(settingsListener)
+    settingsListener.deactivate()
     
 This current listener implementation is not designed with any sort of thread-safety so it's recommended to only interact with these APIs from the main thread of your application.
 
-The listener APIs make use of the Kotlin `@Experimental` annotation. All usages must be marked with `@ExperimentalListener` or `@UseExperimental(ExperimentalListener::class)`.
+The listener APIs make use of the Kotlin `@ExperimentalListener` annotation.
+
+## Building
+
+The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `master` branch, the script in `azure-pipelines.yml` runs. This builds the library and runs unit tests for all platforms across Linux, Mac, and Windows hosts. In addition, the library build artifacts are deployed to the local maven repository and the sample project is built for the platforms on which it is implemented. This ensures that the sample remains in sync with updates to the library.
+
+An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This builds the library for all platforms and uploads artifacts to Bintray. Uploaded artifacts must still be published manually.
 
 ## Project Structure
 The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface which exposes apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The platform sources then hold implementations, delegating to whichever delegate that platform uses. The macOS platform reads from the same sources as iOS. The experimental JVM and JS implementations reside in the `jvmMain` and `jsMain` sources, respectively

@@ -1,5 +1,18 @@
 # Changelog #
 
+## v0.5 *(2019-12-15)* ##
+- Update to Kotlin 1.3.61
+- Update to Android Gradle Plugin 3.5.3
+- Breaking changes:
+    - `Long`-based APIs were previously being backed by `Int`s on 32-bit Apple targets (eg `iosArm32`), which means they were limited to `Int` values. This has been replaced with using `String`-backed storage that will respect the full range of `Long` values.
+    - Apple artifacts have been renamed to use default target names. This should only have impact for consumers who depended on platform-specific artifacts instead of using Gradle Metadata and depending only on the `multiplatform-settings` artifact.
+- Deprecate `Settings.removeListener()` and replace with `SettingsListener.deactivate()`
+- Deprecate `@ExperimentalJs` annotation. Javascript now has the same stability as the rest of the library.
+- Deploy common code to all available platforms. This enables users to add implementations on platforms not included by default.
+- Add JS browser target to sample project
+- Remove incorrect logic attempting to run `JvmPreferencesSettings.Listener` updates on the main thread. This listener implementation updates on an internally-managed background thread. The behavior has not changed but is now documented.
+- Build script refactors. This should be largely invisible but please file issues if anything is inconsistent.
+
 ## v0.4.1 *(2019-11-19)* ##
 - Update to Kotlin 1.3.60
 
