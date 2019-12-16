@@ -17,8 +17,8 @@
 import com.russhwolf.settings.build.standardConfiguration
 
 plugins {
-    kotlin("multiplatform")
     id("com.android.library")
+    kotlin("multiplatform")
     id("org.jetbrains.dokka")
     id("maven-publish")
     id("com.jfrog.bintray") version "1.8.4-jetbrains-3"

@@ -17,8 +17,8 @@
 import com.russhwolf.settings.build.standardConfiguration
 
 plugins {
-    kotlin("multiplatform")
     id("com.android.library")
+    kotlin("multiplatform")
 }
 
 standardConfiguration(isTestModule = true)
