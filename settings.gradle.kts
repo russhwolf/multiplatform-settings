@@ -38,5 +38,6 @@ include(
     ":multiplatform-settings",
     ":multiplatform-settings-test",
     ":multiplatform-settings-no-arg",
+    ":multiplatform-settings-serialization",
     ":tests"
 )

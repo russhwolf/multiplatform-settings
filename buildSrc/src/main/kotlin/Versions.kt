@@ -29,4 +29,6 @@ object Versions {
     const val binaryCompatibilityValidator = "0.2.4"
     const val junit = "4.13"
     const val robolectric = "4.4"
+    const val serializationPlugin = "1.4.20"
+    const val serializationRuntime = "1.0.1"
 }
