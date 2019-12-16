@@ -49,19 +49,71 @@ public class WindowsSettings public constructor(private val hKey: HKEY) : Settin
 
     public override fun hasKey(key: String): Boolean = TODO()
 
-    public override fun putInt(key: String, value: Int) = TODO()
+    public override fun putInt(key: String, value: Int) = memScoped {
+        val outValue = alloc<DWORDVar> { this.value = value.convert() }
+        RegSetValueExW(
+            hKey,
+            key,
+            0,
+            REG_DWORD,
+            outValue.ptr.reinterpret(),
+            sizeOf<DWORDVar>().convert())
+            .checkWinApiSuccess { "Unable to put value for key \"$key\"" }
+    }
 
     public override fun getInt(key: String, defaultValue: Int): Int =
         getIntOrNull(key) ?: defaultValue
 
-    override fun getIntOrNull(key: String): Int? = TODO()
+    override fun getIntOrNull(key: String): Int? = memScoped {
+        val outValue = alloc<DWORDVar>()
+        val len = alloc<DWORDVar> { value = sizeOf<DWORDVar>().convert() }
+        val type = alloc<DWORDVar> { value = 0U }
 
-    public override fun putLong(key: String, value: Long) = TODO()
+        RegQueryValueExW(
+            hKey,
+            key,
+            null,
+            type.ptr,
+            outValue.ptr.reinterpret(),
+            len.ptr)
+            .checkWinApiSuccess { "Unable to query value for key \"$key\"" }
+        checkType(REG_DWORD, type, key)
+
+        return outValue.value.convert()
+    }
+
+    public override fun putLong(key: String, value: Long) = memScoped {
+        val outValue = alloc<ULONGLONGVar> { this.value = value.convert() }
+        RegSetValueExW(
+            hKey,
+            key,
+            0,
+            REG_QWORD,
+            outValue.ptr.reinterpret(),
+            sizeOf<ULONGLONGVar>().convert())
+            .checkWinApiSuccess { "Unable to put value for key \"$key\"" }
+    }
 
     public override fun getLong(key: String, defaultValue: Long): Long =
         getLongOrNull(key) ?: defaultValue
 
-    override fun getLongOrNull(key: String): Long? = TODO()
+    override fun getLongOrNull(key: String): Long? = memScoped {
+        val outValue = alloc<ULONGLONGVar>()
+        val len = alloc<DWORDVar> { value = sizeOf<ULONGLONGVar>().convert() }
+        val type = alloc<DWORDVar> { value = 0U }
+
+        RegQueryValueExW(
+            hKey,
+            key,
+            null,
+            type.ptr,
+            outValue.ptr.reinterpret(),
+            len.ptr)
+            .checkWinApiSuccess { "Unable to query value for key \"$key\"" }
+        checkType(REG_QWORD, type, key)
+
+        return outValue.value.convert()
+    }
 
     public override fun putString(key: String, value: String) = memScoped {
         val outValue = value.wcstr

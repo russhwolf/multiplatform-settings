@@ -29,10 +29,24 @@ class WinUtilsTest {
         assertEquals("[0x00000000] The operation completed successfully.", formatMessageFromSystem(ERROR_SUCCESS.convert()))
     }
 
+    // TODO remove when Settings interface is implemented and uncomment WindowsSettingsTest
+    private val settings = WindowsSettings("multiplatform-settings", "test")
+
     @Test
     fun checkStr() {
-        val settings = WindowsSettings("multiplatform-settings", "test")
-        settings["akey"] = "avalue"
-        assertEquals<String?>("avalue", settings["akey"])
+        settings["a-string-key"] = "avalue"
+        assertEquals<String?>("avalue", settings["a-string-key"])
+    }
+
+    @Test
+    fun checkInt() {
+        settings["an-int-key"] = 42
+        assertEquals<Int?>(42, settings["an-int-key"])
+    }
+
+    @Test
+    fun checkLong() {
+        settings["a-long-key"] = 0x4242_4242_4242_4242L
+        assertEquals<Long?>(0x4242_4242_4242_4242L, settings["a-long-key"])
     }
 }
