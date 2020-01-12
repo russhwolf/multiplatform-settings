@@ -5,20 +5,24 @@ This is a Kotlin library for Multiplatform apps, so that common code can persist
 ## Adding to your project
 Multiplatform Settings is currently published to jcenter, so add that to repositories.
 
-    repositories {
-        ...
-        jcenter()
-    }
+```
+repositories {
+    ...
+    jcenter()
+}
+```
 
 Then, simply add the dependency to your common source-set dependencies
 
-    commonMain {
-        dependencies {
-            ...
-            implementation "com.russhwolf:multiplatform-settings:0.5"
-        }
+```
+commonMain {
+    dependencies {
+        ...
+        implementation "com.russhwolf:multiplatform-settings:0.5"
     }
-    
+}
+``` 
+
 See also the sample project, which uses this structure.
 
 ## Usage
@@ -27,88 +31,118 @@ The `Settings` interface has implementations on the Android, iOS, macOS, watchOO
 
 The Android implementation is `AndroidSettings`, which wraps `SharedPreferences`.
 
-    val delegate: SharedPreferences = ...
-    val settings: Settings = AndroidSettings(delegate)
+```kotlin
+val delegate: SharedPreferences // ...
+val settings: Settings = AndroidSettings(delegate)
+```
 
 On iOS, macOS, tvOS, or watchOS, `AppleSettings` wraps `NSUserDefaults`.
 
-    val delegate: NSUserDefaults = ...
-    val settings: Settings = AppleSettings(delegate)
-    
+```kotlin
+val delegate: NSUserDefaults // ...
+val settings: Settings = AppleSettings(delegate)
+```
+
 On JS, `JsSettings` wraps `Storage`.
-    
-    val delegate: Storage = ...
-    val settings: Settings = JsSettings(delegate)
-    
-    val settings: Settings = JsSettings() // use localStorage by default
-        
+
+```kotlin
+val delegate: Storage // ...
+val settings: Settings = JsSettings(delegate)
+
+val settings: Settings = JsSettings() // use localStorage by default
+```     
+
 Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
 
-    settings.putInt("key", 3)
-    settings["key"] = 3
-    
+```kotlin
+settings.putInt("key", 3)
+settings["key"] = 3
+```
+
 You can retrieve stored values via the `getXXX()` methods or their operator shortcuts. If a key is not present, then the supplied default will be returned instead.
 
-    val a: Int = settings.getInt("key")
-    val b: Int = settings.getInt("key", defaultValue = -1) 
-    val c: Int = settings["key", -1]
-    
+```kotlin
+val a: Int = settings.getInt("key")
+val b: Int = settings.getInt("key", defaultValue = -1) 
+val c: Int = settings["key", -1]
+```    
+
 Nullable methods are also available to avoid the need to use a default value. Instead, `null` will be returned if a key is not present.
 
-    val a: Int? = settings.getIntOrNull("key")
-    val b: Int? = settings["key"]
-    
+```kotlin
+val a: Int? = settings.getIntOrNull("key")
+val b: Int? = settings["key"]
+```    
+
 The `getXXX()` and `putXXX()` operation for a given key can be wrapped using a property delegate. This has the advantage of ensuring that the key is always accessed with a consistent type.
 
-    val a: Int by settings.int("key")
-    val b: Int by settings.int("key", defaultValue = -1)
-    
+```kotlin
+val a: Int by settings.int("key")
+val b: Int by settings.int("key", defaultValue = -1)
+```    
+
 Nullable delegates exists so that absence of a key can be indicated by `null` instead of a default value
-    
-    val a: Int? by settings.nullableInt("key")
-    
+
+```kotlin    
+val a: Int? by settings.nullableInt("key")
+```    
+
 The `key` parameter can be omitted for delegates, and the property name will be reflectively used instead.
 
-    val a: Int by settings.int() // internally, key is "a"
-    
+```kotlin
+val a: Int by settings.int() // internally, key is "a"
+```
+
 Existence of a key can be queried
-     
-    val a: Boolean = settings.hasKey("key")
-    val b: Boolean = "key" in settings
-     
- Values can also be removed by key
-  
-    settings.remove("key")
-    settings -= "key"
-    settings["key"] = null
-  
- Finally, all values in a `Settings` instance can be removed
-      
-    settings.clear()
+
+```kotlin     
+val a: Boolean = settings.hasKey("key")
+val b: Boolean = "key" in settings
+```     
+
+Values can also be removed by key
+
+```kotlin 
+settings.remove("key")
+settings -= "key"
+settings["key"] = null
+``` 
+
+Finally, all values in a `Settings` instance can be removed
+
+```kotlin     
+settings.clear()
+```
 
 For the Android, iOS, and macOS platforms, a `Factory` class also exists, so that multiple named `Settings` instances can coexist with the names being controlled from common code.
 
 On Android, this factory needs a `Context` parameter
 
-    val context: Context = ...
-    val factory: Settings.Factory = AndroidSettings.Factory(context)
-    
+```kotlin
+val context: Context // ...
+val factory: Settings.Factory = AndroidSettings.Factory(context)
+```    
+
 On iOS and macOS, the factory can be instantiated without passing any parameter
 
-    val factory: Settings.Factory = AppleSettings.Factory()
-    
+```kotlin
+val factory: Settings.Factory = AppleSettings.Factory()
+```    
+
 ## Testing
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
-    implementation "com.russhwolf:multiplatform-settings-test:0.5"
-    
+```
+implementation "com.russhwolf:multiplatform-settings-test:0.5"
+```    
+
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
 
 ## Other platforms
 
 The `Settings` interface is published to all available platforms. Developers who desire implementations outside of the defaults provided are free to add their own implementations, and welcome to make pull requests if the implementation might be generally useful to others. Note that implementations which require external dependencies should be places in a separate gradle module in order to keep the core `multiplatform-settings` module dependency-free.
-    
+
 ## Experimental API
 
 This is a pre-1.0 library based on an experimental framework, so some occasional API breakage may occur. However certain APIs are marked with explicit experimental annotations to highlight areas that might have more risk of API changes or unexpected behavior.
@@ -117,22 +151,28 @@ This is a pre-1.0 library based on an experimental framework, so some occasional
 
 Two pure-JVM implementations exist. `JvmPreferencesSettings` wraps `Preferences` and `JvmPropertiesSettings` wraps `Properties`. Their experimental status is marked with the `@ExperimentalJvm` annotation. 
 
-    val delegate: Preferences = ...
-    val settings: Settings = JvmPreferencesSettings(delegate)
+```kotlin
+val delegate: Preferences // ...
+val settings: Settings = JvmPreferencesSettings(delegate)
 
-    val delegate: Properties = ...
-    val settings: Settings = JvmPropertiesSettings(delegate)
-        
+val delegate: Properties // ...
+val settings: Settings = JvmPropertiesSettings(delegate)
+```        
+
 ### Listeners
 
 Update listeners are available using an experimental API, only for the `AndroidSettings`, `AppleSettings`, and `JvmPreferencesSettings` implementations. These are marked with the `ObservableSettings` interface, which includes `addListener()` and `removeListener()` methods.
 
-    val settingsListener: SettingsListener = settings.addListener(key) { ... }
-    
+```kotlin
+val settingsListener: SettingsListener = settings.addListener(key) { /* ... */ }
+```    
+
 The `SettingsListener` returned from the call should be used to signal when you're done listening:
 
-    settingsListener.deactivate()
-    
+```kotlin
+settingsListener.deactivate()
+```    
+
 This current listener implementation is not designed with any sort of thread-safety so it's recommended to only interact with these APIs from the main thread of your application.
 
 The listener APIs make use of the Kotlin `@ExperimentalListener` annotation.
