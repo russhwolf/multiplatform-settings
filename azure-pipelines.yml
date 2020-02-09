@@ -82,12 +82,13 @@ jobs:
           testResultsFiles: '**/TEST-*.xml'
           tasks: 'clean iosTest'
 
+      
       - task: Xcode@5
         inputs:
           actions: 'build'
           configuration: 'Debug'
           scheme: 'SettingsDemo'
-          sdk: 'iphoneos13.1'
+          sdk: 'iphoneos13.3'
           packageApp: false
 
       - task: Xcode@5
@@ -95,7 +96,7 @@ jobs:
           actions: 'build'
           configuration: 'Debug'
           scheme: 'SettingsDemo'
-          sdk: 'iphonesimulator13.1'
+          sdk: 'iphonesimulator13.3'
           packageApp: false
 
     pool:
