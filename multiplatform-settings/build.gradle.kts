@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 import com.russhwolf.settings.build.standardConfiguration
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     id("com.android.library")
@@ -80,6 +81,17 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
+            }
+        }
+
+        targets.withType<KotlinNativeTarget>()["macosX64"].compilations.getByName("main") {
+            cinterops.create("sdbm") {
+                includeDirs(file("src/sdbm").absolutePath)
+            }
+        }
+        targets.withType<KotlinNativeTarget>()["linuxX64"].compilations.getByName("main") {
+            cinterops.create("sdbm") {
+                includeDirs(file("src/sdbm").absolutePath)
             }
         }
     }

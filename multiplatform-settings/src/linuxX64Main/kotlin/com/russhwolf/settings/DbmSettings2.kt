@@ -14,13 +14,28 @@
  * limitations under the License.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.russhwolf.settings
 
+import com.russhwolf.settings.cinterop.DBM
+import com.russhwolf.settings.cinterop.DBM_IOERR
+import com.russhwolf.settings.cinterop.DBM_REPLACE
+import com.russhwolf.settings.cinterop.datum
+import com.russhwolf.settings.cinterop.dbm_close
+import com.russhwolf.settings.cinterop.dbm_delete
+import com.russhwolf.settings.cinterop.dbm_fetch
+import com.russhwolf.settings.cinterop.dbm_firstkey
+import com.russhwolf.settings.cinterop.dbm_nextkey
+import com.russhwolf.settings.cinterop.dbm_open
+import com.russhwolf.settings.cinterop.dbm_store
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValue
+import kotlinx.cinterop.CValuesRef
 import kotlinx.cinterop.MemScope
 import kotlinx.cinterop.cValue
+import kotlinx.cinterop.cstr
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.plus
 import kotlinx.cinterop.pointed
@@ -28,29 +43,16 @@ import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toCValues
 import kotlinx.cinterop.useContents
 import kotlinx.cinterop.value
-import platform.darwin.DBM
-import platform.darwin.DBM_REPLACE
-import platform.darwin.datum
-import platform.darwin.dbm_clearerr
-import platform.darwin.dbm_close
-import platform.darwin.dbm_delete
-import platform.darwin.dbm_error
-import platform.darwin.dbm_fetch
-import platform.darwin.dbm_firstkey
-import platform.darwin.dbm_nextkey
-import platform.darwin.dbm_open
-import platform.darwin.dbm_store
 import platform.posix.O_CREAT
 import platform.posix.O_RDWR
 import platform.posix.S_IRGRP
 import platform.posix.S_IROTH
 import platform.posix.S_IRUSR
 import platform.posix.S_IWUSR
-import platform.posix.size_t
 
 // TODO clean up error checking?
 @OptIn(ExperimentalUnsignedTypes::class)
-class DbmSettings(private val filename: String) : Settings {
+class DbmSettings2(private val filename: String) : Settings {
 
     public override fun clear(): Unit = dbmTransaction { dbm -> dbm.keyIterator().forEach { dbm_delete(dbm, it) } }
 
@@ -88,7 +90,7 @@ class DbmSettings(private val filename: String) : Settings {
     public override fun getBooleanOrNull(key: String): Boolean? = loadBytes(key)?.get(0)?.equals(0)?.not()
 
     private inline fun <T> dbmTransaction(action: MemScope.(dbm: CPointer<DBM>?) -> T): T = memScoped {
-        val dbm = dbm_open(filename, O_RDWR or O_CREAT, (S_IRUSR or S_IWUSR or S_IRGRP or S_IROTH).toUShort())
+        val dbm = dbm_open(filename.cstr, O_RDWR or O_CREAT, S_IRUSR or S_IWUSR or S_IRGRP or S_IROTH)
         val out = action(dbm)
         val error = dbm_error(dbm)
         if (error != 0) {
@@ -141,7 +143,7 @@ class DbmSettings(private val filename: String) : Settings {
     }
 
     private inline fun CValue<datum>.toByteArray(): ByteArray? = useContents {
-        val size = dsize.toInt()
+        val size = dsize
         val firstPtr: CPointer<ByteVar> = dptr?.reinterpret()
             ?: return null
         return ByteArray(size) {
@@ -154,8 +156,19 @@ class DbmSettings(private val filename: String) : Settings {
     private inline fun MemScope.datumOf(bytes: ByteArray): CValue<datum> = cValue {
         val cValues = bytes.toCValues()
         dptr = cValues.ptr
-        dsize = cValues.size.toSize_t()
+        dsize = cValues.size
     }
 }
 
-internal expect inline fun Int.toSize_t(): size_t
+// These are macros in sdbm that don't get generated via cinterop
+internal fun dbm_error(dbm: CValuesRef<DBM>?) = memScoped {
+    dbm ?: return@memScoped 0
+    dbm.getPointer(this).pointed.flags and DBM_IOERR
+}
+
+internal fun dbm_clearerr(dbm: CValuesRef<DBM>?) = memScoped {
+    dbm ?: return@memScoped 0
+    dbm.getPointer(this).pointed.apply {
+        flags = flags and -DBM_IOERR
+    }
+}

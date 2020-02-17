@@ -1,0 +1,3477 @@
+
+: to unbundle, sh this file
+echo x - CHANGES 1>&2
+sed 's/^X//' >CHANGES <<'@@@End of CHANGES'
+XJune 1997:
+X
+Xo fixed a long-hidden memmove bug in delpair that causes database
+X  corruption in MEMMOVE versions of sdbm. [sdbm defaults to duff's
+X  device to move data, so memmove version is almost never used.]
+X
+XChanges from the earlier BETA releases.
+X
+Xo dbm_prep does everything now, so dbm_open is just a simple
+X  wrapper that builds the default filenames. dbm_prep no longer
+X  requires a (DBM *) db parameter: it allocates one itself. It
+X  returns (DBM *) db or (DBM *) NULL.
+X
+Xo makroom is now reliable. In the common-case optimization of the page
+X  split, the page into which the incoming key/value pair is to be inserted
+X  is write-deferred (if the split is successful), thereby saving a cosly
+X  write.  BUT, if the split does not make enough room (unsuccessful), the
+X  deferred page is written out, as the failure-window is now dependent on
+X  the number of split attempts.
+X
+Xo if -DDUFF is defined, hash function will also use the DUFF construct.
+X  This may look like a micro-performance tweak (maybe it is), but in fact,
+X  the hash function is the third most-heavily used function, after read
+X  and write.
+@@@End of CHANGES
+echo x - COMPARE 1>&2
+sed 's/^X//' >COMPARE <<'@@@End of COMPARE'
+X
+XScript started on Thu Sep 28 15:41:06 1989
+X% uname -a
+Xtitan titan 4_0 UMIPS mips
+X% make all x-dbm
+X        cc -O -DSDBM -DDUFF -DDUPERROR -DSPLITFAIL -c dbm.c
+X        cc -O -DSDBM -DDUFF -DDUPERROR -DSPLITFAIL -c sdbm.c
+X        cc -O -DSDBM -DDUFF -DDUPERROR -DSPLITFAIL -c pair.c
+X        cc -O -DSDBM -DDUFF -DDUPERROR -DSPLITFAIL -c hash.c
+X        ar cr libsdbm.a sdbm.o pair.o hash.o
+X        ranlib libsdbm.a
+X        cc  -o dbm dbm.o libsdbm.a
+X        cc -O -DSDBM -DDUFF -DDUPERROR -DSPLITFAIL -c dba.c
+X        cc  -o dba dba.o
+X        cc -O -DSDBM -DDUFF -DDUPERROR -DSPLITFAIL -c dbd.c
+X        cc  -o dbd dbd.o
+X        cc -O -DSDBM -DDUFF -DDUPERROR -DSPLITFAIL -o x-dbm dbm.o
+X% 
+X% 
+X% wc history
+X  65110 218344 3204883 history
+X% 
+X% /bin/time dbm build foo <history
+X
+Xreal     5:56.9
+Xuser       13.3
+Xsys        26.3
+X% ls -s
+Xtotal 14251
+X   5 README           2 dbd.c            1 hash.c           1 pair.h
+X   0 SCRIPT           5 dbd.o            1 hash.o           5 pair.o
+X   1 WISHLIST        62 dbm           3130 history          1 port.h
+X  46 dba              5 dbm.c           11 howtodbm.txt    11 sdbm.c
+X   3 dba.c            8 dbm.o           14 libsdbm.a        2 sdbm.h
+X   6 dba.o            4 foo.dir          1 makefile         8 sdbm.o
+X  46 dbd           10810 foo.pag         6 pair.c          60 x-dbm
+X% ls -l foo.*
+X-rw-r--r--  1 oz           4096 Sep 28 15:48 foo.dir
+X-rw-r--r--  1 oz       11069440 Sep 28 15:48 foo.pag
+X% 
+X% /bin/time x-dbm build bar <history
+X
+Xreal     5:59.4
+Xuser       24.7
+Xsys        29.1
+X% 
+X% ls -s
+Xtotal 27612
+X   5 README          46 dbd              1 hash.c           5 pair.o
+X   1 SCRIPT           2 dbd.c            1 hash.o           1 port.h
+X   1 WISHLIST         5 dbd.o         3130 history         11 sdbm.c
+X   4 bar.dir         62 dbm             11 howtodbm.txt     2 sdbm.h
+X13356 bar.pag         5 dbm.c           14 libsdbm.a        8 sdbm.o
+X  46 dba              8 dbm.o            1 makefile        60 x-dbm
+X   3 dba.c            4 foo.dir          6 pair.c
+X   6 dba.o         10810 foo.pag         1 pair.h
+X% 
+X% ls -l bar.*
+X-rw-r--r--  1 oz           4096 Sep 28 15:54 bar.dir
+X-rw-r--r--  1 oz       13676544 Sep 28 15:54 bar.pag
+X% 
+X% dba foo | tail
+X#10801: ok. no entries.
+X#10802: ok. no entries.
+X#10803: ok. no entries.
+X#10804: ok. no entries.
+X#10805: ok. no entries.
+X#10806: ok. no entries.
+X#10807: ok. no entries.
+X#10808: ok. no entries.
+X#10809: ok.  11 entries 67% used free 337.
+X10810 pages (6036 holes):  65073 entries
+X% 
+X% dba bar | tail
+X#13347: ok. no entries.
+X#13348: ok. no entries.
+X#13349: ok. no entries.
+X#13350: ok. no entries.
+X#13351: ok. no entries.
+X#13352: ok. no entries.
+X#13353: ok. no entries.
+X#13354: ok. no entries.
+X#13355: ok.   7 entries 33% used free 676.
+X13356 pages (8643 holes):  65073 entries
+X%
+X% exit
+Xscript done on Thu Sep 28 16:08:45 1989
+X
+@@@End of COMPARE
+echo x - biblio 1>&2
+sed 's/^X//' >biblio <<'@@@End of biblio'
+X%A R. J. Enbody
+X%A H. C. Du
+X%T Dynamic Hashing Schemes
+X%J ACM Computing Surveys
+X%V 20
+X%N 2
+X%D June 1988
+X%P 85-113
+X%K surveys
+X
+X%A P.-A. Larson
+X%T Dynamic Hashing
+X%J BIT
+X%V 18
+X%P 184-201
+X%D 1978
+X%K dynamic
+X
+X%A W. Litwin
+X%T Linear Hashing: A new tool for file and table addressing
+X%J Proceedings of the 6th Conference on Very Large Dabatases (Montreal)
+X%I Very Large Database Foundation
+X%C Saratoga, Calif.
+X%P 212-223
+X%D 1980
+X%K linear
+X
+X%A R. Fagin
+X%A J. Nievergelt
+X%A N. Pippinger
+X%A H. R. Strong
+X%T Extendible Hashing - A Fast Access Method for Dynamic Files
+X%J ACM Trans. Database Syst.
+X%V 4
+X%N 3
+X%D Sept. 1979
+X%P 315-344
+X%K extend
+X
+X%A G. N. Martin
+X%T Spiral Storage: Incrementally Augmentable Hash Addressed Storage
+X%J Technical Report #27
+X%I University of Varwick
+X%C Coventry, U.K.
+X%D 1979
+X%K spiral
+X
+X%A Chris Torek
+X%T Re: dbm.a and ndbm.a archives
+X%B USENET newsgroup comp.unix
+X%D 1987
+X%K torek
+X
+X%A Rich Wales
+X%T Discusson of "dbm" data base system
+X%B USENET newsgroup unix.wizards
+X%D Jan. 1984
+X%K rich
+X
+X
+X
+X
+X
+X
+@@@End of biblio
+echo x - dba.c 1>&2
+sed 's/^X//' >dba.c <<'@@@End of dba.c'
+X/*
+X * dba	dbm analysis/recovery
+X */
+X
+X#include <stdio.h>
+X#include <sys/file.h>
+X#include "sdbm.h"
+X
+Xchar *progname;
+Xextern void oops();
+X
+Xint
+Xmain(argc, argv)
+Xchar **argv;
+X{
+X	int n;
+X	char *p;
+X	char *name;
+X	int pagf;
+X
+X	progname = argv[0];
+X
+X	if (p = argv[1]) {
+X		name = (char *) malloc((n = strlen(p)) + 5);
+X		strcpy(name, p);
+X		strcpy(name + n, ".pag");
+X
+X		if ((pagf = open(name, O_RDONLY)) < 0)
+X			oops("cannot open %s.", name);
+X
+X		sdump(pagf);
+X	}
+X	else
+X		oops("usage: %s dbname", progname);
+X
+X	return 0;
+X}
+X
+Xsdump(pagf)
+Xint pagf;
+X{
+X	register b;
+X	register n = 0;
+X	register t = 0;
+X	register o = 0;
+X	register e;
+X	char pag[PBLKSIZ];
+X
+X	while ((b = read(pagf, pag, PBLKSIZ)) > 0) {
+X		printf("#%d: ", n);
+X		if (!okpage(pag))
+X			printf("bad\n");
+X		else {
+X			printf("ok. ");
+X			if (!(e = pagestat(pag)))
+X			    o++;
+X			else
+X			    t += e;
+X		}
+X		n++;
+X	}
+X
+X	if (b == 0)
+X		printf("%d pages (%d holes):  %d entries\n", n, o, t);
+X	else
+X		oops("read failed: block %d", n);
+X}
+X
+Xpagestat(pag)
+Xchar *pag;
+X{
+X	register n;
+X	register free;
+X	register short *ino = (short *) pag;
+X
+X	if (!(n = ino[0]))
+X		printf("no entries.\n");
+X	else {
+X		free = ino[n] - (n + 1) * sizeof(short);
+X		printf("%3d entries %2d%% used free %d.\n",
+X		       n / 2, ((PBLKSIZ - free) * 100) / PBLKSIZ, free);
+X	}
+X	return n / 2;
+X}
+@@@End of dba.c
+echo x - dbd.c 1>&2
+sed 's/^X//' >dbd.c <<'@@@End of dbd.c'
+X/*
+X * dbd - dump a dbm data file
+X */
+X
+X#include <stdio.h>
+X#include <sys/file.h>
+X#include "sdbm.h"
+X
+Xchar *progname;
+Xextern void oops();
+X
+X
+X#define empty(page)	(((short *) page)[0] == 0)
+X
+Xint
+Xmain(argc, argv)
+Xchar **argv;
+X{
+X	int n;
+X	char *p;
+X	char *name;
+X	int pagf;
+X
+X	progname = argv[0];
+X
+X	if (p = argv[1]) {
+X		name = (char *) malloc((n = strlen(p)) + 5);
+X		strcpy(name, p);
+X		strcpy(name + n, ".pag");
+X
+X		if ((pagf = open(name, O_RDONLY)) < 0)
+X			oops("cannot open %s.", name);
+X
+X		sdump(pagf);
+X	}
+X	else
+X		oops("usage: %s dbname", progname);
+X	return 0;
+X}
+X
+Xsdump(pagf)
+Xint pagf;
+X{
+X	register r;
+X	register n = 0;
+X	register o = 0;
+X	char pag[PBLKSIZ];
+X
+X	while ((r = read(pagf, pag, PBLKSIZ)) > 0) {
+X		if (!okpage(pag))
+X			fprintf(stderr, "%d: bad page.\n", n);
+X		else if (empty(pag))
+X			o++;
+X		else
+X			dispage(pag);
+X		n++;
+X	}
+X
+X	if (r == 0)
+X		fprintf(stderr, "%d pages (%d holes).\n", n, o);
+X	else
+X		oops("read failed: block %d", n);
+X}
+X
+X
+X#ifdef OLD
+Xdispage(pag)
+Xchar *pag;
+X{
+X	register i, n;
+X	register off;
+X	register short *ino = (short *) pag;
+X
+X	off = PBLKSIZ;
+X	for (i = 1; i < ino[0]; i += 2) {
+X		printf("\t[%d]: ", ino[i]);
+X		for (n = ino[i]; n < off; n++)
+X			putchar(pag[n]);
+X		putchar(' ');
+X		off = ino[i];
+X		printf("[%d]: ", ino[i + 1]);
+X		for (n = ino[i + 1]; n < off; n++)
+X			putchar(pag[n]);
+X		off = ino[i + 1];
+X		putchar('\n');
+X	}
+X}
+X#else
+Xdispage(pag)
+Xchar *pag;
+X{
+X	register i, n;
+X	register off;
+X	register short *ino = (short *) pag;
+X
+X	off = PBLKSIZ;
+X	for (i = 1; i < ino[0]; i += 2) {
+X		for (n = ino[i]; n < off; n++)
+X			if (pag[n] != 0)
+X				putchar(pag[n]);
+X		putchar('\t');
+X		off = ino[i];
+X		for (n = ino[i + 1]; n < off; n++)
+X			if (pag[n] != 0)
+X				putchar(pag[n]);
+X		putchar('\n');
+X		off = ino[i + 1];
+X	}
+X}
+X#endif
+@@@End of dbd.c
+echo x - dbe.1 1>&2
+sed 's/^X//' >dbe.1 <<'@@@End of dbe.1'
+X.TH dbe 1 "ndbm(3) EDITOR"
+X.SH NAME
+Xdbe \- Edit a ndbm(3) database
+X.SH USAGE
+Xdbe <database> [-m r|w|rw] [-crtvx] -a|-d|-f|-F|-s [<key> [<content>]]
+X.SH DESCRIPTION
+X\fIdbme\fP operates on ndbm(3) databases.
+XIt can be used to create them, look at them or change them.
+XWhen specifying the value of a key or the content of its associated entry,
+X\\nnn, \\0, \\n, \\t, \\f and \\r are interpreted as usual.
+XWhen displaying key/content pairs, non-printable characters are displayed
+Xusing the \\nnn notation.
+X.SH OPTIONS
+X.IP -a
+XList all entries in the database.
+X.IP -c
+XCreate the database if it does not exist.
+X.IP -d
+XDelete the entry associated with the specified key.
+X.IP -f
+XFetch and display the entry associated with the specified key.
+X.IP -F
+XFetch and display all the entries whose key match the specified
+Xregular-expression
+X.IP "-m r|w|rw"
+XOpen the database in read-only, write-only or read-write mode
+X.IP -r
+XReplace the entry associated with the specified key if it already exists.
+XSee option -s.
+X.IP -s
+XStore an entry under a specific key.
+XAn error occurs if the key already exists and the option -r was not specified.
+X.IP -t
+XRe-initialize the database before executing the command.
+X.IP -v
+XVerbose mode.
+XConfirm stores and deletions.
+X.IP -x
+XIf option -x is used with option -c, then if the database already exists,
+Xan error occurs.
+XThis can be used to implement a simple exclusive access locking mechanism.
+X.SH SEE ALSO
+Xndbm(3)
+X.SH AUTHOR
+Xjanick@bnr.ca
+X
+@@@End of dbe.1
+echo x - dbe.c 1>&2
+sed 's/^X//' >dbe.c <<'@@@End of dbe.c'
+X#include <stdio.h>
+X#ifndef VMS
+X#include <sys/file.h>
+X#include <ndbm.h>
+X#else
+X#include "file.h"
+X#include "ndbm.h"
+X#endif
+X#include <ctype.h>
+X
+X/***************************************************************************\
+X**                                                                         **
+X**   Function name: getopt()                                               **
+X**   Author:        Henry Spencer, UofT                                    **
+X**   Coding date:   84/04/28                                               **
+X**                                                                         **
+X**   Description:                                                          **
+X**                                                                         **
+X**   Parses argv[] for arguments.                                          **
+X**   Works with Whitesmith's C compiler.                                   **
+X**                                                                         **
+X**   Inputs   - The number of arguments                                    **
+X**            - The base address of the array of arguments                 **
+X**            - A string listing the valid options (':' indicates an       **
+X**              argument to the preceding option is required, a ';'        **
+X**              indicates an argument to the preceding option is optional) **
+X**                                                                         **
+X**   Outputs  - Returns the next option character,                         **
+X**              '?' for non '-' arguments                                  **
+X**              or ':' when there is no more arguments.                    **
+X**                                                                         **
+X**   Side Effects + The argument to an option is pointed to by 'optarg'    **
+X**                                                                         **
+X*****************************************************************************
+X**                                                                         **
+X**   REVISION HISTORY:                                                     **
+X**                                                                         **
+X**     DATE           NAME                        DESCRIPTION              **
+X**   YY/MM/DD  ------------------   ------------------------------------   **
+X**   88/10/20  Janick Bergeron      Returns '?' on unamed arguments        **
+X**                                  returns '!' on unknown options         **
+X**                                  and 'EOF' only when exhausted.         **
+X**   88/11/18  Janick Bergeron      Return ':' when no more arguments      **
+X**   89/08/11  Janick Bergeron      Optional optarg when ';' in optstring  **
+X**                                                                         **
+X\***************************************************************************/
+X
+Xchar *optarg;			       /* Global argument pointer. */
+X
+X#ifdef VMS
+X#define index  strchr
+X#endif
+X
+Xchar
+Xgetopt(argc, argv, optstring)
+Xint argc;
+Xchar **argv;
+Xchar *optstring;
+X{
+X	register int c;
+X	register char *place;
+X	extern char *index();
+X	static int optind = 0;
+X	static char *scan = NULL;
+X
+X	optarg = NULL;
+X
+X	if (scan == NULL || *scan == '\0') {
+X
+X		if (optind == 0)
+X			optind++;
+X		if (optind >= argc)
+X			return ':';
+X
+X		optarg = place = argv[optind++];
+X		if (place[0] != '-' || place[1] == '\0')
+X			return '?';
+X		if (place[1] == '-' && place[2] == '\0')
+X			return '?';
+X		scan = place + 1;
+X	}
+X
+X	c = *scan++;
+X	place = index(optstring, c);
+X	if (place == NULL || c == ':' || c == ';') {
+X
+X		(void) fprintf(stderr, "%s: unknown option %c\n", argv[0], c);
+X		scan = NULL;
+X		return '!';
+X	}
+X	if (*++place == ':') {
+X
+X		if (*scan != '\0') {
+X
+X			optarg = scan;
+X			scan = NULL;
+X
+X		}
+X		else {
+X
+X			if (optind >= argc) {
+X
+X				(void) fprintf(stderr, "%s: %c requires an argument\n",
+X					       argv[0], c);
+X				return '!';
+X			}
+X			optarg = argv[optind];
+X			optind++;
+X		}
+X	}
+X	else if (*place == ';') {
+X
+X		if (*scan != '\0') {
+X
+X			optarg = scan;
+X			scan = NULL;
+X
+X		}
+X		else {
+X
+X			if (optind >= argc || *argv[optind] == '-')
+X				optarg = NULL;
+X			else {
+X				optarg = argv[optind];
+X				optind++;
+X			}
+X		}
+X	}
+X	return c;
+X}
+X
+X
+Xvoid
+Xprint_datum(db)
+Xdatum db;
+X{
+X	int i;
+X
+X	putchar('"');
+X	for (i = 0; i < db.dsize; i++) {
+X		if (isprint(db.dptr[i]))
+X			putchar(db.dptr[i]);
+X		else {
+X			putchar('\\');
+X			putchar('0' + ((db.dptr[i] >> 6) & 0x07));
+X			putchar('0' + ((db.dptr[i] >> 3) & 0x07));
+X			putchar('0' + (db.dptr[i] & 0x07));
+X		}
+X	}
+X	putchar('"');
+X}
+X
+X
+Xdatum
+Xread_datum(s)
+Xchar *s;
+X{
+X	datum db;
+X	char *p;
+X	int i;
+X
+X	db.dsize = 0;
+X	db.dptr = (char *) malloc(strlen(s) * sizeof(char));
+X	for (p = db.dptr; *s != '\0'; p++, db.dsize++, s++) {
+X		if (*s == '\\') {
+X			if (*++s == 'n')
+X				*p = '\n';
+X			else if (*s == 'r')
+X				*p = '\r';
+X			else if (*s == 'f')
+X				*p = '\f';
+X			else if (*s == 't')
+X				*p = '\t';
+X			else if (isdigit(*s) && isdigit(*(s + 1)) && isdigit(*(s + 2))) {
+X				i = (*s++ - '0') << 6;
+X				i |= (*s++ - '0') << 3;
+X				i |= *s - '0';
+X				*p = i;
+X			}
+X			else if (*s == '0')
+X				*p = '\0';
+X			else
+X				*p = *s;
+X		}
+X		else
+X			*p = *s;
+X	}
+X
+X	return db;
+X}
+X
+X
+Xchar *
+Xkey2s(db)
+Xdatum db;
+X{
+X	char *buf;
+X	char *p1, *p2;
+X
+X	buf = (char *) malloc((db.dsize + 1) * sizeof(char));
+X	for (p1 = buf, p2 = db.dptr; *p2 != '\0'; *p1++ = *p2++);
+X	*p1 = '\0';
+X	return buf;
+X}
+X
+X
+Xmain(argc, argv)
+Xint argc;
+Xchar **argv;
+X{
+X	typedef enum {
+X		YOW, FETCH, STORE, DELETE, SCAN, REGEXP
+X	} commands;
+X	char opt;
+X	int flags;
+X	int giveusage = 0;
+X	int verbose = 0;
+X	commands what = YOW;
+X	char *comarg[3];
+X	int st_flag = DBM_INSERT;
+X	int argn;
+X	DBM *db;
+X	datum key;
+X	datum content;
+X
+X	flags = O_RDWR;
+X	argn = 0;
+X
+X	while ((opt = getopt(argc, argv, "acdfFm:rstvx")) != ':') {
+X		switch (opt) {
+X		case 'a':
+X			what = SCAN;
+X			break;
+X		case 'c':
+X			flags |= O_CREAT;
+X			break;
+X		case 'd':
+X			what = DELETE;
+X			break;
+X		case 'f':
+X			what = FETCH;
+X			break;
+X		case 'F':
+X			what = REGEXP;
+X			break;
+X		case 'm':
+X			flags &= ~(000007);
+X			if (strcmp(optarg, "r") == 0)
+X				flags |= O_RDONLY;
+X			else if (strcmp(optarg, "w") == 0)
+X				flags |= O_WRONLY;
+X			else if (strcmp(optarg, "rw") == 0)
+X				flags |= O_RDWR;
+X			else {
+X				fprintf(stderr, "Invalid mode: \"%s\"\n", optarg);
+X				giveusage = 1;
+X			}
+X			break;
+X		case 'r':
+X			st_flag = DBM_REPLACE;
+X			break;
+X		case 's':
+X			what = STORE;
+X			break;
+X		case 't':
+X			flags |= O_TRUNC;
+X			break;
+X		case 'v':
+X			verbose = 1;
+X			break;
+X		case 'x':
+X			flags |= O_EXCL;
+X			break;
+X		case '!':
+X			giveusage = 1;
+X			break;
+X		case '?':
+X			if (argn < 3)
+X				comarg[argn++] = optarg;
+X			else {
+X				fprintf(stderr, "Too many arguments.\n");
+X				giveusage = 1;
+X			}
+X			break;
+X		}
+X	}
+X
+X	if (giveusage | what == YOW | argn < 1) {
+X		fprintf(stderr, "Usage: %s databse [-m r|w|rw] [-crtx] -a|-d|-f|-F|-s [key [content]]\n", argv[0]);
+X		exit(-1);
+X	}
+X
+X	if ((db = dbm_open(comarg[0], flags, 0777)) == NULL) {
+X		fprintf(stderr, "Error opening database \"%s\"\n", comarg[0]);
+X		exit(-1);
+X	}
+X
+X	if (argn > 1)
+X		key = read_datum(comarg[1]);
+X	if (argn > 2)
+X		content = read_datum(comarg[2]);
+X
+X	switch (what) {
+X
+X	case SCAN:
+X		key = dbm_firstkey(db);
+X		if (dbm_error(db)) {
+X			fprintf(stderr, "Error when fetching first key\n");
+X			goto db_exit;
+X		}
+X		while (key.dptr != NULL) {
+X			content = dbm_fetch(db, key);
+X			if (dbm_error(db)) {
+X				fprintf(stderr, "Error when fetching ");
+X				print_datum(key);
+X				printf("\n");
+X				goto db_exit;
+X			}
+X			print_datum(key);
+X			printf(": ");
+X			print_datum(content);
+X			printf("\n");
+X			if (dbm_error(db)) {
+X				fprintf(stderr, "Error when fetching next key\n");
+X				goto db_exit;
+X			}
+X			key = dbm_nextkey(db);
+X		}
+X		break;
+X
+X	case REGEXP:
+X		if (argn < 2) {
+X			fprintf(stderr, "Missing regular expression.\n");
+X			goto db_exit;
+X		}
+X		if (re_comp(comarg[1])) {
+X			fprintf(stderr, "Invalid regular expression\n");
+X			goto db_exit;
+X		}
+X		key = dbm_firstkey(db);
+X		if (dbm_error(db)) {
+X			fprintf(stderr, "Error when fetching first key\n");
+X			goto db_exit;
+X		}
+X		while (key.dptr != NULL) {
+X			if (re_exec(key2s(key))) {
+X				content = dbm_fetch(db, key);
+X				if (dbm_error(db)) {
+X					fprintf(stderr, "Error when fetching ");
+X					print_datum(key);
+X					printf("\n");
+X					goto db_exit;
+X				}
+X				print_datum(key);
+X				printf(": ");
+X				print_datum(content);
+X				printf("\n");
+X				if (dbm_error(db)) {
+X					fprintf(stderr, "Error when fetching next key\n");
+X					goto db_exit;
+X				}
+X			}
+X			key = dbm_nextkey(db);
+X		}
+X		break;
+X
+X	case FETCH:
+X		if (argn < 2) {
+X			fprintf(stderr, "Missing fetch key.\n");
+X			goto db_exit;
+X		}
+X		content = dbm_fetch(db, key);
+X		if (dbm_error(db)) {
+X			fprintf(stderr, "Error when fetching ");
+X			print_datum(key);
+X			printf("\n");
+X			goto db_exit;
+X		}
+X		if (content.dptr == NULL) {
+X			fprintf(stderr, "Cannot find ");
+X			print_datum(key);
+X			printf("\n");
+X			goto db_exit;
+X		}
+X		print_datum(key);
+X		printf(": ");
+X		print_datum(content);
+X		printf("\n");
+X		break;
+X
+X	case DELETE:
+X		if (argn < 2) {
+X			fprintf(stderr, "Missing delete key.\n");
+X			goto db_exit;
+X		}
+X		if (dbm_delete(db, key) || dbm_error(db)) {
+X			fprintf(stderr, "Error when deleting ");
+X			print_datum(key);
+X			printf("\n");
+X			goto db_exit;
+X		}
+X		if (verbose) {
+X			print_datum(key);
+X			printf(": DELETED\n");
+X		}
+X		break;
+X
+X	case STORE:
+X		if (argn < 3) {
+X			fprintf(stderr, "Missing key and/or content.\n");
+X			goto db_exit;
+X		}
+X		if (dbm_store(db, key, content, st_flag) || dbm_error(db)) {
+X			fprintf(stderr, "Error when storing ");
+X			print_datum(key);
+X			printf("\n");
+X			goto db_exit;
+X		}
+X		if (verbose) {
+X			print_datum(key);
+X			printf(": ");
+X			print_datum(content);
+X			printf(" STORED\n");
+X		}
+X		break;
+X	}
+X
+Xdb_exit:
+X	dbm_clearerr(db);
+X	dbm_close(db);
+X	if (dbm_error(db)) {
+X		fprintf(stderr, "Error closing database \"%s\"\n", comarg[0]);
+X		exit(-1);
+X	}
+X}
+@@@End of dbe.c
+echo x - dbm.c 1>&2
+sed 's/^X//' >dbm.c <<'@@@End of dbm.c'
+X/*
+X * Copyright (c) 1985 The Regents of the University of California.
+X * All rights reserved.
+X *
+X * Redistribution and use in source and binary forms are permitted
+X * provided that the above copyright notice and this paragraph are
+X * duplicated in all such forms and that any documentation,
+X * advertising materials, and other materials related to such
+X * distribution and use acknowledge that the software was developed
+X * by the University of California, Berkeley.  The name of the
+X * University may not be used to endorse or promote products derived
+X * from this software without specific prior written permission.
+X * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+X * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+X * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+X */
+X
+X#ifndef lint
+Xstatic char sccsid[] = "@(#)dbm.c    5.4 (Berkeley) 5/24/89";
+X#endif /* not lint */
+X
+X#include    "dbm.h"
+X
+X#define    NODB    ((DBM *)0)
+X
+Xstatic DBM *cur_db = NODB;
+X
+Xstatic char no_db[] = "dbm: no open database\n";
+X
+Xdbminit(file)
+X    char *file;
+X{
+X    if (cur_db != NODB)
+X        dbm_close(cur_db);
+X
+X    cur_db = dbm_open(file, 2, 0);
+X    if (cur_db == NODB) {
+X        cur_db = dbm_open(file, 0, 0);
+X        if (cur_db == NODB)
+X            return (-1);
+X    }
+X    return (0);
+X}
+X
+Xlong
+Xforder(key)
+Xdatum key;
+X{
+X    if (cur_db == NODB) {
+X        printf(no_db);
+X        return (0L);
+X    }
+X    return (dbm_forder(cur_db, key));
+X}
+X
+Xdatum
+Xfetch(key)
+Xdatum key;
+X{
+X    datum item;
+X
+X    if (cur_db == NODB) {
+X        printf(no_db);
+X        item.dptr = 0;
+X        return (item);
+X    }
+X    return (dbm_fetch(cur_db, key));
+X}
+X
+Xdelete(key)
+Xdatum key;
+X{
+X    if (cur_db == NODB) {
+X        printf(no_db);
+X        return (-1);
+X    }
+X    if (dbm_rdonly(cur_db))
+X        return (-1);
+X    return (dbm_delete(cur_db, key));
+X}
+X
+Xstore(key, dat)
+Xdatum key, dat;
+X{
+X    if (cur_db == NODB) {
+X        printf(no_db);
+X        return (-1);
+X    }
+X    if (dbm_rdonly(cur_db))
+X        return (-1);
+X
+X    return (dbm_store(cur_db, key, dat, DBM_REPLACE));
+X}
+X
+Xdatum
+Xfirstkey()
+X{
+X    datum item;
+X
+X    if (cur_db == NODB) {
+X        printf(no_db);
+X        item.dptr = 0;
+X        return (item);
+X    }
+X    return (dbm_firstkey(cur_db));
+X}
+X
+Xdatum
+Xnextkey(key)
+Xdatum key;
+X{
+X    datum item;
+X
+X    if (cur_db == NODB) {
+X        printf(no_db);
+X        item.dptr = 0;
+X        return (item);
+X    }
+X    return (dbm_nextkey(cur_db, key));
+X}
+@@@End of dbm.c
+echo x - dbm.h 1>&2
+sed 's/^X//' >dbm.h <<'@@@End of dbm.h'
+X/*
+X * Copyright (c) 1983 The Regents of the University of California.
+X * All rights reserved.
+X *
+X * Redistribution and use in source and binary forms are permitted
+X * provided that the above copyright notice and this paragraph are
+X * duplicated in all such forms and that any documentation,
+X * advertising materials, and other materials related to such
+X * distribution and use acknowledge that the software was developed
+X * by the University of California, Berkeley.  The name of the
+X * University may not be used to endorse or promote products derived
+X * from this software without specific prior written permission.
+X * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+X * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+X * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+X *
+X *    @(#)dbm.h    5.2 (Berkeley) 5/24/89
+X */
+X
+X#ifndef NULL
+X/*
+X * this is lunacy, we no longer use it (and never should have
+X * unconditionally defined it), but, this whole file is for
+X * backwards compatability - someone may rely on this.
+X */
+X#define    NULL    ((char *) 0)
+X#endif
+X
+X#include <ndbm.h>
+X
+Xdatum    fetch();
+Xdatum    firstkey();
+Xdatum    nextkey();
+@@@End of dbm.h
+echo x - dbu.c 1>&2
+sed 's/^X//' >dbu.c <<'@@@End of dbu.c'
+X#include <stdio.h>
+X#include <sys/file.h>
+X#ifdef SDBM
+X#include "sdbm.h"
+X#else
+X#include <ndbm.h>
+X#endif
+X#include <string.h>
+X
+X#ifdef BSD42
+X#define strchr	index
+X#endif
+X
+Xextern int	getopt();
+Xextern char	*strchr();
+Xextern void	oops();
+X
+Xchar *progname;
+X
+Xstatic int rflag;
+Xstatic char *usage = "%s [-R] cat | look |... dbmname";
+X
+X#define DERROR	0
+X#define DLOOK	1
+X#define DINSERT	2
+X#define DDELETE 3
+X#define	DCAT	4
+X#define DBUILD	5
+X#define DPRESS	6
+X#define DCREAT	7
+X
+X#define LINEMAX	8192
+X
+Xtypedef struct {
+X	char *sname;
+X	int scode;
+X	int flags;
+X} cmd;
+X
+Xstatic cmd cmds[] = {
+X
+X	"fetch", DLOOK, 	O_RDONLY,
+X	"get", DLOOK,		O_RDONLY,
+X	"look", DLOOK,		O_RDONLY,
+X	"add", DINSERT,		O_RDWR,
+X	"insert", DINSERT,	O_RDWR,
+X	"store", DINSERT,	O_RDWR,
+X	"delete", DDELETE,	O_RDWR,
+X	"remove", DDELETE,	O_RDWR,
+X	"dump", DCAT,		O_RDONLY,
+X	"list", DCAT, 		O_RDONLY,
+X	"cat", DCAT,		O_RDONLY,
+X	"creat", DCREAT,	O_RDWR | O_CREAT | O_TRUNC,
+X	"new", DCREAT,		O_RDWR | O_CREAT | O_TRUNC,
+X	"build", DBUILD,	O_RDWR | O_CREAT,
+X	"squash", DPRESS,	O_RDWR,
+X	"compact", DPRESS,	O_RDWR,
+X	"compress", DPRESS,	O_RDWR
+X};
+X
+X#define CTABSIZ (sizeof (cmds)/sizeof (cmd))
+X
+Xstatic cmd *parse();
+Xstatic void badk(), doit(), prdatum();
+X
+Xint
+Xmain(argc, argv)
+Xint	argc;
+Xchar *argv[];
+X{
+X	int c;
+X	register cmd *act;
+X	extern int optind;
+X	extern char *optarg;
+X
+X	progname = argv[0];
+X
+X	while ((c = getopt(argc, argv, "R")) != EOF)
+X		switch (c) {
+X		case 'R':	       /* raw processing  */
+X			rflag++;
+X			break;
+X
+X		default:
+X			oops("usage: %s", usage);
+X			break;
+X		}
+X
+X	if ((argc -= optind) < 2)
+X		oops("usage: %s", usage);
+X
+X	if ((act = parse(argv[optind])) == NULL)
+X		badk(argv[optind]);
+X	optind++;
+X	doit(act, argv[optind]);
+X	return 0;
+X}
+X
+Xstatic void
+Xdoit(act, file)
+Xregister cmd *act;
+Xchar *file;
+X{
+X	datum key;
+X	datum val;
+X	register DBM *db;
+X	register char *op;
+X	register int n;
+X	char *line;
+X#ifdef TIME
+X	long start;
+X	extern long time();
+X#endif
+X
+X	if ((db = dbm_open(file, act->flags, 0644)) == NULL)
+X		oops("cannot open: %s", file);
+X
+X	if ((line = (char *) malloc(LINEMAX)) == NULL)
+X		oops("%s: cannot get memory", "line alloc");
+X
+X	switch (act->scode) {
+X
+X	case DLOOK:
+X		while (fgets(line, LINEMAX, stdin) != NULL) {
+X			n = strlen(line) - 1;
+X			line[n] = 0;
+X			key.dptr = line;
+X			key.dsize = n;
+X			val = dbm_fetch(db, key);
+X			if (val.dptr != NULL) {
+X				prdatum(stdout, val);
+X				putchar('\n');
+X				continue;
+X			}
+X			prdatum(stderr, key);
+X			fprintf(stderr, ": not found.\n");
+X		}
+X		break;
+X	case DINSERT:
+X		break;
+X	case DDELETE:
+X		while (fgets(line, LINEMAX, stdin) != NULL) {
+X			n = strlen(line) - 1;
+X			line[n] = 0;
+X			key.dptr = line;
+X			key.dsize = n;
+X			if (dbm_delete(db, key) == -1) {
+X				prdatum(stderr, key);
+X				fprintf(stderr, ": not found.\n");
+X			}
+X		}
+X		break;
+X	case DCAT:
+X		for (key = dbm_firstkey(db); key.dptr != 0; 
+X		     key = dbm_nextkey(db)) {
+X			prdatum(stdout, key);
+X			putchar('\t');
+X			prdatum(stdout, dbm_fetch(db, key));
+X			putchar('\n');
+X		}
+X		break;
+X	case DBUILD:
+X#ifdef TIME
+X		start = time(0);
+X#endif
+X		while (fgets(line, LINEMAX, stdin) != NULL) {
+X			n = strlen(line) - 1;
+X			line[n] = 0;
+X			key.dptr = line;
+X			if ((op = strchr(line, '\t')) != 0) {
+X				key.dsize = op - line;
+X				*op++ = 0;
+X				val.dptr = op;
+X				val.dsize = line + n - op;
+X			}
+X			else
+X				oops("bad input; %s", line);
+X	
+X			if (dbm_store(db, key, val, DBM_REPLACE) < 0) {
+X				prdatum(stderr, key);
+X				fprintf(stderr, ": ");
+X				oops("store: %s", "failed");
+X			}
+X		}
+X#ifdef TIME
+X		printf("done: %d seconds.\n", time(0) - start);
+X#endif
+X		break;
+X	case DPRESS:
+X		break;
+X	case DCREAT:
+X		break;
+X	}
+X
+X	dbm_close(db);
+X}
+X
+Xstatic void
+Xbadk(word)
+Xchar *word;
+X{
+X	register int i;
+X
+X	if (progname)
+X		fprintf(stderr, "%s: ", progname);
+X	fprintf(stderr, "bad keywd %s. use one of\n", word);
+X	for (i = 0; i < (int)CTABSIZ; i++)
+X		fprintf(stderr, "%-8s%c", cmds[i].sname,
+X			((i + 1) % 6 == 0) ? '\n' : ' ');
+X	fprintf(stderr, "\n");
+X	exit(1);
+X	/*NOTREACHED*/
+X}
+X
+Xstatic cmd *
+Xparse(str)
+Xregister char *str;
+X{
+X	register int i = CTABSIZ;
+X	register cmd *p;
+X	
+X	for (p = cmds; i--; p++)
+X		if (strcmp(p->sname, str) == 0)
+X			return p;
+X	return NULL;
+X}
+X
+Xstatic void
+Xprdatum(stream, d)
+XFILE *stream;
+Xdatum d;
+X{
+X	register int c;
+X	register char *p = d.dptr;
+X	register int n = d.dsize;
+X
+X	while (n--) {
+X		c = *p++ & 0377;
+X		if (c & 0200) {
+X			fprintf(stream, "M-");
+X			c &= 0177;
+X		}
+X		if (c == 0177 || c < ' ') 
+X			fprintf(stream, "^%c", (c == 0177) ? '?' : c + '@');
+X		else
+X			putc(c, stream);
+X	}
+X}
+X
+X
+@@@End of dbu.c
+echo x - grind 1>&2
+sed 's/^X//' >grind <<'@@@End of grind'
+X#!/bin/sh
+Xrm -f /tmp/*.dir /tmp/*.pag
+Xawk -e '{
+X        printf "%s\t", $0
+X        for (i = 0; i < 40; i++)
+X                printf "%s.", $0
+X        printf "\n"
+X}' < /usr/dict/words | $1 build /tmp/$2
+X
+@@@End of grind
+echo x - hash.c 1>&2
+sed 's/^X//' >hash.c <<'@@@End of hash.c'
+X/*
+X * sdbm - ndbm work-alike hashed database library
+X * based on Per-Aake Larson's Dynamic Hashing algorithms. BIT 18 (1978).
+X * author: oz@nexus.yorku.ca
+X * status: public domain. keep it that way.
+X *
+X * hashing routine
+X */
+X
+X#include "sdbm.h"
+X/*
+X * polynomial conversion ignoring overflows
+X * [this seems to work remarkably well, in fact better
+X * then the ndbm hash function. Replace at your own risk]
+X * use: 65599	nice.
+X *      65587   even better. 
+X */
+Xlong
+Xdbm_hash(str, len)
+Xregister char *str;
+Xregister int len;
+X{
+X	register unsigned long n = 0;
+X
+X#ifdef DUFF
+X
+X#define HASHC	n = *str++ + 65599 * n
+X
+X	if (len > 0) {
+X		register int loop = (len + 8 - 1) >> 3;
+X
+X		switch(len & (8 - 1)) {
+X		case 0:	do {
+X			HASHC;	case 7:	HASHC;
+X		case 6:	HASHC;	case 5:	HASHC;
+X		case 4:	HASHC;	case 3:	HASHC;
+X		case 2:	HASHC;	case 1:	HASHC;
+X			} while (--loop);
+X		}
+X
+X	}
+X#else
+X	while (len--)
+X		n = *str++ + 65599 * n;
+X#endif
+X	return n;
+X}
+@@@End of hash.c
+echo x - makefile 1>&2
+sed 's/^X//' >makefile <<'@@@End of makefile'
+X#
+X# makefile for public domain ndbm-clone: sdbm
+X# DUFF: use duff's device (loop unroll) in parts of the code
+X#
+XCFLAGS = -O -DSDBM -DDUFF -DBSD42
+X#LDFLAGS = -p
+X
+XOBJS = sdbm.o pair.o hash.o
+XSRCS = sdbm.c pair.c hash.c dbu.c dba.c dbd.c util.c
+XHDRS = tune.h sdbm.h pair.h
+XMISC = README CHANGES COMPARE sdbm.3 dbe.c dbe.1 dbm.c dbm.h biblio \
+X       readme.ms readme.ps
+X
+Xall: dbu dba dbd dbe
+X
+Xdbu: dbu.o sdbm util.o
+X	cc $(LDFLAGS) -o dbu dbu.o util.o libsdbm.a
+X
+Xdba: dba.o util.o
+X	cc $(LDFLAGS) -o dba dba.o util.o
+Xdbd: dbd.o util.o
+X	cc $(LDFLAGS) -o dbd dbd.o util.o
+Xdbe: dbe.o sdbm
+X	cc $(LDFLAGS) -o dbe dbe.o libsdbm.a
+X
+Xsdbm: $(OBJS)
+X	ar cr libsdbm.a $(OBJS)
+X	ranlib libsdbm.a
+X###	cp libsdbm.a /usr/lib/libsdbm.a
+X
+Xdba.o: sdbm.h
+Xdbu.o: sdbm.h
+Xutil.o:sdbm.h
+X
+X$(OBJS): sdbm.h tune.h pair.h
+X
+X#
+X# dbu using berkelezoid ndbm routines [if you have them] for testing
+X#
+X#x-dbu: dbu.o util.o
+X#	cc $(CFLAGS) -o x-dbu dbu.o util.o
+Xlint:
+X	lint -abchx $(SRCS)
+X
+Xclean:
+X	rm -f *.o mon.out core
+X
+Xpurge: 	clean
+X	rm -f dbu libsdbm.a dbd dba dbe x-dbu *.dir *.pag
+X
+Xshar:
+X	shar $(MISC) makefile $(SRCS) $(HDRS) >SDBM.SHAR
+X
+Xreadme:
+X	nroff -ms readme.ms | col -b >README
+@@@End of makefile
+echo x - pair.c 1>&2
+sed 's/^X//' >pair.c <<'@@@End of pair.c'
+X/*
+X * sdbm - ndbm work-alike hashed database library
+X * based on Per-Aake Larson's Dynamic Hashing algorithms. BIT 18 (1978).
+X * author: oz@nexus.yorku.ca
+X * status: public domain.
+X *
+X * page-level routines
+X */
+X
+X#ifndef lint
+Xstatic char rcsid[] = "$Id: pair.c,v 1.10 90/12/13 13:00:35 oz Exp $";
+X#endif
+X
+X#include "sdbm.h"
+X#include "tune.h"
+X#include "pair.h"
+X
+X#ifndef BSD42
+X#include <memory.h>
+X#endif
+X
+X#define exhash(item)	dbm_hash((item).dptr, (item).dsize)
+X
+X/* 
+X * forward 
+X */
+Xstatic int seepair proto((char *, int, char *, int));
+X
+X/*
+X * page format:
+X *	+------------------------------+
+X * ino	| n | keyoff | datoff | keyoff |
+X * 	+------------+--------+--------+
+X *	| datoff | - - - ---->	       |
+X *	+--------+---------------------+
+X *	|	 F R E E A R E A       |
+X *	+--------------+---------------+
+X *	|  <---- - - - | data          |
+X *	+--------+-----+----+----------+
+X *	|  key   | data     | key      |
+X *	+--------+----------+----------+
+X *
+X * calculating the offsets for free area:  if the number
+X * of entries (ino[0]) is zero, the offset to the END of
+X * the free area is the block size. Otherwise, it is the
+X * nth (ino[ino[0]]) entry's offset.
+X */
+X
+Xint
+Xfitpair(pag, need)
+Xchar *pag;
+Xint need;
+X{
+X	register int n;
+X	register int off;
+X	register int free;
+X	register short *ino = (short *) pag;
+X
+X	off = ((n = ino[0]) > 0) ? ino[n] : PBLKSIZ;
+X	free = off - (n + 1) * sizeof(short);
+X	need += 2 * sizeof(short);
+X
+X	debug(("free %d need %d\n", free, need));
+X
+X	return need <= free;
+X}
+X
+Xvoid
+Xputpair(pag, key, val)
+Xchar *pag;
+Xdatum key;
+Xdatum val;
+X{
+X	register int n;
+X	register int off;
+X	register short *ino = (short *) pag;
+X
+X	off = ((n = ino[0]) > 0) ? ino[n] : PBLKSIZ;
+X/*
+X * enter the key first
+X */
+X	off -= key.dsize;
+X	(void) memcpy(pag + off, key.dptr, key.dsize);
+X	ino[n + 1] = off;
+X/*
+X * now the data
+X */
+X	off -= val.dsize;
+X	(void) memcpy(pag + off, val.dptr, val.dsize);
+X	ino[n + 2] = off;
+X/*
+X * adjust item count
+X */
+X	ino[0] += 2;
+X}
+X
+Xdatum
+Xgetpair(pag, key)
+Xchar *pag;
+Xdatum key;
+X{
+X	register int i;
+X	register int n;
+X	datum val;
+X	register short *ino = (short *) pag;
+X
+X	if ((n = ino[0]) == 0)
+X		return nullitem;
+X
+X	if ((i = seepair(pag, n, key.dptr, key.dsize)) == 0)
+X		return nullitem;
+X
+X	val.dptr = pag + ino[i + 1];
+X	val.dsize = ino[i] - ino[i + 1];
+X	return val;
+X}
+X
+X#ifdef SEEDUPS
+Xint
+Xduppair(pag, key)
+Xchar *pag;
+Xdatum key;
+X{
+X	register short *ino = (short *) pag;
+X	return ino[0] > 0 && seepair(pag, ino[0], key.dptr, key.dsize) > 0;
+X}
+X#endif
+X
+Xdatum
+Xgetnkey(pag, num)
+Xchar *pag;
+Xint num;
+X{
+X	datum key;
+X	register int off;
+X	register short *ino = (short *) pag;
+X
+X	num = num * 2 - 1;
+X	if (ino[0] == 0 || num > ino[0])
+X		return nullitem;
+X
+X	off = (num > 1) ? ino[num - 1] : PBLKSIZ;
+X
+X	key.dptr = pag + ino[num];
+X	key.dsize = off - ino[num];
+X
+X	return key;
+X}
+X
+Xint
+Xdelpair(pag, key)
+Xchar *pag;
+Xdatum key;
+X{
+X	register int n;
+X	register int i;
+X	register short *ino = (short *) pag;
+X
+X	if ((n = ino[0]) == 0)
+X		return 0;
+X
+X	if ((i = seepair(pag, n, key.dptr, key.dsize)) == 0)
+X		return 0;
+X/*
+X * found the key. if it is the last entry
+X * [i.e. i == n - 1] we just adjust the entry count.
+X * hard case: move all data down onto the deleted pair,
+X * shift offsets onto deleted offsets, and adjust them.
+X * [note: 0 < i < n]
+X */
+X	if (i < n - 1) {
+X		register int m;
+X		register char *dst = pag + (i == 1 ? PBLKSIZ : ino[i - 1]);
+X		register char *src = pag + ino[i + 1];
+X		register int   zoo = dst - src;
+X
+X		debug(("free-up %d ", zoo));
+X/*
+X * shift data/keys down
+X */
+X		m = ino[i + 1] - ino[n];
+X#ifdef DUFF
+X#define MOVB 	*--dst = *--src
+X
+X		if (m > 0) {
+X			register int loop = (m + 8 - 1) >> 3;
+X
+X			switch (m & (8 - 1)) {
+X			case 0:	do {
+X				MOVB;	case 7:	MOVB;
+X			case 6:	MOVB;	case 5:	MOVB;
+X			case 4:	MOVB;	case 3:	MOVB;
+X			case 2:	MOVB;	case 1:	MOVB;
+X				} while (--loop);
+X			}
+X		}
+X#else
+X#ifdef MEMMOVE
+X		memmove(dst - m, src - m, m);
+X#else
+X		while (m--)
+X			*--dst = *--src;
+X#endif
+X#endif
+X/*
+X * adjust offset index up
+X */
+X		while (i < n - 1) {
+X			ino[i] = ino[i + 2] + zoo;
+X			i++;
+X		}
+X	}
+X	ino[0] -= 2;
+X	return 1;
+X}
+X
+X/*
+X * search for the key in the page.
+X * return offset index in the range 0 < i < n.
+X * return 0 if not found.
+X */
+Xstatic int
+Xseepair(pag, n, key, siz)
+Xchar *pag;
+Xregister int n;
+Xregister char *key;
+Xregister int siz;
+X{
+X	register int i;
+X	register int off = PBLKSIZ;
+X	register short *ino = (short *) pag;
+X
+X	for (i = 1; i < n; i += 2) {
+X		if (siz == off - ino[i] &&
+X		    memcmp(key, pag + ino[i], siz) == 0)
+X			return i;
+X		off = ino[i + 1];
+X	}
+X	return 0;
+X}
+X
+Xvoid
+Xsplpage(pag, new, sbit)
+Xchar *pag;
+Xchar *new;
+Xlong sbit;
+X{
+X	datum key;
+X	datum val;
+X
+X	register int n;
+X	register int off = PBLKSIZ;
+X	char cur[PBLKSIZ];
+X	register short *ino = (short *) cur;
+X
+X	(void) memcpy(cur, pag, PBLKSIZ);
+X	(void) memset(pag, 0, PBLKSIZ);
+X	(void) memset(new, 0, PBLKSIZ);
+X
+X	n = ino[0];
+X	for (ino++; n > 0; ino += 2) {
+X		key.dptr = cur + ino[0]; 
+X		key.dsize = off - ino[0];
+X		val.dptr = cur + ino[1];
+X		val.dsize = ino[0] - ino[1];
+X/*
+X * select the page pointer (by looking at sbit) and insert
+X */
+X		(void) putpair((exhash(key) & sbit) ? new : pag, key, val);
+X
+X		off = ino[1];
+X		n -= 2;
+X	}
+X
+X	debug(("%d split %d/%d\n", ((short *) cur)[0] / 2, 
+X	       ((short *) new)[0] / 2,
+X	       ((short *) pag)[0] / 2));
+X}
+X
+X/*
+X * check page sanity: 
+X * number of entries should be something
+X * reasonable, and all offsets in the index should be in order.
+X * this could be made more rigorous.
+X */
+Xint
+Xchkpage(pag)
+Xchar *pag;
+X{
+X	register int n;
+X	register int off;
+X	register short *ino = (short *) pag;
+X
+X	if ((n = ino[0]) < 0 || n > PBLKSIZ / sizeof(short))
+X		return 0;
+X
+X	if (n > 0) {
+X		off = PBLKSIZ;
+X		for (ino++; n > 0; ino += 2) {
+X			if (ino[0] > off || ino[1] > off ||
+X			    ino[1] > ino[0])
+X				return 0;
+X			off = ino[1];
+X			n -= 2;
+X		}
+X	}
+X	return 1;
+X}
+@@@End of pair.c
+echo x - pair.h 1>&2
+sed 's/^X//' >pair.h <<'@@@End of pair.h'
+Xextern int fitpair proto((char *, int));
+Xextern void  putpair proto((char *, datum, datum));
+Xextern datum	getpair proto((char *, datum));
+Xextern int  delpair proto((char *, datum));
+Xextern int  chkpage proto((char *));
+Xextern datum getnkey proto((char *, int));
+Xextern void splpage proto((char *, char *, long));
+X#ifdef SEEDUPS
+Xextern int duppair proto((char *, datum));
+X#endif
+@@@End of pair.h
+echo x - readme.ms 1>&2
+sed 's/^X//' >readme.ms <<'@@@End of readme.ms'
+X.\" tbl | readme.ms | [tn]roff -ms | ...
+X.\" note the "C" (courier) and "CB" fonts: you will probably have to
+X.\" change these.
+X.\" $Id: readme.ms,v 1.1 90/12/13 13:09:15 oz Exp Locker: oz $
+X
+X.de P1
+X.br
+X.nr dT 4
+X.nf
+X.ft C
+X.sp .5
+X.nr t \\n(dT*\\w'x'u
+X.ta 1u*\\ntu 2u*\\ntu 3u*\\ntu 4u*\\ntu 5u*\\ntu 6u*\\ntu 7u*\\ntu 8u*\\ntu 9u*\\ntu 10u*\\ntu 11u*\\ntu 12u*\\ntu 13u*\\ntu 14u*\\ntu
+X..
+X.de P2
+X.br
+X.ft 1
+X.br
+X.sp .5
+X.br
+X.fi
+X..
+X.\" CW uses the typewriter/courier font.
+X.de CW
+X\fC\\$1\\fP\\$2
+X..
+X
+X.\" Footnote numbering [by Henry Spencer]
+X.\" <text>\*f for a footnote number..
+X.\" .FS
+X.\" \*F <footnote text>
+X.\" .FE
+X.\"
+X.ds f \\u\\s-2\\n+f\\s+2\\d
+X.nr f 0 1
+X.ds F \\n+F.
+X.nr F 0 1
+X
+X.ND
+X.LP
+X.TL
+X\fIsdbm\fP \(em Substitute DBM
+X.br
+Xor
+X.br
+XBerkeley \fIndbm\fP for Every UN*X\** Made Simple
+X.AU
+XOzan (oz) Yigit
+X.AI
+XThe Guild of PD Software Toolmakers
+XToronto - Canada
+X.sp
+Xoz@nexus.yorku.ca
+X.LP
+X.FS
+XUN*X is not a trademark of any (dis)organization.
+X.FE
+X.sp 2
+X\fIImplementation is the sincerest form of flattery. \(em L. Peter Deutsch\fP
+X.SH
+XA The Clone of the \fIndbm\fP library
+X.PP
+XThe sources accompanying this notice \(em \fIsdbm\fP \(em constitute
+Xthe first public release (Dec. 1990) of a complete clone of
+Xthe Berkeley UN*X \fIndbm\fP library. The \fIsdbm\fP library is meant to
+Xclone the proven functionality of \fIndbm\fP as closely as possible,
+Xincluding a few improvements. It is practical, easy to understand, and
+Xcompatible.
+XThe \fIsdbm\fP library is not derived from any licensed, proprietary or
+Xcopyrighted software.
+X.PP
+XThe \fIsdbm\fP implementation is based on a 1978 algorithm
+X[Lar78] by P.-A. (Paul) Larson known as ``Dynamic Hashing''.
+XIn the course of searching for a substitute for \fIndbm\fP, I
+Xprototyped three different external-hashing algorithms [Lar78, Fag79, Lit80]
+Xand ultimately chose Larson's algorithm as a basis of the \fIsdbm\fP
+Ximplementation. The Bell Labs
+X\fIdbm\fP (and therefore \fIndbm\fP) is based on an algorithm invented by
+XKen Thompson, [Tho90, Tor87] and predates Larson's work.
+X.PP
+XThe \fIsdbm\fR programming interface is totally compatible
+Xwith \fIndbm\fP and includes a slight improvement in database initialization.
+XIt is also expected to be binary-compatible under most UN*X versions that
+Xsupport the \fIndbm\fP library.
+X.PP
+XThe \fIsdbm\fP implementation shares the shortcomings of the \fIndbm\fP
+Xlibrary, as a side effect of various simplifications to the original Larson
+Xalgorithm. It does produce \fIholes\fP in the page file as it writes
+Xpages past the end of file. (Larson's paper include a clever solution to
+Xthis problem that is a result of using the hash value directly as a block
+Xaddress.) On the other hand, extensive tests seem to indicate that \fIsdbm\fP
+Xcreates fewer holes in general, and the resulting pagefiles are
+Xsmaller. The \fIsdbm\fP implementation is also faster than \fIndbm\fP
+Xin database creation.
+XUnlike the \fIndbm\fP, the \fIsdbm\fP
+X.CW store
+Xoperation will not ``wander away'' trying to split its
+Xdata pages to insert a datum that \fIcannot\fP (due to elaborate worst-case
+Xsituations) be inserted. (It will fail after a pre-defined number of attempts.)
+X.SH
+XImportant Compatibility Warning
+X.PP
+XThe \fIsdbm\fP and \fIndbm\fP
+Xlibraries \fIcannot\fP share databases: one cannot read the (dir/pag)
+Xdatabase created by the other. This is due to the differences
+Xbetween the \fIndbm\fP and \fIsdbm\fP algorithms\**, 
+X.FS
+XTorek's discussion [Tor87]
+Xindicates that \fIdbm/ndbm\fP implementations use the hash
+Xvalue to traverse the radix trie differently than \fIsdbm\fP
+Xand as a result, the page indexes are generated in \fIdifferent\fP order.
+XFor more information, send e-mail to the author.
+X.FE
+Xand the hash functions
+Xused.
+XIt is easy to convert between the \fIdbm/ndbm\fP databases and \fIsdbm\fP
+Xby ignoring the index completely: see
+X.CW dbd ,
+X.CW dbu
+Xetc.
+X.R
+X.LP
+X.SH
+XNotice of Intellectual Property
+X.LP
+X\fIThe entire\fP sdbm  \fIlibrary package, as authored by me,\fP Ozan S. Yigit,
+X\fIis hereby placed in the public domain.\fP As such, the author is not
+Xresponsible for the consequences of use of this software, no matter how
+Xawful, even if they arise from defects in it. There is no expressed or
+Ximplied warranty for the \fIsdbm\fP library.
+X.PP
+XSince the \fIsdbm\fP
+Xlibrary package is in the public domain, this \fIoriginal\fP
+Xrelease or any additional public-domain releases of the modified original
+Xcannot possibly (by definition) be withheld from you. Also by definition,
+XYou (singular) have all the rights to this code (including the right to
+Xsell without permission, the right to hoard\**
+X.FS
+XYou cannot really hoard something that is available to the public at
+Xlarge, but try if it makes you feel any better.
+X.FE
+Xand the right to do other icky things as
+Xyou see fit) but those rights are also granted to everyone else.
+X.PP
+XPlease note that all previous distributions of this software contained
+Xa copyright (which is now dropped) to protect its
+Xorigins and its current public domain status against any possible claims
+Xand/or challenges.
+X.SH
+XAcknowledgments
+X.PP
+XMany people have been very helpful and supportive.  A partial list would
+Xnecessarily include Rayan Zacherissen (who contributed the man page,
+Xand also hacked a MMAP version of \fIsdbm\fP),
+XArnold Robbins, Chris Lewis,
+XBill Davidsen, Henry Spencer, Geoff Collyer, Rich Salz (who got me started
+Xin the first place), Johannes Ruschein
+X(who did the minix port) and David Tilbrook. I thank you all.
+X.SH
+XDistribution Manifest and Notes
+X.LP
+XThis distribution of \fIsdbm\fP includes (at least) the following:
+X.P1
+X	CHANGES		change log
+X	README		this file.
+X	biblio		a small bibliography on external hashing
+X	dba.c		a crude (n/s)dbm page file analyzer
+X	dbd.c		a crude (n/s)dbm page file dumper (for conversion)
+X	dbe.1		man page for dbe.c
+X	dbe.c		Janick's database editor
+X	dbm.c		a dbm library emulation wrapper for ndbm/sdbm
+X	dbm.h		header file for the above
+X	dbu.c		a crude db management utility
+X	hash.c		hashing function
+X	makefile	guess.
+X	pair.c		page-level routines (posted earlier)
+X	pair.h		header file for the above
+X	readme.ms	troff source for the README file
+X	sdbm.3		man page
+X	sdbm.c		the real thing
+X	sdbm.h		header file for the above
+X	tune.h		place for tuning & portability thingies
+X	util.c		miscellaneous
+X.P2
+X.PP
+X.CW dbu
+Xis a simple database manipulation program\** that tries to look
+X.FS
+XThe 
+X.CW dbd ,
+X.CW dba ,
+X.CW dbu
+Xutilities are quick hacks and are not fit for production use. They were
+Xdeveloped late one night, just to test out \fIsdbm\fP, and convert some
+Xdatabases.
+X.FE
+Xlike Bell Labs'
+X.CW cbt
+Xutility. It is currently incomplete in functionality.
+XI use
+X.CW dbu
+Xto test out the routines: it takes (from stdin) tab separated
+Xkey/value pairs for commands like
+X.CW build
+Xor
+X.CW insert
+Xor takes keys for
+Xcommands like
+X.CW delete
+Xor
+X.CW look .
+X.P1
+X	dbu <build|creat|look|insert|cat|delete> dbmfile
+X.P2
+X.PP
+X.CW dba
+Xis a crude analyzer of \fIdbm/sdbm/ndbm\fP
+Xpage files. It scans the entire
+Xpage file, reporting page level statistics, and totals at the end.
+X.PP
+X.CW dbd
+Xis a crude dump program for \fIdbm/ndbm/sdbm\fP
+Xdatabases. It ignores the
+Xbitmap, and dumps the data pages in sequence. It can be used to create
+Xinput for the
+X.CW dbu 
+Xutility.
+XNote that
+X.CW dbd
+Xwill skip any NULLs in the key and data
+Xfields, thus is unsuitable to convert some peculiar databases that
+Xinsist in including the terminating null.
+X.PP
+XI have also included a copy of the
+X.CW dbe
+X(\fIndbm\fP DataBase Editor) by Janick Bergeron [janick@bnr.ca] for
+Xyour pleasure. You may find it more useful than the little
+X.CW dbu
+Xutility.
+X.PP
+X.CW dbm.[ch]
+Xis a \fIdbm\fP library emulation on top of \fIndbm\fP
+X(and hence suitable for \fIsdbm\fP). Written by Robert Elz.
+X.PP
+XThe \fIsdbm\fP
+Xlibrary has been around in beta test for quite a long time, and from whatever
+Xlittle feedback I received (maybe no news is good news), I believe it has been
+Xfunctioning without any significant problems. I would, of course, appreciate
+Xall fixes and/or improvements. Portability enhancements would especially be
+Xuseful.
+X.SH
+XImplementation Issues
+X.PP
+XHash functions:
+XThe algorithm behind \fIsdbm\fP implementation needs a good bit-scrambling
+Xhash function to be effective. I ran into a set of constants for a simple
+Xhash function that seem to help \fIsdbm\fP perform better than \fIndbm\fP
+Xfor various inputs:
+X.P1
+X	/*
+X	 * polynomial conversion ignoring overflows
+X	 * 65599 nice. 65587 even better.
+X	 */
+X	long
+X	dbm_hash(char *str, int len) {
+X		register unsigned long n = 0;
+X	
+X		while (len--)
+X			n = n * 65599 + *str++;
+X		return n;
+X	}
+X.P2
+X.PP
+XThere may be better hash functions for the purposes of dynamic hashing.
+XTry your favorite, and check the pagefile. If it contains too many pages
+Xwith too many holes, (in relation to this one for example) or if
+X\fIsdbm\fP
+Xsimply stops working (fails after 
+X.CW SPLTMAX
+Xattempts to split) when you feed your
+XNEWS 
+X.CW history
+Xfile to it, you probably do not have a good hashing function.
+XIf you do better (for different types of input), I would like to know
+Xabout the function you use.
+X.PP
+XBlock sizes: It seems (from various tests on a few machines) that a page
+Xfile block size
+X.CW PBLKSIZ
+Xof 1024 is by far the best for performance, but
+Xthis also happens to limit the size of a key/value pair. Depending on your
+Xneeds, you may wish to increase the page size, and also adjust
+X.CW PAIRMAX
+X(the maximum size of a key/value pair allowed: should always be at least
+Xthree words smaller than
+X.CW PBLKSIZ .)
+Xaccordingly. The system-wide version of the library
+Xshould probably be
+Xconfigured with 1024 (distribution default), as this appears to be sufficient
+Xfor most common uses of \fIsdbm\fP.
+X.SH
+XPortability
+X.PP
+XThis package has been tested in many different UN*Xes even including minix,
+Xand appears to be reasonably portable. This does not mean it will port
+Xeasily to non-UN*X systems.
+X.SH
+XNotes and Miscellaneous
+X.PP
+XThe \fIsdbm\fP is not a very complicated package, at least not after you
+Xfamiliarize yourself with the literature on external hashing. There are
+Xother interesting algorithms in existence that ensure (approximately)
+Xsingle-read access to a data value associated with any key. These are
+Xdirectory-less schemes such as \fIlinear hashing\fP [Lit80] (+ Larson
+Xvariations), \fIspiral storage\fP [Mar79] or directory schemes such as
+X\fIextensible hashing\fP [Fag79] by Fagin et al. I do hope these sources
+Xprovide a reasonable playground for experimentation with other algorithms.
+XSee the June 1988 issue of ACM Computing Surveys [Enb88] for an
+Xexcellent overview of the field. 
+X.PG
+X.SH
+XReferences
+X.LP
+X.IP [Lar78] 4m
+XP.-A. Larson,
+X``Dynamic Hashing'', \fIBIT\fP, vol.  18,  pp. 184-201, 1978.
+X.IP [Tho90] 4m
+XKen Thompson, \fIprivate communication\fP, Nov. 1990
+X.IP [Lit80] 4m
+XW. Litwin,
+X`` Linear Hashing: A new tool  for  file  and table addressing'',
+X\fIProceedings of the 6th Conference on Very Large  Dabatases  (Montreal)\fP,
+Xpp.  212-223,  Very Large Database Foundation, Saratoga, Calif., 1980.
+X.IP [Fag79] 4m
+XR. Fagin, J.  Nievergelt,  N.  Pippinger,  and  H.  R. Strong,
+X``Extendible Hashing - A Fast Access Method for Dynamic Files'',
+X\fIACM Trans. Database Syst.\fP, vol. 4,  no.3, pp. 315-344, Sept. 1979.
+X.IP [Wal84] 4m
+XRich Wales,
+X``Discussion of "dbm" data base system'', \fIUSENET newsgroup unix.wizards\fP,
+XJan. 1984.
+X.IP [Tor87] 4m
+XChris Torek,
+X``Re:  dbm.a  and  ndbm.a  archives'', \fIUSENET newsgroup comp.unix\fP,
+X1987.
+X.IP [Mar79] 4m
+XG. N. Martin,
+X``Spiral Storage: Incrementally  Augmentable  Hash  Addressed  Storage'',
+X\fITechnical Report #27\fP, University of Varwick, Coventry, U.K., 1979.
+X.IP [Enb88] 4m
+XR. J. Enbody and H. C. Du,
+X``Dynamic Hashing  Schemes'',\fIACM Computing Surveys\fP,
+Xvol. 20, no. 2, pp. 85-113, June 1988.
+@@@End of readme.ms
+echo x - readme.txt 1>&2
+sed 's/^X//' >readme.txt <<'@@@End of readme.txt'
+X
+X
+X
+X
+X
+X
+X                   sdbm - Substitute DBM
+X                             or
+X        Berkeley ndbm for Every UN*X[1] Made Simple
+X
+X                      Ozan (oz) Yigit
+X
+X            The Guild of PD Software Toolmakers
+X                      Toronto - Canada
+X
+X                     oz@nexus.yorku.ca
+X
+X
+X
+XImplementation is the sincerest form of flattery. - L. Peter
+XDeutsch
+X
+XA The Clone of the ndbm library
+X
+X     The sources accompanying this notice - sdbm  -  consti-
+Xtute  the  first  public  release  (Dec. 1990) of a complete
+Xclone of the Berkeley UN*X ndbm library. The sdbm library is
+Xmeant  to  clone the proven functionality of ndbm as closely
+Xas possible, including a few improvements. It is  practical,
+Xeasy to understand, and compatible.  The sdbm library is not
+Xderived  from  any  licensed,  proprietary  or   copyrighted
+Xsoftware.
+X
+X     The sdbm implementation is based on  a  1978  algorithm
+X[Lar78] by P.-A. (Paul) Larson known as ``Dynamic Hashing''.
+XIn the course of searching for a substitute for ndbm, I pro-
+Xtotyped  three different external-hashing algorithms [Lar78,
+XFag79, Lit80] and ultimately chose Larson's algorithm  as  a
+Xbasis  of  the  sdbm  implementation. The Bell Labs dbm (and
+Xtherefore ndbm) is based on an  algorithm  invented  by  Ken
+XThompson, [Tho90, Tor87] and predates Larson's work.
+X
+X     The sdbm programming interface  is  totally  compatible
+Xwith ndbm and includes a slight improvement in database ini-
+Xtialization.  It is also expected  to  be  binary-compatible
+Xunder most UN*X versions that support the ndbm library.
+X
+X     The sdbm implementation shares the shortcomings of  the
+Xndbm library, as a side effect of various simplifications to
+Xthe original Larson algorithm. It does produce holes in  the
+Xpage file as it writes pages past the end of file. (Larson's
+Xpaper include a clever solution to this problem  that  is  a
+Xresult of using the hash value directly as a block address.)
+XOn the other hand, extensive tests  seem  to  indicate  that
+Xsdbm creates fewer holes in general, and the resulting page-
+Xfiles are smaller. The sdbm implementation  is  also  faster
+Xthan  ndbm  in database creation.  Unlike the ndbm, the sdbm
+X_________________________
+X
+X  [1] UN*X is not a trademark of any (dis)organization.
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X                           - 2 -
+X
+X
+Xstore operation will not ``wander away'' trying to split its
+Xdata  pages  to insert a datum that cannot (due to elaborate
+Xworst-case situations) be inserted. (It will  fail  after  a
+Xpre-defined number of attempts.)
+X
+XImportant Compatibility Warning
+X
+X     The sdbm and ndbm libraries cannot share databases: one
+Xcannot  read  the  (dir/pag)  database created by the other.
+XThis is due to the differences between  the  ndbm  and  sdbm
+Xalgorithms[2], and the hash functions used.  It is  easy  to
+Xconvert  between the dbm/ndbm databases and sdbm by ignoring
+Xthe index completely: see dbd, dbu etc.
+X
+X
+XNotice of Intellectual Property
+X
+XThe entire sdbm  library package, as authored by me, Ozan S.
+XYigit,  is  hereby placed in the public domain. As such, the
+Xauthor is not responsible for the  consequences  of  use  of
+Xthis  software, no matter how awful, even if they arise from
+Xdefects in it. There is no expressed or implied warranty for
+Xthe sdbm library.
+X
+X     Since the sdbm library package is in the public domain,
+Xthis   original  release  or  any  additional  public-domain
+Xreleases of the modified original cannot possibly (by defin-
+Xition) be withheld from you. Also by definition, You (singu-
+Xlar) have all the rights to this code (including  the  right
+Xto sell without permission, the right to  hoard[3]  and  the
+Xright  to  do  other  icky  things as you see fit) but those
+Xrights are also granted to everyone else.
+X
+X     Please note that all  previous  distributions  of  this
+Xsoftware  contained  a  copyright  (which is now dropped) to
+Xprotect its origins and its  current  public  domain  status
+Xagainst any possible claims and/or challenges.
+X
+XAcknowledgments
+X
+X     Many people have been very helpful and  supportive.   A
+Xpartial  list  would  necessarily  include Rayan Zacherissen
+X(who contributed the  man  page,  and  also  hacked  a  MMAP
+X_________________________
+X
+X  [2] Torek's   discussion   [Tor87]   indicates   that
+Xdbm/ndbm implementations use the hash value to traverse
+Xthe radix trie differently than sdbm and as  a  result,
+Xthe page indexes are generated in different order.  For
+Xmore information, send e-mail to the author.
+X  [3] You  cannot really hoard something that is avail-
+Xable to the public at large, but try if  it  makes  you
+Xfeel any better.
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X                           - 3 -
+X
+X
+Xversion of sdbm), Arnold Robbins, Chris Lewis,  Bill  David-
+Xsen,  Henry  Spencer,  Geoff  Collyer, Rich Salz (who got me
+Xstarted in the first place), Johannes Ruschein (who did  the
+Xminix port) and David Tilbrook. I thank you all.
+X
+XDistribution Manifest and Notes
+X
+XThis distribution of sdbm includes (at least) the following:
+X
+X    CHANGES     change log
+X    README      this file.
+X    biblio      a small bibliography on external hashing
+X    dba.c       a crude (n/s)dbm page file analyzer
+X    dbd.c       a crude (n/s)dbm page file dumper (for conversion)
+X    dbe.1       man page for dbe.c
+X    dbe.c       Janick's database editor
+X    dbm.c       a dbm library emulation wrapper for ndbm/sdbm
+X    dbm.h       header file for the above
+X    dbu.c       a crude db management utility
+X    hash.c      hashing function
+X    makefile    guess.
+X    pair.c      page-level routines (posted earlier)
+X    pair.h      header file for the above
+X    readme.ms   troff source for the README file
+X    sdbm.3      man page
+X    sdbm.c      the real thing
+X    sdbm.h      header file for the above
+X    tune.h      place for tuning & portability thingies
+X    util.c      miscellaneous
+X
+X     dbu is a simple database manipulation  program[4]  that
+Xtries to look like Bell Labs' cbt utility. It  is  currently
+Xincomplete in functionality.  I use dbu to test out the rou-
+Xtines: it takes (from stdin) tab separated  key/value  pairs
+Xfor commands like build or insert or takes keys for commands
+Xlike delete or look.
+X
+X    dbu <build|creat|look|insert|cat|delete> dbmfile
+X
+X     dba is a crude analyzer of dbm/sdbm/ndbm page files. It
+Xscans the entire page file, reporting page level statistics,
+Xand totals at the end.
+X
+X     dbd is a crude dump  program  for  dbm/ndbm/sdbm  data-
+Xbases.  It  ignores  the bitmap, and dumps the data pages in
+Xsequence. It can be used to create input for the  dbu  util-
+Xity.   Note that dbd will skip any NULLs in the key and data
+Xfields,  thus  is  unsuitable  to  convert   some   peculiar
+X_________________________
+X
+X  [4] The dbd, dba, dbu utilities are quick  hacks  and
+Xare  not  fit  for  production use. They were developed
+Xlate one night, just to test out sdbm, and convert some
+Xdatabases.
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X                           - 4 -
+X
+X
+Xdatabases that insist in including the terminating null.
+X
+X     I have also included a copy of the dbe  (ndbm  DataBase
+XEditor)  by  Janick Bergeron [janick@bnr.ca] for your pleas-
+Xure. You may find it more useful than the little  dbu  util-
+Xity.
+X
+X     dbm.[ch] is a dbm library emulation on top of ndbm (and
+Xhence suitable for sdbm). Written by Robert Elz.
+X
+X     The sdbm library has been around in beta test for quite
+Xa  long  time,  and from whatever little feedback I received
+X(maybe no news is good news), I believe it  has  been  func-
+Xtioning  without  any  significant  problems.  I  would,  of
+Xcourse, appreciate all fixes and/or improvements.  Portabil-
+Xity enhancements would especially be useful.
+X
+XImplementation Issues
+X
+X     Hash functions: The algorithm behind  sdbm  implementa-
+Xtion  needs a good bit-scrambling hash function to be effec-
+Xtive. I ran into a set of constants for a simple hash  func-
+Xtion  that  seem  to  help sdbm perform better than ndbm for
+Xvarious inputs:
+X
+X    /*
+X     * polynomial conversion ignoring overflows
+X     * 65599 nice. 65587 even better.
+X     */
+X    long
+X    dbm_hash(char *str, int len) {
+X        register unsigned long n = 0;
+X
+X        while (len--)
+X            n = n * 65599 + *str++;
+X        return n;
+X    }
+X
+X     There may be better hash functions for the purposes  of
+Xdynamic hashing.  Try your favorite, and check the pagefile.
+XIf it contains too many pages with too many holes, (in rela-
+Xtion  to this one for example) or if sdbm simply stops work-
+Xing (fails after SPLTMAX attempts to split)  when  you  feed
+Xyour  NEWS  history  file  to it, you probably do not have a
+Xgood hashing function.  If  you  do  better  (for  different
+Xtypes of input), I would like to know about the function you
+Xuse.
+X
+X     Block sizes: It seems (from  various  tests  on  a  few
+Xmachines)  that a page file block size PBLKSIZ of 1024 is by
+Xfar the best for performance, but this also happens to limit
+Xthe  size  of a key/value pair. Depending on your needs, you
+Xmay wish to increase the page size, and also adjust  PAIRMAX
+X(the maximum size of a key/value pair allowed: should always
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X                           - 5 -
+X
+X
+Xbe at least three words smaller than PBLKSIZ.)  accordingly.
+XThe  system-wide  version  of the library should probably be
+Xconfigured with 1024 (distribution default), as this appears
+Xto be sufficient for most common uses of sdbm.
+X
+XPortability
+X
+X     This package has been tested in many  different  UN*Xes
+Xeven including minix, and appears to be reasonably portable.
+XThis does not mean it will port easily to non-UN*X systems.
+X
+XNotes and Miscellaneous
+X
+X     The sdbm is not a very complicated  package,  at  least
+Xnot  after  you  familiarize yourself with the literature on
+Xexternal hashing. There are other interesting algorithms  in
+Xexistence  that ensure (approximately) single-read access to
+Xa data value associated with any key. These  are  directory-
+Xless schemes such as linear hashing [Lit80] (+ Larson varia-
+Xtions), spiral storage [Mar79] or directory schemes such  as
+Xextensible  hashing  [Fag79] by Fagin et al. I do hope these
+Xsources provide a reasonable playground for  experimentation
+Xwith  other algorithms.  See the June 1988 issue of ACM Com-
+Xputing Surveys [Enb88] for  an  excellent  overview  of  the
+Xfield.
+X
+XReferences
+X
+X
+X[Lar78]
+X    P.-A. Larson, ``Dynamic Hashing'', BIT, vol.   18,   pp.
+X    184-201, 1978.
+X
+X[Tho90]
+X    Ken Thompson, private communication, Nov. 1990
+X
+X[Lit80]
+X    W. Litwin, `` Linear Hashing: A new tool  for  file  and
+X    table addressing'', Proceedings of the 6th Conference on
+X    Very Large  Dabatases  (Montreal), pp.   212-223,   Very
+X    Large Database Foundation, Saratoga, Calif., 1980.
+X
+X[Fag79]
+X    R. Fagin, J.  Nievergelt,  N.  Pippinger,  and   H.   R.
+X    Strong,  ``Extendible Hashing - A Fast Access Method for
+X    Dynamic Files'', ACM  Trans.  Database  Syst.,  vol.  4,
+X    no.3, pp. 315-344, Sept. 1979.
+X
+X[Wal84]
+X    Rich Wales, ``Discussion of "dbm"  data  base  system'',
+X    USENET newsgroup unix.wizards, Jan. 1984.
+X
+X[Tor87]
+X    Chris Torek,  ``Re:   dbm.a   and   ndbm.a   archives'',
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X                           - 6 -
+X
+X
+X    USENET newsgroup comp.unix, 1987.
+X
+X[Mar79]
+X    G. N. Martin, ``Spiral Storage: Incrementally   Augment-
+X    able   Hash  Addressed  Storage'', Technical Report #27,
+X    University of Varwick, Coventry, U.K., 1979.
+X
+X[Enb88]
+X    R.  J.  Enbody  and  H.   C.   Du,   ``Dynamic   Hashing
+X    Schemes'',ACM  Computing  Surveys,  vol.  20, no. 2, pp.
+X    85-113, June 1988.
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+X
+@@@End of readme.txt
+echo x - sdbm.3 1>&2
+sed 's/^X//' >sdbm.3 <<'@@@End of sdbm.3'
+X.\" $Id: sdbm.3,v 1.2 90/12/13 13:00:57 oz Exp $
+X.TH SDBM 3 "1 March 1990"
+X.SH NAME
+Xsdbm, dbm_open, dbm_prep, dbm_close, dbm_fetch, dbm_store, dbm_delete, dbm_firstkey, dbm_nextkey, dbm_hash, dbm_rdonly, dbm_error, dbm_clearerr, dbm_dirfno, dbm_pagfno \- data base subroutines
+X.SH SYNOPSIS
+X.nf
+X.ft B
+X#include <sdbm.h>
+X.sp
+Xtypedef struct {
+X	char *dptr;
+X	int dsize;
+X} datum;
+X.sp
+Xdatum nullitem = { NULL, 0 };
+X.sp
+X\s-1DBM\s0 *dbm_open(char *file, int flags, int mode)
+X.sp
+X\s-1DBM\s0 *dbm_prep(char *dirname, char *pagname, int flags, int mode)
+X.sp
+Xvoid dbm_close(\s-1DBM\s0 *db)
+X.sp
+Xdatum dbm_fetch(\s-1DBM\s0 *db, key)
+X.sp
+Xint dbm_store(\s-1DBM\s0 *db, datum key, datum val, int flags)
+X.sp
+Xint dbm_delete(\s-1DBM\s0 *db, datum key)
+X.sp
+Xdatum dbm_firstkey(\s-1DBM\s0 *db)
+X.sp
+Xdatum dbm_nextkey(\s-1DBM\s0 *db)
+X.sp
+Xlong dbm_hash(char *string, int len)
+X.sp
+Xint dbm_rdonly(\s-1DBM\s0 *db)
+Xint dbm_error(\s-1DBM\s0 *db)
+Xdbm_clearerr(\s-1DBM\s0 *db)
+Xint dbm_dirfno(\s-1DBM\s0 *db)
+Xint dbm_pagfno(\s-1DBM\s0 *db)
+X.ft R
+X.fi
+X.SH DESCRIPTION
+X.IX "database library" sdbm "" "\fLsdbm\fR"
+X.IX dbm_open "" "\fLdbm_open\fR \(em open \fLsdbm\fR database"
+X.IX dbm_prep "" "\fLdbm_prep\fR \(em prepare \fLsdbm\fR database"
+X.IX dbm_close "" "\fLdbm_close\fR \(em close \fLsdbm\fR routine"
+X.IX dbm_fetch "" "\fLdbm_fetch\fR \(em fetch \fLsdbm\fR database data"
+X.IX dbm_store "" "\fLdbm_store\fR \(em add data to \fLsdbm\fR database"
+X.IX dbm_delete "" "\fLdbm_delete\fR \(em remove data from \fLsdbm\fR database"
+X.IX dbm_firstkey "" "\fLdbm_firstkey\fR \(em access \fLsdbm\fR database"
+X.IX dbm_nextkey "" "\fLdbm_nextkey\fR \(em access \fLsdbm\fR database"
+X.IX dbm_hash "" "\fLdbm_hash\fR \(em string hash for \fLsdbm\fR database"
+X.IX dbm_rdonly "" "\fLdbm_rdonly\fR \(em return \fLsdbm\fR database read-only mode"
+X.IX dbm_error "" "\fLdbm_error\fR \(em return \fLsdbm\fR database error condition"
+X.IX dbm_clearerr "" "\fLdbm_clearerr\fR \(em clear \fLsdbm\fR database error condition"
+X.IX dbm_dirfno "" "\fLdbm_dirfno\fR \(em return \fLsdbm\fR database bitmap file descriptor"
+X.IX dbm_pagfno "" "\fLdbm_pagfno\fR \(em return \fLsdbm\fR database data file descriptor"
+X.IX "database functions \(em \fLsdbm\fR"  dbm_open  ""  \fLdbm_open\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_prep  ""  \fLdbm_prep\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_close  ""  \fLdbm_close\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_fetch  ""  \fLdbm_fetch\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_store  ""  \fLdbm_store\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_delete  ""  \fLdbm_delete\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_firstkey  ""  \fLdbm_firstkey\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_nextkey  ""  \fLdbm_nextkey\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_rdonly  ""  \fLdbm_rdonly\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_error  ""  \fLdbm_error\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_clearerr  ""  \fLdbm_clearerr\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_dirfno  ""  \fLdbm_dirfno\fP
+X.IX "database functions \(em \fLsdbm\fR"  dbm_pagfno  ""  \fLdbm_pagfno\fP
+X.LP
+XThis package allows an application to maintain a mapping of <key,value> pairs
+Xin disk files.  This is not to be considered a real database system, but is
+Xstill useful in many simple applications built around fast retrieval of a data
+Xvalue from a key.  This implementation uses an external hashing scheme,
+Xcalled Dynamic Hashing, as described by Per-Aake Larson in BIT 18 (1978) pp.
+X184-201.  Retrieval of any item usually requires a single disk access.
+XThe application interface is compatible with the
+X.IR ndbm (3)
+Xlibrary.
+X.LP
+XAn
+X.B sdbm
+Xdatabase is kept in two files usually given the extensions
+X.B \.dir
+Xand
+X.BR \.pag .
+XThe
+X.B \.dir
+Xfile contains a bitmap representing a forest of binary hash trees, the leaves
+Xof which indicate data pages in the
+X.B \.pag
+Xfile.
+X.LP
+XThe application interface uses the
+X.B datum
+Xstructure to describe both
+X.I keys
+Xand
+X.IR value s.
+XA
+X.B datum
+Xspecifies a byte sequence of
+X.I dsize
+Xsize pointed to by
+X.IR dptr .
+XIf you use
+X.SM ASCII
+Xstrings as
+X.IR key s
+Xor
+X.IR value s,
+Xthen you must decide whether or not to include the terminating
+X.SM NUL
+Xbyte which sometimes defines strings.  Including it will require larger
+Xdatabase files, but it will be possible to get sensible output from a
+X.IR strings (1)
+Xcommand applied to the data file.
+X.LP
+XIn order to allow a process using this package to manipulate multiple
+Xdatabases, the applications interface always requires a
+X.IR handle ,
+Xa
+X.BR "DBM *" ,
+Xto identify the database to be manipulated.  Such a handle can be obtained
+Xfrom the only routines that do not require it, namely
+X.BR dbm_open (\|)
+Xor
+X.BR dbm_prep (\|).
+XEither of these will open or create the two necessary files.  The
+Xdifference is that the latter allows explicitly naming the bitmap and data
+Xfiles whereas
+X.BR dbm_open (\|)
+Xwill take a base file name and call
+X.BR dbm_prep (\|)
+Xwith the default extensions.
+XThe
+X.I flags
+Xand
+X.I mode
+Xparameters are the same as for
+X.BR open (2).
+X.LP
+XTo free the resources occupied while a database handle is active, call
+X.BR dbm_close (\|).
+X.LP
+XGiven a handle, one can retrieve data associated with a key by using the
+X.BR dbm_fetch (\|)
+Xroutine, and associate data with a key by using the
+X.BR dbm_store (\|)
+Xroutine.
+X.LP
+XThe values of the
+X.I flags
+Xparameter for
+X.BR dbm_store (\|)
+Xcan be either
+X.BR \s-1DBM_INSERT\s0 ,
+Xwhich will not change an existing entry with the same key, or
+X.BR \s-1DBM_REPLACE\s0 ,
+Xwhich will replace an existing entry with the same key.
+XKeys are unique within the database.
+X.LP
+XTo delete a key and its associated value use the
+X.BR dbm_delete (\|)
+Xroutine.
+X.LP
+XTo retrieve every key in the database, use a loop like:
+X.sp
+X.nf
+X.ft B
+Xfor (key = dbm_firstkey(db); key.dptr != NULL; key = dbm_nextkey(db))
+X        ;
+X.ft R
+X.fi
+X.LP
+XThe order of retrieval is unspecified.
+X.LP
+XIf you determine that the performance of the database is inadequate or
+Xyou notice clustering or other effects that may be due to the hashing
+Xalgorithm used by this package, you can override it by supplying your
+Xown
+X.BR dbm_hash (\|)
+Xroutine.  Doing so will make the database unintelligable to any other
+Xapplications that do not use your specialized hash function.
+X.sp
+X.LP
+XThe following macros are defined in the header file:
+X.IP
+X.BR dbm_rdonly (\|)
+Xreturns true if the database has been opened read\-only.
+X.IP
+X.BR dbm_error (\|)
+Xreturns true if an I/O error has occurred.
+X.IP
+X.BR dbm_clearerr (\|)
+Xallows you to clear the error flag if you think you know what the error
+Xwas and insist on ignoring it.
+X.IP
+X.BR dbm_dirfno (\|)
+Xreturns the file descriptor associated with the bitmap file.
+X.IP
+X.BR dbm_pagfno (\|)
+Xreturns the file descriptor associated with the data file.
+X.SH SEE ALSO
+X.IR open (2).
+X.SH DIAGNOSTICS
+XFunctions that return a
+X.B "DBM *"
+Xhandle will use
+X.SM NULL
+Xto indicate an error.
+XFunctions that return an
+X.B int
+Xwill use \-1 to indicate an error.  The normal return value in that case is 0.
+XFunctions that return a
+X.B datum
+Xwill return
+X.B nullitem
+Xto indicate an error.
+X.LP
+XAs a special case of
+X.BR dbm_store (\|),
+Xif it is called with the
+X.B \s-1DBM_INSERT\s0
+Xflag and the key already exists in the database, the return value will be 1.
+X.LP
+XIn general, if a function parameter is invalid,
+X.B errno
+Xwill be set to
+X.BR \s-1EINVAL\s0 .
+XIf a write operation is requested on a read-only database,
+X.B errno
+Xwill be set to
+X.BR \s-1ENOPERM\s0 .
+XIf a memory allocation (using
+X.IR malloc (3))
+Xfailed,
+X.B errno
+Xwill be set to
+X.BR \s-1ENOMEM\s0 .
+XFor I/O operation failures
+X.B errno
+Xwill contain the value set by the relevant failed system call, either
+X.IR read (2),
+X.IR write (2),
+Xor
+X.IR lseek (2).
+X.SH AUTHOR
+X.IP "Ozan S. Yigit" (oz@nexus.yorku.ca)
+X.SH BUGS
+XThe sum of key and value data sizes must not exceed
+X.B \s-1PAIRMAX\s0
+X(1008 bytes).
+X.LP
+XThe sum of the key and value data sizes where several keys hash to the
+Xsame value must fit within one bitmap page.
+X.LP
+XThe
+X.B \.pag
+Xfile will contain holes, so its apparent size is larger than its contents.
+XWhen copied through the filesystem the holes will be filled.
+X.LP
+XThe contents of
+X.B datum
+Xvalues returned are in volatile storage.  If you want to retain the values
+Xpointed to, you must copy them immediately before another call to this package.
+X.LP
+XThe only safe way for multiple processes to (read and) update a database at
+Xthe same time, is to implement a private locking scheme outside this package
+Xand open and close the database between lock acquisitions.  It is safe for
+Xmultiple processes to concurrently access a database read-only.
+X.SH APPLICATIONS PORTABILITY
+XFor complete source code compatibility with the Berkeley Unix
+X.IR ndbm (3)
+Xlibrary, the 
+X.B sdbm.h
+Xheader file should be installed in
+X.BR /usr/include/ndbm.h .
+X.LP
+XThe
+X.B nullitem
+Xdata item, and the
+X.BR dbm_prep (\|),
+X.BR dbm_hash (\|),
+X.BR dbm_rdonly (\|),
+X.BR dbm_dirfno (\|),
+Xand
+X.BR dbm_pagfno (\|)
+Xfunctions are unique to this package.
+@@@End of sdbm.3
+echo x - sdbm.c 1>&2
+sed 's/^X//' >sdbm.c <<'@@@End of sdbm.c'
+X/*
+X * sdbm - ndbm work-alike hashed database library
+X * based on Per-Aake Larson's Dynamic Hashing algorithms. BIT 18 (1978).
+X * author: oz@nexus.yorku.ca
+X * status: public domain.
+X *
+X * core routines
+X */
+X
+X#ifndef lint
+Xstatic char rcsid[] = "$Id: sdbm.c,v 1.16 90/12/13 13:01:31 oz Exp $";
+X#endif
+X
+X#include "sdbm.h"
+X#include "tune.h"
+X#include "pair.h"
+X
+X#include <sys/types.h>
+X#include <sys/stat.h>
+X#ifdef BSD42
+X#include <sys/file.h>
+X#else
+X#include <fcntl.h>
+X#include <memory.h>
+X#endif
+X#include <errno.h>
+X#include <string.h>
+X
+X#ifdef __STDC__
+X#include <stddef.h>
+X#endif
+X
+X#ifndef NULL
+X#define NULL	0
+X#endif
+X
+X/*
+X * externals
+X */
+X#ifndef sun
+Xextern int errno;
+X#endif
+X
+Xextern char *malloc proto((unsigned int));
+Xextern void free proto((void *));
+Xextern long lseek();
+X
+X/*
+X * forward
+X */
+Xstatic int getdbit proto((DBM *, long));
+Xstatic int setdbit proto((DBM *, long));
+Xstatic int getpage proto((DBM *, long));
+Xstatic datum getnext proto((DBM *));
+Xstatic int makroom proto((DBM *, long, int));
+X
+X/*
+X * useful macros
+X */
+X#define bad(x)		((x).dptr == NULL || (x).dsize <= 0)
+X#define exhash(item)	dbm_hash((item).dptr, (item).dsize)
+X#define ioerr(db)	((db)->flags |= DBM_IOERR)
+X
+X#define OFF_PAG(off)	(long) (off) * PBLKSIZ
+X#define OFF_DIR(off)	(long) (off) * DBLKSIZ
+X
+Xstatic long masks[] = {
+X	000000000000, 000000000001, 000000000003, 000000000007,
+X	000000000017, 000000000037, 000000000077, 000000000177,
+X	000000000377, 000000000777, 000000001777, 000000003777,
+X	000000007777, 000000017777, 000000037777, 000000077777,
+X	000000177777, 000000377777, 000000777777, 000001777777,
+X	000003777777, 000007777777, 000017777777, 000037777777,
+X	000077777777, 000177777777, 000377777777, 000777777777,
+X	001777777777, 003777777777, 007777777777, 017777777777
+X};
+X
+Xdatum nullitem = {NULL, 0};
+X
+XDBM *
+Xdbm_open(file, flags, mode)
+Xregister char *file;
+Xregister int flags;
+Xregister int mode;
+X{
+X	register DBM *db;
+X	register char *dirname;
+X	register char *pagname;
+X	register int n;
+X
+X	if (file == NULL || !*file)
+X		return errno = EINVAL, (DBM *) NULL;
+X/*
+X * need space for two seperate filenames
+X */
+X	n = strlen(file) * 2 + strlen(DIRFEXT) + strlen(PAGFEXT) + 2;
+X
+X	if ((dirname = malloc((unsigned) n)) == NULL)
+X		return errno = ENOMEM, (DBM *) NULL;
+X/*
+X * build the file names
+X */
+X	dirname = strcat(strcpy(dirname, file), DIRFEXT);
+X	pagname = strcpy(dirname + strlen(dirname) + 1, file);
+X	pagname = strcat(pagname, PAGFEXT);
+X
+X	db = dbm_prep(dirname, pagname, flags, mode);
+X	free((char *) dirname);
+X	return db;
+X}
+X
+XDBM *
+Xdbm_prep(dirname, pagname, flags, mode)
+Xchar *dirname;
+Xchar *pagname;
+Xint flags;
+Xint mode;
+X{
+X	register DBM *db;
+X	struct stat dstat;
+X
+X	if ((db = (DBM *) malloc(sizeof(DBM))) == NULL)
+X		return errno = ENOMEM, (DBM *) NULL;
+X
+X        db->flags = 0;
+X        db->hmask = 0;
+X        db->blkptr = 0;
+X        db->keyptr = 0;
+X/*
+X * adjust user flags so that WRONLY becomes RDWR, 
+X * as required by this package. Also set our internal
+X * flag for RDONLY if needed.
+X */
+X	if (flags & O_WRONLY)
+X		flags = (flags & ~O_WRONLY) | O_RDWR;
+X
+X	else if ((flags & 03) == O_RDONLY)
+X		db->flags = DBM_RDONLY;
+X/*
+X * open the files in sequence, and stat the dirfile.
+X * If we fail anywhere, undo everything, return NULL.
+X */
+X	if ((db->pagf = open(pagname, flags, mode)) > -1) {
+X		if ((db->dirf = open(dirname, flags, mode)) > -1) {
+X/*
+X * need the dirfile size to establish max bit number.
+X */
+X			if (fstat(db->dirf, &dstat) == 0) {
+X/*
+X * zero size: either a fresh database, or one with a single,
+X * unsplit data page: dirpage is all zeros.
+X */
+X				db->dirbno = (!dstat.st_size) ? 0 : -1;
+X				db->pagbno = -1;
+X				db->maxbno = dstat.st_size * BYTESIZ;
+X
+X				(void) memset(db->pagbuf, 0, PBLKSIZ);
+X				(void) memset(db->dirbuf, 0, DBLKSIZ);
+X			/*
+X			 * success
+X			 */
+X				return db;
+X			}
+X			(void) close(db->dirf);
+X		}
+X		(void) close(db->pagf);
+X	}
+X	free((char *) db);
+X	return (DBM *) NULL;
+X}
+X
+Xvoid
+Xdbm_close(db)
+Xregister DBM *db;
+X{
+X	if (db == NULL)
+X		errno = EINVAL;
+X	else {
+X		(void) close(db->dirf);
+X		(void) close(db->pagf);
+X		free((char *) db);
+X	}
+X}
+X
+Xdatum
+Xdbm_fetch(db, key)
+Xregister DBM *db;
+Xdatum key;
+X{
+X	if (db == NULL || bad(key))
+X		return errno = EINVAL, nullitem;
+X
+X	if (getpage(db, exhash(key)))
+X		return getpair(db->pagbuf, key);
+X
+X	return ioerr(db), nullitem;
+X}
+X
+Xint
+Xdbm_delete(db, key)
+Xregister DBM *db;
+Xdatum key;
+X{
+X	if (db == NULL || bad(key))
+X		return errno = EINVAL, -1;
+X	if (dbm_rdonly(db))
+X		return errno = EPERM, -1;
+X
+X	if (getpage(db, exhash(key))) {
+X		if (!delpair(db->pagbuf, key))
+X			return -1;
+X/*
+X * update the page file
+X */
+X		if (lseek(db->pagf, OFF_PAG(db->pagbno), SEEK_SET) < 0
+X		    || write(db->pagf, db->pagbuf, PBLKSIZ) < 0)
+X			return ioerr(db), -1;
+X
+X		return 0;
+X	}
+X
+X	return ioerr(db), -1;
+X}
+X
+Xint
+Xdbm_store(db, key, val, flags)
+Xregister DBM *db;
+Xdatum key;
+Xdatum val;
+Xint flags;
+X{
+X	int need;
+X	register long hash;
+X
+X	if (db == NULL || bad(key))
+X		return errno = EINVAL, -1;
+X	if (dbm_rdonly(db))
+X		return errno = EPERM, -1;
+X
+X	need = key.dsize + val.dsize;
+X/*
+X * is the pair too big (or too small) for this database ??
+X */
+X	if (need < 0 || need > PAIRMAX)
+X		return errno = EINVAL, -1;
+X
+X	if (getpage(db, (hash = exhash(key)))) {
+X/*
+X * if we need to replace, delete the key/data pair
+X * first. If it is not there, ignore.
+X */
+X		if (flags == DBM_REPLACE)
+X			(void) delpair(db->pagbuf, key);
+X#ifdef SEEDUPS
+X		else if (duppair(db->pagbuf, key))
+X			return 1;
+X#endif
+X/*
+X * if we do not have enough room, we have to split.
+X */
+X		if (!fitpair(db->pagbuf, need))
+X			if (!makroom(db, hash, need))
+X				return ioerr(db), -1;
+X/*
+X * we have enough room or split is successful. insert the key,
+X * and update the page file.
+X */
+X		(void) putpair(db->pagbuf, key, val);
+X
+X		if (lseek(db->pagf, OFF_PAG(db->pagbno), SEEK_SET) < 0
+X		    || write(db->pagf, db->pagbuf, PBLKSIZ) < 0)
+X			return ioerr(db), -1;
+X	/*
+X	 * success
+X	 */
+X		return 0;
+X	}
+X
+X	return ioerr(db), -1;
+X}
+X
+X/*
+X * makroom - make room by splitting the overfull page
+X * this routine will attempt to make room for SPLTMAX times before
+X * giving up.
+X */
+Xstatic int
+Xmakroom(db, hash, need)
+Xregister DBM *db;
+Xlong hash;
+Xint need;
+X{
+X	long newp;
+X	char twin[PBLKSIZ];
+X	char *pag = db->pagbuf;
+X	char *new = twin;
+X	register int smax = SPLTMAX;
+X
+X	do {
+X/*
+X * split the current page
+X */
+X		(void) splpage(pag, new, db->hmask + 1);
+X/*
+X * address of the new page
+X */
+X		newp = (hash & db->hmask) | (db->hmask + 1);
+X
+X/*
+X * write delay, read avoidence/cache shuffle:
+X * select the page for incoming pair: if key is to go to the new page,
+X * write out the previous one, and copy the new one over, thus making
+X * it the current page. If not, simply write the new page, and we are
+X * still looking at the page of interest. current page is not updated
+X * here, as dbm_store will do so, after it inserts the incoming pair.
+X */
+X		if (hash & (db->hmask + 1)) {
+X			if (lseek(db->pagf, OFF_PAG(db->pagbno), SEEK_SET) < 0
+X			    || write(db->pagf, db->pagbuf, PBLKSIZ) < 0)
+X				return 0;
+X			db->pagbno = newp;
+X			(void) memcpy(pag, new, PBLKSIZ);
+X		}
+X		else if (lseek(db->pagf, OFF_PAG(newp), SEEK_SET) < 0
+X			 || write(db->pagf, new, PBLKSIZ) < 0)
+X			return 0;
+X
+X		if (!setdbit(db, db->curbit))
+X			return 0;
+X/*
+X * see if we have enough room now
+X */
+X		if (fitpair(pag, need))
+X			return 1;
+X/*
+X * try again... update curbit and hmask as getpage would have
+X * done. because of our update of the current page, we do not
+X * need to read in anything. BUT we have to write the current
+X * [deferred] page out, as the window of failure is too great.
+X */
+X		db->curbit = 2 * db->curbit +
+X			((hash & (db->hmask + 1)) ? 2 : 1);
+X		db->hmask |= db->hmask + 1;
+X
+X		if (lseek(db->pagf, OFF_PAG(db->pagbno), SEEK_SET) < 0
+X		    || write(db->pagf, db->pagbuf, PBLKSIZ) < 0)
+X			return 0;
+X
+X	} while (--smax);
+X/*
+X * if we are here, this is real bad news. After SPLTMAX splits,
+X * we still cannot fit the key. say goodnight.
+X */
+X#ifdef BADMESS
+X	(void) write(2, "sdbm: cannot insert after SPLTMAX attempts.\n", 44);
+X#endif
+X	return 0;
+X
+X}
+X
+X/*
+X * the following two routines will break if
+X * deletions aren't taken into account. (ndbm bug)
+X */
+Xdatum
+Xdbm_firstkey(db)
+Xregister DBM *db;
+X{
+X	if (db == NULL)
+X		return errno = EINVAL, nullitem;
+X/*
+X * start at page 0
+X */
+X	if (lseek(db->pagf, OFF_PAG(0), SEEK_SET) < 0
+X	    || read(db->pagf, db->pagbuf, PBLKSIZ) < 0)
+X		return ioerr(db), nullitem;
+X	db->pagbno = 0;
+X	db->blkptr = 0;
+X	db->keyptr = 0;
+X
+X	return getnext(db);
+X}
+X
+Xdatum
+Xdbm_nextkey(db)
+Xregister DBM *db;
+X{
+X	if (db == NULL)
+X		return errno = EINVAL, nullitem;
+X	return getnext(db);
+X}
+X
+X/*
+X * all important binary trie traversal
+X */
+Xstatic int
+Xgetpage(db, hash)
+Xregister DBM *db;
+Xregister long hash;
+X{
+X	register int hbit;
+X	register long dbit;
+X	register long pagb;
+X
+X	dbit = 0;
+X	hbit = 0;
+X	while (dbit < db->maxbno && getdbit(db, dbit))
+X		dbit = 2 * dbit + ((hash & (1 << hbit++)) ? 2 : 1);
+X
+X	debug(("dbit: %d...", dbit));
+X
+X	db->curbit = dbit;
+X	db->hmask = masks[hbit];
+X
+X	pagb = hash & db->hmask;
+X/*
+X * see if the block we need is already in memory.
+X * note: this lookaside cache has about 10% hit rate.
+X */
+X	if (pagb != db->pagbno) { 
+X/*
+X * note: here, we assume a "hole" is read as 0s.
+X * if not, must zero pagbuf first.
+X */
+X		if (lseek(db->pagf, OFF_PAG(pagb), SEEK_SET) < 0
+X		    || read(db->pagf, db->pagbuf, PBLKSIZ) < 0)
+X			return 0;
+X		if (!chkpage(db->pagbuf))
+X			return 0;
+X		db->pagbno = pagb;
+X
+X		debug(("pag read: %d\n", pagb));
+X	}
+X	return 1;
+X}
+X
+Xstatic int
+Xgetdbit(db, dbit)
+Xregister DBM *db;
+Xregister long dbit;
+X{
+X	register long c;
+X	register long dirb;
+X
+X	c = dbit / BYTESIZ;
+X	dirb = c / DBLKSIZ;
+X
+X	if (dirb != db->dirbno) {
+X		if (lseek(db->dirf, OFF_DIR(dirb), SEEK_SET) < 0
+X		    || read(db->dirf, db->dirbuf, DBLKSIZ) < 0)
+X			return 0;
+X		db->dirbno = dirb;
+X
+X		debug(("dir read: %d\n", dirb));
+X	}
+X
+X	return db->dirbuf[c % DBLKSIZ] & (1 << dbit % BYTESIZ);
+X}
+X
+Xstatic int
+Xsetdbit(db, dbit)
+Xregister DBM *db;
+Xregister long dbit;
+X{
+X	register long c;
+X	register long dirb;
+X
+X	c = dbit / BYTESIZ;
+X	dirb = c / DBLKSIZ;
+X
+X	if (dirb != db->dirbno) {
+X		if (lseek(db->dirf, OFF_DIR(dirb), SEEK_SET) < 0
+X		    || read(db->dirf, db->dirbuf, DBLKSIZ) < 0)
+X			return 0;
+X		db->dirbno = dirb;
+X
+X		debug(("dir read: %d\n", dirb));
+X	}
+X
+X	db->dirbuf[c % DBLKSIZ] |= (1 << dbit % BYTESIZ);
+X
+X	if (dbit >= db->maxbno)
+X		db->maxbno += DBLKSIZ * BYTESIZ;
+X
+X	if (lseek(db->dirf, OFF_DIR(dirb), SEEK_SET) < 0
+X	    || write(db->dirf, db->dirbuf, DBLKSIZ) < 0)
+X		return 0;
+X
+X	return 1;
+X}
+X
+X/*
+X * getnext - get the next key in the page, and if done with
+X * the page, try the next page in sequence
+X */
+Xstatic datum
+Xgetnext(db)
+Xregister DBM *db;
+X{
+X	datum key;
+X
+X	for (;;) {
+X		db->keyptr++;
+X		key = getnkey(db->pagbuf, db->keyptr);
+X		if (key.dptr != NULL)
+X			return key;
+X/*
+X * we either run out, or there is nothing on this page..
+X * try the next one... If we lost our position on the
+X * file, we will have to seek.
+X */
+X		db->keyptr = 0;
+X		if (db->pagbno != db->blkptr++)
+X			if (lseek(db->pagf, OFF_PAG(db->blkptr), SEEK_SET) < 0)
+X				break;
+X		db->pagbno = db->blkptr;
+X		if (read(db->pagf, db->pagbuf, PBLKSIZ) <= 0)
+X			break;
+X		if (!chkpage(db->pagbuf))
+X			break;
+X	}
+X
+X	return ioerr(db), nullitem;
+X}
+@@@End of sdbm.c
+echo x - sdbm.h 1>&2
+sed 's/^X//' >sdbm.h <<'@@@End of sdbm.h'
+X/*
+X * sdbm - ndbm work-alike hashed database library
+X * based on Per-Ake Larson's Dynamic Hashing algorithms. BIT 18 (1978).
+X * author: oz@nexus.yorku.ca
+X * status: public domain. 
+X */
+X#define DBLKSIZ 4096
+X#define PBLKSIZ 1024
+X#define PAIRMAX 1008			/* arbitrary on PBLKSIZ-N */
+X#define SPLTMAX	10			/* maximum allowed splits */
+X					/* for a single insertion */
+X#define DIRFEXT	".dir"
+X#define PAGFEXT	".pag"
+X
+Xtypedef struct {
+X	int dirf;		       /* directory file descriptor */
+X	int pagf;		       /* page file descriptor */
+X	int flags;		       /* status/error flags, see below */
+X	long maxbno;		       /* size of dirfile in bits */
+X	long curbit;		       /* current bit number */
+X	long hmask;		       /* current hash mask */
+X	long blkptr;		       /* current block for nextkey */
+X	int keyptr;		       /* current key for nextkey */
+X	long blkno;		       /* current page to read/write */
+X	long pagbno;		       /* current page in pagbuf */
+X	char pagbuf[PBLKSIZ];	       /* page file block buffer */
+X	long dirbno;		       /* current block in dirbuf */
+X	char dirbuf[DBLKSIZ];	       /* directory file block buffer */
+X} DBM;
+X
+X#define DBM_RDONLY	0x1	       /* data base open read-only */
+X#define DBM_IOERR	0x2	       /* data base I/O error */
+X
+X/*
+X * utility macros
+X */
+X#define dbm_rdonly(db)		((db)->flags & DBM_RDONLY)
+X#define dbm_error(db)		((db)->flags & DBM_IOERR)
+X
+X#define dbm_clearerr(db)	((db)->flags &= ~DBM_IOERR)  /* ouch */
+X
+X#define dbm_dirfno(db)	((db)->dirf)
+X#define dbm_pagfno(db)	((db)->pagf)
+X
+Xtypedef struct {
+X	char *dptr;
+X	int dsize;
+X} datum;
+X
+Xextern datum nullitem;
+X
+X#ifdef __STDC__
+X#define proto(p) p
+X#else
+X#define proto(p) ()
+X#endif
+X
+X/*
+X * flags to dbm_store
+X */
+X#define DBM_INSERT	0
+X#define DBM_REPLACE	1
+X
+X/*
+X * ndbm interface
+X */
+Xextern DBM *dbm_open proto((char *, int, int));
+Xextern void dbm_close proto((DBM *));
+Xextern datum dbm_fetch proto((DBM *, datum));
+Xextern int dbm_delete proto((DBM *, datum));
+Xextern int dbm_store proto((DBM *, datum, datum, int));
+Xextern datum dbm_firstkey proto((DBM *));
+Xextern datum dbm_nextkey proto((DBM *));
+X
+X/*
+X * other
+X */
+Xextern DBM *dbm_prep proto((char *, char *, int, int));
+Xextern long dbm_hash proto((char *, int));
+@@@End of sdbm.h
+echo x - tune.h 1>&2
+sed 's/^X//' >tune.h <<'@@@End of tune.h'
+X/*
+X * sdbm - ndbm work-alike hashed database library
+X * tuning and portability constructs [not nearly enough]
+X * author: oz@nexus.yorku.ca
+X */
+X
+X#define BYTESIZ		8
+X
+X#ifdef SVID
+X#include <unistd.h>
+X#endif
+X
+X#ifdef BSD42
+X#define SEEK_SET	L_SET
+X#define	memset(s,c,n)	bzero(s, n)		/* only when c is zero */
+X#define	memcpy(s1,s2,n)	bcopy(s2, s1, n)
+X#define	memcmp(s1,s2,n)	bcmp(s1,s2,n)
+X#endif
+X
+X/*
+X * important tuning parms (hah)
+X */
+X
+X#define SEEDUPS			/* always detect duplicates */
+X#define BADMESS			/* generate a message for worst case:
+X				   cannot make room after SPLTMAX splits */
+X/*
+X * misc
+X */
+X#ifdef DEBUG
+X#define debug(x)	printf x
+X#else
+X#define debug(x)
+X#endif
+@@@End of tune.h
+echo x - util.c 1>&2
+sed 's/^X//' >util.c <<'@@@End of util.c'
+X#include <stdio.h>
+X#ifdef SDBM
+X#include "sdbm.h"
+X#else
+X#include "ndbm.h"
+X#endif
+X
+Xvoid
+Xoops(s1, s2)
+Xregister char *s1;
+Xregister char *s2;
+X{
+X	extern int errno, sys_nerr;
+X	extern char *sys_errlist[];
+X	extern char *progname;
+X
+X	if (progname)
+X		fprintf(stderr, "%s: ", progname);
+X	fprintf(stderr, s1, s2);
+X	if (errno > 0 && errno < sys_nerr)
+X		fprintf(stderr, " (%s)", sys_errlist[errno]);
+X	fprintf(stderr, "\n");
+X	exit(1);
+X}
+X
+Xint
+Xokpage(pag)
+Xchar *pag;
+X{
+X	register unsigned n;
+X	register off;
+X	register short *ino = (short *) pag;
+X
+X	if ((n = ino[0]) > PBLKSIZ / sizeof(short))
+X		return 0;
+X
+X	if (!n)
+X		return 1;
+X
+X	off = PBLKSIZ;
+X	for (ino++; n; ino += 2) {
+X		if (ino[0] > off || ino[1] > off ||
+X		    ino[1] > ino[0])
+X			return 0;
+X		off = ino[1];
+X		n -= 2;
+X	}
+X
+X	return 1;
+X}
+@@@End of util.c
