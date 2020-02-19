@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ package com.russhwolf.settings
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  */
 public interface Settings {
+
+    companion object;
 
     /**
      * A factory that can produce [Settings] instances.
