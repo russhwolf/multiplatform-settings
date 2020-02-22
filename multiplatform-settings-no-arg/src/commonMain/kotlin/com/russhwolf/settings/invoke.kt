@@ -16,4 +16,9 @@
 
 package com.russhwolf.settings
 
+/**
+ * Returns a default [Settings] instance.
+ *
+ * See implementations for details on what default behavior is used.
+ */
 expect operator fun Settings.Companion.invoke(): Settings

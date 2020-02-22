@@ -18,5 +18,10 @@ package com.russhwolf.settings
 
 import java.util.prefs.Preferences
 
+/**
+ * Returns a default [Settings] instance.
+ *
+ * On JVM, this uses the [JvmPreferencesSettings] implementation and delegates to [Preferences.userRoot]
+ */
 @ExperimentalJvm
 actual operator fun Settings.Companion.invoke(): Settings = JvmPreferencesSettings(Preferences.userRoot())

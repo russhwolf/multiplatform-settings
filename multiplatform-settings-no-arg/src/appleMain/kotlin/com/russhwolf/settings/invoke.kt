@@ -18,4 +18,9 @@ package com.russhwolf.settings
 
 import platform.Foundation.NSUserDefaults
 
+/**
+ * Returns a default [Settings] instance.
+ *
+ * On Apple platforms, this delegates to [NSUserDefaults.standardUserDefaults].
+ */
 actual operator fun Settings.Companion.invoke(): Settings = AppleSettings(NSUserDefaults.standardUserDefaults)

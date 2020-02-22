@@ -24,6 +24,13 @@ import android.net.Uri
 
 private var appContext: Context? = null
 
+/**
+ * Returns a default [Settings] instance.
+ *
+ * On Android, this delegates to the equivalent of
+ * [PreferenceManager.getDefaultSharedPreferences][android.preference.PreferenceManager.getDefaultSharedPreferences].
+ * It handles context via [ContextProvider], which is a no-op [ContentProvider].
+ */
 actual operator fun Settings.Companion.invoke(): Settings {
     val appContext = appContext!!
 
