@@ -57,7 +57,7 @@ kotlin {
 
         commonMain {
             dependencies {
-                api("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
+                api("com.russhwolf:multiplatform-settings-no-arg:${rootProject.ext["library_version"]}")
                 implementation(kotlin("stdlib-common"))
             }
         }

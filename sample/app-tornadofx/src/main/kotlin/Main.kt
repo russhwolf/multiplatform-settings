@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.russhwolf.settings.example
+package com.russhwolf.settings.example.jvm
 
-import com.russhwolf.settings.ExperimentalJvm
 import com.russhwolf.settings.ExperimentalListener
-import com.russhwolf.settings.JvmPreferencesSettings
+import com.russhwolf.settings.example.SettingConfig
+import com.russhwolf.settings.example.settingsRepository
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.scene.Parent
@@ -34,7 +34,6 @@ import tornadofx.onChange
 import tornadofx.selectedItem
 import tornadofx.textfield
 import tornadofx.vbox
-import java.util.prefs.Preferences
 
 fun main() = launch<SettingsDemoApp>()
 
@@ -83,11 +82,4 @@ class SettingsDemoView : View() {
 
         selectedItem.value = settingsRepository.mySettings.first()
     }
-}
-
-@OptIn(ExperimentalJvm::class)
-val settingsRepository: SettingsRepository by lazy {
-    val preferences = Preferences.userRoot()
-    val settings = JvmPreferencesSettings(preferences)
-    SettingsRepository(settings)
 }
