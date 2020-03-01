@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+plugins {
+    id("binary-compatibility-validator") version "0.1.1"
+}
+
 allprojects {
     group = "com.russhwolf"
     version = "0.5"
@@ -23,4 +27,8 @@ allprojects {
         mavenCentral()
         jcenter()
     }
+}
+
+apiValidation {
+    ignoredProjects.add("tests")
 }

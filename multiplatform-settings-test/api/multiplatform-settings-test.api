@@ -1,0 +1,43 @@
+public final class com/russhwolf/settings/MockSettings : com/russhwolf/settings/ObservableSettings {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> ([Lkotlin/Pair;)V
+	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
+	public fun clear ()V
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
+	public fun getDouble (Ljava/lang/String;D)D
+	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
+	public fun hasKey (Ljava/lang/String;)Z
+	public fun putBoolean (Ljava/lang/String;Z)V
+	public fun putDouble (Ljava/lang/String;D)V
+	public fun putFloat (Ljava/lang/String;F)V
+	public fun putInt (Ljava/lang/String;I)V
+	public fun putLong (Ljava/lang/String;J)V
+	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun remove (Ljava/lang/String;)V
+	public fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
+}
+
+public final class com/russhwolf/settings/MockSettings$Factory : com/russhwolf/settings/Settings$Factory {
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function0;Ljava/util/Map;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function0;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
+	public final fun setCacheValues (Ljava/lang/String;Ljava/util/Map;)V
+	public final fun setCacheValues (Ljava/lang/String;[Lkotlin/Pair;)V
+}
+
+public final class com/russhwolf/settings/MockSettings$Listener : com/russhwolf/settings/SettingsListener {
+	public fun deactivate ()V
+}
+
