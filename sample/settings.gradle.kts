@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ pluginManagement {
     }
 
     repositories {
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
         google()
         mavenCentral()
         maven(url = "https://plugins.gradle.org/m2/")

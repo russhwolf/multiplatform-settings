@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,17 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "1.3.61" apply false
-    kotlin("android") version "1.3.61" apply false
+    kotlin("multiplatform") version "1.3.70-eap-184" apply false
+    kotlin("android") version "1.3.70-eap-184" apply false
     id("com.android.library") version "3.5.3" apply false
     id("com.android.application") version "3.5.3" apply false
 }
 
 allprojects {
-    ext["library_version"] = "0.5"
+    ext["library_version"] = "0.5.1"
 
     repositories {
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
         mavenLocal()
         google()
         mavenCentral()
