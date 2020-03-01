@@ -209,6 +209,6 @@ There is also a sample project to demonstrate usage, which is configured as a se
     limitations under the License.
 
 #
-![Jetbrains Logo](images/jetbrains.png)
+[![Jetbrains Logo](images/jetbrains.png)](https://www.jetbrains.com/?from=Multiplatform-Settings)
 
 Made with JetBrains tools 
