@@ -19,6 +19,7 @@
 package com.russhwolf.settings.build
 
 import com.android.build.gradle.BaseExtension
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.kotlin.dsl.creating
@@ -30,6 +31,7 @@ import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinTargetPreset
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
 
@@ -39,8 +41,12 @@ private val Project.kotlin: KotlinMultiplatformExtension
 private val Project.android: BaseExtension
     get() = extensions.getByType()
 
-fun Project.standardConfiguration(isTestModule: Boolean = false) {
-    kotlin.buildAllTargets()
+fun Project.standardConfiguration(
+    vararg presetNames: String = kotlin.presets.map { it.name }.toTypedArray(),
+    isTestModule: Boolean = false
+) {
+    val targetPresets = kotlin.presets.matching { it.name in presetNames }
+    kotlin.buildAllTargets(targetPresets)
     android.configureAndroidApiLevel()
 
     if (!isTestModule) {
@@ -49,7 +55,7 @@ fun Project.standardConfiguration(isTestModule: Boolean = false) {
     }
 }
 
-private fun KotlinMultiplatformExtension.buildAllTargets() {
+private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDomainObjectCollection<KotlinTargetPreset<*>>) {
     android {
         publishAllLibraryVariants()
     }
@@ -58,7 +64,7 @@ private fun KotlinMultiplatformExtension.buildAllTargets() {
     }
 
     // Create empty targets for presets with no specific configuration
-    presets.forEach {
+    targetPresets.forEach {
         if (it.name == "jvmWithJava") return@forEach // Probably don't need this, and it chokes on Android plugin
         if (targets.findByName(it.name) == null) {
             targetFromPreset(it)
