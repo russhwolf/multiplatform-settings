@@ -1,5 +1,10 @@
 # Changelog #
 
+## v0.5.1 *(2020-03-03)* ##
+- Update to Kotlin 1.3.70
+- Update to Android Gradle Plugin 3.6.1
+- Convert @Experimental usage to @RequiresOptIn
+
 ## v0.5 *(2019-12-15)* ##
 - Update to Kotlin 1.3.61
 - Update to Android Gradle Plugin 3.5.3
