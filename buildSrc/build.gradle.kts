@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
-    implementation("com.android.tools.build:gradle:3.5.3")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.70")
+    implementation("com.android.tools.build:gradle:3.6.1")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.10.0")
 }

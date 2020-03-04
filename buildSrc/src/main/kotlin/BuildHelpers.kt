@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,8 +82,14 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
 
 private fun KotlinMultiplatformExtension.linkAppleSourceSets() {
     sourceSets {
-        val appleMain by creating
-        val appleTest by creating
+        val commonMain by getting
+        val commonTest by getting
+        val appleMain by creating {
+            dependsOn(commonMain)
+        }
+        val appleTest by creating {
+            dependsOn(commonTest)
+        }
         val apple64Main by creating {
             dependsOn(appleMain)
         }
@@ -127,32 +133,11 @@ private fun BaseExtension.configureAndroidApiLevel() {
 }
 
 private fun Project.configureTests() {
-    createIosTestTask("iosX64", "iPhone 11")
-    createIosTestTask("watchosX86", "Apple Watch Series 5 - 40mm")
-    createIosTestTask("tvosX64", "Apple TV")
-
     tasks.withType<AbstractTestTask> {
         testLogging {
             showStandardStreams = true
             events("passed", "failed")
         }
-    }
-}
-
-private fun Project.createIosTestTask(targetName: String, simulatorName: String) {
-    val testTaskName = "${targetName}Test"
-    tasks.create(testTaskName) {
-        dependsOn("linkDebugTest${targetName.capitalize()}")
-        group = "verification"
-        doLast {
-            val target = kotlin.targets.withType<KotlinNativeTarget>()[targetName]
-            val testBinaryPath = target.binaries.getTest("DEBUG").outputFile.absolutePath
-
-            exec { commandLine("xcrun", "simctl", "spawn", "--standalone", simulatorName, testBinaryPath) }
-        }
-    }
-    if (System.getProperty("os.name").contains("mac", ignoreCase = true)) {
-        tasks["allTests"].dependsOn(testTaskName)
     }
 }
 

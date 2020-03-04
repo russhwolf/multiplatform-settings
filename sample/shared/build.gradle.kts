@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,18 +137,4 @@ task("copyFramework") {
             include("Shared.framework.dSYM")
         }
     }
-}
-
-task("iosTest") {
-    dependsOn("linkDebugTestIos")
-    doLast {
-        val testBinaryPath =
-            (kotlin.targets["ios"] as KotlinNativeTarget).binaries.getTest("DEBUG").outputFile.absolutePath
-        exec {
-            commandLine("xcrun", "simctl", "spawn", "--standalone", "iPhone 11", testBinaryPath)
-        }
-    }
-}
-if (System.getProperty("os.name").contains("mac", ignoreCase = true)) {
-    tasks["allTests"].dependsOn("iosTest")
 }
