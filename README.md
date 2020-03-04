@@ -5,20 +5,20 @@ This is a Kotlin library for Multiplatform apps, so that common code can persist
 ## Adding to your project
 Multiplatform Settings is currently published to jcenter, so add that to repositories.
 
-```
+```kotlin
 repositories {
-    ...
+    // ...
     jcenter()
 }
 ```
 
 Then, simply add the dependency to your common source-set dependencies
 
-```
+```kotlin
 commonMain {
     dependencies {
-        ...
-        implementation "com.russhwolf:multiplatform-settings:0.5"
+        // ...
+        implementation("com.russhwolf:multiplatform-settings:0.5.1")
     }
 }
 ``` 
@@ -133,8 +133,8 @@ val factory: Settings.Factory = AppleSettings.Factory()
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
-```
-implementation "com.russhwolf:multiplatform-settings-test:0.5"
+```kotlin
+implementation("com.russhwolf:multiplatform-settings-test:0.5.1")
 ```    
 
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
