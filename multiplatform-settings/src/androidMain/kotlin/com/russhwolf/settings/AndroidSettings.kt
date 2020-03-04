@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import com.russhwolf.settings.AndroidSettings.Factory
  * On the Android platform, this class can be created by passing a [SharedPreferences] instance which will be used as a
  * delegate. Thus two `Settings` instances created using the same [delegate] will be backed by the same data.
  */
-@UseExperimental(ExperimentalListener::class)
+@OptIn(ExperimentalListener::class)
 public class AndroidSettings public constructor(private val delegate: SharedPreferences) : ObservableSettings {
 
     /**

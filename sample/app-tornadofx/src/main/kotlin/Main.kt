@@ -1,11 +1,11 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ fun main() = launch<SettingsDemoApp>()
 
 class SettingsDemoApp : App(SettingsDemoView::class)
 
-@UseExperimental(ExperimentalListener::class)
+@OptIn(ExperimentalListener::class)
 class SettingsDemoView : View() {
     override val root: Parent = vbox {
         val selectedItem = SimpleObjectProperty<SettingConfig<*>>()
@@ -85,7 +85,7 @@ class SettingsDemoView : View() {
     }
 }
 
-@UseExperimental(ExperimentalJvm::class)
+@OptIn(ExperimentalJvm::class)
 val settingsRepository: SettingsRepository by lazy {
     val preferences = Preferences.userRoot()
     val settings = JvmPreferencesSettings(preferences)

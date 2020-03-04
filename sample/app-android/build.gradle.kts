@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ android {
 
     buildTypes {
         val release by getting {
-            this as? com.android.build.api.dsl.model.BuildType
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }

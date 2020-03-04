@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ package com.russhwolf.settings
  * This implementation is verified against the same test suite as the real platform-specific implementations to ensure
  * it shares the same behavior, assuming the default [mutableMapOf] delegate is used.
  */
-@UseExperimental(ExperimentalListener::class)
+@OptIn(ExperimentalListener::class)
 public class MockSettings public constructor(private val delegate: MutableMap<String, Any> = mutableMapOf()) :
     ObservableSettings {
     private val listeners = mutableListOf<() -> Any>()

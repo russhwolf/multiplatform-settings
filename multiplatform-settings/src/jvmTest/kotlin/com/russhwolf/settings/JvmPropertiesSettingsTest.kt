@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.junit.Test
 import java.util.Properties
 import kotlin.test.assertEquals
 
-@UseExperimental(ExperimentalJvm::class)
+@OptIn(ExperimentalJvm::class)
 class JvmPropertiesSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         val properties = Properties()

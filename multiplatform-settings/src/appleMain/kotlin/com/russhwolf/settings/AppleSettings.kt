@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import platform.darwin.NSObjectProtocol
  * On the iOS and macOS platforms, this class can be created by passing a [NSUserDefaults] instance which will be used as a
  * delegate, or via a [Factory].
  */
-@UseExperimental(ExperimentalListener::class)
+@OptIn(ExperimentalListener::class)
 public class AppleSettings public constructor(private val delegate: NSUserDefaults) : ObservableSettings {
 
     /**

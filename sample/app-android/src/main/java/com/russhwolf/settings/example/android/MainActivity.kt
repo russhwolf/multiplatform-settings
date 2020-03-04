@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import com.russhwolf.settings.ExperimentalListener
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
 
-@UseExperimental(ExperimentalListener::class)
+@OptIn(ExperimentalListener::class)
 class MainActivity : AppCompatActivity() {
 
     private val settingsRepository by lazy {

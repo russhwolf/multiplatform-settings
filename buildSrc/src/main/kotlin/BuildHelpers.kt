@@ -73,7 +73,7 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
 
     sourceSets.all {
         languageSettings.apply {
-            useExperimentalAnnotation("kotlin.Experimental")
+            useExperimentalAnnotation("kotlin.RequiresOptIn")
         }
     }
 

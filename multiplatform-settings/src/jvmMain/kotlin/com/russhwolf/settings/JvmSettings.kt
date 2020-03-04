@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@ public class JvmPropertiesSettings public constructor(
  * This class is experimental as marked by the [ExperimentalJvm] annotation.
  */
 @ExperimentalJvm
-@UseExperimental(ExperimentalListener::class)
+@OptIn(ExperimentalListener::class)
 public class JvmPreferencesSettings public constructor(
     private val delegate: Preferences
 ) : ObservableSettings {
