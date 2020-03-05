@@ -1,0 +1,4 @@
+public final class com/russhwolf/settings/InvokeKt {
+	public static final fun invoke (Lcom/russhwolf/settings/Settings$Companion;)Lcom/russhwolf/settings/Settings;
+}
+

@@ -123,6 +123,7 @@ public final class com/russhwolf/settings/OperatorsKt {
 }
 
 public abstract interface class com/russhwolf/settings/Settings {
+	public static final field Companion Lcom/russhwolf/settings/Settings$Companion;
 	public abstract fun clear ()V
 	public abstract fun getBoolean (Ljava/lang/String;Z)Z
 	public abstract fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
@@ -144,6 +145,9 @@ public abstract interface class com/russhwolf/settings/Settings {
 	public abstract fun putLong (Ljava/lang/String;J)V
 	public abstract fun putString (Ljava/lang/String;Ljava/lang/String;)V
 	public abstract fun remove (Ljava/lang/String;)V
+}
+
+public final class com/russhwolf/settings/Settings$Companion {
 }
 
 public final class com/russhwolf/settings/Settings$DefaultImpls {
