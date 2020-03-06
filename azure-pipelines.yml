@@ -113,7 +113,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean publishKotlinMultiplatformPublicationToMavenLocal publishMetadataPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal'
+          tasks: 'clean mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMetadataPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal'
 
     pool:
       vmImage: 'windows-2019'
