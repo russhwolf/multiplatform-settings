@@ -55,6 +55,8 @@ fun Project.standardConfiguration(
     }
 }
 
+private val ideaActive by lazy { System.getProperty("idea.active") == "true" }
+
 private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDomainObjectCollection<KotlinTargetPreset<*>>) {
     android {
         publishAllLibraryVariants()
@@ -104,9 +106,15 @@ private fun KotlinMultiplatformExtension.linkAppleSourceSets() {
         }
 
         // TODO this is just here to make the IDE happy (ish) while we wait for HMPP to improve
-        val iosX64Main by getting {
-            kotlin.srcDirs(*appleMain.kotlin.srcDirs.toTypedArray())
-            kotlin.srcDirs(*apple64Main.kotlin.srcDirs.toTypedArray())
+        if (ideaActive) {
+            val macosX64Main by getting {
+                kotlin.srcDirs(*appleMain.kotlin.srcDirs.toTypedArray())
+                kotlin.srcDirs(*apple64Main.kotlin.srcDirs.toTypedArray())
+            }
+            val macosX64Test by getting {
+                kotlin.srcDirs(*appleTest.kotlin.srcDirs.toTypedArray())
+                kotlin.srcDirs(*apple64Test.kotlin.srcDirs.toTypedArray())
+            }
         }
 
         targets
