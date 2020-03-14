@@ -20,7 +20,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalListener::class)
-class MockSettingsTest {
+class MockSettingsTest : BaseSettingsTest(MockSettings.Factory()) {
 
     @Test
     fun mapConstructor() {
@@ -135,7 +135,7 @@ class MockSettingsTest {
     }
 
     @Test
-    fun listener() {
+    fun listener_types() {
         val settings = MockSettings("a" to 3, "b" to false)
         val verifierA = ListenerVerifier()
         val verifierB = ListenerVerifier()
