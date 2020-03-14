@@ -31,5 +31,7 @@ pluginManagement {
         maven(url = "https://dl.bintray.com/jetbrains/kotlin-native-dependencies")
     }
 }
+rootProject.name = "MultiplatformSettings"
+
 enableFeaturePreview("GRADLE_METADATA")
 include(":multiplatform-settings", ":multiplatform-settings-test", ":tests")
