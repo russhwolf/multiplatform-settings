@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_apis/build/status/russhwolf.multiplatform-settings?branchName=master)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/master?job=General&label=JVM%2FJS%2FAndroid%2FLinux&logo=Kotlin)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master) [![Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/master?job=Mac&label=iOS%2FmacOS%2FtvOS%2FwatchOS&logo=Apple)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master) [![Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/master?job=Windows&label=Windows&logo=Windows)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
 
 # Multiplatform Settings
 
