@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_apis/build/status/russhwolf.multiplatform-settings?branchName=master)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
+
 # Multiplatform Settings
 
 This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and NSUserDefaults on iOS. 
