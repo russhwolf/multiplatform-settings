@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf, Andrew Mikhaylov
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.russhwolf.settings
 /**
  * Annotation to mark Windows functionality as experimental.
  */
-@Experimental(level = Experimental.Level.WARNING)
+@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
 @Target(
     AnnotationTarget.CLASS,
     AnnotationTarget.PROPERTY,
@@ -32,4 +32,4 @@ package com.russhwolf.settings
     AnnotationTarget.PROPERTY_SETTER,
     AnnotationTarget.TYPEALIAS
 )
-annotation class ExperimentalWinApi
+annotation class ExperimentalWindows
