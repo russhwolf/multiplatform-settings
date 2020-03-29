@@ -18,7 +18,7 @@ package com.russhwolf.settings
 
 import kotlin.jvm.Synchronized
 
-class InMemory: Settings {
+open class InMemory: Settings {
     private val container = mutableMapOf<String, Any>()
 
     @Synchronized
