@@ -175,6 +175,8 @@ The `SettingsListener` returned from the call should be used to signal when you'
 settingsListener.deactivate()
 ```    
 
+On Apple platforms, the `AppleSettings` listeners are designed to work within the Kotlin/Native threading model. If all interaction with the class is on a single thread, then nothing will be frozen. In multithreaded usage, calling `AppleSettings.freeze()` triggers the freezing of listeners as well, making it safe to set listeners when the class might be used across threads.
+
 This current listener implementation is not designed with any sort of thread-safety so it's recommended to only interact with these APIs from the main thread of your application.
 
 The listener APIs make use of the Kotlin `@ExperimentalListener` annotation.

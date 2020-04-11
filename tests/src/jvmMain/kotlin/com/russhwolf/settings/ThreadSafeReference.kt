@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,18 @@
 
 package com.russhwolf.settings
 
-import kotlin.test.assertEquals
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
-@Suppress("KDocMissingDocumentation")
-class ListenerVerifier {
-    val listener: () -> Unit = { invokeCount = invokeCount?.plus(1) }
+actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
+    private val reference = AtomicReference<T?>(initialValue)
 
-    private var invokeCount by threadSafeReference(0)
-
-    fun assertInvoked(times: Int = 1, message: String? = null) {
-        assertEquals(times, invokeCount, message)
-        invokeCount = 0
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
+        return reference.get()
     }
 
-    fun assertNotInvoked(message: String? = null) {
-        assertInvoked(0, message)
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
+        reference.set(value)
     }
 }

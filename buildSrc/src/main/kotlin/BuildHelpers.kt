@@ -72,18 +72,24 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
         }
     }
 
-    linkAppleSourceSets()
+    linkNativeSourceSets()
 }
 
-private fun KotlinMultiplatformExtension.linkAppleSourceSets() {
+private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
     sourceSets.apply {
         val commonMain = getByName("commonMain")
         val commonTest = getByName("commonTest")
-        val appleMain = create("appleMain").apply {
+        val nativeMain = create("nativeMain").apply {
             dependsOn(commonMain)
         }
-        val appleTest = create("appleTest").apply {
+        val nativeTest = create("nativeTest").apply {
             dependsOn(commonTest)
+        }
+        val appleMain = create("appleMain").apply {
+            dependsOn(nativeMain)
+        }
+        val appleTest = create("appleTest").apply {
+            dependsOn(nativeTest)
         }
         val apple64Main = create("apple64Main").apply {
             dependsOn(appleMain)
@@ -101,10 +107,12 @@ private fun KotlinMultiplatformExtension.linkAppleSourceSets() {
         // TODO this is just here to make the IDE happy (ish) while we wait for HMPP to improve
         if (ideaActive) {
             val macosX64Main = getByName("macosX64Main").apply {
+                kotlin.srcDirs(*nativeMain.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*appleMain.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Main.kotlin.srcDirs.toTypedArray())
             }
             val macosX64Test = getByName("macosX64Test").apply {
+                kotlin.srcDirs(*nativeTest.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*appleTest.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Test.kotlin.srcDirs.toTypedArray())
             }
@@ -125,7 +133,17 @@ private fun KotlinMultiplatformExtension.linkAppleSourceSets() {
                 }
             }
 
+        targets
+            .withType(KotlinNativeTarget::class.java)
+            .matching { !it.konanTarget.family.isAppleFamily }
+            .configureEach {
+                it.apply {
+                    compilations.getByName("main").defaultSourceSet.dependsOn(nativeMain)
+                    compilations.getByName("test").defaultSourceSet.dependsOn(nativeTest)
+                }
+            }
     }
+
 }
 
 private fun BaseExtension.configureAndroidApiLevel() {
