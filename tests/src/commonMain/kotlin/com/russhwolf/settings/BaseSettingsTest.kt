@@ -33,7 +33,7 @@ abstract class BaseSettingsTest(
     private val hasListeners: Boolean = true,
     private val syncListeners: () -> Unit = {}
 ) {
-    private lateinit var settings: Settings
+    protected lateinit var settings: Settings
 
     private val settingsFactory: Settings.Factory = object : Settings.Factory {
         override fun create(name: String?): Settings = platformFactory.create(name).also { it.clear() }

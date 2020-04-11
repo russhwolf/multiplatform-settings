@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2020 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,6 @@
 
 package com.russhwolf.settings
 
-import kotlin.test.assertEquals
+import kotlin.properties.ReadWriteProperty
 
-@Suppress("KDocMissingDocumentation")
-class ListenerVerifier {
-    val listener: () -> Unit = { invokeCount = invokeCount?.plus(1) }
-
-    private var invokeCount by threadSafeReference(0)
-
-    fun assertInvoked(times: Int = 1, message: String? = null) {
-        assertEquals(times, invokeCount, message)
-        invokeCount = 0
-    }
-
-    fun assertNotInvoked(message: String? = null) {
-        assertInvoked(0, message)
-    }
-}
+expect fun <T> threadSafeReference(initialValue: T?): ReadWriteProperty<Any?, T?>

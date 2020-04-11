@@ -22,6 +22,8 @@ import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSUserDefaultsDidChangeNotification
 import platform.darwin.NSObjectProtocol
+import kotlin.native.concurrent.AtomicReference
+import kotlin.native.concurrent.freeze
 
 /**
  * A collection of storage-backed key-value data
@@ -38,9 +40,25 @@ import platform.darwin.NSObjectProtocol
  *
  * On the iOS and macOS platforms, this class can be created by passing a [NSUserDefaults] instance which will be used as a
  * delegate, or via a [Factory].
+ *
+ * Note that this class is frozen on construction, and is safe to use in a multi-threaded environment. If the listener
+ * APIs will be used in such an environment, then [useFrozenListeners] should be set to true on creation. In that case,
+ * the block passed to [addListener] will be frozen as well so that it can safely be triggered from any thread. To avoid
+ * freezing listeners, restrict interaction with this class to a single thread and set `useFrozenListeners` to `false`.
  */
 @OptIn(ExperimentalListener::class)
-public class AppleSettings public constructor(private val delegate: NSUserDefaults) : ObservableSettings {
+public class AppleSettings public constructor(
+    private val delegate: NSUserDefaults,
+    private val useFrozenListeners: Boolean
+) : ObservableSettings {
+    init {
+        // We hold no state at the Kotlin level, so shouldn't run into freeze issues. If we know we're already frozen
+        // then if listeners freeze things it'll be less surprising
+        freeze()
+    }
+
+    // Secondary constructor instead of default parameter for backward-compatibility
+    constructor(delegate: NSUserDefaults) : this(delegate, useFrozenListeners = false)
 
     /**
      * A factory that can produce [Settings] instances.
@@ -128,18 +146,10 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
 
     @ExperimentalListener
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
-        var prev = delegate.objectForKey(key)
-
-        val block = { _: NSNotification? ->
-            /*
-             We'll get called here on any update to the underlying NSUserDefaults delegate. We use a cache to determine
-             whether the value at this listener's key changed before calling the user-supplied callback.
-             */
-            val current = delegate.objectForKey(key)
-            if (prev != current) {
-                callback()
-                prev = current
-            }
+        val (block, previousValue) = if (useFrozenListeners) {
+            createBackgroundListener(key, callback)
+        } else {
+            createMainThreadListener(key, callback)
         }
         val observer = NSNotificationCenter.defaultCenter.addObserverForName(
             name = NSUserDefaultsDidChangeNotification,
@@ -147,7 +157,45 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
             queue = null,
             usingBlock = block
         )
-        return Listener(observer)
+        return Listener(observer, previousValue)
+    }
+
+    private fun createMainThreadListener(
+        key: String,
+        callback: () -> Unit
+    ): Pair<(NSNotification?) -> Unit, AtomicReference<Any?>?> {
+        var previousValue = delegate.objectForKey(key)
+
+        return { _: NSNotification? ->
+            /*
+             We'll get called here on any update to the underlying NSUserDefaults delegate. We use a cache to determine
+             whether the value at this listener's key changed before calling the user-supplied callback.
+             */
+            val current = delegate.objectForKey(key)
+            if (previousValue != current) {
+                callback.invoke()
+                previousValue = current
+            }
+        } to null
+    }
+
+    private fun createBackgroundListener(
+        key: String,
+        callback: () -> Unit
+    ): Pair<(NSNotification?) -> Unit, AtomicReference<Any?>?> {
+        val previousValue: AtomicReference<Any?> = AtomicReference(delegate.objectForKey(key).freeze())
+
+        return { _: NSNotification? ->
+            /*
+             We'll get called here on any update to the underlying NSUserDefaults delegate. We use a cache to determine
+             whether the value at this listener's key changed before calling the user-supplied callback.
+             */
+            val current = delegate.objectForKey(key).freeze()
+            if (previousValue.value != current) {
+                callback.invoke()
+                previousValue.value = current
+            }
+        }.freeze() to previousValue
     }
 
     /**
@@ -157,10 +205,12 @@ public class AppleSettings public constructor(private val delegate: NSUserDefaul
      */
     @ExperimentalListener
     public class Listener internal constructor(
-        private val delegate: NSObjectProtocol
+        private val delegate: NSObjectProtocol,
+        private val previousValue: AtomicReference<Any?>?
     ) : SettingsListener {
         override fun deactivate() {
             NSNotificationCenter.defaultCenter.removeObserver(delegate)
+            previousValue?.value = null
         }
     }
 }
