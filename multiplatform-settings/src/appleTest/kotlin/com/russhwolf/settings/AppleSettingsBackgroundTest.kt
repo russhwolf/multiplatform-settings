@@ -16,19 +16,27 @@
 
 package com.russhwolf.settings
 
+import kotlinx.cinterop.memScoped
+import platform.Foundation.NSDictionary
 import platform.Foundation.NSThread
+import platform.Foundation.NSUserDefaults
+import kotlin.native.concurrent.AtomicInt
 import kotlin.native.concurrent.AtomicReference
 import kotlin.native.concurrent.TransferMode
 import kotlin.native.concurrent.Worker
 import kotlin.native.concurrent.freeze
+import kotlin.native.concurrent.isFrozen
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+import kotlin.test.fail
 
 @OptIn(ExperimentalListener::class)
 class AppleSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
-    val delegate = AppleSettings.Factory()
     override fun create(name: String?): Settings {
-        return delegate.create(name).freeze()
+        val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
+        return AppleSettings(delegate, useFrozenListeners = true)
     }
 }) {
 
@@ -87,6 +95,35 @@ class AppleSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
             incrementValue()
         }
         assertEquals(false, incrementedOnMainThread.value)
+    }
+
+    @Test
+    fun nonprimitive_value_across_threads(): Unit = memScoped {
+        val mutableState = AtomicInt(0)
+        val userDefaults = NSUserDefaults.standardUserDefaults
+        val settings = AppleSettings(userDefaults, true)
+
+        settings.addListener("key") { mutableState.addAndGet(1) }
+        val data = mapOf("foo" to "bar") as NSDictionary
+        assertFalse(data.isFrozen)
+
+        doInBackground {
+            userDefaults.setObject(data, "key")
+        }
+        userDefaults.setObject("hello", "key")
+
+        assertEquals(2, mutableState.value)
+        assertTrue(data.isFrozen)
+    }
+
+    @Test
+    fun deactivate_listener_in_background() {
+        val settings = AppleSettings(NSUserDefaults.standardUserDefaults, true)
+        val listener = settings.addListener("key") { fail() }
+        doInBackground {
+            listener.deactivate()
+        }
+        settings["key"] = "value"
     }
 }
 

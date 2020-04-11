@@ -17,14 +17,10 @@
 package com.russhwolf.settings
 
 import platform.Foundation.NSUserDefaults
-import kotlin.native.concurrent.ensureNeverFrozen
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-private val factory = object : Settings.Factory {
-    val delegate = AppleSettings.Factory()
-    override fun create(name: String?): Settings = delegate.create(name).apply { ensureNeverFrozen() }
-}
+private val factory = AppleSettings.Factory()
 
 class AppleSettingsTest : BaseSettingsTest(factory) {
     @Test
