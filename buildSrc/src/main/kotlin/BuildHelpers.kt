@@ -22,13 +22,6 @@ import com.android.build.gradle.BaseExtension
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
-import org.gradle.kotlin.dsl.creating
-import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.getting
-import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetPreset
@@ -36,10 +29,10 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
 
 private val Project.kotlin: KotlinMultiplatformExtension
-    get() = extensions.getByType()
+    get() = extensions.getByType(KotlinMultiplatformExtension::class.java)
 
 private val Project.android: BaseExtension
-    get() = extensions.getByType()
+    get() = extensions.getByType(BaseExtension::class.java)
 
 fun Project.standardConfiguration(
     vararg presetNames: String = kotlin.presets.map { it.name }.toTypedArray(),
@@ -74,7 +67,7 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
     }
 
     sourceSets.all {
-        languageSettings.apply {
+        it.languageSettings.apply {
             useExperimentalAnnotation("kotlin.RequiresOptIn")
         }
     }
@@ -83,50 +76,52 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
 }
 
 private fun KotlinMultiplatformExtension.linkAppleSourceSets() {
-    sourceSets {
-        val commonMain by getting
-        val commonTest by getting
-        val appleMain by creating {
+    sourceSets.apply {
+        val commonMain = getByName("commonMain")
+        val commonTest = getByName("commonTest")
+        val appleMain = create("appleMain").apply {
             dependsOn(commonMain)
         }
-        val appleTest by creating {
+        val appleTest = create("appleTest").apply {
             dependsOn(commonTest)
         }
-        val apple64Main by creating {
+        val apple64Main = create("apple64Main").apply {
             dependsOn(appleMain)
         }
-        val apple64Test by creating {
+        val apple64Test = create("apple64Test").apply {
             dependsOn(appleTest)
         }
-        val apple32Main by creating {
+        val apple32Main = create("apple32Main").apply {
             dependsOn(appleMain)
         }
-        val apple32Test by creating {
+        val apple32Test = create("apple32Test").apply {
             dependsOn(appleTest)
         }
 
         // TODO this is just here to make the IDE happy (ish) while we wait for HMPP to improve
         if (ideaActive) {
-            val macosX64Main by getting {
+            val macosX64Main = getByName("macosX64Main").apply {
                 kotlin.srcDirs(*appleMain.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Main.kotlin.srcDirs.toTypedArray())
             }
-            val macosX64Test by getting {
+            val macosX64Test = getByName("macosX64Test").apply {
                 kotlin.srcDirs(*appleTest.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Test.kotlin.srcDirs.toTypedArray())
             }
         }
 
         targets
-            .withType<KotlinNativeTarget>()
+            .withType(KotlinNativeTarget::class.java)
             .matching { it.konanTarget.family.isAppleFamily }
             .configureEach {
-                if (konanTarget.architecture.bitness == 32 || konanTarget.family == Family.WATCHOS) {
-                    compilations["main"].defaultSourceSet.dependsOn(apple32Main)
-                    compilations["test"].defaultSourceSet.dependsOn(apple32Test)
-                } else {
-                    compilations["main"].defaultSourceSet.dependsOn(apple64Main)
-                    compilations["test"].defaultSourceSet.dependsOn(apple64Test)
+                it.apply {
+                    if (konanTarget.architecture.bitness == 32 || konanTarget.family == Family.WATCHOS) {
+                        compilations.getByName("main").defaultSourceSet.dependsOn(apple32Main)
+                        compilations.getByName("test").defaultSourceSet.dependsOn(apple32Test)
+                    } else {
+                        compilations.getByName("main").defaultSourceSet.dependsOn(apple64Main)
+                        compilations.getByName("test").defaultSourceSet.dependsOn(apple64Test)
+                    }
                 }
             }
 
@@ -135,14 +130,14 @@ private fun KotlinMultiplatformExtension.linkAppleSourceSets() {
 
 private fun BaseExtension.configureAndroidApiLevel() {
     compileSdkVersion(29)
-    defaultConfig {
+    defaultConfig.apply {
         minSdkVersion(15)
     }
 }
 
 private fun Project.configureTests() {
-    tasks.withType<AbstractTestTask> {
-        testLogging {
+    tasks.withType(AbstractTestTask::class.java) { task ->
+        task.testLogging.apply {
             showStandardStreams = true
             events("passed", "failed")
         }
@@ -150,8 +145,8 @@ private fun Project.configureTests() {
 }
 
 private fun Project.configureDokka() {
-    tasks.withType<DokkaTask> {
-        multiplatform {
+    tasks.withType(DokkaTask::class.java) { task ->
+        task.multiplatform.apply {
             kotlin.targets.forEach { create(it.name) }
         }
     }

@@ -15,17 +15,20 @@
  */
 
 plugins {
-    `kotlin-dsl`
+    kotlin("jvm") version "1.3.71"
 }
 
 repositories {
     google()
+    gradlePluginPortal()
     mavenCentral()
     jcenter()
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.70")
-    implementation("com.android.tools.build:gradle:3.6.1")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.10.0")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("gradle-plugin"))
+    implementation("com.android.tools.build:gradle:3.6.2")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.10.1")
+    implementation(kotlin("compiler-embeddable"))
 }
