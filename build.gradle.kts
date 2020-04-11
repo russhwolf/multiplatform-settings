@@ -15,7 +15,7 @@
  */
 
 plugins {
-    id("binary-compatibility-validator") version "0.1.1"
+    id("binary-compatibility-validator") version "0.2.3"
 }
 
 allprojects {

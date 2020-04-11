@@ -106,7 +106,6 @@ public final class com/russhwolf/settings/ObservableSettings$DefaultImpls {
 
 public final class com/russhwolf/settings/OperatorsKt {
 	public static final fun contains (Lcom/russhwolf/settings/Settings;Ljava/lang/String;)Z
-	public static final synthetic fun get (Lcom/russhwolf/settings/Settings;Ljava/lang/String;)Ljava/lang/Object;
 	public static final fun get (Lcom/russhwolf/settings/Settings;Ljava/lang/String;D)D
 	public static final fun get (Lcom/russhwolf/settings/Settings;Ljava/lang/String;F)F
 	public static final fun get (Lcom/russhwolf/settings/Settings;Ljava/lang/String;I)I
@@ -118,7 +117,6 @@ public final class com/russhwolf/settings/OperatorsKt {
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;F)V
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;I)V
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;J)V
-	public static final synthetic fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Ljava/lang/Object;)V
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Ljava/lang/String;)V
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Ljava/lang/Void;)V
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Z)V
