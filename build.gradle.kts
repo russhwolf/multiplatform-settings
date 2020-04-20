@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 /*
  * Copyright 2020 Russell Wolf
  *
@@ -20,7 +23,7 @@ plugins {
 
 allprojects {
     group = "com.russhwolf"
-    version = "0.5.1"
+    version = "0.6"
 
     repositories {
         google()

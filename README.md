@@ -20,7 +20,7 @@ Then, simply add the dependency to your common source-set dependencies
 commonMain {
     dependencies {
         // ...
-        implementation("com.russhwolf:multiplatform-settings:0.5.1")
+        implementation("com.russhwolf:multiplatform-settings:0.6")
     }
 }
 ``` 
@@ -136,7 +136,7 @@ val factory: Settings.Factory = AppleSettings.Factory()
 A testing dependency is available to aid in testing code that interacts with this library.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-test:0.5.1")
+implementation("com.russhwolf:multiplatform-settings-test:0.6")
 ```    
 
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
