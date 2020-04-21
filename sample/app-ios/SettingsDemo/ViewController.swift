@@ -103,4 +103,4 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
 }
 
-let settingsRepository: SettingsRepository = SettingsRepository(settings: AppleSettings(delegate: UserDefaults.standard))
+let settingsRepository: SettingsRepository = SettingsRepositoryKt.settingsRepository

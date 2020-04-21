@@ -25,7 +25,7 @@ android {
     compileSdkVersion(29)
 
     defaultConfig {
-        applicationId = "com.russhwolf.settings.example"
+        applicationId = "com.russhwolf.settings.example.android"
         minSdkVersion(15)
         targetSdkVersion(29)
         versionCode = 1

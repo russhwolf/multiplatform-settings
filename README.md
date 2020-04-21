@@ -31,6 +31,38 @@ See also the sample project, which uses this structure.
 
 The `Settings` interface has implementations on the Android, iOS, macOS, watchOOS, tvOS, JS, and JVM platforms. (Note that the two JVM implementations are currently marked as experimental.)
 
+### Creating a Settings instance
+
+When writing multiplatform code, you might need to interoperate with platform-specific code which needs to share the same data-source. To facilitate this, all `Settings` implementations wrap a delegate object which you could also use in your platform code.
+
+Since that delegate is a constructor argument, it should be possible to connect it via any dependency-injection strategy you might already be using. If your project doesn't have such a system already in place, one strategy is to use `expect` declarations, for example
+ 
+```kotlin
+expect val settings: Settings
+expect fun createSettings(): Settings
+```
+
+Then the `actual` implementations can pass the platform-specific delegates. See [Platform constructors](#platform-constructors) below for more details on these delegates.
+
+Some platform implementations also include `Factory` classes. These make it easier to manage multiple named `Settings` objects from common code, or to automate some platform-specific configuration so that delegates don't need to be created manually. The factory still needs to be injected from platform code, but then from common you can call 
+
+```kotlin
+val settings1: Settings = factory.create("my_first_settings")
+val settings2: Settings = factory.create("my_other_settings")
+```
+
+See [Factories](#factories) below for more details.
+
+However, if all of your key-value logic exists in a single instance in common code, these ways of instantiation `Settings` can be inconvenient. To make pure-common usage easier, Multiplatform Settings now includes a separate module which provides an `invoke()` operator on the companion object, so that you can create a `Settings` instance like
+
+```kotlin
+val settings: Settings = Settings()
+```
+
+See [No-arg module](#no-arg-module) below for more details.
+
+#### Platform constructors
+
 The Android implementation is `AndroidSettings`, which wraps `SharedPreferences`.
 
 ```kotlin
@@ -53,6 +85,47 @@ val settings: Settings = JsSettings(delegate)
 
 val settings: Settings = JsSettings() // use localStorage by default
 ```     
+
+#### Factories
+
+For the Android, iOS, and macOS platforms, a `Factory` class also exists, so that multiple named `Settings` instances can coexist with the names being controlled from common code.
+
+On Android, this factory needs a `Context` parameter
+
+```kotlin
+val context: Context // ...
+val factory: Settings.Factory = AndroidSettings.Factory(context)
+```    
+
+On iOS and macOS, the factory can be instantiated without passing any parameter
+
+```kotlin
+val factory: Settings.Factory = AppleSettings.Factory()
+```   
+
+#### No-arg module
+
+To create a `Settings` instance from common without needing to pass platform-specific dependencies, add the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatform-settings` as an API dependency, so you can use it as a replacement for that default dependency.
+
+```kotlin
+implementation("com.russhwolf:multiplatform-settings-no-arg:0.6")
+```    
+
+Then from common code, you can write
+
+```kotlin
+val settings: Settings = Settings()
+```
+
+This is implemented via an extension function `operator fun Settings.Companion.invoke()` to provide constructor-like syntax even though `Settings` has no constructor.
+
+On Android, this delegates to the equivalent of `PreferenceManager.getDefaultSharedPreferences()` internally. It makes use of a content-provider to get a context reference without needing to pass one manually.
+ 
+On Apple platforms, it uses `NSUserDefaults.standardUserDefaults`. On JS, it uses `localStorage`. On JVM, it uses the `JvmPreferences` implementation with `Preferences.userRoot()` as a delegate.
+
+Note that while the main `multiplatform-settings` module publishes common code to all available Kotlin platforms, the `multiplatform-settings-no-arg` module only publishes to platforms which have concrete implementations.
+
+### Settings API
 
 Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
 
@@ -114,22 +187,7 @@ Finally, all values in a `Settings` instance can be removed
 
 ```kotlin     
 settings.clear()
-```
-
-For the Android, iOS, and macOS platforms, a `Factory` class also exists, so that multiple named `Settings` instances can coexist with the names being controlled from common code.
-
-On Android, this factory needs a `Context` parameter
-
-```kotlin
-val context: Context // ...
-val factory: Settings.Factory = AndroidSettings.Factory(context)
-```    
-
-On iOS and macOS, the factory can be instantiated without passing any parameter
-
-```kotlin
-val factory: Settings.Factory = AppleSettings.Factory()
-```    
+``` 
 
 ## Testing
 
@@ -196,7 +254,7 @@ There is also a sample project to demonstrate usage, which is configured as a se
 
 ## License
         
-    Copyright 2018-2019 Russell Wolf
+    Copyright 2018-2020 Russell Wolf
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

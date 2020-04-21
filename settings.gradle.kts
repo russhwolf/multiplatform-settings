@@ -34,4 +34,9 @@ pluginManagement {
 rootProject.name = "MultiplatformSettings"
 
 enableFeaturePreview("GRADLE_METADATA")
-include(":multiplatform-settings", ":multiplatform-settings-test", ":tests")
+include(
+    ":multiplatform-settings",
+    ":multiplatform-settings-test",
+    ":multiplatform-settings-no-arg",
+    ":tests"
+)
