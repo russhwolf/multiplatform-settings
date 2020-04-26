@@ -24,7 +24,8 @@ import java.util.prefs.Preferences
 
 @Deprecated(
     message = "Use JvmPreferencesSettings or JvmPropertiesSettings to disambiguate usage.",
-    replaceWith = ReplaceWith("JvmPreferencesSettings", "com.russhwolf.settings.JvmPreferencesSettings")
+    replaceWith = ReplaceWith("JvmPreferencesSettings", "com.russhwolf.settings.JvmPreferencesSettings"),
+    level = DeprecationLevel.HIDDEN
 )
 @ExperimentalJvm
 @Suppress("UNUSED", "KDocMissingDocumentation")

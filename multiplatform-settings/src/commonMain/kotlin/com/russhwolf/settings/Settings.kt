@@ -196,7 +196,7 @@ public interface ObservableSettings : Settings {
     @Deprecated(
         message = "Use SettingsListener.deactivate() instead",
         replaceWith = ReplaceWith("listener.deactivate()"),
-        level = DeprecationLevel.WARNING
+        level = DeprecationLevel.HIDDEN
     )
     public fun removeListener(listener: SettingsListener): Unit = listener.deactivate()
 
@@ -205,7 +205,7 @@ public interface ObservableSettings : Settings {
 @Deprecated(
     "ListenableSettings has been renamed ObservableSettings",
     replaceWith = ReplaceWith("ObservableSettings", "com.russhwolf.settings.ObservableSettings"),
-    level = DeprecationLevel.WARNING
+    level = DeprecationLevel.HIDDEN
 )
 @ExperimentalListener
 @Suppress("UNUSED", "KDocMissingDocumentation")
