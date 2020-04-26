@@ -20,14 +20,18 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
-    private val reference = AtomicReference<T?>(initialValue)
+/**
+ * Test helper atomic delegate.
+ */
+internal actual fun <T> threadSafeReference(initialValue: T?): ReadWriteProperty<Any?, T?> =
+    object : ReadWriteProperty<Any?, T?> {
+        private val reference = AtomicReference<T?>(initialValue)
 
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
-        return reference.get()
-    }
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
+            return reference.get()
+        }
 
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
-        reference.set(value)
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
+            reference.set(value)
+        }
     }
-}

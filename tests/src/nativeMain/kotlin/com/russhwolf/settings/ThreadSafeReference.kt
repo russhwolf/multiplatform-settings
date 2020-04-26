@@ -21,7 +21,13 @@ import kotlin.native.concurrent.freeze
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
+/**
+ * Test helper atomic delegate.
+ *
+ * This is just living in tests, but note that this pattern can lead to memory leaks if the reference isn't nulled out
+ * when no longer being used.
+ */
+internal actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
     private val reference = AtomicReference(initialValue.freeze())
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T? {

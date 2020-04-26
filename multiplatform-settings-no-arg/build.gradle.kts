@@ -73,7 +73,7 @@ kotlin {
                 implementation("androidx.test.ext:junit:1.1.1")
                 implementation("org.robolectric:robolectric:4.3")
 
-                implementation("androidx.preference:preference:1.1.0")
+                implementation("androidx.preference:preference:1.1.1")
             }
         }
 

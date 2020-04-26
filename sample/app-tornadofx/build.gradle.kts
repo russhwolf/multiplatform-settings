@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    application
 }
 
 dependencies {
@@ -30,4 +31,8 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
     kotlinOptions.freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
+}
+
+application {
+    mainClassName = "com.russhwolf.settings.example.jvm.MainKt"
 }

@@ -18,4 +18,4 @@ package com.russhwolf.settings
 
 import kotlin.properties.ReadWriteProperty
 
-expect fun <T> threadSafeReference(initialValue: T?): ReadWriteProperty<Any?, T?>
+internal expect fun <T> threadSafeReference(initialValue: T?): ReadWriteProperty<Any?, T?>

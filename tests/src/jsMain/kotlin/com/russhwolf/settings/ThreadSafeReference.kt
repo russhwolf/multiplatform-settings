@@ -19,7 +19,10 @@ package com.russhwolf.settings
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
+/**
+ * JS equivalent of atomics is just wrapping a reference because the world is single-threaded
+ */
+internal actual fun <T> threadSafeReference(initialValue: T?) = object : ReadWriteProperty<Any?, T?> {
     private var reference: T? = initialValue
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T? {

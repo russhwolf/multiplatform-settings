@@ -15,10 +15,10 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "1.3.70" apply false
-    kotlin("android") version "1.3.70" apply false
-    id("com.android.library") version "3.6.1" apply false
-    id("com.android.application") version "3.6.1" apply false
+    kotlin("multiplatform") version "1.3.72" apply false
+    kotlin("android") version "1.3.72" apply false
+    id("com.android.library") version "3.6.3" apply false
+    id("com.android.application") version "3.6.3" apply false
 }
 
 allprojects {
