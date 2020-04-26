@@ -1,5 +1,13 @@
 # Changelog #
 
+## v0.6 *(2020-04-26)* ##
+- Kotlin 1.3.72 and Android Gradle Plugin 3.6.3
+- Add `multiplatform-settings-no-arg` module, including common `Settings()` function for easy default configuration
+- Experimental `WindowsSettings` implementation via registry
+- Improved thread-safety for AppleSettings update listeners
+- New `keys` and `size` members on `Settings`.
+- Add workaround for potential native name collisions (KT-36721)
+
 ## v0.5.1 *(2020-03-03)* ##
 - Update to Kotlin 1.3.70
 - Update to Android Gradle Plugin 3.6.1
