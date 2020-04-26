@@ -27,7 +27,7 @@ public final class com/russhwolf/settings/MockSettings : com/russhwolf/settings/
 	public fun putLong (Ljava/lang/String;J)V
 	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
 	public fun remove (Ljava/lang/String;)V
-	public fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
+	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
 }
 
 public final class com/russhwolf/settings/MockSettings$Factory : com/russhwolf/settings/Settings$Factory {

@@ -57,7 +57,7 @@ public final class com/russhwolf/settings/JvmPreferencesSettings : com/russhwolf
 	public fun putLong (Ljava/lang/String;J)V
 	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
 	public fun remove (Ljava/lang/String;)V
-	public fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
+	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
 }
 
 public final class com/russhwolf/settings/JvmPreferencesSettings$Factory : com/russhwolf/settings/Settings$Factory {
@@ -101,11 +101,11 @@ public final class com/russhwolf/settings/JvmPropertiesSettings : com/russhwolf/
 
 public abstract interface class com/russhwolf/settings/ObservableSettings : com/russhwolf/settings/Settings {
 	public abstract fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
-	public abstract fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
+	public abstract synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
 }
 
 public final class com/russhwolf/settings/ObservableSettings$DefaultImpls {
-	public static fun removeListener (Lcom/russhwolf/settings/ObservableSettings;Lcom/russhwolf/settings/SettingsListener;)V
+	public static synthetic fun removeListener (Lcom/russhwolf/settings/ObservableSettings;Lcom/russhwolf/settings/SettingsListener;)V
 }
 
 public final class com/russhwolf/settings/OperatorsKt {
