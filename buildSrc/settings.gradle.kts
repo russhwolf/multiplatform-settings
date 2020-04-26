@@ -13,22 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-plugins {
-    kotlin("multiplatform") version "1.4-M1" apply false
-    kotlin("android") version "1.4-M1" apply false
-    id("com.android.library") version "3.6.3" apply false
-    id("com.android.application") version "3.6.3" apply false
-}
-
-allprojects {
-    ext["library_version"] = "0.6-1.4-M1"
-
+pluginManagement {
     repositories {
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
-        mavenLocal()
         google()
+        gradlePluginPortal()
         mavenCentral()
-        jcenter()
     }
 }
