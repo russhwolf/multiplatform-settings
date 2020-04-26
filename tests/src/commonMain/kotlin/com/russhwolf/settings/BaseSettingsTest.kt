@@ -82,12 +82,14 @@ abstract class BaseSettingsTest(
         settings.putInt("a", 3)
         settings.putString("b", "value")
         settings.remove("a")
+        settings.remove("c")
         assertEquals(0, settings.getInt("a"))
         assertEquals("value", settings.getString("b"))
 
         settings["a"] = 3
         settings["b"] = "value"
         settings -= "a"
+        settings -= "c"
         assertEquals(-1, settings["a", -1])
         assertEquals("value", settings["b", "default"])
 

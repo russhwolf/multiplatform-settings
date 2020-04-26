@@ -2,7 +2,7 @@
 
 # Multiplatform Settings
 
-This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data. It stores things using SharedPreferences on Android and NSUserDefaults on iOS. 
+This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data.
 
 ## Adding to your project
 Multiplatform Settings is currently published to jcenter, so add that to repositories.
@@ -29,7 +29,7 @@ See also the sample project, which uses this structure.
 
 ## Usage
 
-The `Settings` interface has implementations on the Android, iOS, macOS, watchOOS, tvOS, JS, and JVM platforms. (Note that the two JVM implementations are currently marked as experimental.)
+The `Settings` interface has implementations on the Android, iOS, macOS, watchOOS, tvOS, JS, JVM, and Windows platforms. (Note that the two JVM implementations and the Windows implementation are currently marked as experimental.)
 
 ### Creating a Settings instance
 
@@ -217,6 +217,8 @@ This is a pre-1.0 library based on an experimental framework, so some occasional
 
 ### Experimental Platforms
 
+#### JVM
+
 Two pure-JVM implementations exist. `JvmPreferencesSettings` wraps `Preferences` and `JvmPropertiesSettings` wraps `Properties`. Their experimental status is marked with the `@ExperimentalJvm` annotation. 
 
 ```kotlin
@@ -225,7 +227,16 @@ val settings: Settings = JvmPreferencesSettings(delegate)
 
 val delegate: Properties // ...
 val settings: Settings = JvmPropertiesSettings(delegate)
-```        
+```
+
+#### Windows
+
+There is a Windows implementation `WindowsSettings` which wraps the Windows registry. Its experimental status is marked with `@ExperimentalWindows`.
+
+```kotlin
+val rootKey: String = "SOFTWARE\\..." // Will be interpreted as subkey of HKEY_CURRENT_USER
+val settings: Settings = WindowsSettings(rootKey)
+```
 
 ### Listeners
 
