@@ -23,7 +23,7 @@ plugins {
 
 allprojects {
     group = "com.russhwolf"
-    version = "0.6-1.4-M1"
+    version = "0.6-1.4-M2"
 
     repositories {
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")

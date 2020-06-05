@@ -20,9 +20,14 @@ plugins {
     kotlin("js")
 }
 
-kotlin.target.browser {
-    runTask {
-        outputFileName = "settings-demo.js"
+kotlin {
+    js {
+        browser {
+            runTask {
+                outputFileName = "settings-demo.js"
+            }
+        }
+        binaries.executable()
     }
 }
 

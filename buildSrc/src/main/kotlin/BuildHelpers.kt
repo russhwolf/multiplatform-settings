@@ -24,8 +24,14 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetPreset
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsTargetPreset
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmWithJavaTargetPreset
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTargetPreset
 import org.jetbrains.kotlin.konan.target.Family
 
 private val Project.kotlin: KotlinMultiplatformExtension
@@ -49,6 +55,10 @@ fun Project.standardConfiguration(
 }
 
 private val ideaActive by lazy { System.getProperty("idea.active") == "true" }
+private val KotlinTargetPreset<*>.isJsTargetPreset: Boolean
+    get() = this is KotlinJsTargetPreset || this is KotlinJsIrTargetPreset
+private val KotlinTarget.isJsTarget: Boolean
+    get() = this is KotlinJsTarget || this is KotlinJsIrTarget
 
 private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDomainObjectCollection<KotlinTargetPreset<*>>) {
     android {
@@ -60,7 +70,8 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
 
     // Create empty targets for presets with no specific configuration
     targetPresets.forEach {
-        if (it.name == "jvmWithJava") return@forEach // Probably don't need this, and it chokes on Android plugin
+        if (it is KotlinJvmWithJavaTargetPreset) return@forEach // Probably don't need this, and it chokes on Android plugin
+        if (it.isJsTargetPreset && targets.any { it.isJsTarget }) return@forEach // Ignore repeat js targets
         if (targets.findByName(it.name) == null) {
             targetFromPreset(it)
         }

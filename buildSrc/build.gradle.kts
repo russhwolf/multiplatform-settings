@@ -15,7 +15,7 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.4-M1"
+    kotlin("jvm") version "1.4-M2"
 }
 
 repositories {

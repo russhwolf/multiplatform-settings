@@ -87,7 +87,7 @@ jobs:
           actions: 'build'
           configuration: 'Debug'
           scheme: 'SettingsDemo'
-          sdk: 'iphoneos13.2'
+          sdk: 'iphoneos13.4'
           packageApp: false
 
       - task: Xcode@5
@@ -95,7 +95,7 @@ jobs:
           actions: 'build'
           configuration: 'Debug'
           scheme: 'SettingsDemo'
-          sdk: 'iphonesimulator13.2'
+          sdk: 'iphonesimulator13.4'
           packageApp: false
 
     pool:
