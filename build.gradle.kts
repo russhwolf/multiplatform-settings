@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     id("binary-compatibility-validator") version "0.2.3"
+    id("com.jfrog.bintray") version "1.8.5" apply false
 }
 
 allprojects {

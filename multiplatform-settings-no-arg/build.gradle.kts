@@ -21,7 +21,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.dokka")
     id("maven-publish")
-    id("com.jfrog.bintray") version "1.8.4-jetbrains-3"
+    id("com.jfrog.bintray")
 }
 apply(from = "../gradle/publish.gradle")
 
