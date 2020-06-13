@@ -16,10 +16,10 @@
 
 package com.russhwolf.settings
 
+import kotlinx.browser.localStorage
 import org.w3c.dom.Storage
 import org.w3c.dom.get
 import org.w3c.dom.set
-import kotlin.browser.localStorage
 
 /**
  * A collection of storage-backed key-value data

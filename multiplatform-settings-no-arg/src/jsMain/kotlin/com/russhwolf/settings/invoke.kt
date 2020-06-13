@@ -19,6 +19,6 @@ package com.russhwolf.settings
 /**
  * Returns a default [Settings] instance.
  *
- * On JS, this delegates to [localStorage][kotlin.browser.localStorage].
+ * On JS, this delegates to [localStorage][kotlinx.browser.localStorage].
  */
 public actual operator fun Settings.Companion.invoke(): Settings = JsSettings()

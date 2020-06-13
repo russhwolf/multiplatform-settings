@@ -16,8 +16,8 @@
 
 package com.russhwolf.settings
 
+import kotlinx.browser.localStorage
 import org.w3c.dom.set
-import kotlin.browser.localStorage
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

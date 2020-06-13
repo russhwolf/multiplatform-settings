@@ -19,6 +19,7 @@ package com.russhwolf.settings.example.js
 import com.russhwolf.settings.JsSettings
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
+import kotlinx.browser.document
 import kotlinx.html.INPUT
 import kotlinx.html.InputType
 import kotlinx.html.dom.append
@@ -32,7 +33,6 @@ import kotlinx.html.js.select
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOutputElement
 import org.w3c.dom.HTMLSelectElement
-import kotlin.browser.document
 
 fun main() {
     document.body?.append {

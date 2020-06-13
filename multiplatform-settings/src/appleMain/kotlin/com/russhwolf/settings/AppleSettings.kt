@@ -84,6 +84,7 @@ public class AppleSettings public constructor(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     public override val keys: Set<String> get() = delegate.dictionaryRepresentation().keys as Set<String>
     public override val size: Int get() = delegate.dictionaryRepresentation().keys.count()
 

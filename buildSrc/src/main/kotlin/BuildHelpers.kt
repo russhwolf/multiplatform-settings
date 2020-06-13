@@ -83,6 +83,11 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
             useExperimentalAnnotation("kotlin.RequiresOptIn")
         }
     }
+    targets.configureEach {
+        it.compilations.configureEach {
+            it.kotlinOptions.allWarningsAsErrors = true
+        }
+    }
 
     linkNativeSourceSets()
 }
@@ -162,6 +167,10 @@ private fun BaseExtension.configureAndroidApiLevel() {
     compileSdkVersion(29)
     defaultConfig.apply {
         minSdkVersion(15)
+    }
+    lintOptions.apply {
+        isAbortOnError = true
+        isWarningsAsErrors = true
     }
 }
 

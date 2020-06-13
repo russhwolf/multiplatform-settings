@@ -16,9 +16,9 @@
 
 package com.russhwolf.settings
 
+import kotlinx.browser.localStorage
 import org.w3c.dom.get
 import org.w3c.dom.set
-import kotlin.browser.localStorage
 
 class JsInvokeTest : InvokeTest() {
     override fun getString(key: String, defaultValue: String): String = localStorage[key] ?: defaultValue

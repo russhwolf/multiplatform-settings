@@ -67,10 +67,10 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.12")
+                implementation("junit:junit:4.13")
                 implementation("androidx.test:core:1.2.0")
                 implementation("androidx.test.ext:junit:1.1.1")
-                implementation("org.robolectric:robolectric:4.3")
+                implementation("org.robolectric:robolectric:4.3.1")
 
                 implementation("androidx.preference:preference:1.1.1")
             }
@@ -82,10 +82,11 @@ kotlin {
             }
         }
         val jvmTest by getting {
+            languageSettings.useExperimentalAnnotation("com.russhwolf.settings.ExperimentalJvm")
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.12")
+                implementation("junit:junit:4.13")
             }
         }
 

@@ -61,6 +61,7 @@ public class JvmPropertiesSettings public constructor(
     private val onModify: (Properties) -> Unit = {}
 ) : Settings {
 
+    @Suppress("UNCHECKED_CAST")
     public override val keys: Set<String> get() = delegate.propertyNames().toList().toSet() as Set<String>
     public override val size: Int get() = delegate.size
 
