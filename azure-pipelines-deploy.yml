@@ -1,7 +1,5 @@
-trigger:
-  tags:
-    include:
-      - "*"
+trigger: none
+pr: none
 
 jobs:
   - job: "General"
@@ -24,7 +22,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: $(signing_password)
 
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-latest'
 
   - job: "Mac"
     steps:
@@ -46,7 +44,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: $(signing_password)
 
     pool:
-      vmImage: 'macos-10.15'
+      vmImage: 'macos-latest'
 
   - job: "Windows"
     steps:
@@ -68,4 +66,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: $(signing_password)
 
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
