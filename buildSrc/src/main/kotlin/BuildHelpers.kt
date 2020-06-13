@@ -48,6 +48,9 @@ fun Project.standardConfiguration(
     android.configureAndroidApiLevel()
 
     if (!isTestModule) {
+        kotlin.apply {
+            explicitApi()
+        }
         configureTests()
     }
 }

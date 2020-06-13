@@ -27,7 +27,7 @@ package com.russhwolf.settings
  */
 public interface Settings {
 
-    companion object;
+    public companion object;
 
     /**
      * A factory that can produce [Settings] instances.
@@ -219,5 +219,5 @@ public interface SettingsListener {
     /**
      * Unsubscribes this [SettingsListener] from receiving updates to the value at the key it monitors
      */
-    fun deactivate()
+    public fun deactivate()
 }

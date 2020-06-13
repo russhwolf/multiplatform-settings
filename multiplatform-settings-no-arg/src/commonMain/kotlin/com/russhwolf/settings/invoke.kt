@@ -21,4 +21,4 @@ package com.russhwolf.settings
  *
  * See implementations for details on what default behavior is used.
  */
-expect operator fun Settings.Companion.invoke(): Settings
+public expect operator fun Settings.Companion.invoke(): Settings

@@ -21,4 +21,4 @@ package com.russhwolf.settings
  *
  * On JS, this delegates to [localStorage][kotlin.browser.localStorage].
  */
-actual operator fun Settings.Companion.invoke(): Settings = JsSettings()
+public actual operator fun Settings.Companion.invoke(): Settings = JsSettings()

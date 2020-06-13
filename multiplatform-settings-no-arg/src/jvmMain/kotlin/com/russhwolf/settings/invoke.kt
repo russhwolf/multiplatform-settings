@@ -24,4 +24,4 @@ import java.util.prefs.Preferences
  * On JVM, this uses the [JvmPreferencesSettings] implementation and delegates to [Preferences.userRoot]
  */
 @ExperimentalJvm
-actual operator fun Settings.Companion.invoke(): Settings = JvmPreferencesSettings(Preferences.userRoot())
+public actual operator fun Settings.Companion.invoke(): Settings = JvmPreferencesSettings(Preferences.userRoot())

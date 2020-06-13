@@ -49,16 +49,13 @@ import kotlin.native.concurrent.freeze
 @OptIn(ExperimentalListener::class)
 public class AppleSettings public constructor(
     private val delegate: NSUserDefaults,
-    private val useFrozenListeners: Boolean
+    private val useFrozenListeners: Boolean = false
 ) : ObservableSettings {
     init {
         // We hold no state at the Kotlin level, so shouldn't run into freeze issues. If we know we're already frozen
         // then if listeners freeze things it'll be less surprising
         freeze()
     }
-
-    // Secondary constructor instead of default parameter for backward-compatibility
-    constructor(delegate: NSUserDefaults) : this(delegate, useFrozenListeners = false)
 
     /**
      * A factory that can produce [Settings] instances.

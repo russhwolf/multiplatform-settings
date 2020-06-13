@@ -23,4 +23,4 @@ import platform.Foundation.NSUserDefaults
  *
  * On Apple platforms, this delegates to [NSUserDefaults.standardUserDefaults].
  */
-actual operator fun Settings.Companion.invoke(): Settings = AppleSettings(NSUserDefaults.standardUserDefaults)
+public actual operator fun Settings.Companion.invoke(): Settings = AppleSettings(NSUserDefaults.standardUserDefaults)

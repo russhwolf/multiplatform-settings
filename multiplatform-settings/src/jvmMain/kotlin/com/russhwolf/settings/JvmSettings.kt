@@ -29,7 +29,7 @@ import java.util.prefs.Preferences
 )
 @ExperimentalJvm
 @Suppress("UNUSED", "KDocMissingDocumentation")
-typealias JvmSettings = JvmPreferencesSettings
+public typealias JvmSettings = JvmPreferencesSettings
 
 /**
  * A collection of storage-backed key-value data
@@ -178,7 +178,7 @@ public class JvmPreferencesSettings public constructor(
      *
      * On the JVM platform, this class creates `Settings` objects backed by [Preferences].
      */
-    class Factory(private val rootPreferences: Preferences = Preferences.userRoot()) : Settings.Factory {
+    public class Factory(private val rootPreferences: Preferences = Preferences.userRoot()) : Settings.Factory {
         public override fun create(name: String?): Settings {
             val preferences = if (name != null) rootPreferences.node(name) else rootPreferences
             return JvmPreferencesSettings(preferences)

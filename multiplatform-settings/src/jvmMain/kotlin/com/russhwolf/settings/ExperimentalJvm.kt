@@ -32,4 +32,4 @@ package com.russhwolf.settings
     AnnotationTarget.PROPERTY_SETTER,
     AnnotationTarget.TYPEALIAS
 )
-annotation class ExperimentalJvm
+public annotation class ExperimentalJvm

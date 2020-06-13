@@ -31,7 +31,7 @@ private var appContext: Context? = null
  * [PreferenceManager.getDefaultSharedPreferences][android.preference.PreferenceManager.getDefaultSharedPreferences].
  * It handles context via [ContextProvider], which is a no-op [ContentProvider].
  */
-actual operator fun Settings.Companion.invoke(): Settings {
+public actual operator fun Settings.Companion.invoke(): Settings {
     val appContext = appContext!!
 
     // Match the behavior of PreferenceManager.getDefaultSharedPreferences()
@@ -43,7 +43,7 @@ actual operator fun Settings.Companion.invoke(): Settings {
 /** Use to provide a context reference to [invoke] */
 @Suppress("DEPRECATION", "KDocMissingDocumentation")
 @Hidden
-class ContextProvider : ContentProvider() {
+public class ContextProvider : ContentProvider() {
     override fun insert(uri: Uri, values: ContentValues?): Uri? = null
 
     override fun query(
