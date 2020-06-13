@@ -54,7 +54,7 @@ jobs:
           tasks: 'clean build check assemble'
 
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-latest'
 
   - job: "Mac"
     steps:
@@ -87,7 +87,7 @@ jobs:
           actions: 'build'
           configuration: 'Debug'
           scheme: 'SettingsDemo'
-          sdk: 'iphoneos13.4'
+          sdk: 'iphoneos'
           packageApp: false
 
       - task: Xcode@5
@@ -95,11 +95,11 @@ jobs:
           actions: 'build'
           configuration: 'Debug'
           scheme: 'SettingsDemo'
-          sdk: 'iphonesimulator13.4'
+          sdk: 'iphonesimulator'
           packageApp: false
 
     pool:
-      vmImage: 'macos-10.15'
+      vmImage: 'macos-latest'
 
   - job: "Windows"
     steps:
@@ -116,4 +116,4 @@ jobs:
           tasks: 'clean mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMetadataPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal'
 
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
