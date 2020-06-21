@@ -22,7 +22,6 @@ import com.android.build.gradle.BaseExtension
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
-import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetPreset
@@ -50,7 +49,6 @@ fun Project.standardConfiguration(
 
     if (!isTestModule) {
         configureTests()
-        configureDokka()
     }
 }
 
@@ -169,14 +167,6 @@ private fun Project.configureTests() {
         task.testLogging.apply {
             showStandardStreams = true
             events("passed", "failed")
-        }
-    }
-}
-
-private fun Project.configureDokka() {
-    tasks.withType(DokkaTask::class.java) { task ->
-        task.multiplatform.apply {
-            kotlin.targets.forEach { create(it.name) }
         }
     }
 }
