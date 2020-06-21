@@ -6,13 +6,6 @@ trigger:
 jobs:
   - job: "General"
     steps:
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            echo "bintrayUser=$(bintrayUser)
-            bintrayKey=$(bintrayKey)" > keys.properties
-
       - task: Gradle@2
         inputs:
           workingDirectory: ''
@@ -23,20 +16,18 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean publishToMavenLocal bintrayUpload'
+          tasks: 'clean publishAllPublicationsToMavenRepository'
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: $(sonatype_username)
+          ORG_GRADLE_PROJECT_sonatypePassword: $(sonatype_password)
+          ORG_GRADLE_PROJECT_signingKey: $(secret_key)
+          ORG_GRADLE_PROJECT_signingPassword: $(signing_password)
 
     pool:
       vmImage: 'ubuntu-18.04'
 
   - job: "Mac"
     steps:
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            echo "bintrayUser=$(bintrayUser)
-            bintrayKey=$(bintrayKey)" > keys.properties
-
       - task: Gradle@2
         inputs:
           workingDirectory: ''
@@ -47,19 +38,18 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean publishIosArm32PublicationToMavenLocal publishIosArm64PublicationToMavenLocal publishIosX64PublicationToMavenLocal publishMacosX64PublicationToMavenLocal publishWatchosArm32PublicationToMavenLocal publishWatchosArm64PublicationToMavenLocal publishWatchosX86PublicationToMavenLocal publishTvosArm64PublicationToMavenLocal publishTvosX64PublicationToMavenLocal bintrayUpload'
+          tasks: 'clean publishIosArm32PublicationToMavenRepository publishIosArm64PublicationToMavenRepository publishIosX64PublicationToMavenRepository publishMacosX64PublicationToMavenRepository publishWatchosArm32PublicationToMavenRepository publishWatchosArm64PublicationToMavenRepository publishWatchosX86PublicationToMavenRepository publishTvosArm64PublicationToMavenRepository publishTvosX64PublicationToMavenRepository'
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: $(sonatype_username)
+          ORG_GRADLE_PROJECT_sonatypePassword: $(sonatype_password)
+          ORG_GRADLE_PROJECT_signingKey: $(secret_key)
+          ORG_GRADLE_PROJECT_signingPassword: $(signing_password)
 
     pool:
       vmImage: 'macos-10.15'
 
   - job: "Windows"
     steps:
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            echo "bintrayUser=$(bintrayUser)
-            bintrayKey=$(bintrayKey)" > keys.properties
       - task: Gradle@2
         inputs:
           workingDirectory: ''
@@ -70,7 +60,12 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal bintrayUpload'
+          tasks: 'clean publishMingwX64PublicationToMavenRepository publishMingwX86PublicationToMavenRepository'
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: $(sonatype_username)
+          ORG_GRADLE_PROJECT_sonatypePassword: $(sonatype_password)
+          ORG_GRADLE_PROJECT_signingKey: $(secret_key)
+          ORG_GRADLE_PROJECT_signingPassword: $(signing_password)
 
     pool:
       vmImage: 'windows-2019'

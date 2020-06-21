@@ -20,10 +20,9 @@ plugins {
     id("com.android.library")
     kotlin("multiplatform")
     id("org.jetbrains.dokka")
-    id("maven-publish")
-    id("com.jfrog.bintray") version "1.8.4-jetbrains-3"
+    `maven-publish`
+    signing
 }
-apply(from = "../gradle/publish.gradle")
 
 standardConfiguration(
     "android",
