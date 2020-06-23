@@ -86,11 +86,9 @@ allprojects {
         extensions.findByType<SigningExtension>()?.apply {
             val publishing = extensions.findByType<PublishingExtension>() ?: return@apply
             val key = properties["signingKey"]?.toString()?.replace("\\n", "\n")
-            val password = properties["signingPassword"]?.toString().orEmpty()
+            val password = properties["signingPassword"]?.toString()
 
-            if (key != null) {
-                useInMemoryPgpKeys(key, password)
-            }
+            useInMemoryPgpKeys(key, password)
             sign(publishing.publications)
         }
 
@@ -107,7 +105,7 @@ allprojects {
 }
 
 val isReleaseBuild: Boolean
-    get() = !version.toString().endsWith("SNAPSHOT")
+    get() = properties.containsKey("signingKey")
 
 
 
