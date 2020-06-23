@@ -5,12 +5,12 @@
 This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data.
 
 ## Adding to your project
-Multiplatform Settings is currently published to jcenter, so add that to repositories.
+Multiplatform Settings is currently published to Maven Central, so add that to repositories.
 
 ```kotlin
 repositories {
+    mavenCentral()
     // ...
-    jcenter()
 }
 ```
 
