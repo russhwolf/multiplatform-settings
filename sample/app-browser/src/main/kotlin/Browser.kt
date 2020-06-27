@@ -21,40 +21,38 @@ import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
 import kotlinx.html.INPUT
 import kotlinx.html.InputType
-import kotlinx.html.button
-import kotlinx.html.div
 import kotlinx.html.dom.append
-import kotlinx.html.id
+import kotlinx.html.js.button
+import kotlinx.html.js.div
 import kotlinx.html.js.input
 import kotlinx.html.js.onClickFunction
-import kotlinx.html.option
-import kotlinx.html.output
-import kotlinx.html.select
+import kotlinx.html.js.option
+import kotlinx.html.js.output
+import kotlinx.html.js.select
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLOutputElement
+import org.w3c.dom.HTMLSelectElement
 import kotlin.browser.document
 
 fun main() {
     document.body?.append {
         div {
-            select {
-                id = "select"
+            select = select {
                 settingsRepository.mySettings.forEach { setting ->
                     option {
                         text(setting.key)
-                        id = setting.key
                     }
                 }
             }
         }
         div {
-            input(type = InputType.text) {
-                id = "input"
-            }
+            input = input(type = InputType.text)
         }
         div {
             button {
                 text("Set Value")
                 onClickFunction = {
-                    if (selectedItem.set(currentInput)) {
+                    if (selectedItem.set(input.value)) {
                         showOutput("")
                     } else {
                         showOutput("INVALID VALUE")
@@ -89,18 +87,18 @@ fun main() {
             }
         }
         div {
-            output {
-                id = "output"
-            }
+            output = output()
         }
     }
 }
 
-private val currentInput: String get() = document.getElementById("input").unsafeCast<INPUT>().value
-private val selectedIndex: Int get() = document.getElementById("select").asDynamic().selectedIndex as? Int ?: 0
-private val selectedItem: SettingConfig<*> get() = settingsRepository.mySettings[selectedIndex]
+private lateinit var input: HTMLInputElement
+private lateinit var select: HTMLSelectElement
+private lateinit var output: HTMLOutputElement
+
+private val selectedItem: SettingConfig<*> get() = settingsRepository.mySettings[select.selectedIndex]
 fun showOutput(value: String) {
-    document.getElementById("output").asDynamic().value = value
+    output.value = value
 }
 
 private val settingsRepository: SettingsRepository by lazy { SettingsRepository(JsSettings()) }
