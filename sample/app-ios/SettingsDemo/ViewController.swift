@@ -19,17 +19,18 @@ import Shared
 
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
 
-    @IBOutlet var typePicker: UIPickerView?
-    @IBOutlet var valueInput: UITextField?
-    @IBOutlet var outputText: UILabel?
-    @IBOutlet var loggingSwitch: UISwitch?
-
+    @IBOutlet var typePicker: UIPickerView!
+    @IBOutlet var valueInput: UITextField!
+    @IBOutlet var outputText: UILabel!
+    @IBOutlet var loggingSwitch: UISwitch!
+    @IBOutlet var loggingText: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        typePicker?.delegate = self
-        typePicker?.dataSource = self
-        valueInput?.delegate = self
+        typePicker.delegate = self
+        typePicker.dataSource = self
+        valueInput.delegate = self
     }
 
     func pickerView(_ pickerView: UIPickerView,
@@ -47,10 +48,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        guard let row = typePicker?.selectedRow(inComponent: 0) else {
-            return
-        }
-        loggingSwitch?.isOn = settingsRepository.mySettings[row].isLoggingEnabled
+        refresh()
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -67,9 +65,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
         let settingConfig = settingsRepository.mySettings[row]
         if (settingConfig.set(value: value)) {
-            outputText?.text = ""
+            outputText.text = ""
         } else {
-            outputText?.text = "INVALID VALUE!"
+            outputText.text = "INVALID VALUE!"
         }
     }
 
@@ -78,21 +76,19 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             return
         }
         let settingConfig = settingsRepository.mySettings[row]
-        outputText?.text = settingConfig.get()
+        outputText.text = settingConfig.get()
     }
 
     @IBAction func onRemoveButtonPress() {
-        guard let row = typePicker?.selectedRow(inComponent: 0) else {
-            return
-        }
+        let row = typePicker.selectedRow(inComponent: 0)
         let settingConfig = settingsRepository.mySettings[row]
         settingConfig.remove()
-        outputText?.text = "Setting Removed!"
+        outputText.text = "Setting Removed!"
     }
 
     @IBAction func onClearButtonPress() {
         settingsRepository.clear()
-        outputText?.text = "Settings Cleared!"
+        outputText.text = "Settings Cleared!"
     }
     
     @IBAction func onLoggingSwitchChanged() {
@@ -101,6 +97,34 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
         settingsRepository.mySettings[row].isLoggingEnabled = loggingSwitch?.isOn ?? false
     }
+    
+    @IBAction func onImplementationToggleChanged(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            settingsRepository = userDefaultsSettingsRepository
+            loggingSwitch.alpha = 1
+            outputText.text = "Now reading from UserDefaults"
+        } else {
+            settingsRepository = keychainSettingsRepository
+            loggingSwitch.alpha = 0
+            outputText.text = "Now reading from Keychain"
+        }
+        refresh()
+    }
+    
+    private func refresh() {
+        if (settingsRepository == userDefaultsSettingsRepository) {
+            loggingSwitch.alpha = 1
+            loggingText.alpha = 1
+        } else {
+            loggingSwitch.alpha = 0
+            loggingText.alpha = 0
+        }
+        loggingSwitch.setOn(settingsRepository.mySettings[typePicker.selectedRow(inComponent: 0)].isLoggingEnabled, animated: true)
+    }
 }
 
-let settingsRepository: SettingsRepository = SettingsRepository(settings: AppleSettings(delegate: UserDefaults.standard))
+let userDefaultsSettingsRepository: SettingsRepository = SettingsRepository(settings: AppleSettings(delegate: UserDefaults.standard))
+let keychainSettingsRepository: SettingsRepository = SettingsRepository(settings: KeychainSettings(service: "Settings Demo"))
+
+var settingsRepository = userDefaultsSettingsRepository
+
