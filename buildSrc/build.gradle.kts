@@ -15,11 +15,12 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.4-M2"
+    kotlin("jvm") version "1.4-M3"
 }
 
 repositories {
     maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+    maven(url = "https://dl.bintray.com/kotlin/kotlin-dev")
     google()
     gradlePluginPortal()
     mavenCentral()
