@@ -38,12 +38,9 @@ kotlin {
         this as KotlinNativeTarget
         binaries {
             framework("Shared") {
+                // Make AppleSettings visible from Swift
                 export("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
-                if (isDevice) {
-                    export("com.russhwolf:multiplatform-settings-iosarm64:${rootProject.ext["library_version"]}")
-                } else {
-                    export("com.russhwolf:multiplatform-settings-iosx64:${rootProject.ext["library_version"]}")
-                }
+                transitiveExport = true
             }
         }
     }
@@ -57,7 +54,7 @@ kotlin {
 
         commonMain {
             dependencies {
-                api("com.russhwolf:multiplatform-settings-no-arg:${rootProject.ext["library_version"]}")
+                api("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
                 implementation(kotlin("stdlib-common"))
             }
         }

@@ -27,7 +27,6 @@ import com.russhwolf.settings.contains
 import com.russhwolf.settings.double
 import com.russhwolf.settings.float
 import com.russhwolf.settings.int
-import com.russhwolf.settings.invoke
 import com.russhwolf.settings.long
 import com.russhwolf.settings.minusAssign
 import com.russhwolf.settings.nullableBoolean
@@ -38,15 +37,11 @@ import com.russhwolf.settings.nullableLong
 import com.russhwolf.settings.nullableString
 import com.russhwolf.settings.string
 
-/** Shared instance that platform clients can talk to */
-val settingsRepository = SettingsRepository()
-
 /**
  * This class demonstrates common code exercising all of the functionality of the [Settings] class.
  * The majority of this functionality is delegated to [SettingConfig] subclasses for each supported type.
  */
-class SettingsRepository {
-    private val settings = Settings()
+class SettingsRepository(private val settings: Settings) {
 
     val mySettings: List<SettingConfig<*>> = listOf(
         StringSettingConfig(settings, "MY_STRING", "default"),

@@ -16,8 +16,9 @@
 
 package com.russhwolf.settings.example.js
 
+import com.russhwolf.settings.JsSettings
 import com.russhwolf.settings.example.SettingConfig
-import com.russhwolf.settings.example.settingsRepository
+import com.russhwolf.settings.example.SettingsRepository
 import kotlinx.html.INPUT
 import kotlinx.html.InputType
 import kotlinx.html.button
@@ -102,3 +103,4 @@ fun showOutput(value: String) {
     document.getElementById("output").asDynamic().value = value
 }
 
+private val settingsRepository: SettingsRepository by lazy { SettingsRepository(JsSettings()) }
