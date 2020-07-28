@@ -15,14 +15,14 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "1.4-M3" apply false
-    kotlin("android") version "1.4-M3" apply false
+    kotlin("multiplatform") version "1.4.0-rc" apply false
+    kotlin("android") version "1.4.0-rc" apply false
     id("com.android.library") version "3.6.3" apply false
     id("com.android.application") version "3.6.3" apply false
 }
 
 allprojects {
-    ext["library_version"] = "0.6-1.4-M3"
+    ext["library_version"] = "0.6-1.4.0-rc"
 
     repositories {
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
