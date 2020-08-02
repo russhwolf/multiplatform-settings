@@ -23,7 +23,6 @@ plugins {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(kotlin("stdlib"))
     implementation("no.tornado:tornadofx:1.7.19")
     implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
 }

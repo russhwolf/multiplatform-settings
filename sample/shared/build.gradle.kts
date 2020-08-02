@@ -55,7 +55,6 @@ kotlin {
         commonMain {
             dependencies {
                 api("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
-                implementation(kotlin("stdlib-common"))
             }
         }
         commonTest {
@@ -69,7 +68,6 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
             }
         }
         val androidTest by getting {
@@ -80,7 +78,6 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
             }
         }
         val jvmTest by getting {
