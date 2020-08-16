@@ -21,12 +21,15 @@
 
     <application>
         <provider
-            android:authorities="${applicationId}.multiplatform-settings-init"
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            android:multiprocess="true"
-            android:directBootAware="false"
-            android:name="com.russhwolf.settings.ContextProvider"
-            tools:targetApi="n"
-            />
+            tools:node="merge"
+            >
+            <meta-data
+                android:name="com.russhwolf.settings.SettingsInitializer"
+                android:value="androidx.startup"
+                />
+        </provider>
     </application>
 </manifest>

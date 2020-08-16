@@ -58,6 +58,7 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
+                implementation("androidx.startup:startup-runtime:1.0.0")
             }
         }
         val androidTest by getting {

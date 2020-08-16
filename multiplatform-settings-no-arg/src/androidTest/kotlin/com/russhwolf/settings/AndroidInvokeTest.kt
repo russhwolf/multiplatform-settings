@@ -23,22 +23,21 @@ import org.junit.runner.RunWith
 import kotlin.test.BeforeTest
 
 @RunWith(AndroidJUnit4::class)
-class AndroidInvokeTest : InvokeTest() {
+public class AndroidInvokeTest : InvokeTest() {
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val sharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
     @BeforeTest
-    fun setupContext() {
-        val provider = ContextProvider()
-        provider.attachInfo(context, null)
+    public fun setupContext() {
+        val initializer = SettingsInitializer()
+        initializer.create(context)
     }
 
-    override fun getString(key: String, defaultValue: String): String =
+    public override fun getString(key: String, defaultValue: String): String =
         sharedPreferences.getString(key, defaultValue) ?: defaultValue
 
-    override fun setString(key: String, value: String) {
+    public override fun setString(key: String, value: String) {
         sharedPreferences.edit().putString(key, value).commit()
     }
 }
