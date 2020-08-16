@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("gradle-plugin"))
-    implementation("com.android.tools.build:gradle:3.6.3")
+    implementation("com.android.tools.build:gradle:4.0.1")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.10.1")
     implementation(kotlin("compiler-embeddable"))
 }
