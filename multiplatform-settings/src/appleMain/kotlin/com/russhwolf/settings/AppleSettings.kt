@@ -57,6 +57,9 @@ public class AppleSettings public constructor(
         freeze()
     }
 
+    // Secondary constructor instead of default parameter for backward-compatibility
+    public constructor(delegate: NSUserDefaults) : this(delegate, useFrozenListeners = false)
+
     /**
      * A factory that can produce [Settings] instances.
      *
