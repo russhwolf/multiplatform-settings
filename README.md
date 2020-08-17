@@ -25,7 +25,7 @@ Then, simply add the dependency to your common source-set dependencies
 commonMain {
     dependencies {
         // ...
-        implementation("com.russhwolf:multiplatform-settings:0.6")
+        implementation("com.russhwolf:multiplatform-settings:0.6.1")
     }
 }
 ``` 
@@ -113,7 +113,7 @@ val factory: Settings.Factory = AppleSettings.Factory()
 To create a `Settings` instance from common without needing to pass platform-specific dependencies, add the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatform-settings` as an API dependency, so you can use it as a replacement for that default dependency.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-no-arg:0.6")
+implementation("com.russhwolf:multiplatform-settings-no-arg:0.6.1")
 ```    
 
 Then from common code, you can write
@@ -207,7 +207,7 @@ Note that for the `AppleSettings` implementation, some entries are unremovable a
 A testing dependency is available to aid in testing code that interacts with this library.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-test:0.6")
+implementation("com.russhwolf:multiplatform-settings-test:0.6.1")
 ```    
 
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
