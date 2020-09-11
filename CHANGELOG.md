@@ -1,5 +1,8 @@
 # Changelog #
 
+## v0.6.2 *(2020-09-10)* ##
+- Kotlin 1.4.10
+
 ## v0.6.1 *(2020-08-16)* ##
 - Kotlin 1.4.0, Gradle 6.6, and Android Gradle Plugin 4.0.1
 - Support for both legacy and IR compiler modes in Kotlin/JS
