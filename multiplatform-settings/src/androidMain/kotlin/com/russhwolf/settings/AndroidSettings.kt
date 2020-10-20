@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
@@ -38,9 +39,15 @@ import com.russhwolf.settings.AndroidSettings.Factory
  *
  * On the Android platform, this class can be created by passing a [SharedPreferences] instance which will be used as a
  * delegate. Thus two `Settings` instances created using the same [delegate] will be backed by the same data.
+ *
+ * Set the [commit] parameter to true if you want your changes to be immediately committed to the persistent storage
+ * (slower, but synchronous).
  */
 @OptIn(ExperimentalListener::class)
-public class AndroidSettings public constructor(private val delegate: SharedPreferences) : ObservableSettings {
+public class AndroidSettings public constructor(
+    private val delegate: SharedPreferences,
+    private val commit : Boolean = false
+) : ObservableSettings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -78,6 +85,19 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
     public override val keys: Set<String> get() = delegate.all.keys
     public override val size: Int get() = delegate.all.size
 
+    /**
+     * Based on the [commit] parameter, this extension function will either call
+     * [SharedPreferences.Editor.apply] or [SharedPreferences.Editor.commit] on your editor.
+     */
+    private fun SharedPreferences.Editor.applyOrCommit() {
+        if (commit) {
+            commit()
+        } else {
+            apply()
+        }
+    }
+
+    @SuppressLint("CommitPrefEdits")
     public override fun clear() {
         // Note: we call remove() on all keys instead of calling clear() in order to match listener behavior to iOS
         // See issue #9
@@ -85,21 +105,21 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
             for (key in delegate.all.keys) {
                 remove(key)
             }
-        }.apply()
+        }.applyOrCommit()
     }
 
-    public override fun remove(key: String): Unit = delegate.edit().remove(key).apply()
+    public override fun remove(key: String): Unit = delegate.edit().remove(key).applyOrCommit()
 
     public override fun hasKey(key: String): Boolean = delegate.contains(key)
 
-    public override fun putInt(key: String, value: Int): Unit = delegate.edit().putInt(key, value).apply()
+    public override fun putInt(key: String, value: Int): Unit = delegate.edit().putInt(key, value).applyOrCommit()
 
     public override fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
 
     public override fun getIntOrNull(key: String): Int? =
         if (delegate.contains(key)) delegate.getInt(key, 0) else null
 
-    public override fun putLong(key: String, value: Long): Unit = delegate.edit().putLong(key, value).apply()
+    public override fun putLong(key: String, value: Long): Unit = delegate.edit().putLong(key, value).applyOrCommit()
 
     public override fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
 
@@ -107,7 +127,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
         if (delegate.contains(key)) delegate.getLong(key, 0L) else null
 
     public override fun putString(key: String, value: String): Unit =
-        delegate.edit().putString(key, value).apply()
+        delegate.edit().putString(key, value).applyOrCommit()
 
     public override fun getString(key: String, defaultValue: String): String =
         delegate.getString(key, defaultValue) ?: defaultValue
@@ -115,7 +135,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
     public override fun getStringOrNull(key: String): String? =
         if (delegate.contains(key)) delegate.getString(key, "") else null
 
-    public override fun putFloat(key: String, value: Float): Unit = delegate.edit().putFloat(key, value).apply()
+    public override fun putFloat(key: String, value: Float): Unit = delegate.edit().putFloat(key, value).applyOrCommit()
 
     public override fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
 
@@ -123,7 +143,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
         if (delegate.contains(key)) delegate.getFloat(key, 0f) else null
 
     public override fun putDouble(key: String, value: Double): Unit =
-        delegate.edit().putLong(key, value.toRawBits()).apply()
+        delegate.edit().putLong(key, value.toRawBits()).applyOrCommit()
 
     public override fun getDouble(key: String, defaultValue: Double): Double =
         Double.fromBits(delegate.getLong(key, defaultValue.toRawBits()))
@@ -132,7 +152,7 @@ public class AndroidSettings public constructor(private val delegate: SharedPref
         if (delegate.contains(key)) Double.fromBits(delegate.getLong(key, 0.0.toRawBits())) else null
 
     public override fun putBoolean(key: String, value: Boolean): Unit =
-        delegate.edit().putBoolean(key, value).apply()
+        delegate.edit().putBoolean(key, value).applyOrCommit()
 
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         delegate.getBoolean(key, defaultValue)
