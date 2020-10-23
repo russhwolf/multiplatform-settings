@@ -44,7 +44,7 @@ import com.russhwolf.settings.AndroidSettings.Factory
  * (slower, but synchronous).
  */
 @OptIn(ExperimentalListener::class)
-public class AndroidSettings public constructor(
+public class AndroidSettings @JvmOverloads public constructor
     private val delegate: SharedPreferences,
     private val commit : Boolean = false
 ) : ObservableSettings {
@@ -89,7 +89,8 @@ public class AndroidSettings public constructor(
      * Based on the [commit] parameter, this extension function will either call
      * [SharedPreferences.Editor.apply] or [SharedPreferences.Editor.commit] on your editor.
      */
-    private fun SharedPreferences.Editor.applyOrCommit() {
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun SharedPreferences.Editor.applyOrCommit() {
         if (commit) {
             commit()
         } else {

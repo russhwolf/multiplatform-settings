@@ -39,7 +39,7 @@ class AndroidSettingsTest : BaseSettingsTest(factory) {
     }
 
     @Test
-    fun delegate_commit() {
+    fun constructor_commit() {
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val settings = AndroidSettings(preferences, commit = true)
 
@@ -48,7 +48,7 @@ class AndroidSettingsTest : BaseSettingsTest(factory) {
     }
 
     @Test
-    fun delegate_noCommit() {
+    fun constructor_noCommit() {
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val settings = AndroidSettings(preferences, commit = false)
 
