@@ -44,7 +44,7 @@ import com.russhwolf.settings.AndroidSettings.Factory
  * (slower, but synchronous).
  */
 @OptIn(ExperimentalListener::class)
-public class AndroidSettings @JvmOverloads public constructor
+public class AndroidSettings @JvmOverloads public constructor(
     private val delegate: SharedPreferences,
     private val commit : Boolean = false
 ) : ObservableSettings {
