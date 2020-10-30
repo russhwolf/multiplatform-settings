@@ -39,6 +39,24 @@ class AndroidSettingsTest : BaseSettingsTest(factory) {
     }
 
     @Test
+    fun constructor_commit() {
+        val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val settings = AndroidSettings(preferences, commit = true)
+
+        settings.putInt("a", 3)
+        assertEquals(3, preferences.getInt("a", -1))
+    }
+
+    @Test
+    fun constructor_noCommit() {
+        val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val settings = AndroidSettings(preferences, commit = false)
+
+        settings.putInt("a", 3)
+        assertEquals(3, preferences.getInt("a", -1))
+    }
+
+    @Test
     fun factory_name() {
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val settings = factory.create("Settings")
