@@ -1,13 +1,24 @@
 # Changelog #
 
+## v0.6.3 *(2020-11-02)* ##
+
+- Kotlin 1.4.10 for real this time
+- Optional `commit` parameter in `AndroidSettings` constructor, which will tell it to use `commit()` instead
+  of `apply()` when making changes.
+- Deprecate `Settings.Companion.invoke()` in the no-arg dependency and replace with `Settings()` factory function.
+- Use `androidx.startup` in no-arg dependency instead of a custom `ContentProvider`.
+
 ## v0.6.2 *(2020-09-10)* ##
-- Kotlin 1.4.10
+
+- ~~Kotlin 1.4.10~~ (Erroneously still built with 1.4.0)
 
 ## v0.6.1 *(2020-08-16)* ##
+
 - Kotlin 1.4.0, Gradle 6.6, and Android Gradle Plugin 4.0.1
 - Support for both legacy and IR compiler modes in Kotlin/JS
 
 ## v0.6 *(2020-04-26)* ##
+
 - Kotlin 1.3.72 and Android Gradle Plugin 3.6.3
 - Add `multiplatform-settings-no-arg` module, including common `Settings()` function for easy default configuration
 - Experimental `WindowsSettings` implementation via registry
