@@ -16,13 +16,9 @@
 
 package com.russhwolf.settings
 
-import platform.Foundation.NSUserDefaults
-
-class AppleInvokeTest : InvokeTest() {
-    private val userDefaults = NSUserDefaults.standardUserDefaults
-
-    override fun getString(key: String, defaultValue: String): String =
-        userDefaults.objectForKey(key) as? String ?: defaultValue
-
-    override fun setString(key: String, value: String) = userDefaults.setObject(value, key)
-}
+/**
+ * Returns a default [Settings] instance.
+ *
+ * On JS, this delegates to [localStorage][kotlinx.browser.localStorage].
+ */
+public actual fun Settings(): Settings = JsSettings()

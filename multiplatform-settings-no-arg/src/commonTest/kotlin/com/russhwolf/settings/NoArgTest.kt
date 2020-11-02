@@ -19,7 +19,7 @@ package com.russhwolf.settings
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-abstract class InvokeTest {
+abstract class NoArgTest {
     private val settings by lazy { Settings() }
 
     @Test

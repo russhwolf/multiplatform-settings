@@ -16,11 +16,12 @@
 
 package com.russhwolf.settings
 
-import platform.Foundation.NSUserDefaults
+import java.util.prefs.Preferences
 
 /**
  * Returns a default [Settings] instance.
  *
- * On Apple platforms, this delegates to [NSUserDefaults.standardUserDefaults].
+ * On JVM, this uses the [JvmPreferencesSettings] implementation and delegates to [Preferences.userRoot]
  */
-public actual operator fun Settings.Companion.invoke(): Settings = AppleSettings(NSUserDefaults.standardUserDefaults)
+@ExperimentalJvm
+public actual fun Settings(): Settings = JvmPreferencesSettings(Preferences.userRoot())

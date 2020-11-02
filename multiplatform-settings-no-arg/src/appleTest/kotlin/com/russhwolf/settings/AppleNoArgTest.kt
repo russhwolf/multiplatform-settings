@@ -16,12 +16,13 @@
 
 package com.russhwolf.settings
 
-import java.util.prefs.Preferences
+import platform.Foundation.NSUserDefaults
 
-/**
- * Returns a default [Settings] instance.
- *
- * On JVM, this uses the [JvmPreferencesSettings] implementation and delegates to [Preferences.userRoot]
- */
-@ExperimentalJvm
-public actual operator fun Settings.Companion.invoke(): Settings = JvmPreferencesSettings(Preferences.userRoot())
+class AppleNoArgTest : NoArgTest() {
+    private val userDefaults = NSUserDefaults.standardUserDefaults
+
+    override fun getString(key: String, defaultValue: String): String =
+        userDefaults.objectForKey(key) as? String ?: defaultValue
+
+    override fun setString(key: String, value: String) = userDefaults.setObject(value, key)
+}

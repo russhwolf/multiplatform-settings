@@ -29,7 +29,7 @@ private var appContext: Context? = null
  * [PreferenceManager.getDefaultSharedPreferences][android.preference.PreferenceManager.getDefaultSharedPreferences].
  * It handles context via [ContextProvider], which is a no-op [ContentProvider].
  */
-public actual operator fun Settings.Companion.invoke(): Settings {
+public actual fun Settings(): Settings {
     val appContext = appContext!!
 
     // Match the behavior of PreferenceManager.getDefaultSharedPreferences(), without AndroidX lib or deprecated API

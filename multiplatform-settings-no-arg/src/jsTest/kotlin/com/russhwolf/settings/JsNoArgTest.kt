@@ -16,12 +16,13 @@
 
 package com.russhwolf.settings
 
-import java.util.prefs.Preferences
+import kotlinx.browser.localStorage
+import org.w3c.dom.get
+import org.w3c.dom.set
 
-
-class JvmInvokeTest : InvokeTest() {
-    private val preferences by lazy { Preferences.userRoot() }
-
-    override fun getString(key: String, defaultValue: String): String = preferences.get(key, defaultValue)
-    override fun setString(key: String, value: String) = preferences.put(key, value)
+class JsNoArgTest : NoArgTest() {
+    override fun getString(key: String, defaultValue: String): String = localStorage[key] ?: defaultValue
+    override fun setString(key: String, value: String) {
+        localStorage[key] = value
+    }
 }

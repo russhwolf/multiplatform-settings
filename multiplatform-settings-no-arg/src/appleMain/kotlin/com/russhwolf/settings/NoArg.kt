@@ -16,9 +16,11 @@
 
 package com.russhwolf.settings
 
+import platform.Foundation.NSUserDefaults
+
 /**
  * Returns a default [Settings] instance.
  *
- * On JS, this delegates to [localStorage][kotlinx.browser.localStorage].
+ * On Apple platforms, this delegates to [NSUserDefaults.standardUserDefaults].
  */
-public actual operator fun Settings.Companion.invoke(): Settings = JsSettings()
+public actual fun Settings(): Settings = AppleSettings(NSUserDefaults.standardUserDefaults)

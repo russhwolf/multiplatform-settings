@@ -16,12 +16,11 @@
 
 package com.russhwolf.settings
 
-/**
- * Operator fun is deprecated. Use Settings() function instead.
- */
-@Deprecated(
-    message = "Operator fun is deprecated. Use Settings() function instead.",
-    replaceWith = ReplaceWith("Settings()", "com.russhwolf.settings.Settings")
-)
-@Suppress("EXPERIMENTAL_API_USAGE")
-public operator fun Settings.Companion.invoke(): Settings = Settings()
+import java.util.prefs.Preferences
+
+class JvmNoArgTest : NoArgTest() {
+    private val preferences by lazy { Preferences.userRoot() }
+
+    override fun getString(key: String, defaultValue: String): String = preferences.get(key, defaultValue)
+    override fun setString(key: String, value: String) = preferences.put(key, value)
+}

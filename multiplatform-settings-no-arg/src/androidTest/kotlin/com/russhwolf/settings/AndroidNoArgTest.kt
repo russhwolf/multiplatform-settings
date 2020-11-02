@@ -23,7 +23,7 @@ import org.junit.runner.RunWith
 import kotlin.test.BeforeTest
 
 @RunWith(AndroidJUnit4::class)
-public class AndroidInvokeTest : InvokeTest() {
+public class AndroidNoArgTest : NoArgTest() {
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val sharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }

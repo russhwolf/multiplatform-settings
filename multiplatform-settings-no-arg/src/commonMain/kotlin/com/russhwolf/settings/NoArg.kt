@@ -16,13 +16,9 @@
 
 package com.russhwolf.settings
 
-import kotlinx.browser.localStorage
-import org.w3c.dom.get
-import org.w3c.dom.set
-
-class JsInvokeTest : InvokeTest() {
-    override fun getString(key: String, defaultValue: String): String = localStorage[key] ?: defaultValue
-    override fun setString(key: String, value: String) {
-        localStorage[key] = value
-    }
-}
+/**
+ * Returns a default [Settings] instance.
+ *
+ * See implementations for details on what default behavior is used.
+ */
+public expect fun Settings(): Settings
