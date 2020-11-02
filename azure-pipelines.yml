@@ -90,13 +90,14 @@ jobs:
           sdk: 'iphoneos'
           packageApp: false
 
-      - task: Xcode@5
-        inputs:
-          actions: 'build'
-          configuration: 'Debug'
-          scheme: 'SettingsDemo'
-          sdk: 'iphonesimulator'
-          packageApp: false
+    # TODO Disabled because it isn't working in Azure
+    #      - task: Xcode@5
+    #        inputs:
+    #          actions: 'build'
+    #          configuration: 'Debug'
+    #          scheme: 'SettingsDemo'
+    #          sdk: 'iphonesimulator'
+    #          packageApp: false
 
     pool:
       vmImage: 'macos-latest'
