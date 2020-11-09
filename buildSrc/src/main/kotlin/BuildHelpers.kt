@@ -100,11 +100,24 @@ private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
     sourceSets.apply {
         val commonMain = getByName("commonMain")
         val commonTest = getByName("commonTest")
-        val nativeMain = create("nativeMain").apply {
+
+        val multithreadedMain = create("multithreadedMain").apply {
             dependsOn(commonMain)
         }
-        val nativeTest = create("nativeTest").apply {
+        val multithreadedTest = create("multithreadedTest").apply {
             dependsOn(commonTest)
+        }
+
+        findByName("androidMain")?.dependsOn(multithreadedMain)
+        findByName("androidTest")?.dependsOn(multithreadedTest)
+        findByName("jvmMain")?.dependsOn(multithreadedMain)
+        findByName("jvmTest")?.dependsOn(multithreadedTest)
+
+        val nativeMain = create("nativeMain").apply {
+            dependsOn(multithreadedMain)
+        }
+        val nativeTest = create("nativeTest").apply {
+            dependsOn(multithreadedTest)
         }
         val appleMain = create("appleMain").apply {
             dependsOn(nativeMain)
@@ -127,15 +140,21 @@ private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
 
         // TODO this is just here to make the IDE happy (ish) while we wait for HMPP to improve
         if (ideaActive) {
-            val macosX64Main = getByName("macosX64Main").apply {
+            getByName("macosX64Main").apply {
                 kotlin.srcDirs(*nativeMain.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*appleMain.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Main.kotlin.srcDirs.toTypedArray())
             }
-            val macosX64Test = getByName("macosX64Test").apply {
+            getByName("macosX64Test").apply {
                 kotlin.srcDirs(*nativeTest.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*appleTest.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Test.kotlin.srcDirs.toTypedArray())
+            }
+            getByName("jvmMain").apply {
+                kotlin.srcDirs(*multithreadedMain.kotlin.srcDirs.toTypedArray())
+            }
+            getByName("jvmTest").apply {
+                kotlin.srcDirs(*multithreadedTest.kotlin.srcDirs.toTypedArray())
             }
         }
 

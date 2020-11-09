@@ -19,3 +19,96 @@ public final class com/russhwolf/settings/coroutines/CoroutineExtensionsKt {
 	public static final fun stringOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 }
 
+public abstract interface class com/russhwolf/settings/coroutines/FlowSettings {
+	public static final field Companion Lcom/russhwolf/settings/coroutines/FlowSettings$Companion;
+	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getBooleanFlow (Ljava/lang/String;Z)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getBooleanOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getDoubleFlow (Ljava/lang/String;D)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getDoubleOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getFloatFlow (Ljava/lang/String;F)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getFloatOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getIntFlow (Ljava/lang/String;I)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getIntOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getLongFlow (Ljava/lang/String;J)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getLongOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getStringFlow (Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getStringOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun hasKey (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun keys (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putBoolean (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putDouble (Ljava/lang/String;DLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putFloat (Ljava/lang/String;FLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putInt (Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putLong (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putString (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun size (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/russhwolf/settings/coroutines/FlowSettings$Companion {
+}
+
+public final class com/russhwolf/settings/coroutines/FlowSettings$DefaultImpls {
+	public static synthetic fun getBooleanFlow$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Ljava/lang/String;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getDoubleFlow$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Ljava/lang/String;DILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getFloatFlow$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Ljava/lang/String;FILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getIntFlow$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Ljava/lang/String;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getLongFlow$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Ljava/lang/String;JILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getStringFlow$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/russhwolf/settings/coroutines/FlowSettingsKt {
+	public static final fun toFlowSettings (Lcom/russhwolf/settings/ObservableSettings;)Lcom/russhwolf/settings/coroutines/FlowSettings;
+	public static final fun toSuspendSettings (Lcom/russhwolf/settings/coroutines/FlowSettings;)Lcom/russhwolf/settings/coroutines/SuspendSettings;
+}
+
+public abstract interface class com/russhwolf/settings/coroutines/SuspendSettings {
+	public static final field Companion Lcom/russhwolf/settings/coroutines/SuspendSettings$Companion;
+	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getBoolean (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getBooleanOrNull (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getDouble (Ljava/lang/String;DLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getDoubleOrNull (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getFloat (Ljava/lang/String;FLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getFloatOrNull (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getInt (Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getIntOrNull (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getLong (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getLongOrNull (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getString (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getStringOrNull (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun hasKey (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun keys (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putBoolean (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putDouble (Ljava/lang/String;DLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putFloat (Ljava/lang/String;FLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putInt (Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putLong (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun putString (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun size (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/russhwolf/settings/coroutines/SuspendSettings$Companion {
+}
+
+public final class com/russhwolf/settings/coroutines/SuspendSettings$DefaultImpls {
+	public static synthetic fun getBoolean$default (Lcom/russhwolf/settings/coroutines/SuspendSettings;Ljava/lang/String;ZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun getDouble$default (Lcom/russhwolf/settings/coroutines/SuspendSettings;Ljava/lang/String;DLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun getFloat$default (Lcom/russhwolf/settings/coroutines/SuspendSettings;Ljava/lang/String;FLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun getInt$default (Lcom/russhwolf/settings/coroutines/SuspendSettings;Ljava/lang/String;ILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun getLong$default (Lcom/russhwolf/settings/coroutines/SuspendSettings;Ljava/lang/String;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun getString$default (Lcom/russhwolf/settings/coroutines/SuspendSettings;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/russhwolf/settings/coroutines/SuspendSettingsKt {
+	public static final fun toSuspendSettings (Lcom/russhwolf/settings/Settings;)Lcom/russhwolf/settings/coroutines/SuspendSettings;
+}
+
+public final class com/russhwolf/settings/coroutines/ToBlockingSettingsKt {
+	public static final fun toBlockingObservableSettings (Lcom/russhwolf/settings/coroutines/FlowSettings;Lkotlin/coroutines/CoroutineContext;)Lcom/russhwolf/settings/ObservableSettings;
+	public static synthetic fun toBlockingObservableSettings$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Lkotlin/coroutines/CoroutineContext;ILjava/lang/Object;)Lcom/russhwolf/settings/ObservableSettings;
+	public static final fun toBlockingSettings (Lcom/russhwolf/settings/coroutines/SuspendSettings;)Lcom/russhwolf/settings/Settings;
+}
+
