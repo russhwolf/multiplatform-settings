@@ -30,6 +30,7 @@ import kotlin.test.assertTrue
 abstract class BaseSettingsTest(
     platformFactory: Settings.Factory,
     private val hasNamedInstances: Boolean = true,
+    private val allowsDuplicateInstances: Boolean = true,
     private val hasListeners: Boolean = true,
     private val syncListeners: () -> Unit = {}
 ) {
@@ -675,6 +676,8 @@ abstract class BaseSettingsTest(
 
     @Test
     fun multipleSameInstances() {
+        if (!allowsDuplicateInstances) return
+
         val settingsA = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
         val settingsB = settingsFactory.create("com.russhwolf.multiplatform-settings.test.A")
         settingsA["a"] = 1

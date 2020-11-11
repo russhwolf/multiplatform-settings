@@ -140,20 +140,20 @@ private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
 
         // TODO this is just here to make the IDE happy (ish) while we wait for HMPP to improve
         if (ideaActive) {
-            getByName("macosX64Main").apply {
+            findByName("macosX64Main")?.apply {
                 kotlin.srcDirs(*nativeMain.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*appleMain.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Main.kotlin.srcDirs.toTypedArray())
             }
-            getByName("macosX64Test").apply {
+            findByName("macosX64Test")?.apply {
                 kotlin.srcDirs(*nativeTest.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*appleTest.kotlin.srcDirs.toTypedArray())
                 kotlin.srcDirs(*apple64Test.kotlin.srcDirs.toTypedArray())
             }
-            getByName("jvmMain").apply {
+            findByName("jvmMain")?.apply {
                 kotlin.srcDirs(*multithreadedMain.kotlin.srcDirs.toTypedArray())
             }
-            getByName("jvmTest").apply {
+            findByName("jvmTest")?.apply {
                 kotlin.srcDirs(*multithreadedTest.kotlin.srcDirs.toTypedArray())
             }
         }
