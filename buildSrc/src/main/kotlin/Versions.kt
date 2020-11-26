@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("multiplatform") version "1.4.20" apply false
-    kotlin("android") version "1.4.20" apply false
-    id("com.android.library") version "4.0.2" apply false
-    id("com.android.application") version "4.0.2" apply false
-}
+@file:Suppress("KDocMissingDocumentation")
 
-allprojects {
-    ext["library_version"] = "0.7"
+object Versions {
+    const val multiplatformSettings = "0.7"
 
-    repositories {
-        mavenLocal()
-        google()
-        mavenCentral()
-        jcenter()
-    }
+    const val minSdk = 15
+    const val compileSdk = 30
+
+    const val androidxPreference = "1.1.1"
+    const val androidxStartup = "1.0.0"
+    const val androidxTest = "1.3.0"
+    const val androidxTestExt = "1.1.2"
+    const val binaryCompatibilityValidator = "0.2.4"
+    const val junit = "4.13"
+    const val robolectric = "4.4"
 }

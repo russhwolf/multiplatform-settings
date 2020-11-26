@@ -16,8 +16,6 @@
 
 @file:Suppress("KDocMissingDocumentation")
 
-package com.russhwolf.settings.build
-
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
@@ -164,9 +162,9 @@ private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
 }
 
 private fun BaseExtension.configureAndroidApiLevel() {
-    compileSdkVersion(29)
+    compileSdkVersion(Versions.compileSdk)
     defaultConfig.apply {
-        minSdkVersion(15)
+        minSdkVersion(Versions.minSdk)
     }
     lintOptions.apply {
         isAbortOnError = true

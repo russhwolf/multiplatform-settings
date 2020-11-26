@@ -18,12 +18,12 @@ import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
-    id("binary-compatibility-validator") version "0.2.3"
+    id("binary-compatibility-validator") version Versions.binaryCompatibilityValidator
 }
 
 allprojects {
     group = "com.russhwolf"
-    version = "0.6.3"
+    version = Versions.multiplatformSettings
 
     repositories {
         google()

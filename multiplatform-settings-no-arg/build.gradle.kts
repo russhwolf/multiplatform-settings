@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import com.russhwolf.settings.build.standardConfiguration
-
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
@@ -58,19 +56,19 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation("androidx.startup:startup-runtime:1.0.0")
+                implementation("androidx.startup:startup-runtime:${Versions.androidxStartup}")
             }
         }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13")
-                implementation("androidx.test:core:1.3.0")
-                implementation("androidx.test.ext:junit:1.1.2")
-                implementation("org.robolectric:robolectric:4.3.1")
+                implementation("junit:junit:${Versions.junit}")
+                implementation("androidx.test:core:${Versions.androidxTest}")
+                implementation("androidx.test.ext:junit:${Versions.androidxTestExt}")
+                implementation("org.robolectric:robolectric:${Versions.robolectric}")
 
-                implementation("androidx.preference:preference:1.1.1")
+                implementation("androidx.preference:preference:${Versions.androidxPreference}")
             }
         }
 
@@ -83,7 +81,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:${Versions.junit}")
             }
         }
 

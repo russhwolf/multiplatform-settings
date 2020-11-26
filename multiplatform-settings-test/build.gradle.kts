@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import com.russhwolf.settings.build.standardConfiguration
-
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
@@ -50,7 +48,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:${Versions.junit}")
             }
         }
 
@@ -62,7 +60,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:${Versions.junit}")
             }
         }
 

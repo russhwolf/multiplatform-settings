@@ -23,7 +23,7 @@ plugins {
 
 dependencies {
     implementation(project(":shared"))
-    implementation("no.tornado:tornadofx:1.7.19")
+    implementation("no.tornado:tornadofx:1.7.20")
     implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
 }
 
