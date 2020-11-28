@@ -285,6 +285,8 @@ abstract class BaseSettingsTest(
         assertEquals("", settings.getString("a"))
         settings.putString("a", "value")
         assertEquals("value", settings.getString("a"))
+        settings.putString("a", "τ > 🥧")
+        assertEquals("τ > 🥧", settings.getString("a"))
 
         assertEquals("default", settings.getString("b", "default"))
     }
