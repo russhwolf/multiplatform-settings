@@ -114,7 +114,7 @@ To create a `Settings` instance from common without needing to pass platform-spe
 
 ```kotlin
 implementation("com.russhwolf:multiplatform-settings-no-arg:0.6.3")
-```    
+```
 
 Then from common code, you can write
 
@@ -245,10 +245,11 @@ val settings: Settings = WindowsSettings(rootKey)
 
 ### Listeners
 
-Update listeners are available using an experimental API, only for the `AndroidSettings`, `AppleSettings`, and `JvmPreferencesSettings` implementations. These are marked with the `ObservableSettings` interface, which includes `addListener()` and `removeListener()` methods.
+Update listeners are available using an experimental API, only for the `AndroidSettings`, `AppleSettings`, and `JvmPreferencesSettings` implementations. These are marked with the `ObservableSettings` interface, which includes an `addListener()` method.
 
 ```kotlin
-val settingsListener: SettingsListener = settings.addListener(key) { /* ... */ }
+val observableSettings: ObservableSettings // ...
+val settingsListener: SettingsListener = observableSettings.addListener(key) { /* ... */ }
 ```    
 
 The `SettingsListener` returned from the call should be used to signal when you're done listening:
@@ -267,18 +268,89 @@ The project includes multiple CI jobs configured using Azure pipelines. On PRs o
 
 An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This builds the library for all platforms and uploads artifacts to Bintray. Uploaded artifacts must still be published manually.
 
-### Flows
+### Coroutine APIs
 
-Flow APIs exist which use the listener APIs internally. These require a separate dependency
+A separate `multiplatform-settings-coroutines` dependency includes various coroutine APIs.
 
-    implementation "com.russhwolf:multiplatform-settings-coroutines:0.4"
-    
-This adds flow extensions for all types.
+```kotlin
+implementation("com.russhwolf:multiplatform-settings-coroutines:0.7")
+```
 
-    val flow: Flow<Int> by settings.intFlow("key", defaultValue)
-    val nullableFlow: Flow<Int?> by settings.intOrNullFlow("key")
+This adds flow extensions for all types which use the listener APIs internally.
+
+```kotlin
+val observableSettings: ObservableSettings // Only works with ObservableSettings
+val flow: Flow<Int> by observableSettings.intFlow("key", defaultValue)
+val nullableFlow: Flow<Int?> by observableSettings.intOrNullFlow("key")
+```
 
 Usage requires accepting both the `@ExperimentalListener` and `@ExperimentalCoroutinesApi` annotations.
+
+In addition, there are two new `Settings`-like interfaces: `SuspendSettings`, which looks similar to `Settings` but all functions are marked `suspend`, and `FlowSettings` which extends `SuspendSettings` to also include `Flow`-based getters similar to the extensions mentioned above.
+
+```kotlin
+val suspendSettings: SuspendSettings // ...
+val a: Int = suspendSettings.getInt("key") // This call will suspend
+
+val flowSettings: FlowSettings // ...
+val flow: Flow<Int> = flowSettings.getIntFlow("key")
+```
+
+There are APIs provided to convert between these different interfaces so that you can select one to use primarily from common.
+
+```kotlin
+val settings: Settings // ...
+val suspendSettings: SuspendSettings = settings.toSuspendSettings()
+
+val observableSettings: ObservableSettings // ...
+val flowSettings: FlowSettings = observableSettings.toFlowSettings()
+
+// Wrap suspend calls in runBlocking
+val blockingSettings: Settings = suspendSettings.toBlockingSettings()
+```
+
+### DataStore
+An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
+
+```kotlin
+implementation("com.russhwolf:multiplatform-settings-coroutines:0.7")
+```
+
+This provides a `DataStoreSettings` class
+
+```kotlin
+val dataStore: DataStore // = ...
+val settings: FlowSettings = DataStoreSettings(dataStore)
+```
+
+You can use this in shared code by converting other `ObservableSettings` instances to `FlowSettings`. For example:
+
+```kotlin
+// Common
+expect val settings: FlowSettings
+
+// Android
+actual val settings: FlowSettings = DataStoreSettings(/*...*/)
+
+// iOS
+actual val settings: FlowSettings = AppleSettings(/*...*/).toFlowSettings()
+```
+
+Or, if you also include platforms without listener support, you can use `SuspendSettings` instead.
+
+```kotlin
+// Common
+expect val settings: SuspendSettings
+
+// Android
+actual val settings: SuspendSettings = DataStoreSettings(/*...*/)
+
+// iOS
+actual val settings: SuspendSettings = AppleSettings(/*...*/).toSuspendSettings()
+
+// JS
+actual val settings: SuspendSettings = JsSettings().toSuspendSettings()
+```
 
 ## Project Structure
 The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface which exposes apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The platform sources then hold implementations, delegating to whichever delegate that platform uses. The macOS platform reads from the same sources as iOS. The experimental JVM and JS implementations reside in the `jvmMain` and `jsMain` sources, respectively

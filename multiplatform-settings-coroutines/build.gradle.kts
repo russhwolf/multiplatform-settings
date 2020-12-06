@@ -49,6 +49,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(project(":tests"))
                 implementation(project(":multiplatform-settings-test"))
 
                 implementation(kotlin("test-common"))

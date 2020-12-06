@@ -55,7 +55,10 @@ class ListenerValueVerifier<T> {
     }
 
     private sealed class State<out T> {
-        object Empty : State<Nothing>()
+        object Empty : State<Nothing>() {
+            override fun toString(): String = "EMPTY"
+        }
+
         data class Value<T>(private val value: T) : State<T>()
     }
 }

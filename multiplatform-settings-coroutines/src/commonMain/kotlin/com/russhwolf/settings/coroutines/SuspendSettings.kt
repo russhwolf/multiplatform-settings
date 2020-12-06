@@ -18,80 +18,142 @@ package com.russhwolf.settings.coroutines
 
 import com.russhwolf.settings.Settings
 
-// TODO this doesn't NEED to live in a module that pulls in kotlinx dependency...
+/**
+ * A collection of storage-backed key-value data. It differs from [Settings] in that all functions use a suspending API.
+ *
+ * This interface allows storage of values with the [Int], [Long], [String], [Float], [Double], or [Boolean] types,
+ * using a [String] reference as a key. Values will be persisted across app launches.
+ */
+// TODO strictly speaking this interface doesn't NEED to live in a module that pulls in the kotlinx dependency...
 public interface SuspendSettings {
 
     public companion object;
 
+    /**
+     * Returns a `Set` containing all the keys present in this [Settings].
+     */
     public suspend fun keys(): Set<String>
+
+    /**
+     * Returns the number of key-value pairs present in this [Settings].
+     */
     public suspend fun size(): Int
+
+    /**
+     * Clears all values stored in this [Settings] instance.
+     */
     public suspend fun clear()
+
+    /**
+     * Removes the value stored at [key].
+     */
     public suspend fun remove(key: String)
+
+    /**
+     * Returns `true` if there is a value stored at [key], or `false` otherwise.
+     */
     public suspend fun hasKey(key: String): Boolean
 
+    /**
+     * Stores the `Int` [value] at [key].
+     */
     public suspend fun putInt(key: String, value: Int)
+
+    /**
+     * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     public suspend fun getInt(key: String, defaultValue: Int = 0): Int
+
+    /**
+     * Returns the `Int` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
     public suspend fun getIntOrNull(key: String): Int?
 
+    /**
+     * Stores the `Long` [value] at [key].
+     */
     public suspend fun putLong(key: String, value: Long)
+
+    /**
+     * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     public suspend fun getLong(key: String, defaultValue: Long = 0): Long
+
+    /**
+     * Returns the `Long` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
     public suspend fun getLongOrNull(key: String): Long?
 
+    /**
+     * Stores the `String` [value] at [key].
+     */
     public suspend fun putString(key: String, value: String)
+
+    /**
+     * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     public suspend fun getString(key: String, defaultValue: String = ""): String
+
+    /**
+     * Returns the `String` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
     public suspend fun getStringOrNull(key: String): String?
 
+    /**
+     * Stores the `Float` [value] at [key].
+     */
     public suspend fun putFloat(key: String, value: Float)
+
+    /**
+     * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     public suspend fun getFloat(key: String, defaultValue: Float = 0f): Float
+
+    /**
+     * Returns the `Float` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
     public suspend fun getFloatOrNull(key: String): Float?
 
+    /**
+     * Stores the `Double` [value] at [key].
+     */
     public suspend fun putDouble(key: String, value: Double)
+
+    /**
+     * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     public suspend fun getDouble(key: String, defaultValue: Double = 0.0): Double
+
+    /**
+     * Returns the `Double` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
     public suspend fun getDoubleOrNull(key: String): Double?
 
+    /**
+     * Stores the `Boolean` [value] at [key].
+     */
     public suspend fun putBoolean(key: String, value: Boolean)
+
+    /**
+     * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
+     * type was stored at `key`, the behavior is not defined.
+     */
     public suspend fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
+
+    /**
+     * Returns the `Boolean` value stored at [key], or `null` if no value was stored. If a value of a different type was
+     * stored at `key`, the behavior is not defined.
+     */
     public suspend fun getBooleanOrNull(key: String): Boolean?
-}
-
-
-public fun Settings.toSuspendSettings(): SuspendSettings = object : SuspendSettings {
-    private val settings inline get() = this@toSuspendSettings
-
-    public override suspend fun keys(): Set<String> = settings.keys
-    public override suspend fun size(): Int = settings.size
-    public override suspend fun clear() = settings.clear()
-    public override suspend fun remove(key: String) = settings.remove(key)
-    public override suspend fun hasKey(key: String): Boolean = settings.hasKey(key)
-
-    public override suspend fun putInt(key: String, value: Int) = settings.putInt(key, value)
-    public override suspend fun getInt(key: String, defaultValue: Int): Int = settings.getInt(key, defaultValue)
-    public override suspend fun getIntOrNull(key: String): Int? = settings.getIntOrNull(key)
-
-    public override suspend fun putLong(key: String, value: Long) = settings.putLong(key, value)
-    public override suspend fun getLong(key: String, defaultValue: Long): Long = settings.getLong(key, defaultValue)
-    public override suspend fun getLongOrNull(key: String): Long? = settings.getLongOrNull(key)
-
-    public override suspend fun putString(key: String, value: String) = settings.putString(key, value)
-    public override suspend fun getString(key: String, defaultValue: String): String =
-        settings.getString(key, defaultValue)
-
-    public override suspend fun getStringOrNull(key: String): String? = settings.getStringOrNull(key)
-
-    public override suspend fun putFloat(key: String, value: Float) = settings.putFloat(key, value)
-    public override suspend fun getFloat(key: String, defaultValue: Float): Float = settings.getFloat(key, defaultValue)
-    public override suspend fun getFloatOrNull(key: String): Float? = settings.getFloatOrNull(key)
-
-    public override suspend fun putDouble(key: String, value: Double) = settings.putDouble(key, value)
-    public override suspend fun getDouble(key: String, defaultValue: Double): Double =
-        settings.getDouble(key, defaultValue)
-
-    public override suspend fun getDoubleOrNull(key: String): Double? = settings.getDoubleOrNull(key)
-
-    public override suspend fun putBoolean(key: String, value: Boolean) = settings.putBoolean(key, value)
-    public override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
-        settings.getBoolean(key, defaultValue)
-
-    public override suspend fun getBooleanOrNull(key: String): Boolean? = settings.getBooleanOrNull(key)
 }
 
