@@ -4,7 +4,7 @@ package com.russhwolf.settings
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getInt] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addIntListener(
     key: String,
     defaultValue: Int = 0,
@@ -16,7 +16,7 @@ public inline fun ObservableSettings.addIntListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getIntOrNull] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addIntOrNullListener(
     key: String,
     crossinline callback: (Int?) -> Unit
@@ -27,7 +27,7 @@ public inline fun ObservableSettings.addIntOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getLong] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addLongListener(
     key: String,
     defaultValue: Long = 0L,
@@ -39,7 +39,7 @@ public inline fun ObservableSettings.addLongListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getLongOrNull] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addLongOrNullListener(
     key: String,
     crossinline callback: (Long?) -> Unit
@@ -50,7 +50,7 @@ public inline fun ObservableSettings.addLongOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getString] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addStringListener(
     key: String,
     defaultValue: String = "",
@@ -62,7 +62,7 @@ public inline fun ObservableSettings.addStringListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getStringOrNull] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addStringOrNullListener(
     key: String,
     crossinline callback: (String?) -> Unit
@@ -73,7 +73,7 @@ public inline fun ObservableSettings.addStringOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getFloat] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addFloatListener(
     key: String,
     defaultValue: Float = 0f,
@@ -85,7 +85,7 @@ public inline fun ObservableSettings.addFloatListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getFloatOrNull] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addFloatOrNullListener(
     key: String,
     crossinline callback: (Float?) -> Unit
@@ -96,7 +96,7 @@ public inline fun ObservableSettings.addFloatOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getDouble] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addDoubleListener(
     key: String,
     defaultValue: Double = 0.0,
@@ -108,7 +108,7 @@ public inline fun ObservableSettings.addDoubleListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getDoubleOrNull] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addDoubleOrNullListener(
     key: String,
     crossinline callback: (Double?) -> Unit
@@ -119,7 +119,7 @@ public inline fun ObservableSettings.addDoubleOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getBoolean] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addBooleanListener(
     key: String,
     defaultValue: Boolean = false,
@@ -131,7 +131,7 @@ public inline fun ObservableSettings.addBooleanListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getBooleanOrNull] to the callback as a
  * convenience.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public inline fun ObservableSettings.addBooleanOrNullListener(
     key: String,
     crossinline callback: (Boolean?) -> Unit

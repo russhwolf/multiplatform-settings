@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings.serialization
 
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -46,7 +47,7 @@ import kotlin.reflect.KProperty
  * For example, consider an instance `myClass` of a class defined as
  * ```kotlin
  * @Serializable
- * MyClass(val myProperty: Int?)
+ * class MyClass(val myProperty: Int?)
  * ```
  * Calling `serializeValue(MyClass.serializer(), "myClass", myClass)` is equivalent to
  * ```kotlin
@@ -59,6 +60,7 @@ import kotlin.reflect.KProperty
  * sqlite database to this API.
  */
 @ExperimentalSerializationApi
+@ExperimentalSettingsApi
 public fun <T> Settings.serializeValue(
     serializer: KSerializer<T>,
     key: String,
@@ -82,7 +84,7 @@ public fun <T> Settings.serializeValue(
  * For example, consider an instance `myClass` of a class defined as
  * ```kotlin
  * @Serializable
- * MyClass(val myProperty: Int?)
+ * class MyClass(val myProperty: Int?)
  * ```
  * Calling `val myClass = deserializeValue(MyClass.serializer(), "myClass")` is equivalent to
  * ```kotlin
@@ -100,6 +102,7 @@ public fun <T> Settings.serializeValue(
  * sqlite database to this API.
  */
 @ExperimentalSerializationApi
+@ExperimentalSettingsApi
 public fun <T> Settings.deserializeValue(
     serializer: KSerializer<T>,
     key: String,
@@ -109,9 +112,10 @@ public fun <T> Settings.deserializeValue(
 
 /**
  * Returns a property delegate backed by this [Settings]. It reads and writes values using the same logic as
- * [serializeValue] and [deserializeValue]
+ * [serializeValue] and [deserializeValue].
  */
 @ExperimentalSerializationApi
+@ExperimentalSettingsApi
 public fun <T> Settings.serializationDelegate(
     serializer: KSerializer<T>,
     key: String? = null,

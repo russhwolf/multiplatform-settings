@@ -31,6 +31,12 @@ public abstract interface annotation class com/russhwolf/settings/ExperimentalJv
 public abstract interface annotation class com/russhwolf/settings/ExperimentalListener : java/lang/annotation/Annotation {
 }
 
+public abstract interface annotation class com/russhwolf/settings/ExperimentalSettingsApi : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/russhwolf/settings/ExperimentalSettingsImplementation : java/lang/annotation/Annotation {
+}
+
 public final class com/russhwolf/settings/JvmPreferencesSettings : com/russhwolf/settings/ObservableSettings {
 	public fun <init> (Ljava/util/prefs/Preferences;)V
 	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;

@@ -37,10 +37,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-@OptIn(ExperimentalWindows::class)
+@OptIn(ExperimentalSettingsImplementation::class)
 private val factory = WindowsSettings.Factory("multiplatform-settings-test")
 
-@OptIn(ExperimentalWindows::class, ExperimentalUnsignedTypes::class)
+@OptIn(ExperimentalSettingsImplementation::class, ExperimentalUnsignedTypes::class)
 class WindowsSettingsTest : BaseSettingsTest(
     platformFactory = factory,
     hasListeners = false

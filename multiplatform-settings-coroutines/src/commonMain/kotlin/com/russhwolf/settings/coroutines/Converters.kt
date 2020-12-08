@@ -16,67 +16,69 @@
 
 package com.russhwolf.settings.coroutines
 
-import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Wraps a [Settings] in the [SuspendSettings] interface.
+ * Wraps this [Settings] in the [SuspendSettings] interface.
  */
+@ExperimentalSettingsApi
 public fun Settings.toSuspendSettings(): SuspendSettings = SuspendSettingsWrapper(this)
 
 /**
- * Wraps an [ObservableSettings] in the [FlowSettings] interface.
+ * Wraps this [ObservableSettings] in the [FlowSettings] interface.
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 @ExperimentalCoroutinesApi
 public fun ObservableSettings.toFlowSettings(): FlowSettings = FlowSettingsWrapper(this)
 
+@ExperimentalSettingsApi
 private open class SuspendSettingsWrapper(private val delegate: Settings) : SuspendSettings {
-    public final override suspend fun keys(): Set<String> = delegate.keys
-    public final override suspend fun size(): Int = delegate.size
-    public final override suspend fun clear() = delegate.clear()
-    public final override suspend fun remove(key: String) = delegate.remove(key)
-    public final override suspend fun hasKey(key: String): Boolean = delegate.hasKey(key)
+    public override suspend fun keys(): Set<String> = delegate.keys
+    public override suspend fun size(): Int = delegate.size
+    public override suspend fun clear() = delegate.clear()
+    public override suspend fun remove(key: String) = delegate.remove(key)
+    public override suspend fun hasKey(key: String): Boolean = delegate.hasKey(key)
 
-    public final override suspend fun putInt(key: String, value: Int) = delegate.putInt(key, value)
-    public final override suspend fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
-    public final override suspend fun getIntOrNull(key: String): Int? = delegate.getIntOrNull(key)
+    public override suspend fun putInt(key: String, value: Int) = delegate.putInt(key, value)
+    public override suspend fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
+    public override suspend fun getIntOrNull(key: String): Int? = delegate.getIntOrNull(key)
 
-    public final override suspend fun putLong(key: String, value: Long) = delegate.putLong(key, value)
-    public final override suspend fun getLong(key: String, defaultValue: Long): Long =
+    public override suspend fun putLong(key: String, value: Long) = delegate.putLong(key, value)
+    public override suspend fun getLong(key: String, defaultValue: Long): Long =
         delegate.getLong(key, defaultValue)
 
-    public final override suspend fun getLongOrNull(key: String): Long? = delegate.getLongOrNull(key)
+    public override suspend fun getLongOrNull(key: String): Long? = delegate.getLongOrNull(key)
 
-    public final override suspend fun putString(key: String, value: String) = delegate.putString(key, value)
-    public final override suspend fun getString(key: String, defaultValue: String): String =
+    public override suspend fun putString(key: String, value: String) = delegate.putString(key, value)
+    public override suspend fun getString(key: String, defaultValue: String): String =
         delegate.getString(key, defaultValue)
 
-    public final override suspend fun getStringOrNull(key: String): String? = delegate.getStringOrNull(key)
+    public override suspend fun getStringOrNull(key: String): String? = delegate.getStringOrNull(key)
 
-    public final override suspend fun putFloat(key: String, value: Float) = delegate.putFloat(key, value)
-    public final override suspend fun getFloat(key: String, defaultValue: Float): Float =
+    public override suspend fun putFloat(key: String, value: Float) = delegate.putFloat(key, value)
+    public override suspend fun getFloat(key: String, defaultValue: Float): Float =
         delegate.getFloat(key, defaultValue)
 
-    public final override suspend fun getFloatOrNull(key: String): Float? = delegate.getFloatOrNull(key)
+    public override suspend fun getFloatOrNull(key: String): Float? = delegate.getFloatOrNull(key)
 
-    public final override suspend fun putDouble(key: String, value: Double) = delegate.putDouble(key, value)
-    public final override suspend fun getDouble(key: String, defaultValue: Double): Double =
+    public override suspend fun putDouble(key: String, value: Double) = delegate.putDouble(key, value)
+    public override suspend fun getDouble(key: String, defaultValue: Double): Double =
         delegate.getDouble(key, defaultValue)
 
-    public final override suspend fun getDoubleOrNull(key: String): Double? = delegate.getDoubleOrNull(key)
+    public override suspend fun getDoubleOrNull(key: String): Double? = delegate.getDoubleOrNull(key)
 
-    public final override suspend fun putBoolean(key: String, value: Boolean) = delegate.putBoolean(key, value)
-    public final override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+    public override suspend fun putBoolean(key: String, value: Boolean) = delegate.putBoolean(key, value)
+    public override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         delegate.getBoolean(key, defaultValue)
 
-    public final override suspend fun getBooleanOrNull(key: String): Boolean? = delegate.getBooleanOrNull(key)
+    public override suspend fun getBooleanOrNull(key: String): Boolean? = delegate.getBooleanOrNull(key)
 }
 
-@ExperimentalListener
+@ExperimentalSettingsApi
 @ExperimentalCoroutinesApi
 private class FlowSettingsWrapper(private val delegate: ObservableSettings) :
     SuspendSettingsWrapper(delegate), FlowSettings {
@@ -106,4 +108,42 @@ private class FlowSettingsWrapper(private val delegate: ObservableSettings) :
         delegate.booleanFlow(key, defaultValue)
 
     public override fun getBooleanOrNullFlow(key: String): Flow<Boolean?> = delegate.booleanOrNullFlow(key)
+
+    // Prefer the SuspendSettingsWrapper implementation to the FlowSettings one which calls getXXXFlow().first()
+
+    override suspend fun getInt(key: String, defaultValue: Int): Int =
+        super<SuspendSettingsWrapper>.getInt(key, defaultValue)
+
+    override suspend fun getIntOrNull(key: String): Int? =
+        super<SuspendSettingsWrapper>.getIntOrNull(key)
+
+    override suspend fun getLong(key: String, defaultValue: Long): Long =
+        super<SuspendSettingsWrapper>.getLong(key, defaultValue)
+
+    override suspend fun getLongOrNull(key: String): Long? =
+        super<SuspendSettingsWrapper>.getLongOrNull(key)
+
+    override suspend fun getString(key: String, defaultValue: String): String =
+        super<SuspendSettingsWrapper>.getString(key, defaultValue)
+
+    override suspend fun getStringOrNull(key: String): String? =
+        super<SuspendSettingsWrapper>.getStringOrNull(key)
+
+    override suspend fun getFloat(key: String, defaultValue: Float): Float =
+        super<SuspendSettingsWrapper>.getFloat(key, defaultValue)
+
+    override suspend fun getFloatOrNull(key: String): Float? =
+        super<SuspendSettingsWrapper>.getFloatOrNull(key)
+
+    override suspend fun getDouble(key: String, defaultValue: Double): Double =
+        super<SuspendSettingsWrapper>.getDouble(key, defaultValue)
+
+    override suspend fun getDoubleOrNull(key: String): Double? =
+        super<SuspendSettingsWrapper>.getDoubleOrNull(key)
+
+    override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+        super<SuspendSettingsWrapper>.getBoolean(key, defaultValue)
+
+    override suspend fun getBooleanOrNull(key: String): Boolean? =
+        super<SuspendSettingsWrapper>.getBooleanOrNull(key)
 }

@@ -20,7 +20,7 @@ import org.junit.Test
 import java.util.Properties
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalJvm::class)
+@OptIn(ExperimentalSettingsImplementation::class)
 class JvmPropertiesSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         val properties = Properties()

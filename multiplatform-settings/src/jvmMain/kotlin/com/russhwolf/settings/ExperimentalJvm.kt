@@ -16,10 +16,11 @@
 
 package com.russhwolf.settings
 
-/**
- * Annotation to mark JVM functionality as experimental.
- */
-@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
+@Suppress("KDocMissingDocumentation")
+@Deprecated(
+    "ExperimentalJvm has been replaced with ExperimentalSettingsImplementation",
+    replaceWith = ReplaceWith("ExperimentalSettingsImplementation", "com.russhwolf.settings")
+)
 @Target(
     AnnotationTarget.CLASS,
     AnnotationTarget.PROPERTY,

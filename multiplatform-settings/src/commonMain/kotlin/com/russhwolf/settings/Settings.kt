@@ -173,7 +173,7 @@ public interface Settings {
 /**
  * An extension to the [Settings] interface to include update listener functionality
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public interface ObservableSettings : Settings {
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -186,13 +186,13 @@ public interface ObservableSettings : Settings {
      * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
      * it's recommended that interaction with the listener APIs be confined to the main UI thread.
      */
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public fun addListener(key: String, callback: () -> Unit): SettingsListener
 
     /**
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     @Deprecated(
         message = "Use SettingsListener.deactivate() instead",
         replaceWith = ReplaceWith("listener.deactivate()"),
@@ -207,14 +207,14 @@ public interface ObservableSettings : Settings {
     replaceWith = ReplaceWith("ObservableSettings", "com.russhwolf.settings.ObservableSettings"),
     level = DeprecationLevel.HIDDEN
 )
-@ExperimentalListener
+@ExperimentalSettingsApi
 @Suppress("UNUSED", "KDocMissingDocumentation")
 public typealias ListenableSettings = ObservableSettings
 
 /**
  * A handle to a listener instance returned by [ObservableSettings.addListener] so it can be deactivated as needed
  */
-@ExperimentalListener
+@ExperimentalSettingsApi
 public interface SettingsListener {
     /**
      * Unsubscribes this [SettingsListener] from receiving updates to the value at the key it monitors

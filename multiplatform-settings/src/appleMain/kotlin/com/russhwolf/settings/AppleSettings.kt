@@ -46,7 +46,7 @@ import kotlin.native.concurrent.freeze
  * the block passed to [addListener] will be frozen as well so that it can safely be triggered from any thread. To avoid
  * freezing listeners, restrict interaction with this class to a single thread and set `useFrozenListeners` to `false`.
  */
-@OptIn(ExperimentalListener::class)
+@OptIn(ExperimentalSettingsApi::class)
 public class AppleSettings public constructor(
     private val delegate: NSUserDefaults,
     private val useFrozenListeners: Boolean = false
@@ -148,7 +148,7 @@ public class AppleSettings public constructor(
     public override fun getBooleanOrNull(key: String): Boolean? =
         if (hasKey(key)) delegate.boolForKey(key) else null
 
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val (block, previousValue) = if (useFrozenListeners) {
             createBackgroundListener(key, callback)
@@ -207,7 +207,7 @@ public class AppleSettings public constructor(
      *
      * On the iOS and macOS platforms, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
      */
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val delegate: NSObjectProtocol,
         private val previousValue: AtomicReference<Any?>?

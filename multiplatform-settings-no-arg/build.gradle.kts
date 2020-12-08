@@ -77,7 +77,7 @@ kotlin {
             }
         }
         val jvmTest by getting {
-            languageSettings.useExperimentalAnnotation("com.russhwolf.settings.ExperimentalJvm")
+            languageSettings.useExperimentalAnnotation("com.russhwolf.settings.ExperimentalSettingsImplementation")
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))

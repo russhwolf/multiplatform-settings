@@ -28,11 +28,11 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.russhwolf.settings.AndroidSettings
-import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
 
-@OptIn(ExperimentalListener::class)
+@OptIn(ExperimentalSettingsApi::class)
 class MainActivity : AppCompatActivity() {
 
     private val settingsRepository by lazy {

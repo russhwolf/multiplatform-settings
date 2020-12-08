@@ -21,33 +21,18 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.preferencesKey
 import androidx.datastore.preferences.core.remove
+import com.russhwolf.settings.ExperimentalSettingsApi
+import com.russhwolf.settings.ExperimentalSettingsImplementation
 import com.russhwolf.settings.coroutines.FlowSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 /**
- * Annotation to mark datastore implementation as experimental.
+ * `DataStoreSettings` implements [FlowSettings] using the [DataStore] API.
  */
-@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
-@Target(
-    AnnotationTarget.CLASS,
-    AnnotationTarget.PROPERTY,
-    AnnotationTarget.FIELD,
-    AnnotationTarget.LOCAL_VARIABLE,
-    AnnotationTarget.VALUE_PARAMETER,
-    AnnotationTarget.CONSTRUCTOR,
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER,
-    AnnotationTarget.TYPEALIAS
-)
-public annotation class ExperimentalDatastoreSettings
-
-/**
- *
- */
-@ExperimentalDatastoreSettings
+@ExperimentalSettingsImplementation
+@ExperimentalSettingsApi
 public class DataStoreSettings(private val datastore: DataStore<Preferences>) : FlowSettings {
     override suspend fun keys(): Set<String> = datastore.data.first().asMap().keys.map { it.name }.toSet()
     override suspend fun size(): Int = datastore.data.first().asMap().size
@@ -63,9 +48,6 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         datastore.edit { it[preferencesKey(key)] = value }
     }
 
-    override suspend fun getInt(key: String, defaultValue: Int): Int = getIntOrNull(key) ?: defaultValue
-    override suspend fun getIntOrNull(key: String): Int? = datastore.data.first()[preferencesKey(key)]
-
     override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> =
         datastore.data.map { it[preferencesKey(key)] ?: defaultValue }
 
@@ -74,9 +56,6 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
     override suspend fun putLong(key: String, value: Long) {
         datastore.edit { it[preferencesKey(key)] = value }
     }
-
-    override suspend fun getLong(key: String, defaultValue: Long): Long = getLongOrNull(key) ?: defaultValue
-    override suspend fun getLongOrNull(key: String): Long? = datastore.data.first()[preferencesKey(key)]
 
     override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> =
         datastore.data.map { it[preferencesKey(key)] ?: defaultValue }
@@ -87,9 +66,6 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         datastore.edit { it[preferencesKey(key)] = value }
     }
 
-    override suspend fun getString(key: String, defaultValue: String): String = getStringOrNull(key) ?: defaultValue
-    override suspend fun getStringOrNull(key: String): String? = datastore.data.first()[preferencesKey(key)]
-
     override fun getStringFlow(key: String, defaultValue: String): Flow<String> =
         datastore.data.map { it[preferencesKey(key)] ?: defaultValue }
 
@@ -98,9 +74,6 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
     override suspend fun putFloat(key: String, value: Float) {
         datastore.edit { it[preferencesKey(key)] = value }
     }
-
-    override suspend fun getFloat(key: String, defaultValue: Float): Float = getFloatOrNull(key) ?: defaultValue
-    override suspend fun getFloatOrNull(key: String): Float? = datastore.data.first()[preferencesKey(key)]
 
     override fun getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
         datastore.data.map { it[preferencesKey(key)] ?: defaultValue }
@@ -111,9 +84,6 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         datastore.edit { it[preferencesKey(key)] = value }
     }
 
-    override suspend fun getDouble(key: String, defaultValue: Double): Double = getDoubleOrNull(key) ?: defaultValue
-    override suspend fun getDoubleOrNull(key: String): Double? = datastore.data.first()[preferencesKey(key)]
-
     override fun getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
         datastore.data.map { it[preferencesKey(key)] ?: defaultValue }
 
@@ -122,9 +92,6 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
     override suspend fun putBoolean(key: String, value: Boolean) {
         datastore.edit { it[preferencesKey(key)] = value }
     }
-
-    override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean = getBooleanOrNull(key) ?: defaultValue
-    override suspend fun getBooleanOrNull(key: String): Boolean? = datastore.data.first()[preferencesKey(key)]
 
     override fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =
         datastore.data.map { it[preferencesKey(key)] ?: defaultValue }

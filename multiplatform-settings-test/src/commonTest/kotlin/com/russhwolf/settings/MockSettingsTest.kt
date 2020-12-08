@@ -19,7 +19,7 @@ package com.russhwolf.settings
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalListener::class)
+@OptIn(ExperimentalSettingsApi::class)
 class MockSettingsTest : BaseSettingsTest(MockSettings.Factory()) {
 
     @Test

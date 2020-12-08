@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalJvm::class)
+@file:OptIn(ExperimentalSettingsImplementation::class)
 
 package com.russhwolf.settings
 

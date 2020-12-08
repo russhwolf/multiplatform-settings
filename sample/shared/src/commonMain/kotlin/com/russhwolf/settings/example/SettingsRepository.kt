@@ -16,10 +16,8 @@
 
 package com.russhwolf.settings.example
 
-import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
-import kotlin.properties.ReadWriteProperty
-
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
 import com.russhwolf.settings.boolean
@@ -36,6 +34,7 @@ import com.russhwolf.settings.nullableInt
 import com.russhwolf.settings.nullableLong
 import com.russhwolf.settings.nullableString
 import com.russhwolf.settings.string
+import kotlin.properties.ReadWriteProperty
 
 /**
  * This class demonstrates common code exercising all of the functionality of the [Settings] class.
@@ -74,7 +73,7 @@ sealed class SettingConfig<T>(
 ) {
     private var value: T by settings.delegate(key, defaultValue)
 
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     private var listener: SettingsListener? = null
 
     fun remove() {
@@ -92,7 +91,7 @@ sealed class SettingConfig<T>(
         }
     }
 
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     var isLoggingEnabled: Boolean
         get() = listener != null
         set(value) {

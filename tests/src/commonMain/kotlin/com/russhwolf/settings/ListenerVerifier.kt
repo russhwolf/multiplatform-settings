@@ -36,7 +36,7 @@ class ListenerVerifier {
     }
 }
 
-@OptIn(ExperimentalListener::class)
+@OptIn(ExperimentalSettingsApi::class)
 class ListenerValueVerifier<T> {
     val listener: (T) -> Unit = {
         if (state != State.Empty) fail("ListenerValueVerifier was invoked a second time without clearing last value")

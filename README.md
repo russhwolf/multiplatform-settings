@@ -25,7 +25,7 @@ Then, simply add the dependency to your common source-set dependencies
 commonMain {
     dependencies {
         // ...
-        implementation("com.russhwolf:multiplatform-settings:0.6.3")
+        implementation("com.russhwolf:multiplatform-settings:0.7")
     }
 }
 ``` 
@@ -113,7 +113,7 @@ val factory: Settings.Factory = AppleSettings.Factory()
 To create a `Settings` instance from common without needing to pass platform-specific dependencies, add the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatform-settings` as an API dependency, so you can use it as a replacement for that default dependency.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-no-arg:0.6.3")
+implementation("com.russhwolf:multiplatform-settings-no-arg:0.7")
 ```
 
 Then from common code, you can write
@@ -207,7 +207,7 @@ Note that for the `AppleSettings` implementation, some entries are unremovable a
 A testing dependency is available to aid in testing code that interacts with this library.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-test:0.6.3")
+implementation("com.russhwolf:multiplatform-settings-test:0.7")
 ```    
 
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
@@ -218,13 +218,22 @@ The `Settings` interface is published to all available platforms. Developers who
 
 ## Experimental API
 
-This is a pre-1.0 library based on an experimental framework, so some occasional API breakage may occur. However certain APIs are marked with explicit experimental annotations to highlight areas that might have more risk of API changes or unexpected behavior.
+This is a pre-1.0 library based on the alpha-release multiplatform functionality, so some occasional API breakage may occur. Certain APIs are marked with `@ExperimentalSettingsApi` or `@ExperimentalSettingsImplementation` to highlight areas that have extra risk of API changes or unexpected behavior. 
 
-### Experimental Platforms
+### Experimental Implementations
+
+#### Apple Keychain
+
+In addition to the default `AppleSettings` implementation, there's also a `KeyChainSettings` on the Apple platforms that stores data on the Apple keychain. Construct it by passing a `String` which will be interpreted as a service name
+
+```kotlin
+val serviceName: String // ...
+val settings: Settings = KeychainSettings(serviceName)
+```
 
 #### JVM
 
-Two pure-JVM implementations exist. `JvmPreferencesSettings` wraps `Preferences` and `JvmPropertiesSettings` wraps `Properties`. Their experimental status is marked with the `@ExperimentalJvm` annotation. 
+Two pure-JVM implementations exist. `JvmPreferencesSettings` wraps `Preferences` and `JvmPropertiesSettings` wraps `Properties`.
 
 ```kotlin
 val delegate: Preferences // ...
@@ -236,7 +245,7 @@ val settings: Settings = JvmPropertiesSettings(delegate)
 
 #### Windows
 
-There is a Windows implementation `WindowsSettings` which wraps the Windows registry. Its experimental status is marked with `@ExperimentalWindows`.
+There is a Windows implementation `WindowsSettings` which wraps the Windows registry.
 
 ```kotlin
 val rootKey: String = "SOFTWARE\\..." // Will be interpreted as subkey of HKEY_CURRENT_USER
@@ -250,7 +259,11 @@ Update listeners are available using an experimental API, only for the `AndroidS
 ```kotlin
 val observableSettings: ObservableSettings // ...
 val settingsListener: SettingsListener = observableSettings.addListener(key) { /* ... */ }
-```    
+
+// Typed listener extension functions are also available
+val settingsListener: SettingsListener = observableSettings.addIntListener(key) { int: Int -> /* ... */ }
+val settingsListener: SettingsListener = observableSettings.addNullableIntListener(key) { int: Int? -> /* ... */ }
+```
 
 The `SettingsListener` returned from the call should be used to signal when you're done listening:
 
@@ -260,13 +273,40 @@ settingsListener.deactivate()
 
 On Apple platforms, the `AppleSettings` listeners are designed to work within the Kotlin/Native threading model. If all interaction with the class is on a single thread, then nothing will be frozen. In multithreaded usage, the `AppleSettings` can be configured to freeze listeners, making it safe to set listeners when the class might be used across threads.
 
-The listener APIs make use of the Kotlin `@ExperimentalListener` annotation.
+### Serialization module
 
-## Building
+A `kotlinx-serialization` integration exists so it's easier to save non-primitive data
 
-The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `master` branch, the script in `azure-pipelines.yml` runs. This builds the library and runs unit tests for all platforms across Linux, Mac, and Windows hosts. In addition, the library build artifacts are deployed to the local maven repository and the sample project is built for the platforms on which it is implemented. This ensures that the sample remains in sync with updates to the library.
+```kotlin
+implementation("com.russhwolf:multiplatform-settings-serialization:0.7")
+```
 
-An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This builds the library for all platforms and uploads artifacts to Bintray. Uploaded artifacts must still be published manually.
+This essentially uses the `Settings` store as a serialization format. Thus for a serializable class
+
+```kotlin
+@Serializable
+class SomeClass(val someProperty: String, anotherProperty: Int)
+```
+an instance can be stored or retrieved
+```kotlin
+val someClass: SomeClass
+val settings: Settings
+
+// Store values for the properties of someClass in settings
+settings.serializeValue(SomeClass.serializer(), "key", someClass)
+
+// Create a new instance of SomeClass based on the data in settings
+val newInstance: SomeClass = settings.deserializeValue(SomeClass.serializer(), "someClass")
+```
+
+There's also a delegate API, similar to that for primitives
+
+```kotlin
+val someClass: SomeClass by settings.serializationDelegate(SomeClass.serializer(), "someClass")
+```
+
+Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalSerializationApi` annotations.
+
 
 ### Coroutine APIs
 
@@ -284,7 +324,7 @@ val flow: Flow<Int> by observableSettings.intFlow("key", defaultValue)
 val nullableFlow: Flow<Int?> by observableSettings.intOrNullFlow("key")
 ```
 
-Usage requires accepting both the `@ExperimentalListener` and `@ExperimentalCoroutinesApi` annotations.
+Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalCoroutinesApi` annotations.
 
 In addition, there are two new `Settings`-like interfaces: `SuspendSettings`, which looks similar to `Settings` but all functions are marked `suspend`, and `FlowSettings` which extends `SuspendSettings` to also include `Flow`-based getters similar to the extensions mentioned above.
 
@@ -309,7 +349,7 @@ val flowSettings: FlowSettings = observableSettings.toFlowSettings()
 val blockingSettings: Settings = suspendSettings.toBlockingSettings()
 ```
 
-### DataStore
+#### DataStore
 An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
 
 ```kotlin
@@ -351,6 +391,13 @@ actual val settings: SuspendSettings = AppleSettings(/*...*/).toSuspendSettings(
 // JS
 actual val settings: SuspendSettings = JsSettings().toSuspendSettings()
 ```
+
+## Building
+
+The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `master` branch, the script in `azure-pipelines.yml` runs. This builds the library and runs unit tests for all platforms across Linux, Mac, and Windows hosts. In addition, the library build artifacts are deployed to the local maven repository and the sample project is built for the platforms on which it is implemented. This ensures that the sample remains in sync with updates to the library.
+
+An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This builds the library for all platforms and uploads artifacts to Bintray. Uploaded artifacts must still be published manually.
+
 
 ## Project Structure
 The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface which exposes apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The platform sources then hold implementations, delegating to whichever delegate that platform uses. The macOS platform reads from the same sources as iOS. The experimental JVM and JS implementations reside in the `jvmMain` and `jsMain` sources, respectively

@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings.coroutines
 
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings
 
 /**
@@ -25,22 +26,23 @@ import com.russhwolf.settings.Settings
  * using a [String] reference as a key. Values will be persisted across app launches.
  */
 // TODO strictly speaking this interface doesn't NEED to live in a module that pulls in the kotlinx dependency...
+@ExperimentalSettingsApi
 public interface SuspendSettings {
 
     public companion object;
 
     /**
-     * Returns a `Set` containing all the keys present in this [Settings].
+     * Returns a `Set` containing all the keys present in this [SuspendSettings].
      */
     public suspend fun keys(): Set<String>
 
     /**
-     * Returns the number of key-value pairs present in this [Settings].
+     * Returns the number of key-value pairs present in this [SuspendSettings].
      */
     public suspend fun size(): Int
 
     /**
-     * Clears all values stored in this [Settings] instance.
+     * Clears all values stored in this [SuspendSettings] instance.
      */
     public suspend fun clear()
 

@@ -19,7 +19,7 @@
 package com.russhwolf.settings.coroutines
 
 import com.russhwolf.settings.BaseSettingsTest
-import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
@@ -30,6 +30,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 private val mockSettingsFactory = MockSettings.Factory()
 
+@OptIn(ExperimentalSettingsApi::class)
 class ToSuspendSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): Settings {
@@ -39,7 +40,7 @@ class ToSuspendSettingsTest : BaseSettingsTest(
     hasListeners = false
 )
 
-@OptIn(ExperimentalListener::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalSettingsApi::class, ExperimentalCoroutinesApi::class)
 class ToFlowSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): Settings {

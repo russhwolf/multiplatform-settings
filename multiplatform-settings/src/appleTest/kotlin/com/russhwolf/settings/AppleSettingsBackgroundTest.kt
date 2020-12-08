@@ -32,7 +32,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-@OptIn(ExperimentalListener::class)
+@OptIn(ExperimentalSettingsApi::class)
 class AppleSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
     override fun create(name: String?): Settings {
         val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)

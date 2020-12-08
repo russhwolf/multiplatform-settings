@@ -27,7 +27,7 @@ import java.util.prefs.Preferences
     replaceWith = ReplaceWith("JvmPreferencesSettings", "com.russhwolf.settings.JvmPreferencesSettings"),
     level = DeprecationLevel.HIDDEN
 )
-@ExperimentalJvm
+@ExperimentalSettingsImplementation
 @Suppress("UNUSED", "KDocMissingDocumentation")
 public typealias JvmSettings = JvmPreferencesSettings
 
@@ -51,11 +51,11 @@ public typealias JvmSettings = JvmPreferencesSettings
  * Unlike the implementations on Android and iOS, `JvmPropertiesSettings` does not include a [Settings.Factory] because
  * the `Properties` API does not provide a natural way to create multiple named instances.
  *
- * This class is experimental as marked by the [ExperimentalJvm] annotation.
+ * This class is experimental as marked by the [ExperimentalSettingsImplementation] annotation.
  *
  * The experimental listener APIs are not implemented in `JvmPropertiesSettings`.
  */
-@ExperimentalJvm
+@ExperimentalSettingsImplementation
 public class JvmPropertiesSettings public constructor(
     private val delegate: Properties,
     private val onModify: (Properties) -> Unit = {}
@@ -162,10 +162,10 @@ public class JvmPropertiesSettings public constructor(
  *
  * Note that listener callbacks passed to [addListener] will run on a background thread in this implementation
  *
- * This class is experimental as marked by the [ExperimentalJvm] annotation.
+ * This class is experimental as marked by the [ExperimentalSettingsImplementation] annotation.
  */
-@ExperimentalJvm
-@OptIn(ExperimentalListener::class)
+@ExperimentalSettingsImplementation
+@OptIn(ExperimentalSettingsApi::class)
 public class JvmPreferencesSettings public constructor(
     private val delegate: Preferences
 ) : ObservableSettings {
@@ -237,7 +237,7 @@ public class JvmPreferencesSettings public constructor(
     public override fun getBooleanOrNull(key: String): Boolean? =
         if (key in delegate.keys()) delegate.getBoolean(key, false) else null
 
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         var prev = delegate.get(key, null)
 
@@ -265,7 +265,7 @@ public class JvmPreferencesSettings public constructor(
      *
      * On the JVM platform, this is a wrapper around [PreferenceChangeListener].
      */
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val preferences: Preferences,
         private val listener: PreferenceChangeListener

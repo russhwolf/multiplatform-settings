@@ -82,11 +82,12 @@ import platform.darwin.OSStatus
  * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
  * syntax and better type-safety when interacting with values stored in a `Settings` instance.
  *
- * The KeychainSettings implementation saved data to the Apple keychain. Data is saved using the generic password type,
- * where keys are account names and values are treated as passwords. The value passed to the String constructor will be
- * used as the service name. It's also possible to pass custom key-value pairs as attributes that will be added to every
- * key, if the default behavior does not fit your needs.
+ * The KeychainSettings implementation saves data to the Apple keychain. Data is saved using the generic password type,
+ * where keys are account names and values are treated as passwords. The value passed to the `String` constructor will
+ * be used as the service name. It's also possible to pass custom key-value pairs as attributes that will be added to
+ * every key, if the default behavior does not fit your needs.
  */
+@ExperimentalSettingsImplementation
 public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTypeRef?>) : Settings {
 
     // NB this calls CFBridgingRetain() without ever calling CFBridgingRelease()

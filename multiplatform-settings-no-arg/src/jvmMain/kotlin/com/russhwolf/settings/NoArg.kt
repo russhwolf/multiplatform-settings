@@ -23,5 +23,5 @@ import java.util.prefs.Preferences
  *
  * On JVM, this uses the [JvmPreferencesSettings] implementation and delegates to [Preferences.userRoot]
  */
-@ExperimentalJvm
+@ExperimentalSettingsImplementation
 public actual fun Settings(): Settings = JvmPreferencesSettings(Preferences.userRoot())

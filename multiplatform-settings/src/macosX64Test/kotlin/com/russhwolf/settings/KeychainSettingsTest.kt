@@ -37,6 +37,8 @@ import platform.Security.kSecReturnData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+// TODO figure out how to get this running on ios, watchos, and tvos simulators
+@ExperimentalSettingsImplementation
 class KeychainSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): Settings = KeychainSettings(name ?: "com.russhwolf.settings.test")
@@ -45,7 +47,7 @@ class KeychainSettingsTest : BaseSettingsTest(
 ) {
 
     @Test
-    fun constructor_application(): Unit {
+    fun constructor_application() {
         val settings = KeychainSettings("com.russhwolf.settings.test")
         settings -= "key"
         settings["key"] = "value"

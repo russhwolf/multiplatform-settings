@@ -16,7 +16,7 @@
 
 package com.russhwolf.settings.coroutines
 
-import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 private inline fun <T> ObservableSettings.createFlow(
     key: String,
     defaultValue: T,
@@ -41,7 +41,7 @@ private inline fun <T> ObservableSettings.createFlow(
 }
 
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 private inline fun <T> ObservableSettings.createNullableFlow(
     key: String,
     crossinline getter: Settings.(String) -> T?
@@ -54,7 +54,7 @@ private inline fun <T> ObservableSettings.createNullableFlow(
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.intFlow(key: String, defaultValue: Int = 0): Flow<Int> =
     createFlow(key, defaultValue, Settings::getInt)
 
@@ -64,7 +64,7 @@ public fun ObservableSettings.intFlow(key: String, defaultValue: Int = 0): Flow<
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.longFlow(key: String, defaultValue: Long = 0L): Flow<Long> =
     createFlow(key, defaultValue, Settings::getLong)
 
@@ -74,7 +74,7 @@ public fun ObservableSettings.longFlow(key: String, defaultValue: Long = 0L): Fl
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.stringFlow(key: String, defaultValue: String = ""): Flow<String> =
     createFlow(key, defaultValue, Settings::getString)
 
@@ -84,7 +84,7 @@ public fun ObservableSettings.stringFlow(key: String, defaultValue: String = "")
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.floatFlow(key: String, defaultValue: Float = 0f): Flow<Float> =
     createFlow(key, defaultValue, Settings::getFloat)
 
@@ -94,7 +94,7 @@ public fun ObservableSettings.floatFlow(key: String, defaultValue: Float = 0f): 
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.doubleFlow(key: String, defaultValue: Double = 0.0): Flow<Double> =
     createFlow(key, defaultValue, Settings::getDouble)
 
@@ -104,7 +104,7 @@ public fun ObservableSettings.doubleFlow(key: String, defaultValue: Double = 0.0
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.booleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean> =
     createFlow(key, defaultValue, Settings::getBoolean)
 
@@ -114,7 +114,7 @@ public fun ObservableSettings.booleanFlow(key: String, defaultValue: Boolean = f
  * `null` will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.intOrNullFlow(key: String): Flow<Int?> =
     createNullableFlow(key, Settings::getIntOrNull)
 
@@ -124,7 +124,7 @@ public fun ObservableSettings.intOrNullFlow(key: String): Flow<Int?> =
  * `null` will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.longOrNullFlow(key: String): Flow<Long?> =
     createNullableFlow(key, Settings::getLongOrNull)
 
@@ -134,7 +134,7 @@ public fun ObservableSettings.longOrNullFlow(key: String): Flow<Long?> =
  * `null` will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.stringOrNullFlow(key: String): Flow<String?> =
     createNullableFlow(key, Settings::getStringOrNull)
 
@@ -144,7 +144,7 @@ public fun ObservableSettings.stringOrNullFlow(key: String): Flow<String?> =
  * `null` will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.floatOrNullFlow(key: String): Flow<Float?> =
     createNullableFlow(key, Settings::getFloatOrNull)
 
@@ -154,7 +154,7 @@ public fun ObservableSettings.floatOrNullFlow(key: String): Flow<Float?> =
  * `null` will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.doubleOrNullFlow(key: String): Flow<Double?> =
     createNullableFlow(key, Settings::getDoubleOrNull)
 
@@ -164,6 +164,6 @@ public fun ObservableSettings.doubleOrNullFlow(key: String): Flow<Double?> =
  * `null` will be emitted instead.
  */
 @ExperimentalCoroutinesApi
-@ExperimentalListener
+@ExperimentalSettingsApi
 public fun ObservableSettings.booleanOrNullFlow(key: String): Flow<Boolean?> =
     createNullableFlow(key, Settings::getBooleanOrNull)

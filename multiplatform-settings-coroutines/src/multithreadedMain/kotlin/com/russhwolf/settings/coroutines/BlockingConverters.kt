@@ -16,11 +16,20 @@
 
 package com.russhwolf.settings.coroutines
 
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Wraps this [SuspendSettings] in the [Settings] interface.
+ *
+ * Note that this occurs via use of [runBlocking]. Make sure this is what you want! You should only interact with the
+ * instance returned by this function from a thread that can be blocked without impacting the rest of your application.
+ */
+@ExperimentalSettingsApi
 public fun SuspendSettings.toBlockingSettings(): Settings = BlockingSuspendSettings(this)
 
+@ExperimentalSettingsApi
 private open class BlockingSuspendSettings(private val delegate: SuspendSettings) : Settings {
 
     public final override val keys: Set<String> get() = runBlocking { delegate.keys() }

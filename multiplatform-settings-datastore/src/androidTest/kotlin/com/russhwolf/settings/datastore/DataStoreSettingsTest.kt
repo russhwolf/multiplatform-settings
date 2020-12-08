@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalListener::class, ExperimentalCoroutinesApi::class, ExperimentalDatastoreSettings::class)
+@file:OptIn(ExperimentalSettingsApi::class, ExperimentalCoroutinesApi::class, ExperimentalSettingsImplementation::class)
 
 package com.russhwolf.settings.datastore
 
@@ -24,7 +24,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.preferencesKey
 import com.russhwolf.settings.BaseSettingsTest
-import com.russhwolf.settings.ExperimentalListener
+import com.russhwolf.settings.ExperimentalSettingsApi
+import com.russhwolf.settings.ExperimentalSettingsImplementation
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
@@ -89,7 +90,7 @@ class DataStoreSettingsTest : BaseSettingsTest(
 }
 
 // TODO need better tests around Flow APIs instead of this terrible hackery
-@OptIn(FlowPreview::class, ExperimentalListener::class)
+@OptIn(FlowPreview::class, ExperimentalSettingsApi::class)
 private class BlockingDataStoreSettings(
     private val settings: DataStoreSettings,
     private val dataStore: DataStore<Preferences>

@@ -80,7 +80,7 @@ import platform.windows.WCHARVar
  * On the Windows platform, this class can be created by passing a `String` which will be used as the name of the parent
  * registry key, or via a [Factory].
  */
-@ExperimentalWindows
+@ExperimentalSettingsImplementation
 @OptIn(ExperimentalUnsignedTypes::class)
 public class WindowsSettings public constructor(private val rootKeyName: String) : Settings {
 

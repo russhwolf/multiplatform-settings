@@ -20,5 +20,4 @@ package com.russhwolf.settings
  * Annotation to mark js functionality as experimental.
  */
 @Deprecated("JS target is no longer experimental", level = DeprecationLevel.HIDDEN)
-@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
 public annotation class ExperimentalJs

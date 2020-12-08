@@ -43,7 +43,7 @@ import com.russhwolf.settings.AndroidSettings.Factory
  * Set the [commit] parameter to true if you want your changes to be immediately committed to the persistent storage
  * (slower, but synchronous).
  */
-@OptIn(ExperimentalListener::class)
+@OptIn(ExperimentalSettingsApi::class)
 public class AndroidSettings @JvmOverloads public constructor(
     private val delegate: SharedPreferences,
     private val commit : Boolean = false
@@ -161,7 +161,7 @@ public class AndroidSettings @JvmOverloads public constructor(
     public override fun getBooleanOrNull(key: String): Boolean? =
         if (delegate.contains(key)) delegate.getBoolean(key, false) else null
 
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         var prev = delegate.all[key]
 
@@ -189,7 +189,7 @@ public class AndroidSettings @JvmOverloads public constructor(
      *
      * On the Android platform, this is a wrapper around [SharedPreferences.OnSharedPreferenceChangeListener].
      */
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val preferences: SharedPreferences,
         private val listener: SharedPreferences.OnSharedPreferenceChangeListener

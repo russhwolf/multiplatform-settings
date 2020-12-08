@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings.serialization
 
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.contains
@@ -28,7 +29,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 // TODO Add a test case with a non-empty SerializersModule?
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalSettingsApi::class)
 class SettingsSerializationTest {
 
     @Test

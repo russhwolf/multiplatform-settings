@@ -33,7 +33,7 @@ package com.russhwolf.settings
  * This implementation is verified against the same test suite as the real platform-specific implementations to ensure
  * it shares the same behavior, assuming the default [mutableMapOf] delegate is used.
  */
-@OptIn(ExperimentalListener::class)
+@OptIn(ExperimentalSettingsApi::class)
 public class MockSettings public constructor(private val delegate: MutableMap<String, Any> = mutableMapOf()) :
     ObservableSettings {
     private val listeners = mutableListOf<() -> Any>()
@@ -149,7 +149,7 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
 
     public override fun getBooleanOrNull(key: String): Boolean? = delegate[key] as? Boolean
 
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         var prev = delegate[key]
 
@@ -171,7 +171,7 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
      * mutating API is called. Unlike platform implementations, this listener will NOT be called if the underlying map
      * is mutated by something other than the `MockSettings` instance that originally created the listener.
      */
-    @ExperimentalListener
+    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val listeners: MutableList<() -> Any>,
         private val listener: () -> Unit

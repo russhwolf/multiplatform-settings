@@ -28,9 +28,47 @@ import kotlin.annotation.AnnotationTarget.TYPEALIAS
 import kotlin.annotation.AnnotationTarget.VALUE_PARAMETER
 
 /**
- * Annotation to mark listener functionality as experimental.
+ * This signifies an API which is either new, not well tested, or may change in form or behavior in future versions
  */
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
+@Target(
+    CLASS,
+    PROPERTY,
+    FIELD,
+    LOCAL_VARIABLE,
+    VALUE_PARAMETER,
+    CONSTRUCTOR,
+    FUNCTION,
+    PROPERTY_GETTER,
+    PROPERTY_SETTER,
+    TYPEALIAS
+)
+public annotation class ExperimentalSettingsApi
+
+/**
+ * This signifies an implementation class which is either new, not well tested, or may change in form or behavior in
+ * future versions
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
+@Target(
+    CLASS,
+    PROPERTY,
+    FIELD,
+    LOCAL_VARIABLE,
+    VALUE_PARAMETER,
+    CONSTRUCTOR,
+    FUNCTION,
+    PROPERTY_GETTER,
+    PROPERTY_SETTER,
+    TYPEALIAS
+)
+public annotation class ExperimentalSettingsImplementation
+
+@Suppress("KDocMissingDocumentation")
+@Deprecated(
+    "ExperimentalListener has been replaced with ExperimentalSettingsApi",
+    replaceWith = ReplaceWith("ExperimentalSettingsApi", "com.russhwolf.settings")
+)
 @Target(
     CLASS,
     PROPERTY,
