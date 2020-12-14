@@ -65,7 +65,7 @@ class SettingsSerializationTest {
         val foo = settings.deserializeValue(Foo.serializer(), "foo")
 
         assertEquals("", foo.bar)
-        assertEquals(0, foo.baz)
+        assertEquals(42, foo.baz)
     }
 
     @Test
@@ -73,7 +73,7 @@ class SettingsSerializationTest {
         val settings: Settings = MockSettings()
         val delegate = settings.serializationDelegate(Foo.serializer(), "foo")
         var foo: Foo by delegate
-        assertEquals(Foo("", 0), foo)
+        assertEquals(Foo("", 42), foo)
 
         @Suppress("UNUSED_VALUE")
         foo = Foo("hello", 43110)
@@ -95,7 +95,7 @@ class SettingsSerializationTest {
         val settings: Settings = MockSettings()
         val delegate = settings.serializationDelegate(Foo.serializer())
         var foo: Foo by delegate
-        assertEquals(Foo("", 0), foo)
+        assertEquals(Foo("", 42), foo)
 
         @Suppress("UNUSED_VALUE")
         foo = Foo("hello", 43110)
@@ -110,7 +110,7 @@ class SettingsSerializationTest {
         assertEquals(41, settings.getInt("foo.baz"))
 
         val foo2: Foo by delegate
-        assertEquals(Foo("", 0), foo2)
+        assertEquals(Foo("", 42), foo2)
     }
 
     @Test
@@ -225,7 +225,7 @@ class SettingsSerializationTest {
 }
 
 @Serializable
-data class Foo(val bar: String, val baz: Int)
+data class Foo(val bar: String, val baz: Int = 42)
 
 @Serializable
 data class TestClass(

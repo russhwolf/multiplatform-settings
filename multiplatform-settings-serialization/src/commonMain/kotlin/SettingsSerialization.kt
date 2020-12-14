@@ -18,6 +18,7 @@ package com.russhwolf.settings.serialization
 
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings
+import com.russhwolf.settings.contains
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -235,8 +236,6 @@ private class SettingsDecoder(
             keyStack.removeLast()
             indexStack.removeLast()
         }
-        val index = indexStack.last()
-        indexStack[indexStack.lastIndex] = index + 1
 
         // Can usually ask descriptor for a size, except for collections
         val size = when (descriptor.kind) {
@@ -244,12 +243,29 @@ private class SettingsDecoder(
             StructureKind.MAP -> 2 * decodeCollectionSize(descriptor) // Maps look like lists [k1, v1, k2, v2, ...]
             else -> descriptor.elementsCount
         }
-        if (index < size) {
-            keyStack.add(descriptor.getElementName(index))
-            indexStack.add(0)
-            return index
+
+        return getNextIndex(descriptor, size)
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private tailrec fun getNextIndex(descriptor: SerialDescriptor, size: Int): Int {
+        val index = indexStack.last()
+        indexStack[indexStack.lastIndex] = index + 1
+
+        return when {
+            index >= size -> DECODE_DONE
+            isMissingAndOptional(descriptor, index) -> getNextIndex(descriptor, size)
+            else -> {
+                keyStack.add(descriptor.getElementName(index))
+                indexStack.add(0)
+                index
+            }
         }
-        return DECODE_DONE
+    }
+
+    private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
+        val key = "${getKey()}.${descriptor.getElementName(index)}"
+        return descriptor.isElementOptional(index) && key !in settings && settings.getBooleanOrNull("$key?") != true
     }
 
     private var depth = 0
@@ -275,6 +291,8 @@ private class SettingsDecoder(
     public override fun decodeNotNullMark(): Boolean = settings.getBoolean("${getKey()}?")
     public override fun decodeNull(): Nothing? = null
 
+    // NB These gets will be 0/""/false if the class has no default value set and no data is present.
+    // TODO should this be configurable? Maybe we'd rather throw than get bad data.
     public override fun decodeBoolean(): Boolean = settings.getBoolean(getKey())
     public override fun decodeByte(): Byte = settings.getInt(getKey()).toByte()
     public override fun decodeChar(): Char = settings.getInt(getKey()).toChar()
