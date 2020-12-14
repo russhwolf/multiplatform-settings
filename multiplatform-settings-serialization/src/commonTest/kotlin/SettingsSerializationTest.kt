@@ -116,7 +116,7 @@ class SettingsSerializationTest {
     @Test
     fun allTypes() {
         val settings: Settings = MockSettings()
-        val testClass: TestClass? = TestClass(
+        val testClass = TestClass(
             boolean = true,
             byte = 1,
             char = '2',
@@ -130,10 +130,101 @@ class SettingsSerializationTest {
             unit = Unit,
             list = listOf("foo", "bar", "baz"),
             map = mapOf("one" to 1, "two" to 2, "three" to 3),
-            nested = TestClass()
+            nested = TestClassNullable()
         )
 
-        settings.serializeValue(TestClass.serializer().nullable, "testClass", testClass)
+        settings.serializeValue(TestClass.serializer(), "testClass", testClass)
+
+        assertFalse("testClass?" in settings)
+        assertEquals(true, settings.getBoolean("testClass.boolean"))
+        assertFalse("testClass.boolean?" in settings)
+        assertEquals(1, settings.getInt("testClass.byte"))
+        assertFalse("testClass.byte?" in settings)
+        assertEquals('2'.toInt(), settings.getInt("testClass.char"))
+        assertFalse("testClass.char?" in settings)
+        assertEquals(3.0, settings.getDouble("testClass.double"))
+        assertFalse("testClass.double?" in settings)
+        assertEquals(TestEnum.A.ordinal, settings.getInt("testClass.enum"))
+        assertFalse("testClass.enum?" in settings)
+        assertEquals(4f, settings.getFloat("testClass.float"))
+        assertFalse("testClass.float?" in settings)
+        assertEquals(5, settings.getInt("testClass.int"))
+        assertFalse("testClass.int?" in settings)
+        assertEquals(6L, settings.getLong("testClass.long"))
+        assertFalse("testClass.long?" in settings)
+        assertEquals(7, settings.getInt("testClass.short"))
+        assertFalse("testClass.short?" in settings)
+        assertEquals("8", settings.getString("testClass.string"))
+        assertFalse("testClass.string?" in settings)
+        assertFalse("testClass.unit?" in settings)
+
+        assertEquals("foo", settings.getString("testClass.list.0"))
+        assertEquals("bar", settings.getString("testClass.list.1"))
+        assertEquals("baz", settings.getString("testClass.list.2"))
+        assertEquals(3, settings.getInt("testClass.list.size"))
+        assertFalse("testClass.list?" in settings)
+
+        assertEquals("one", settings.getString("testClass.map.0"))
+        assertEquals(1, settings.getInt("testClass.map.1"))
+        assertEquals("two", settings.getString("testClass.map.2"))
+        assertEquals(2, settings.getInt("testClass.map.3"))
+        assertEquals("three", settings.getString("testClass.map.4"))
+        assertEquals(3, settings.getInt("testClass.map.5"))
+        assertEquals(3, settings.getInt("testClass.map.size"))
+        assertFalse("testClass.map?" in settings)
+
+        assertFalse("testClass.nested?" in settings)
+        assertFalse("testClass.nested.boolean" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.boolean?"))
+        assertFalse("testClass.nested.byte" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.byte?"))
+        assertFalse("testClass.nested.char" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.char?"))
+        assertFalse("testClass.nested.double" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.double?"))
+        assertFalse("testClass.nested.enum" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.enum?"))
+        assertFalse("testClass.nested.float" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.float?"))
+        assertFalse("testClass.nested.int" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.int?"))
+        assertFalse("testClass.nested.long" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.long?"))
+        assertFalse("testClass.nested.short" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.short?"))
+        assertFalse("testClass.nested.string" in settings)
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.string?"))
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.unit?"))
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.list?"))
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.map?"))
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested.nested?"))
+
+        assertEquals(35, settings.size)
+
+        assertEquals(testClass, settings.deserializeValue(TestClass.serializer(), "testClass"))
+    }
+
+    @Test
+    fun allTypesNullable() {
+        val settings: Settings = MockSettings()
+        val testClass = TestClassNullable(
+            boolean = true,
+            byte = 1,
+            char = '2',
+            double = 3.0,
+            enum = TestEnum.A,
+            float = 4f,
+            int = 5,
+            long = 6L,
+            short = 7,
+            string = "8",
+            unit = Unit,
+            list = listOf("foo", "bar", "baz"),
+            map = mapOf("one" to 1, "two" to 2, "three" to 3),
+            nested = null
+        )
+
+        settings.serializeValue(TestClassNullable.serializer().nullable, "testClass", testClass)
 
         assertEquals(true, settings.getBoolean("testClass?"))
         assertEquals(true, settings.getBoolean("testClass.boolean"))
@@ -173,35 +264,35 @@ class SettingsSerializationTest {
         assertEquals(3, settings.getInt("testClass.map.size"))
         assertEquals(true, settings.getBooleanOrNull("testClass.map?"))
 
-        assertEquals(true, settings.getBooleanOrNull("testClass.nested?"))
+        assertEquals(false, settings.getBooleanOrNull("testClass.nested?"))
         assertFalse("testClass.nested.boolean" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.boolean?"))
+        assertFalse("testClass.nested.boolean?" in settings)
         assertFalse("testClass.nested.byte" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.byte?"))
+        assertFalse("testClass.nested.byte?" in settings)
         assertFalse("testClass.nested.char" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.char?"))
+        assertFalse("testClass.nested.char?" in settings)
         assertFalse("testClass.nested.double" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.double?"))
+        assertFalse("testClass.nested.double?" in settings)
         assertFalse("testClass.nested.enum" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.enum?"))
+        assertFalse("testClass.nested.enum?" in settings)
         assertFalse("testClass.nested.float" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.float?"))
+        assertFalse("testClass.nested.float?" in settings)
         assertFalse("testClass.nested.int" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.int?"))
+        assertFalse("testClass.nested.int?" in settings)
         assertFalse("testClass.nested.long" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.long?"))
+        assertFalse("testClass.nested.long?" in settings)
         assertFalse("testClass.nested.short" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.short?"))
+        assertFalse("testClass.nested.short?" in settings)
         assertFalse("testClass.nested.string" in settings)
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.string?"))
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.unit?"))
-        assertEquals(1, settings.keys.count { it.startsWith("testClass.nested.list") })
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.list?"))
-        assertEquals(1, settings.keys.count { it.startsWith("testClass.nested.map") })
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.map?"))
-        assertEquals(false, settings.getBooleanOrNull("testClass.nested.nested?"))
+        assertFalse("testClass.nested.string?" in settings)
+        assertFalse("testClass.nested.unit?" in settings)
+        assertFalse("testClass.nested.list?" in settings)
+        assertFalse("testClass.nested.map?" in settings)
+        assertFalse("testClass.nested.nested?" in settings)
 
-        assertEquals(testClass, settings.deserializeValue(TestClass.serializer().nullable, "testClass"))
+        assertEquals(36, settings.size)
+
+        assertEquals(testClass, settings.deserializeValue(TestClassNullable.serializer().nullable, "testClass"))
     }
 
     @Test
@@ -229,6 +320,25 @@ data class Foo(val bar: String, val baz: Int = 42)
 
 @Serializable
 data class TestClass(
+    val boolean: Boolean,
+    val byte: Byte,
+    val char: Char,
+    val double: Double,
+    val enum: TestEnum,
+    val float: Float,
+    val int: Int,
+    val long: Long,
+    val short: Short,
+    val string: String,
+    val unit: Unit,
+    val list: List<String>,
+    val map: Map<String, Int>,
+    val nested: TestClassNullable
+)
+
+
+@Serializable
+data class TestClassNullable(
     val boolean: Boolean? = null,
     val byte: Byte? = null,
     val char: Char? = null,
@@ -242,7 +352,7 @@ data class TestClass(
     val unit: Unit? = null,
     val list: List<String>? = null,
     val map: Map<String, Int>? = null,
-    val nested: TestClass? = null
+    val nested: TestClassNullable? = null
 )
 
 @Suppress("unused")
