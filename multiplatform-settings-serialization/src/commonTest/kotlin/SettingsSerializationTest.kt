@@ -22,6 +22,7 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.contains
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlin.test.Test
@@ -40,22 +41,37 @@ class SettingsSerializationTest {
 
         settings.serializeValue(Foo.serializer(), "foo", foo)
         settings.serializeValue(String.serializer(), "herp", "derp")
+        settings.serializeValue(ListSerializer(Int.serializer()), "list", listOf(1, 2, 3))
 
         assertEquals("hello", settings.getString("foo.bar"))
         assertEquals(43110, settings.getInt("foo.baz"))
         assertEquals("derp", settings.getString("herp"))
+        assertEquals(1, settings.getInt("list.0"))
+        assertEquals(2, settings.getInt("list.1"))
+        assertEquals(3, settings.getInt("list.2"))
+        assertEquals(3, settings.getInt("list.size"))
     }
 
     @Test
     fun deserialize() {
-        val settings: Settings = MockSettings("foo.bar" to "hello", "foo.baz" to 43110, "herp" to "derp")
+        val settings: Settings = MockSettings(
+            "foo.bar" to "hello",
+            "foo.baz" to 43110,
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.1" to 2,
+            "list.2" to 3,
+            "list.size" to 3,
+        )
 
         val foo = settings.deserializeValue(Foo.serializer(), "foo")
         val herp = settings.deserializeValue(String.serializer(), "herp")
+        val list = settings.deserializeValue(ListSerializer(Int.serializer()), "list")
 
         assertEquals("hello", foo.bar)
         assertEquals(43110, foo.baz)
         assertEquals("derp", herp)
+        assertEquals(listOf(1, 2, 3), list)
     }
 
     @Test
@@ -298,20 +314,54 @@ class SettingsSerializationTest {
     @Test
     fun docsExample() {
         @Serializable
-        data class MyClass(val myProperty: Int?)
+        data class User(val nickname: String?)
+
+        fun Settings.saveUser(user: User) {
+            if (user.nickname != null) putString("user.nickname", user.nickname) else remove("user.nickname")
+            putBoolean("user.nickname?", user.nickname != null)
+        }
+
+        fun Settings.loadUser(): User {
+            return User(
+                nickname = if (getBoolean("user.nickname?")) {
+                    getString("user.nickname")
+                } else {
+                    null
+                }
+            )
+        }
 
         val settings = MockSettings()
 
-        settings.serializeValue(MyClass.serializer(), "myClass", MyClass(42))
-        assertEquals(42, settings.getIntOrNull("myClass.myProperty"))
-        assertEquals(true, settings.getBooleanOrNull("myClass.myProperty?"))
-        assertEquals(MyClass(42), settings.deserializeValue(MyClass.serializer(), "myClass"))
+        settings.clear()
+        assertEquals(User(null), settings.loadUser())
+        assertEquals(User(null), settings.deserializeValue(User.serializer(), "user"))
 
+        settings.serializeValue(User.serializer(), "user", User("Qwerty"))
+        assertEquals(User("Qwerty"), settings.loadUser())
+        assertEquals(User("Qwerty"), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals("Qwerty", settings.getStringOrNull("user.nickname"))
+        assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
 
-        settings.serializeValue(MyClass.serializer(), "myClass", MyClass(null))
-        assertFalse("myClass.myProperty" in settings)
-        assertEquals(false, settings.getBooleanOrNull("myClass.myProperty?"))
-        assertEquals(MyClass(null), settings.deserializeValue(MyClass.serializer(), "myClass"))
+        settings.serializeValue(User.serializer(), "user", User(null))
+        assertEquals(User(null), settings.loadUser())
+        assertEquals(User(null), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals(null, settings.getStringOrNull("user.nickname"))
+        assertEquals(false, settings.getBooleanOrNull("user.nickname?"))
+
+        settings.clear()
+
+        settings.saveUser(User("Qwerty"))
+        assertEquals(User("Qwerty"), settings.loadUser())
+        assertEquals(User("Qwerty"), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals("Qwerty", settings.getStringOrNull("user.nickname"))
+        assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
+
+        settings.saveUser(User(null))
+        assertEquals(User(null), settings.loadUser())
+        assertEquals(User(null), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals(null, settings.getStringOrNull("user.nickname"))
+        assertEquals(false, settings.getBooleanOrNull("user.nickname?"))
     }
 }
 

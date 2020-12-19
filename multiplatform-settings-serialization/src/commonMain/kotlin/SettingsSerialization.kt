@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.russhwolf.settings.serialization
 
 import com.russhwolf.settings.ExperimentalSettingsApi
@@ -45,20 +47,20 @@ import kotlin.reflect.KProperty
  * Similarly, collection properties encode an additional `Int` to represent the collection size, whose key is the
  * property's name with `.size` appended.
  *
- * For example, consider an instance `myClass` of a class defined as
+ * For example, consider an instance `user` of a class defined as
  * ```kotlin
  * @Serializable
- * class MyClass(val myProperty: Int?)
+ * class User(val nickname: String?)
  * ```
- * Calling `serializeValue(MyClass.serializer(), "myClass", myClass)` is equivalent to
+ * Calling `serializeValue(User.serializer(), "user", user)` is equivalent to
  * ```kotlin
- * if (myClass.myProperty != null) putInt("myClass.myProperty", myClass.myProperty)
- * putBoolean("myClass.myProperty?", myClass.myProperty != null)
+ * if (user.nickname != null) putString("user.nickname", user.nickname) else remove("user.nickname")
+ * putBoolean("user.nickname?", user.nickname != null)
  * ```
  *
  * Note that because the `Settings` API is not transactional, it's possible for a failed operation to result in
  * inconsistent data being saved to disk. If you need greater reliability for more complex structured data, prefer a
- * sqlite database to this API.
+ * database such as sqlite to this API.
  */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
@@ -82,16 +84,16 @@ public fun <T> Settings.serializeValue(
  * Similarly, collection properties read from an additional `Int` to represent the collection size, whose key is the
  * property's key with `.size` appended.
  *
- * For example, consider an instance `myClass` of a class defined as
+ * For example, a class defined as
  * ```kotlin
  * @Serializable
- * class MyClass(val myProperty: Int?)
+ * class User(val nickname: String?)
  * ```
- * Calling `val myClass = deserializeValue(MyClass.serializer(), "myClass")` is equivalent to
+ * Calling `val user = deserializeValue(User.serializer(), "user")` is equivalent to
  * ```kotlin
- * val myClass = MyClass(
- *     myProperty = if (getBoolean("myClass.myProperty?")) {
- *         getInt("myClass.myProperty")
+ * val user = User(
+ *     nickname = if (getBoolean("user.nickname?")) {
+ *         getString("user.nickname")
  *     } else {
  *         null
  *     }
@@ -100,7 +102,7 @@ public fun <T> Settings.serializeValue(
  *
  * Note that because the `Settings` API is not transactional, it's possible for a failed operation to result in
  * inconsistent data being deserialized. If you need greater reliability for more complex structured data, prefer a
- * sqlite database to this API.
+ * database such as sqlite to this API.
  */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
@@ -173,8 +175,13 @@ private class SettingsEncoder(
     public override val serializersModule: SerializersModule
 ) : AbstractEncoder() {
 
+    // Stack of keys to track what we're encoding next
     private val keyStack = ArrayDeque<String>().apply { add(key) }
     private fun getKey() = keyStack.joinToString(".")
+
+    // Depth increases with beginStructure() and decreases with endStructure(). Subtly different from keyStack size.
+    // This is important so we can tell whether the last key on the stack refers to the current parent or a sibling.
+    private var depth = 0
 
     public override fun encodeElement(descriptor: SerialDescriptor, index: Int): Boolean {
         if (keyStack.size > depth) {
@@ -184,7 +191,6 @@ private class SettingsEncoder(
         return true
     }
 
-    private var depth = 0
 
     public override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         depth++
@@ -226,10 +232,15 @@ private class SettingsDecoder(
     public override val serializersModule: SerializersModule
 ) : AbstractDecoder() {
 
-    // Stacks of keys and indices so we can track index at arbitrary levels
+    // Stacks of keys and indices so we can track index at arbitrary levels to know what we're decoding next
     private val keyStack = ArrayDeque<String>().apply { add(key) }
     private val indexStack = ArrayDeque<Int>().apply { add(0) }
     private fun getKey(): String = keyStack.joinToString(".")
+
+    // Depth increases with beginStructure() and decreases with endStructure(). Subtly different from stack sizes.
+    // This is important so we can tell whether the last items on the stack refer to the current parent or a sibling.
+    private var depth = 0
+
 
     public override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
         if (keyStack.size > depth) {
@@ -247,10 +258,9 @@ private class SettingsDecoder(
         return getNextIndex(descriptor, size)
     }
 
-    @Suppress("UNUSED_PARAMETER")
     private tailrec fun getNextIndex(descriptor: SerialDescriptor, size: Int): Int {
-        val index = indexStack.last()
-        indexStack[indexStack.lastIndex] = index + 1
+        val index = indexStack.removeLast()
+        indexStack.addLast(index + 1)
 
         return when {
             index >= size -> DECODE_DONE
@@ -263,12 +273,12 @@ private class SettingsDecoder(
         }
     }
 
-    private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
+    private inline fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
         val key = "${getKey()}.${descriptor.getElementName(index)}"
+        // Descriptor shows key is optional, key is not present, and nullability doesn't indicate key should be present
         return descriptor.isElementOptional(index) && key !in settings && settings.getBooleanOrNull("$key?") != true
     }
 
-    private var depth = 0
 
     public override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         depth++
