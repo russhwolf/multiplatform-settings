@@ -44,7 +44,11 @@ kotlin {
             dependencies {
                 implementation(project(":multiplatform-settings"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+                    version {
+                        strictly(Versions.coroutinesNativeMt)
+                    }
+                }
             }
         }
         val commonTest by getting {
@@ -103,7 +107,7 @@ kotlin.sourceSets.all {
     kotlin.srcDirs.forEach {
         kotlin.srcDir(
             it.path.replace(
-                "multiplatform-settings-coroutines",
+                "multiplatform-settings-coroutines-native-mt",
                 "multiplatform-settings-coroutines-internal"
             )
         )
