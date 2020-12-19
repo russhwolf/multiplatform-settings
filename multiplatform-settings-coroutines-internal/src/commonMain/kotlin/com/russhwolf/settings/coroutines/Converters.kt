@@ -83,31 +83,33 @@ private open class SuspendSettingsWrapper(private val delegate: Settings) : Susp
 private class FlowSettingsWrapper(private val delegate: ObservableSettings) :
     SuspendSettingsWrapper(delegate), FlowSettings {
 
-    public override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> = delegate.intFlow(key, defaultValue)
-    public override fun getIntOrNullFlow(key: String): Flow<Int?> = delegate.intOrNullFlow(key)
+    public override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> = delegate.getIntFlow(key, defaultValue)
+    public override fun getIntOrNullFlow(key: String): Flow<Int?> = delegate.getIntOrNullFlow(key)
 
-    public override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> = delegate.longFlow(key, defaultValue)
-    public override fun getLongOrNullFlow(key: String): Flow<Long?> = delegate.longOrNullFlow(key)
+    public override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> =
+        delegate.getLongFlow(key, defaultValue)
+
+    public override fun getLongOrNullFlow(key: String): Flow<Long?> = delegate.getLongOrNullFlow(key)
 
     public override fun getStringFlow(key: String, defaultValue: String): Flow<String> =
-        delegate.stringFlow(key, defaultValue)
+        delegate.getStringFlow(key, defaultValue)
 
-    public override fun getStringOrNullFlow(key: String): Flow<String?> = delegate.stringOrNullFlow(key)
+    public override fun getStringOrNullFlow(key: String): Flow<String?> = delegate.getStringOrNullFlow(key)
 
     public override fun getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
-        delegate.floatFlow(key, defaultValue)
+        delegate.getFloatFlow(key, defaultValue)
 
-    public override fun getFloatOrNullFlow(key: String): Flow<Float?> = delegate.floatOrNullFlow(key)
+    public override fun getFloatOrNullFlow(key: String): Flow<Float?> = delegate.getFloatOrNullFlow(key)
 
     public override fun getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
-        delegate.doubleFlow(key, defaultValue)
+        delegate.getDoubleFlow(key, defaultValue)
 
-    public override fun getDoubleOrNullFlow(key: String): Flow<Double?> = delegate.doubleOrNullFlow(key)
+    public override fun getDoubleOrNullFlow(key: String): Flow<Double?> = delegate.getDoubleOrNullFlow(key)
 
     public override fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =
-        delegate.booleanFlow(key, defaultValue)
+        delegate.getBooleanFlow(key, defaultValue)
 
-    public override fun getBooleanOrNullFlow(key: String): Flow<Boolean?> = delegate.booleanOrNullFlow(key)
+    public override fun getBooleanOrNullFlow(key: String): Flow<Boolean?> = delegate.getBooleanOrNullFlow(key)
 
     // Prefer the SuspendSettingsWrapper implementation to the FlowSettings one which calls getXXXFlow().first()
 

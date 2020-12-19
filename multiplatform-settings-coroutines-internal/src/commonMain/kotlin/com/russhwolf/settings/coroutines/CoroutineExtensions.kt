@@ -55,7 +55,7 @@ private inline fun <T> ObservableSettings.createNullableFlow(
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.intFlow(key: String, defaultValue: Int = 0): Flow<Int> =
+public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int = 0): Flow<Int> =
     createFlow(key, defaultValue, Settings::getInt)
 
 /**
@@ -65,7 +65,7 @@ public fun ObservableSettings.intFlow(key: String, defaultValue: Int = 0): Flow<
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.longFlow(key: String, defaultValue: Long = 0L): Flow<Long> =
+public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long = 0L): Flow<Long> =
     createFlow(key, defaultValue, Settings::getLong)
 
 /**
@@ -75,7 +75,7 @@ public fun ObservableSettings.longFlow(key: String, defaultValue: Long = 0L): Fl
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.stringFlow(key: String, defaultValue: String = ""): Flow<String> =
+public fun ObservableSettings.getStringFlow(key: String, defaultValue: String = ""): Flow<String> =
     createFlow(key, defaultValue, Settings::getString)
 
 /**
@@ -85,7 +85,7 @@ public fun ObservableSettings.stringFlow(key: String, defaultValue: String = "")
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.floatFlow(key: String, defaultValue: Float = 0f): Flow<Float> =
+public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float = 0f): Flow<Float> =
     createFlow(key, defaultValue, Settings::getFloat)
 
 /**
@@ -95,7 +95,7 @@ public fun ObservableSettings.floatFlow(key: String, defaultValue: Float = 0f): 
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.doubleFlow(key: String, defaultValue: Double = 0.0): Flow<Double> =
+public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double = 0.0): Flow<Double> =
     createFlow(key, defaultValue, Settings::getDouble)
 
 /**
@@ -105,7 +105,7 @@ public fun ObservableSettings.doubleFlow(key: String, defaultValue: Double = 0.0
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.booleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean> =
+public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean> =
     createFlow(key, defaultValue, Settings::getBoolean)
 
 /**
@@ -115,7 +115,7 @@ public fun ObservableSettings.booleanFlow(key: String, defaultValue: Boolean = f
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.intOrNullFlow(key: String): Flow<Int?> =
+public fun ObservableSettings.getIntOrNullFlow(key: String): Flow<Int?> =
     createNullableFlow(key, Settings::getIntOrNull)
 
 /**
@@ -125,7 +125,7 @@ public fun ObservableSettings.intOrNullFlow(key: String): Flow<Int?> =
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.longOrNullFlow(key: String): Flow<Long?> =
+public fun ObservableSettings.getLongOrNullFlow(key: String): Flow<Long?> =
     createNullableFlow(key, Settings::getLongOrNull)
 
 /**
@@ -135,7 +135,7 @@ public fun ObservableSettings.longOrNullFlow(key: String): Flow<Long?> =
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.stringOrNullFlow(key: String): Flow<String?> =
+public fun ObservableSettings.getStringOrNullFlow(key: String): Flow<String?> =
     createNullableFlow(key, Settings::getStringOrNull)
 
 /**
@@ -145,7 +145,7 @@ public fun ObservableSettings.stringOrNullFlow(key: String): Flow<String?> =
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.floatOrNullFlow(key: String): Flow<Float?> =
+public fun ObservableSettings.getFloatOrNullFlow(key: String): Flow<Float?> =
     createNullableFlow(key, Settings::getFloatOrNull)
 
 /**
@@ -155,7 +155,7 @@ public fun ObservableSettings.floatOrNullFlow(key: String): Flow<Float?> =
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.doubleOrNullFlow(key: String): Flow<Double?> =
+public fun ObservableSettings.getDoubleOrNullFlow(key: String): Flow<Double?> =
     createNullableFlow(key, Settings::getDoubleOrNull)
 
 /**
@@ -165,5 +165,5 @@ public fun ObservableSettings.doubleOrNullFlow(key: String): Flow<Double?> =
  */
 @ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
-public fun ObservableSettings.booleanOrNullFlow(key: String): Flow<Boolean?> =
+public fun ObservableSettings.getBooleanOrNullFlow(key: String): Flow<Boolean?> =
     createNullableFlow(key, Settings::getBooleanOrNull)

@@ -71,7 +71,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun intFlowTest() = flowTest(
-        flowBuilder = ObservableSettings::intFlow,
+        flowBuilder = ObservableSettings::getIntFlow,
         setter = Settings::putInt,
         defaultValue = 0,
         firstValue = 3,
@@ -80,7 +80,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun longFlowTest() = flowTest(
-        flowBuilder = ObservableSettings::longFlow,
+        flowBuilder = ObservableSettings::getLongFlow,
         setter = Settings::putLong,
         defaultValue = 0L,
         firstValue = 3L,
@@ -89,7 +89,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun stringFlowTest() = flowTest(
-        flowBuilder = ObservableSettings::stringFlow,
+        flowBuilder = ObservableSettings::getStringFlow,
         setter = Settings::putString,
         defaultValue = "",
         firstValue = "bar",
@@ -98,7 +98,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun floatFlowTest() = flowTest(
-        flowBuilder = ObservableSettings::floatFlow,
+        flowBuilder = ObservableSettings::getFloatFlow,
         setter = Settings::putFloat,
         defaultValue = 0f,
         firstValue = 3f,
@@ -107,7 +107,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun doubleFlowTest() = flowTest(
-        flowBuilder = ObservableSettings::doubleFlow,
+        flowBuilder = ObservableSettings::getDoubleFlow,
         setter = Settings::putDouble,
         defaultValue = 0.0,
         firstValue = 3.0,
@@ -116,7 +116,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun booleanFlowTest() = flowTest(
-        flowBuilder = ObservableSettings::booleanFlow,
+        flowBuilder = ObservableSettings::getBooleanFlow,
         setter = Settings::putBoolean,
         defaultValue = false,
         firstValue = true,
@@ -125,7 +125,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun intOrNullFlowTest() = nullableFlowTest(
-        flowBuilder = ObservableSettings::intOrNullFlow,
+        flowBuilder = ObservableSettings::getIntOrNullFlow,
         setter = Settings::putInt,
         firstValue = 3,
         secondValue = 8
@@ -133,7 +133,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun longOrNullFlowTest() = nullableFlowTest(
-        flowBuilder = ObservableSettings::longOrNullFlow,
+        flowBuilder = ObservableSettings::getLongOrNullFlow,
         setter = Settings::putLong,
         firstValue = 3L,
         secondValue = 8L
@@ -141,7 +141,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun stringOrNullFlowTest() = nullableFlowTest(
-        flowBuilder = ObservableSettings::stringOrNullFlow,
+        flowBuilder = ObservableSettings::getStringOrNullFlow,
         setter = Settings::putString,
         firstValue = "bar",
         secondValue = "baz"
@@ -149,7 +149,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun floatOrNullFlowTest() = nullableFlowTest(
-        flowBuilder = ObservableSettings::floatOrNullFlow,
+        flowBuilder = ObservableSettings::getFloatOrNullFlow,
         setter = Settings::putFloat,
         firstValue = 3f,
         secondValue = 8f
@@ -157,7 +157,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun doubleOrNullFlowTest() = nullableFlowTest(
-        flowBuilder = ObservableSettings::doubleOrNullFlow,
+        flowBuilder = ObservableSettings::getDoubleOrNullFlow,
         setter = Settings::putDouble,
         firstValue = 3.0,
         secondValue = 8.0
@@ -165,7 +165,7 @@ abstract class BaseCoroutineExtensionsTest {
 
     @Test
     fun booleanOrNullFlowTest() = nullableFlowTest(
-        flowBuilder = ObservableSettings::booleanOrNullFlow,
+        flowBuilder = ObservableSettings::getBooleanOrNullFlow,
         setter = Settings::putBoolean,
         firstValue = true,
         secondValue = false
