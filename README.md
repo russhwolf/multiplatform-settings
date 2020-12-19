@@ -9,7 +9,34 @@
 
 This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data.
 
+## Table of contents
+
+<!-- TODO it's maybe getting time to break this up into separate pages and do a real docs site -->
+
+- [Adding to your project](#adding-to-your-project)
+- [Usage](#usage)
+    - [Creating a Settings instance](#creating-a-settings-instance)
+        - [Platform constructors](#platform-constructors)
+        - [Factories](#factories)
+        - [No-arg module](#no-arg-module)
+    - [Settings API](#settings-api)
+    - [Testing](#testing)
+    - [Other platforms](#other-platforms)
+- [Experimental API](#experimental-api)
+    - [Experimental Implementations](#experimental-implementations)
+        - [Apple Keychain](#apple-keychain)
+        - [JVM](#jvm)
+        - [Windows](#windows)
+    - [Listeners](#listeners)
+    - [Serialization module](#serialization-module)
+    - [Coroutine APIs](#coroutine-apis)
+        - [DataStore](#datastore)
+- [Building](#building)
+- [Project Structure](#project-structure)
+- [License](#license)
+
 ## Adding to your project
+
 Multiplatform Settings is currently published to Maven Central, so add that to repositories.
 
 ```kotlin
@@ -44,6 +71,7 @@ Since that delegate is a constructor argument, it should be possible to connect 
  
 ```kotlin
 expect val settings: Settings
+// or
 expect fun createSettings(): Settings
 ```
 
@@ -58,7 +86,9 @@ val settings2: Settings = factory.create("my_other_settings")
 
 See [Factories](#factories) below for more details.
 
-However, if all of your key-value logic exists in a single instance in common code, these ways of instantiation `Settings` can be inconvenient. To make pure-common usage easier, Multiplatform Settings now includes a separate module which provides an `invoke()` operator on the companion object, so that you can create a `Settings` instance like
+However, if all of your key-value logic exists in a single instance in common code, these ways of
+instantiation `Settings` can be inconvenient. To make pure-common usage easier, Multiplatform Settings now includes a
+separate module which provides a `Settings()` factory function, so that you can create a `Settings` instance like
 
 ```kotlin
 val settings: Settings = Settings()
@@ -93,7 +123,8 @@ val settings: Settings = JsSettings() // use localStorage by default
 
 #### Factories
 
-For the Android, iOS, and macOS platforms, a `Factory` class also exists, so that multiple named `Settings` instances can coexist with the names being controlled from common code.
+For some platforms, a `Factory` class also exists, so that multiple named `Settings` instances can coexist with the
+names being controlled from common code.
 
 On Android, this factory needs a `Context` parameter
 
@@ -202,7 +233,7 @@ val size: Int = settings.size
 ```
 Note that for the `AppleSettings` implementation, some entries are unremovable and therefore may still be present after a `clear()` call. Thus, `size` is not generally guaranteed to be zero after a `clear()`.
 
-## Testing
+### Testing
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
@@ -212,7 +243,7 @@ implementation("com.russhwolf:multiplatform-settings-test:0.7")
 
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
 
-## Other platforms
+### Other platforms
 
 The `Settings` interface is published to all available platforms. Developers who desire implementations outside of the defaults provided are free to add their own implementations, and welcome to make pull requests if the implementation might be generally useful to others. Note that implementations which require external dependencies should be places in a separate gradle module in order to keep the core `multiplatform-settings` module dependency-free.
 
@@ -314,6 +345,9 @@ A separate `multiplatform-settings-coroutines` dependency includes various corou
 
 ```kotlin
 implementation("com.russhwolf:multiplatform-settings-coroutines:0.7")
+
+// Or, if you use native-mt coroutines release
+implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:0.7")
 ```
 
 This adds flow extensions for all types which use the listener APIs internally.

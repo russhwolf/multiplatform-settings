@@ -1,14 +1,17 @@
 # Changelog #
 
 ## v0.7 *(2020-12-XX)* ##
-- Kotlin 1.4.20 and other dependency updates
+- Kotlin 1.4.21 and other dependency updates
 - New typed update listeners
-    - `addIntListener { int: Int -> ... }` in addition to `addListener { ... }`
+  - `addIntListener { int: Int -> ... }` in addition to `addListener { ... }`
 - New `KeychainSettings` stores data in the Apple Keychain
-- New `multiplatform-settings-serialization` module with APIs to store structured data in `Settings` via `kotlinx-serialization`.
-- New `multiplatform-settings-coroutines` module with new coroutine-based interfaces `SuspendSettings` and `FlowSettings`
-    - New `multiplatform-settings-datastore` module with a `DataStoreSettings` implementation of `FlowSettings` based on Jetpack DataStore.
-- Consolidate experimental annotations into `@ExperimentalSettingsImplementation` and `@ExperimentalSettingsApi`.
+- New `multiplatform-settings-serialization` module with APIs to store structured data in `Settings`
+  via `kotlinx-serialization`
+- New `multiplatform-settings-coroutines` module with new coroutine-based interfaces `SuspendSettings` and `FlowSettings
+  - Also released as `multiplatform-settings-coroutines-native-mt` for use with the `native-mt` branch of coroutines
+  - New `multiplatform-settings-datastore` module with a `DataStoreSettings` implementation of `FlowSettings` based on
+    Jetpack DataStore.
+- Consolidate experimental annotations into `@ExperimentalSettingsImplementation` and `@ExperimentalSettingsApi`
 
 ## v0.6.3 *(2020-11-02)* ##
 

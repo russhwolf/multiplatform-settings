@@ -22,15 +22,15 @@ object Versions {
     const val minSdk = 15
     const val compileSdk = 30
 
-    const val androidxDatastore = "1.0.0-alpha04"
+    const val androidxDatastore = "1.0.0-alpha05"
     const val androidxPreference = "1.1.1"
     const val androidxStartup = "1.0.0"
     const val androidxTest = "1.3.0"
     const val androidxTestExt = "1.1.2"
     const val binaryCompatibilityValidator = "0.2.4"
-    const val coroutines = "1.4.1"
-    const val coroutinesNativeMt = "1.4.1-native-mt"
-    const val junit = "4.13"
+    const val coroutines = "1.4.2"
+    const val coroutinesNativeMt = "1.4.2-native-mt"
+    const val junit = "4.13.1"
     const val robolectric = "4.4"
     const val serializationPlugin = "1.4.20"
     const val serializationRuntime = "1.0.1"
