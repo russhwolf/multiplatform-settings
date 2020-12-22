@@ -39,9 +39,9 @@ class SettingsSerializationTest {
 
         val settings: Settings = MockSettings()
 
-        settings.serializeValue(Foo.serializer(), "foo", foo)
-        settings.serializeValue(String.serializer(), "herp", "derp")
-        settings.serializeValue(ListSerializer(Int.serializer()), "list", listOf(1, 2, 3))
+        settings.encodeValue(Foo.serializer(), "foo", foo)
+        settings.encodeValue(String.serializer(), "herp", "derp")
+        settings.encodeValue(ListSerializer(Int.serializer()), "list", listOf(1, 2, 3))
 
         assertEquals("hello", settings.getString("foo.bar"))
         assertEquals(43110, settings.getInt("foo.baz"))
@@ -64,9 +64,9 @@ class SettingsSerializationTest {
             "list.size" to 3,
         )
 
-        val foo = settings.deserializeValue(Foo.serializer(), "foo")
-        val herp = settings.deserializeValue(String.serializer(), "herp")
-        val list = settings.deserializeValue(ListSerializer(Int.serializer()), "list")
+        val foo = settings.decodeValue(Foo.serializer(), "foo")
+        val herp = settings.decodeValue(String.serializer(), "herp")
+        val list = settings.decodeValue(ListSerializer(Int.serializer()), "list")
 
         assertEquals("hello", foo.bar)
         assertEquals(43110, foo.baz)
@@ -78,7 +78,7 @@ class SettingsSerializationTest {
     fun deserialize_empty() {
         val settings: Settings = MockSettings()
 
-        val foo = settings.deserializeValue(Foo.serializer(), "foo")
+        val foo = settings.decodeValue(Foo.serializer(), "foo")
 
         assertEquals("", foo.bar)
         assertEquals(42, foo.baz)
@@ -87,7 +87,7 @@ class SettingsSerializationTest {
     @Test
     fun delegate() {
         val settings: Settings = MockSettings()
-        val delegate = settings.serializationDelegate(Foo.serializer(), "foo")
+        val delegate = settings.serializedValue(Foo.serializer(), "foo")
         var foo: Foo by delegate
         assertEquals(Foo("", 42), foo)
 
@@ -109,7 +109,7 @@ class SettingsSerializationTest {
     @Test
     fun delegate_keyless() {
         val settings: Settings = MockSettings()
-        val delegate = settings.serializationDelegate(Foo.serializer())
+        val delegate = settings.serializedValue(Foo.serializer())
         var foo: Foo by delegate
         assertEquals(Foo("", 42), foo)
 
@@ -149,7 +149,7 @@ class SettingsSerializationTest {
             nested = TestClassNullable()
         )
 
-        settings.serializeValue(TestClass.serializer(), "testClass", testClass)
+        settings.encodeValue(TestClass.serializer(), "testClass", testClass)
 
         assertFalse("testClass?" in settings)
         assertEquals(true, settings.getBoolean("testClass.boolean"))
@@ -217,7 +217,7 @@ class SettingsSerializationTest {
 
         assertEquals(35, settings.size)
 
-        assertEquals(testClass, settings.deserializeValue(TestClass.serializer(), "testClass"))
+        assertEquals(testClass, settings.decodeValue(TestClass.serializer(), "testClass"))
     }
 
     @Test
@@ -240,7 +240,7 @@ class SettingsSerializationTest {
             nested = null
         )
 
-        settings.serializeValue(TestClassNullable.serializer().nullable, "testClass", testClass)
+        settings.encodeValue(TestClassNullable.serializer().nullable, "testClass", testClass)
 
         assertEquals(true, settings.getBoolean("testClass?"))
         assertEquals(true, settings.getBoolean("testClass.boolean"))
@@ -308,7 +308,7 @@ class SettingsSerializationTest {
 
         assertEquals(36, settings.size)
 
-        assertEquals(testClass, settings.deserializeValue(TestClassNullable.serializer().nullable, "testClass"))
+        assertEquals(testClass, settings.decodeValue(TestClassNullable.serializer().nullable, "testClass"))
     }
 
     @Test
@@ -335,17 +335,17 @@ class SettingsSerializationTest {
 
         settings.clear()
         assertEquals(User(null), settings.loadUser())
-        assertEquals(User(null), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals(User(null), settings.decodeValue(User.serializer(), "user"))
 
-        settings.serializeValue(User.serializer(), "user", User("Qwerty"))
+        settings.encodeValue(User.serializer(), "user", User("Qwerty"))
         assertEquals(User("Qwerty"), settings.loadUser())
-        assertEquals(User("Qwerty"), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals(User("Qwerty"), settings.decodeValue(User.serializer(), "user"))
         assertEquals("Qwerty", settings.getStringOrNull("user.nickname"))
         assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
 
-        settings.serializeValue(User.serializer(), "user", User(null))
+        settings.encodeValue(User.serializer(), "user", User(null))
         assertEquals(User(null), settings.loadUser())
-        assertEquals(User(null), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals(User(null), settings.decodeValue(User.serializer(), "user"))
         assertEquals(null, settings.getStringOrNull("user.nickname"))
         assertEquals(false, settings.getBooleanOrNull("user.nickname?"))
 
@@ -353,13 +353,13 @@ class SettingsSerializationTest {
 
         settings.saveUser(User("Qwerty"))
         assertEquals(User("Qwerty"), settings.loadUser())
-        assertEquals(User("Qwerty"), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals(User("Qwerty"), settings.decodeValue(User.serializer(), "user"))
         assertEquals("Qwerty", settings.getStringOrNull("user.nickname"))
         assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
 
         settings.saveUser(User(null))
         assertEquals(User(null), settings.loadUser())
-        assertEquals(User(null), settings.deserializeValue(User.serializer(), "user"))
+        assertEquals(User(null), settings.decodeValue(User.serializer(), "user"))
         assertEquals(null, settings.getStringOrNull("user.nickname"))
         assertEquals(false, settings.getBooleanOrNull("user.nickname?"))
     }

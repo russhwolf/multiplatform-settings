@@ -36,7 +36,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * Serialize a structured value to this [Settings].
+ * Encode a structured value to this [Settings] via kotlinx.serialization.
  *
  * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
  * recurse through their structure to find primitives.
@@ -52,7 +52,7 @@ import kotlin.reflect.KProperty
  * @Serializable
  * class User(val nickname: String?)
  * ```
- * Calling `serializeValue(User.serializer(), "user", user)` is equivalent to
+ * Calling `encodeValue(User.serializer(), "user", user)` is equivalent to
  * ```kotlin
  * if (user.nickname != null) putString("user.nickname", user.nickname) else remove("user.nickname")
  * putBoolean("user.nickname?", user.nickname != null)
@@ -64,7 +64,7 @@ import kotlin.reflect.KProperty
  */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
-public fun <T> Settings.serializeValue(
+public fun <T> Settings.encodeValue(
     serializer: KSerializer<T>,
     key: String,
     value: T,
@@ -73,7 +73,7 @@ public fun <T> Settings.serializeValue(
     serializer.serialize(SettingsEncoder(this, key, serializersModule), value)
 
 /**
- * Deserialize a structured value using the data in this [Settings].
+ * Decode a structured value using the data in this [Settings] via kotlinx.serialization.
  *
  * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
  * recurse through their structure to find primitives.
@@ -89,7 +89,7 @@ public fun <T> Settings.serializeValue(
  * @Serializable
  * class User(val nickname: String?)
  * ```
- * Calling `val user = deserializeValue(User.serializer(), "user")` is equivalent to
+ * Calling `val user = decodeValue(User.serializer(), "user")` is equivalent to
  * ```kotlin
  * val user = User(
  *     nickname = if (getBoolean("user.nickname?")) {
@@ -106,7 +106,7 @@ public fun <T> Settings.serializeValue(
  */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
-public fun <T> Settings.deserializeValue(
+public fun <T> Settings.decodeValue(
     serializer: KSerializer<T>,
     key: String,
     serializersModule: SerializersModule = EmptySerializersModule
@@ -114,12 +114,12 @@ public fun <T> Settings.deserializeValue(
     serializer.deserialize(SettingsDecoder(this, key, serializersModule))
 
 /**
- * Returns a property delegate backed by this [Settings]. It reads and writes values using the same logic as
- * [serializeValue] and [deserializeValue].
+ * Returns a property delegate backed by this [Settings] via kotlinx.serialization. It reads and writes values using the
+ * same logic as [encodeValue] and [decodeValue].
  */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
-public fun <T> Settings.serializationDelegate(
+public fun <T> Settings.serializedValue(
     serializer: KSerializer<T>,
     key: String? = null,
     context: SerializersModule = EmptySerializersModule
