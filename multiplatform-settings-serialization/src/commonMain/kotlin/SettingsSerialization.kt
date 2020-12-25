@@ -23,6 +23,7 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.contains
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
@@ -73,7 +74,8 @@ public fun <T> Settings.encodeValue(
     serializer.serialize(SettingsEncoder(this, key, serializersModule), value)
 
 /**
- * Decode a structured value using the data in this [Settings] via kotlinx.serialization.
+ * Decode a structured value using the data in this [Settings] via kotlinx.serialization. If all expected data for that
+ * value is not present, then [defaultValue] will be returned instead.
  *
  * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
  * recurse through their structure to find primitives.
@@ -84,18 +86,18 @@ public fun <T> Settings.encodeValue(
  * Similarly, collection properties read from an additional `Int` to represent the collection size, whose key is the
  * property's key with `.size` appended.
  *
- * For example, a class defined as
+ * For example, consider a class defined as
  * ```kotlin
  * @Serializable
  * class User(val nickname: String?)
  * ```
- * Calling `val user = decodeValue(User.serializer(), "user")` is equivalent to
+ * A function `fun getUser() = decodeValue(User.serializer(), "user", defaultValue)` is equivalent to
  * ```kotlin
- * val user = User(
- *     nickname = if (getBoolean("user.nickname?")) {
- *         getString("user.nickname")
- *     } else {
- *         null
+ * fun getUser() = User(
+ *     nickname = when(getBooleanOrNull("user.nickname?")) {
+ *         true -> getStringOrNull("user.nickname") ?: return defaultValue
+ *         false -> null
+ *         null -> return defaultValue
  *     }
  * )
  * ```
@@ -109,28 +111,84 @@ public fun <T> Settings.encodeValue(
 public fun <T> Settings.decodeValue(
     serializer: KSerializer<T>,
     key: String,
+    defaultValue: T,
     serializersModule: SerializersModule = EmptySerializersModule
-): T =
-    serializer.deserialize(SettingsDecoder(this, key, serializersModule))
+): T = deserializeOrElse(defaultValue) { serializer.deserialize(SettingsDecoder(this, key, serializersModule)) }
+
+/**
+ * Decode a structured value using the data in this [Settings] via kotlinx.serialization. If all expected data for that
+ * value is not present, then `null` will be returned instead.`
+ *
+ * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
+ * recurse through their structure to find primitives.
+ *
+ * Nullable properties first read an additional `Boolean` value, whose key is the key for that property with "?"
+ * appended. If this value is true, then the value at the property key will be used for deserialization.
+ *
+ * Similarly, collection properties read from an additional `Int` to represent the collection size, whose key is the
+ * property's key with `.size` appended.
+ *
+ * For example, consider a class defined as
+ * ```kotlin
+ * @Serializable
+ * class User(val nickname: String?)
+ * ```
+ * A function `fun getUser() = decodeValueOrNull(User.serializer(), "user")` is equivalent to
+ * ```kotlin
+ * fun getUser() = User(
+ *     nickname = when(getBooleanOrNull("user.nickname?")) {
+ *         true -> getStringOrNull("user.nickname") ?: return null
+ *         false -> null
+ *         null -> return null
+ *     }
+ * )
+ * ```
+ *
+ * Note that because the `Settings` API is not transactional, it's possible for a failed operation to result in
+ * inconsistent data being deserialized. If you need greater reliability for more complex structured data, prefer a
+ * database such as sqlite to this API.
+ */
+@ExperimentalSerializationApi
+@ExperimentalSettingsApi
+public fun <T> Settings.decodeValueOrNull(
+    serializer: KSerializer<T>,
+    key: String,
+    serializersModule: SerializersModule = EmptySerializersModule
+): T? = deserializeOrElse(null) { serializer.deserialize(SettingsDecoder(this, key, serializersModule)) }
 
 /**
  * Returns a property delegate backed by this [Settings] via kotlinx.serialization. It reads and writes values using the
- * same logic as [encodeValue] and [decodeValue].
+ * same logic as [encodeValue] and [decodeValue], and returns [defaultValue] on reads when not all data is present.
  */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
 public fun <T> Settings.serializedValue(
     serializer: KSerializer<T>,
     key: String? = null,
+    defaultValue: T,
     context: SerializersModule = EmptySerializersModule
 ): ReadWriteProperty<Any?, T> =
-    SettingsSerializationDelegate(this, serializer, key, context)
+    SettingsSerializationDelegate(this, serializer, key, defaultValue, context)
+
+/**
+ * Returns a property delegate backed by this [Settings] via kotlinx.serialization. It reads and writes values using the
+ * same logic as [encodeValue] and [decodeValueOrNull], and returns `null` on reads when not all data is present.
+ */
+@ExperimentalSerializationApi
+@ExperimentalSettingsApi
+public fun <T : Any> Settings.nullableSerializedValue(
+    serializer: KSerializer<T>,
+    key: String? = null,
+    context: SerializersModule = EmptySerializersModule
+): ReadWriteProperty<Any?, T?> =
+    SettingsSerializationDelegate(this, serializer.nullable, key, null, context)
 
 @ExperimentalSerializationApi
-private class SettingsSerializationDelegate<T>(
+private open class SettingsSerializationDelegate<T>(
     private val settings: Settings,
     private val serializer: KSerializer<T>,
     private val key: String?,
+    private val defaultValue: T,
     private val context: SerializersModule
 ) : ReadWriteProperty<Any?, T> {
     /*
@@ -158,7 +216,12 @@ private class SettingsSerializationDelegate<T>(
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
         checkKey(property.name)
         val decoder = decoder ?: SettingsDecoder(settings, property.name, context).also { decoder = it }
-        return serializer.deserialize(decoder)
+        // TODO ??? for some reason jsLegacy delegate tests fail when this uses deserializeOrElse()
+        return try {
+            serializer.deserialize(decoder)
+        } catch (e: DeserializationException) {
+            defaultValue
+        }
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
@@ -296,21 +359,39 @@ private class SettingsDecoder(
         }
     }
 
-    public override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = settings.getInt("${getKey()}.size")
+    public override fun decodeCollectionSize(descriptor: SerialDescriptor): Int =
+        settings.getIntOrNull("${getKey()}.size") ?: deserializationError()
 
-    public override fun decodeNotNullMark(): Boolean = settings.getBoolean("${getKey()}?")
+    public override fun decodeNotNullMark(): Boolean =
+        settings.getBooleanOrNull("${getKey()}?") ?: deserializationError()
+
     public override fun decodeNull(): Nothing? = null
 
-    // NB These gets will be 0/""/false if the class has no default value set and no data is present.
-    // TODO should this be configurable? Maybe we'd rather throw than get bad data.
-    public override fun decodeBoolean(): Boolean = settings.getBoolean(getKey())
-    public override fun decodeByte(): Byte = settings.getInt(getKey()).toByte()
-    public override fun decodeChar(): Char = settings.getInt(getKey()).toChar()
-    public override fun decodeDouble(): Double = settings.getDouble(getKey())
-    public override fun decodeEnum(enumDescriptor: SerialDescriptor): Int = settings.getInt(getKey())
-    public override fun decodeFloat(): Float = settings.getFloat(getKey())
-    public override fun decodeInt(): Int = settings.getInt(getKey())
-    public override fun decodeLong(): Long = settings.getLong(getKey())
-    public override fun decodeShort(): Short = settings.getInt(getKey()).toShort()
-    public override fun decodeString(): String = settings.getString(getKey())
+    // Unfortunately the only way we can interrupt serialization if data is missing is to throw here and catch elsewhere
+    public override fun decodeBoolean(): Boolean = settings.getBooleanOrNull(getKey()) ?: deserializationError()
+    public override fun decodeByte(): Byte = settings.getIntOrNull(getKey())?.toByte() ?: deserializationError()
+    public override fun decodeChar(): Char {
+        // TODO ??? for some reason jsLegacy allTypes tests fail when this is an expression function.
+        return settings.getIntOrNull(getKey())?.toChar() ?: deserializationError()
+    }
+
+    public override fun decodeDouble(): Double = settings.getDoubleOrNull(getKey()) ?: deserializationError()
+    public override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
+        settings.getIntOrNull(getKey()) ?: deserializationError()
+
+    public override fun decodeFloat(): Float = settings.getFloatOrNull(getKey()) ?: deserializationError()
+    public override fun decodeInt(): Int = settings.getIntOrNull(getKey()) ?: deserializationError()
+    public override fun decodeLong(): Long = settings.getLongOrNull(getKey()) ?: deserializationError()
+    public override fun decodeShort(): Short = settings.getIntOrNull(getKey())?.toShort() ?: deserializationError()
+    public override fun decodeString(): String = settings.getStringOrNull(getKey()) ?: deserializationError()
 }
+
+private class DeserializationException : IllegalStateException()
+
+private inline fun deserializationError(): Nothing = throw DeserializationException()
+private inline fun <T> deserializeOrElse(defaultValue: T, block: () -> T) =
+    try {
+        block()
+    } catch (_: DeserializationException) {
+        defaultValue
+    }

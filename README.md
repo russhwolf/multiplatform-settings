@@ -327,13 +327,15 @@ val settings: Settings
 settings.encodeValue(SomeClass.serializer(), "key", someClass)
 
 // Create a new instance of SomeClass based on the data in settings
-val newInstance: SomeClass = settings.decodeValue(SomeClass.serializer(), "someClass")
+val newInstance: SomeClass = settings.decodeValue(SomeClass.serializer(), "someClass", defaultValue)
+val nullableNewInstance: SomeClass = settings.decodeValueOrNull(SomeClass.serializer(), "someClass")
 ```
 
 There's also a delegate API, similar to that for primitives
 
 ```kotlin
-val someClass: SomeClass by settings.serializedValue(SomeClass.serializer(), "someClass")
+val someClass: SomeClass by settings.serializedValue(SomeClass.serializer(), "someClass", defaultValue)
+val nullableSomeClass: SomeClass? by settings.nullableSerializedValue(SomeClass.serializer(), "someClass")
 ```
 
 Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalSerializationApi` annotations.
