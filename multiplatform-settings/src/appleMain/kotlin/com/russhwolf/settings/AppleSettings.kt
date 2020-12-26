@@ -212,7 +212,7 @@ public class AppleSettings public constructor(
         private val delegate: NSObjectProtocol,
         private val previousValue: AtomicReference<Any?>?
     ) : SettingsListener {
-        override fun deactivate() {
+        public override fun deactivate() {
             NSNotificationCenter.defaultCenter.removeObserver(delegate)
             previousValue?.value = null
         }

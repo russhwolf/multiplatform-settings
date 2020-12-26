@@ -122,52 +122,52 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
 
     public override val size: Int get() = keys.size
 
-    override fun clear(): Unit = memScoped {
+    public override fun clear(): Unit = memScoped {
         val status = keyChainOperation(
             kSecMatchLimit to kSecMatchLimitAll,
         ) { SecItemDelete(it) }
         status.checkError(errSecItemNotFound)
     }
 
-    override fun remove(key: String): Unit = removeKeychainItem(key)
-    override fun hasKey(key: String): Boolean = hasKeychainItem(key)
+    public override fun remove(key: String): Unit = removeKeychainItem(key)
+    public override fun hasKey(key: String): Boolean = hasKeychainItem(key)
 
-    override fun putInt(key: String, value: Int): Unit =
+    public override fun putInt(key: String, value: Int): Unit =
         addOrUpdateKeychainItem(key, archiveNumber(NSNumber.numberWithInt(value)))
 
-    override fun getInt(key: String, defaultValue: Int): Int = getIntOrNull(key) ?: defaultValue
-    override fun getIntOrNull(key: String): Int? = unarchiveNumber(getKeychainItem(key))?.intValue
+    public override fun getInt(key: String, defaultValue: Int): Int = getIntOrNull(key) ?: defaultValue
+    public override fun getIntOrNull(key: String): Int? = unarchiveNumber(getKeychainItem(key))?.intValue
 
-    override fun putLong(key: String, value: Long): Unit =
+    public override fun putLong(key: String, value: Long): Unit =
         addOrUpdateKeychainItem(key, archiveNumber(NSNumber.numberWithLongLong(value)))
 
-    override fun getLong(key: String, defaultValue: Long): Long = getLongOrNull(key) ?: defaultValue
-    override fun getLongOrNull(key: String): Long? = unarchiveNumber(getKeychainItem(key))?.longLongValue
+    public override fun getLong(key: String, defaultValue: Long): Long = getLongOrNull(key) ?: defaultValue
+    public override fun getLongOrNull(key: String): Long? = unarchiveNumber(getKeychainItem(key))?.longLongValue
 
-    override fun putString(key: String, value: String): Unit =
+    public override fun putString(key: String, value: String): Unit =
         addOrUpdateKeychainItem(key, value.toNSString().dataUsingEncoding(NSUTF8StringEncoding))
 
-    override fun getString(key: String, defaultValue: String): String = getStringOrNull(key) ?: defaultValue
-    override fun getStringOrNull(key: String): String? =
+    public override fun getString(key: String, defaultValue: String): String = getStringOrNull(key) ?: defaultValue
+    public override fun getStringOrNull(key: String): String? =
         getKeychainItem(key)?.let { NSString.create(it, NSUTF8StringEncoding)?.toKString() }
 
-    override fun putFloat(key: String, value: Float): Unit =
+    public override fun putFloat(key: String, value: Float): Unit =
         addOrUpdateKeychainItem(key, archiveNumber(NSNumber.numberWithFloat(value)))
 
-    override fun getFloat(key: String, defaultValue: Float): Float = getFloatOrNull(key) ?: defaultValue
-    override fun getFloatOrNull(key: String): Float? = unarchiveNumber(getKeychainItem(key))?.floatValue
+    public override fun getFloat(key: String, defaultValue: Float): Float = getFloatOrNull(key) ?: defaultValue
+    public override fun getFloatOrNull(key: String): Float? = unarchiveNumber(getKeychainItem(key))?.floatValue
 
-    override fun putDouble(key: String, value: Double): Unit =
+    public override fun putDouble(key: String, value: Double): Unit =
         addOrUpdateKeychainItem(key, archiveNumber(NSNumber.numberWithDouble(value)))
 
-    override fun getDouble(key: String, defaultValue: Double): Double = getDoubleOrNull(key) ?: defaultValue
-    override fun getDoubleOrNull(key: String): Double? = unarchiveNumber(getKeychainItem(key))?.doubleValue
+    public override fun getDouble(key: String, defaultValue: Double): Double = getDoubleOrNull(key) ?: defaultValue
+    public override fun getDoubleOrNull(key: String): Double? = unarchiveNumber(getKeychainItem(key))?.doubleValue
 
-    override fun putBoolean(key: String, value: Boolean): Unit =
+    public override fun putBoolean(key: String, value: Boolean): Unit =
         addOrUpdateKeychainItem(key, archiveNumber(NSNumber.numberWithBool(value)))
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Boolean = getBooleanOrNull(key) ?: defaultValue
-    override fun getBooleanOrNull(key: String): Boolean? = unarchiveNumber(getKeychainItem(key))?.boolValue
+    public override fun getBoolean(key: String, defaultValue: Boolean): Boolean = getBooleanOrNull(key) ?: defaultValue
+    public override fun getBooleanOrNull(key: String): Boolean? = unarchiveNumber(getKeychainItem(key))?.boolValue
 
     private inline fun unarchiveNumber(data: NSData?): NSNumber? =
         data?.let { NSKeyedUnarchiver.unarchiveObjectWithData(it) } as? NSNumber

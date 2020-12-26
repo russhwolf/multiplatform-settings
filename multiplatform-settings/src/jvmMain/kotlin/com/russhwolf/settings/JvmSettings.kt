@@ -270,7 +270,7 @@ public class JvmPreferencesSettings public constructor(
         private val preferences: Preferences,
         private val listener: PreferenceChangeListener
     ) : SettingsListener {
-        override fun deactivate() {
+        public override fun deactivate() {
             try {
                 preferences.removePreferenceChangeListener(listener)
             } catch (e: IllegalArgumentException) {

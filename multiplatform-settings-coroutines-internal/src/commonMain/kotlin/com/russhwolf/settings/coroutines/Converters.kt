@@ -113,39 +113,39 @@ private class FlowSettingsWrapper(private val delegate: ObservableSettings) :
 
     // Prefer the SuspendSettingsWrapper implementation to the FlowSettings one which calls getXXXFlow().first()
 
-    override suspend fun getInt(key: String, defaultValue: Int): Int =
+    public override suspend fun getInt(key: String, defaultValue: Int): Int =
         super<SuspendSettingsWrapper>.getInt(key, defaultValue)
 
-    override suspend fun getIntOrNull(key: String): Int? =
+    public override suspend fun getIntOrNull(key: String): Int? =
         super<SuspendSettingsWrapper>.getIntOrNull(key)
 
-    override suspend fun getLong(key: String, defaultValue: Long): Long =
+    public override suspend fun getLong(key: String, defaultValue: Long): Long =
         super<SuspendSettingsWrapper>.getLong(key, defaultValue)
 
-    override suspend fun getLongOrNull(key: String): Long? =
+    public override suspend fun getLongOrNull(key: String): Long? =
         super<SuspendSettingsWrapper>.getLongOrNull(key)
 
-    override suspend fun getString(key: String, defaultValue: String): String =
+    public override suspend fun getString(key: String, defaultValue: String): String =
         super<SuspendSettingsWrapper>.getString(key, defaultValue)
 
-    override suspend fun getStringOrNull(key: String): String? =
+    public override suspend fun getStringOrNull(key: String): String? =
         super<SuspendSettingsWrapper>.getStringOrNull(key)
 
-    override suspend fun getFloat(key: String, defaultValue: Float): Float =
+    public override suspend fun getFloat(key: String, defaultValue: Float): Float =
         super<SuspendSettingsWrapper>.getFloat(key, defaultValue)
 
-    override suspend fun getFloatOrNull(key: String): Float? =
+    public override suspend fun getFloatOrNull(key: String): Float? =
         super<SuspendSettingsWrapper>.getFloatOrNull(key)
 
-    override suspend fun getDouble(key: String, defaultValue: Double): Double =
+    public override suspend fun getDouble(key: String, defaultValue: Double): Double =
         super<SuspendSettingsWrapper>.getDouble(key, defaultValue)
 
-    override suspend fun getDoubleOrNull(key: String): Double? =
+    public override suspend fun getDoubleOrNull(key: String): Double? =
         super<SuspendSettingsWrapper>.getDoubleOrNull(key)
 
-    override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+    public override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         super<SuspendSettingsWrapper>.getBoolean(key, defaultValue)
 
-    override suspend fun getBooleanOrNull(key: String): Boolean? =
+    public override suspend fun getBooleanOrNull(key: String): Boolean? =
         super<SuspendSettingsWrapper>.getBooleanOrNull(key)
 }

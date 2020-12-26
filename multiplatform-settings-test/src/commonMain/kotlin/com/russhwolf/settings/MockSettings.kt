@@ -176,7 +176,7 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
         private val listeners: MutableList<() -> Any>,
         private val listener: () -> Unit
     ) : SettingsListener {
-        override fun deactivate() {
+        public override fun deactivate() {
             listeners -= listener
         }
     }

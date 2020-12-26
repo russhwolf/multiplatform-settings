@@ -194,7 +194,7 @@ public class AndroidSettings @JvmOverloads public constructor(
         private val preferences: SharedPreferences,
         private val listener: SharedPreferences.OnSharedPreferenceChangeListener
     ) : SettingsListener {
-        override fun deactivate() {
+        public override fun deactivate() {
             preferences.unregisterOnSharedPreferenceChangeListener(listener)
         }
     }
