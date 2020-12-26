@@ -19,7 +19,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.plugin.serialization") version Versions.serializationPlugin
     id("org.jetbrains.dokka")
-    id("maven-publish")
+    `maven-publish`
+    signing
 }
 
 standardConfiguration(
