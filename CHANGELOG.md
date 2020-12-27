@@ -1,6 +1,6 @@
 # Changelog #
 
-## v0.7 *(2020-12-XX)* ##
+## v0.7 *(2020-12-26)* ##
 - Kotlin 1.4.21 and other dependency updates
 - New typed update listeners
   - `addIntListener { int: Int -> ... }` in addition to `addListener { ... }`
