@@ -21,8 +21,13 @@ package com.russhwolf.settings.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.russhwolf.settings.BaseSettingsTest
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ExperimentalSettingsImplementation
@@ -52,6 +57,7 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
 import kotlin.test.assertEquals
+import kotlin.test.fail
 
 private val temporaryFolder = TemporaryFolder()
 private val testScope = TestCoroutineScope()
@@ -79,7 +85,7 @@ class DataStoreSettingsTest : BaseSettingsTest(
         val dataStore = PreferenceDataStoreFactory.create { File(temporaryFolder.root, "settings.preferences_pb") }
         val settings = DataStoreSettings(dataStore)
 
-        dataStore.edit { it[preferencesKey("a")] = 3 }
+        dataStore.edit { it[intPreferencesKey("a")] = 3 }
         assertEquals(3, settings.getInt("a"))
     }
 
@@ -109,6 +115,19 @@ private class BlockingDataStoreSettings(
 
         private inline fun <reified T : Any> flowOrNull(): Flow<T?> =
             dataStore.data.map { it[preferencesKey<T>(key)] }.catch {}
+
+        private inline fun <reified T> preferencesKey(key: String): Preferences.Key<T> {
+            @Suppress("UNCHECKED_CAST")
+            return when (T::class) {
+                Int::class -> intPreferencesKey(key)
+                Long::class -> longPreferencesKey(key)
+                String::class -> stringPreferencesKey(key)
+                Float::class -> floatPreferencesKey(key)
+                Double::class -> doublePreferencesKey(key)
+                Int::class -> booleanPreferencesKey(key)
+                else -> fail("invalid type")
+            } as Preferences.Key<T>
+        }
 
         private val scope = CoroutineScope(testScope.coroutineContext + SupervisorJob(testScope.coroutineContext[Job]))
 

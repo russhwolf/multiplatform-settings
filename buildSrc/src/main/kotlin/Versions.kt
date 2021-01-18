@@ -17,12 +17,12 @@
 @file:Suppress("KDocMissingDocumentation")
 
 object Versions {
-    const val multiplatformSettings = "0.7"
+    const val multiplatformSettings = "0.7.1"
 
     const val minSdk = 15
     const val compileSdk = 30
 
-    const val androidxDatastore = "1.0.0-alpha05"
+    const val androidxDatastore = "1.0.0-alpha06"
     const val androidxPreference = "1.1.1"
     const val androidxStartup = "1.0.0"
     const val androidxTest = "1.3.0"
