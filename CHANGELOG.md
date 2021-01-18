@@ -1,6 +1,11 @@
 # Changelog #
 
+## v0.7.1 *(2021-01-17)* ##
+
+- Update `multiplatform-settings-datastore` to use DataStore version 1.0.0-alpha06
+
 ## v0.7 *(2020-12-26)* ##
+
 - Kotlin 1.4.21 and other dependency updates
 - New typed update listeners
   - `addIntListener { int: Int -> ... }` in addition to `addListener { ... }`
