@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Russell Wolf
+ * Copyright 2021 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,12 +70,5 @@ class KeychainSettingsTest : BaseSettingsTest(
             settings -= "key"
         }
         assertEquals("value", value)
-    }
-
-    @Test
-    fun issue_79() {
-        val settings: Settings = KeychainSettings("test-srvc")
-        settings.putString("test-key", "hello world") // will fail here if second execution (update previous value)
-        settings.remove("test-key") // will fail here if first execution
     }
 }
