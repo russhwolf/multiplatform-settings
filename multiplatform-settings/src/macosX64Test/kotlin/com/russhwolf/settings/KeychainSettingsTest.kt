@@ -71,4 +71,11 @@ class KeychainSettingsTest : BaseSettingsTest(
         }
         assertEquals("value", value)
     }
+
+    @Test
+    fun issue_79() {
+        val settings: Settings = KeychainSettings("test-srvc")
+        settings.putString("test-key", "hello world") // will fail here if second execution (update previous value)
+        settings.remove("test-key") // will fail here if first execution
+    }
 }

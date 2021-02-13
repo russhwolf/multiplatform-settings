@@ -194,7 +194,6 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
     private inline fun removeKeychainItem(key: String): Unit = cfRetain(key) { (cfKey) ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
-            kSecMatchLimit to kSecMatchLimitOne,
         ) { SecItemDelete(it) }
         status.checkError(errSecItemNotFound)
     }
@@ -203,7 +202,6 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
         cfRetain(key, value) { (cfKey, cfValue) ->
             val status = keyChainOperation(
                 kSecAttrAccount to cfKey,
-                kSecMatchLimit to kSecMatchLimitOne,
                 kSecReturnData to kCFBooleanFalse
             ) { SecItemUpdate(it, cfDictionaryOf(kSecValueData to cfValue)) }
             status.checkError()
