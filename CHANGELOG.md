@@ -1,5 +1,10 @@
 # Changelog #
 
+## v0.7.2 *(2021-02-13)* ##
+
+- Fix crash when making changes to items in `KeychainSettings` that were saved in a previous application launch (issue
+  #79)
+
 ## v0.7.1 *(2021-01-17)* ##
 
 - Update `multiplatform-settings-datastore` to use DataStore version 1.0.0-alpha06
