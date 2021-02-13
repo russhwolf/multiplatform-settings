@@ -2,6 +2,7 @@
 
 ## v0.7.2 *(2021-02-13)* ##
 
+- Update to Kotlin 1.4.30
 - Fix crash when making changes to items in `KeychainSettings` that were saved in a previous application launch (issue
   #79)
 
