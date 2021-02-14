@@ -389,7 +389,7 @@ val blockingSettings: Settings = suspendSettings.toBlockingSettings()
 An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-coroutines:0.7.2")
+implementation("com.russhwolf:multiplatform-settings-datastore:0.7.2")
 ```
 
 This provides a `DataStoreSettings` class
