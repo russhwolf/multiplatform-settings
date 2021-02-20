@@ -1,5 +1,10 @@
 # Changelog #
 
+## v0.7.3 *(2021-02-20)* ##
+
+- Fix remaining crash in `KeychainSettings.clear()` (issue #79)
+- Update `multiplatform-settings-serialization` to use kotlinx-serialization version 1.1.0
+
 ## v0.7.2 *(2021-02-13)* ##
 
 - Update to Kotlin 1.4.30

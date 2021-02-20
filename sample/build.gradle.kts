@@ -22,7 +22,7 @@ plugins {
 }
 
 allprojects {
-    ext["library_version"] = "0.7.2"
+    ext["library_version"] = "0.7.3"
 
     repositories {
         mavenLocal()

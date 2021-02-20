@@ -29,7 +29,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTargetPreset
-import org.jetbrains.kotlin.konan.target.Family
 
 private val Project.kotlin: KotlinMultiplatformExtension
     get() = extensions.getByType(KotlinMultiplatformExtension::class.java)
@@ -163,7 +162,7 @@ private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
             .matching { it.konanTarget.family.isAppleFamily }
             .configureEach {
                 it.apply {
-                    if (konanTarget.architecture.bitness == 32 || konanTarget.family == Family.WATCHOS) {
+                    if (konanTarget.architecture.bitness == 32 || it.name == "watchosArm64") {
                         compilations.getByName("main").defaultSourceSet.dependsOn(apple32Main)
                         compilations.getByName("test").defaultSourceSet.dependsOn(apple32Test)
                     } else {
