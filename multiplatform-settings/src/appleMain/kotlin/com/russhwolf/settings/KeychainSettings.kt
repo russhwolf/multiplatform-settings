@@ -122,13 +122,7 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
 
     public override val size: Int get() = keys.size
 
-    public override fun clear(): Unit = memScoped {
-        val status = keyChainOperation(
-            kSecMatchLimit to kSecMatchLimitAll,
-        ) { SecItemDelete(it) }
-        status.checkError(errSecItemNotFound)
-    }
-
+    public override fun clear(): Unit = keys.forEach { remove(it) }
     public override fun remove(key: String): Unit = removeKeychainItem(key)
     public override fun hasKey(key: String): Boolean = hasKeychainItem(key)
 
