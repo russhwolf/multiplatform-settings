@@ -3,8 +3,10 @@ public final class com/russhwolf/settings/coroutines/BlockingConvertersKt {
 }
 
 public final class com/russhwolf/settings/coroutines/ConvertersKt {
-	public static final fun toFlowSettings (Lcom/russhwolf/settings/ObservableSettings;)Lcom/russhwolf/settings/coroutines/FlowSettings;
-	public static final fun toSuspendSettings (Lcom/russhwolf/settings/Settings;)Lcom/russhwolf/settings/coroutines/SuspendSettings;
+	public static final fun toFlowSettings (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineDispatcher;)Lcom/russhwolf/settings/coroutines/FlowSettings;
+	public static synthetic fun toFlowSettings$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/russhwolf/settings/coroutines/FlowSettings;
+	public static final fun toSuspendSettings (Lcom/russhwolf/settings/Settings;Lkotlinx/coroutines/CoroutineDispatcher;)Lcom/russhwolf/settings/coroutines/SuspendSettings;
+	public static synthetic fun toSuspendSettings$default (Lcom/russhwolf/settings/Settings;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/russhwolf/settings/coroutines/SuspendSettings;
 }
 
 public final class com/russhwolf/settings/coroutines/CoroutineExtensionsKt {

@@ -19,97 +19,158 @@ package com.russhwolf.settings.coroutines
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 /**
  * Wraps this [Settings] in the [SuspendSettings] interface.
  */
 @ExperimentalSettingsApi
-public fun Settings.toSuspendSettings(): SuspendSettings = SuspendSettingsWrapper(this)
+public fun Settings.toSuspendSettings(
+    dispatcher: CoroutineDispatcher = Dispatchers.Default
+): SuspendSettings =
+    SuspendSettingsWrapper(this, dispatcher)
 
 /**
  * Wraps this [ObservableSettings] in the [FlowSettings] interface.
  */
 @ExperimentalSettingsApi
 @ExperimentalCoroutinesApi
-public fun ObservableSettings.toFlowSettings(): FlowSettings = FlowSettingsWrapper(this)
+public fun ObservableSettings.toFlowSettings(
+    dispatcher: CoroutineDispatcher = Dispatchers.Default
+): FlowSettings =
+    FlowSettingsWrapper(this, dispatcher)
 
 @ExperimentalSettingsApi
-private open class SuspendSettingsWrapper(private val delegate: Settings) : SuspendSettings {
-    public override suspend fun keys(): Set<String> = delegate.keys
-    public override suspend fun size(): Int = delegate.size
-    public override suspend fun clear() = delegate.clear()
-    public override suspend fun remove(key: String) = delegate.remove(key)
-    public override suspend fun hasKey(key: String): Boolean = delegate.hasKey(key)
+private open class SuspendSettingsWrapper(
+    private val delegate: Settings,
+    private val dispatcher: CoroutineDispatcher
+) : SuspendSettings {
+    public override suspend fun keys(): Set<String> = withContext(dispatcher) { delegate.keys }
+    public override suspend fun size(): Int = withContext(dispatcher) { delegate.size }
+    public override suspend fun clear() = withContext(dispatcher) { delegate.clear() }
+    public override suspend fun remove(key: String) = withContext(dispatcher) { delegate.remove(key) }
+    public override suspend fun hasKey(key: String): Boolean = withContext(dispatcher) { delegate.hasKey(key) }
 
-    public override suspend fun putInt(key: String, value: Int) = delegate.putInt(key, value)
-    public override suspend fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
-    public override suspend fun getIntOrNull(key: String): Int? = delegate.getIntOrNull(key)
+    public override suspend fun putInt(key: String, value: Int) = withContext(dispatcher) {
+        delegate.putInt(key, value)
+    }
 
-    public override suspend fun putLong(key: String, value: Long) = delegate.putLong(key, value)
-    public override suspend fun getLong(key: String, defaultValue: Long): Long =
+    public override suspend fun getInt(key: String, defaultValue: Int): Int = withContext(dispatcher) {
+        delegate.getInt(key, defaultValue)
+    }
+
+    public override suspend fun getIntOrNull(key: String): Int? = withContext(dispatcher) {
+        delegate.getIntOrNull(key)
+    }
+
+    public override suspend fun putLong(key: String, value: Long) = withContext(dispatcher) {
+        delegate.putLong(key, value)
+    }
+
+    public override suspend fun getLong(key: String, defaultValue: Long): Long = withContext(dispatcher) {
         delegate.getLong(key, defaultValue)
+    }
 
-    public override suspend fun getLongOrNull(key: String): Long? = delegate.getLongOrNull(key)
+    public override suspend fun getLongOrNull(key: String): Long? = withContext(dispatcher) {
+        delegate.getLongOrNull(key)
+    }
 
-    public override suspend fun putString(key: String, value: String) = delegate.putString(key, value)
-    public override suspend fun getString(key: String, defaultValue: String): String =
+    public override suspend fun putString(key: String, value: String) = withContext(dispatcher) {
+        delegate.putString(key, value)
+    }
+
+    public override suspend fun getString(key: String, defaultValue: String): String = withContext(dispatcher) {
         delegate.getString(key, defaultValue)
+    }
 
-    public override suspend fun getStringOrNull(key: String): String? = delegate.getStringOrNull(key)
+    public override suspend fun getStringOrNull(key: String): String? = withContext(dispatcher) {
+        delegate.getStringOrNull(key)
+    }
 
-    public override suspend fun putFloat(key: String, value: Float) = delegate.putFloat(key, value)
-    public override suspend fun getFloat(key: String, defaultValue: Float): Float =
+    public override suspend fun putFloat(key: String, value: Float) = withContext(dispatcher) {
+        delegate.putFloat(key, value)
+    }
+
+    public override suspend fun getFloat(key: String, defaultValue: Float): Float = withContext(dispatcher) {
         delegate.getFloat(key, defaultValue)
+    }
 
-    public override suspend fun getFloatOrNull(key: String): Float? = delegate.getFloatOrNull(key)
+    public override suspend fun getFloatOrNull(key: String): Float? = withContext(dispatcher) {
+        delegate.getFloatOrNull(key)
+    }
 
-    public override suspend fun putDouble(key: String, value: Double) = delegate.putDouble(key, value)
-    public override suspend fun getDouble(key: String, defaultValue: Double): Double =
+    public override suspend fun putDouble(key: String, value: Double) = withContext(dispatcher) {
+        delegate.putDouble(key, value)
+    }
+
+    public override suspend fun getDouble(key: String, defaultValue: Double): Double = withContext(dispatcher) {
         delegate.getDouble(key, defaultValue)
+    }
 
-    public override suspend fun getDoubleOrNull(key: String): Double? = delegate.getDoubleOrNull(key)
+    public override suspend fun getDoubleOrNull(key: String): Double? = withContext(dispatcher) {
+        delegate.getDoubleOrNull(key)
+    }
 
-    public override suspend fun putBoolean(key: String, value: Boolean) = delegate.putBoolean(key, value)
-    public override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
+    public override suspend fun putBoolean(key: String, value: Boolean) = withContext(dispatcher) {
+        delegate.putBoolean(key, value)
+    }
+
+    public override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean = withContext(dispatcher) {
         delegate.getBoolean(key, defaultValue)
+    }
 
-    public override suspend fun getBooleanOrNull(key: String): Boolean? = delegate.getBooleanOrNull(key)
+    public override suspend fun getBooleanOrNull(key: String): Boolean? = withContext(dispatcher) {
+        delegate.getBooleanOrNull(key)
+    }
 }
 
 @ExperimentalSettingsApi
 @ExperimentalCoroutinesApi
-private class FlowSettingsWrapper(private val delegate: ObservableSettings) :
-    SuspendSettingsWrapper(delegate), FlowSettings {
+private class FlowSettingsWrapper(
+    private val delegate: ObservableSettings,
+    private val dispatcher: CoroutineDispatcher
+) : SuspendSettingsWrapper(delegate, dispatcher), FlowSettings {
 
-    public override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> = delegate.getIntFlow(key, defaultValue)
-    public override fun getIntOrNullFlow(key: String): Flow<Int?> = delegate.getIntOrNullFlow(key)
+    public override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> =
+        delegate.getIntFlow(key, defaultValue).flowOn(dispatcher)
+
+    public override fun getIntOrNullFlow(key: String): Flow<Int?> =
+        delegate.getIntOrNullFlow(key).flowOn(dispatcher)
 
     public override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> =
-        delegate.getLongFlow(key, defaultValue)
+        delegate.getLongFlow(key, defaultValue).flowOn(dispatcher)
 
-    public override fun getLongOrNullFlow(key: String): Flow<Long?> = delegate.getLongOrNullFlow(key)
+    public override fun getLongOrNullFlow(key: String): Flow<Long?> =
+        delegate.getLongOrNullFlow(key).flowOn(dispatcher)
 
     public override fun getStringFlow(key: String, defaultValue: String): Flow<String> =
-        delegate.getStringFlow(key, defaultValue)
+        delegate.getStringFlow(key, defaultValue).flowOn(dispatcher)
 
-    public override fun getStringOrNullFlow(key: String): Flow<String?> = delegate.getStringOrNullFlow(key)
+    public override fun getStringOrNullFlow(key: String): Flow<String?> =
+        delegate.getStringOrNullFlow(key).flowOn(dispatcher)
 
     public override fun getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
-        delegate.getFloatFlow(key, defaultValue)
+        delegate.getFloatFlow(key, defaultValue).flowOn(dispatcher)
 
-    public override fun getFloatOrNullFlow(key: String): Flow<Float?> = delegate.getFloatOrNullFlow(key)
+    public override fun getFloatOrNullFlow(key: String): Flow<Float?> =
+        delegate.getFloatOrNullFlow(key).flowOn(dispatcher)
 
     public override fun getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
-        delegate.getDoubleFlow(key, defaultValue)
+        delegate.getDoubleFlow(key, defaultValue).flowOn(dispatcher)
 
-    public override fun getDoubleOrNullFlow(key: String): Flow<Double?> = delegate.getDoubleOrNullFlow(key)
+    public override fun getDoubleOrNullFlow(key: String): Flow<Double?> =
+        delegate.getDoubleOrNullFlow(key).flowOn(dispatcher)
 
     public override fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =
-        delegate.getBooleanFlow(key, defaultValue)
+        delegate.getBooleanFlow(key, defaultValue).flowOn(dispatcher)
 
-    public override fun getBooleanOrNullFlow(key: String): Flow<Boolean?> = delegate.getBooleanOrNullFlow(key)
+    public override fun getBooleanOrNullFlow(key: String): Flow<Boolean?> =
+        delegate.getBooleanOrNullFlow(key).flowOn(dispatcher)
 
     // Prefer the SuspendSettingsWrapper implementation to the FlowSettings one which calls getXXXFlow().first()
 
