@@ -1,5 +1,12 @@
 # Changelog #
 
+## v0.7.4 *(2021-03-14)* ##
+
+- Update to Kotlin 1.4.31
+- Update `multiplatform-settings-datastore` to use DataStore version 1.0.0-alpha08
+- Add `CoroutineDispatcher` parameter to `Settings.toSuspendSettings()` and `ObservableSettings().toFlowSettings()`
+  extension functions in `multiplatform-settings-coroutines` module
+
 ## v0.7.3 *(2021-02-20)* ##
 
 - Fix remaining crash in `KeychainSettings.clear()` (issue #79)

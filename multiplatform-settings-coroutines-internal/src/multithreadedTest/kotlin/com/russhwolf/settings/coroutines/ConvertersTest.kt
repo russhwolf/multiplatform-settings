@@ -23,6 +23,7 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 // TODO we should have test-cases specific to SuspendSettings and FlowSettings, but until we do we test things by
@@ -34,7 +35,9 @@ private val mockSettingsFactory = MockSettings.Factory()
 class ToSuspendSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): Settings {
-            return mockSettingsFactory.create(name).toSuspendSettings().toBlockingSettings()
+            return mockSettingsFactory.create(name)
+                .toSuspendSettings(Dispatchers.Unconfined)
+                .toBlockingSettings()
         }
     },
     hasListeners = false
@@ -44,7 +47,9 @@ class ToSuspendSettingsTest : BaseSettingsTest(
 class ToFlowSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): Settings {
-            return (mockSettingsFactory.create(name) as ObservableSettings).toFlowSettings().toBlockingSettings()
+            return (mockSettingsFactory.create(name) as ObservableSettings)
+                .toFlowSettings(Dispatchers.Unconfined)
+                .toBlockingSettings()
         }
     },
     hasListeners = false
