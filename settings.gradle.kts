@@ -19,7 +19,6 @@ pluginManagement {
             when (requested.id.id) {
                 "com.android.library" -> useModule("com.android.tools.build:gradle:${requested.version}")
                 "binary-compatibility-validator" -> useModule("org.jetbrains.kotlinx:binary-compatibility-validator:${requested.version}")
-                "com.jfrog.bintray" -> useModule("com.jfrog.bintray.gradle:gradle-bintray-plugin:${requested.version}")
             }
         }
     }
@@ -28,12 +27,10 @@ pluginManagement {
         google()
         mavenCentral()
         maven(url = "https://plugins.gradle.org/m2/")
-        maven(url = "https://dl.bintray.com/jetbrains/kotlin-native-dependencies")
     }
 }
 rootProject.name = "MultiplatformSettings"
 
-enableFeaturePreview("GRADLE_METADATA")
 include(
     ":multiplatform-settings",
     ":multiplatform-settings-test",
