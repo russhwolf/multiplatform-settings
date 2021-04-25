@@ -33,7 +33,7 @@ kotlin {
 
 dependencies {
     implementation(project(":shared"))
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.3")
     implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
 }
 

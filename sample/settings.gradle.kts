@@ -31,5 +31,4 @@ pluginManagement {
         maven(url = "https://plugins.gradle.org/m2/")
     }
 }
-enableFeaturePreview("GRADLE_METADATA")
 include(":shared", ":app-android", ":app-tornadofx", ":app-browser")
