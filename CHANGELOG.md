@@ -1,5 +1,13 @@
 # Changelog #
 
+## v0.7.5 *(2021-04-25)* ##
+
+- Update to Kotlin 1.4.32, Gradle 7.0, and Android Gradle Plugin 4.1.2
+- Update `multiplatform-settings-coroutines` to use coroutines version 1.4.3
+  - Don't use `strictly` for `multiplatform-settings-coroutines-native-mt` dependency declaration
+- Update `multiplatform-settings-datastore` to use DataStore version 1.0.0-beta01
+- Add `distinctUntilChanged()` operator to `multiplatform-settings-datastore` flows
+
 ## v0.7.4 *(2021-03-14)* ##
 
 - Update to Kotlin 1.4.31
