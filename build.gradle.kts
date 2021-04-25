@@ -28,7 +28,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 
     val emptyJavadocJar by tasks.registering(Jar::class) {

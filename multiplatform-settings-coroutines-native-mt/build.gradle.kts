@@ -46,11 +46,7 @@ kotlin {
             dependencies {
                 implementation(project(":multiplatform-settings"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
-                    version {
-                        strictly(Versions.coroutinesNativeMt)
-                    }
-                }
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesNativeMt}")
             }
         }
         val commonTest by getting {
