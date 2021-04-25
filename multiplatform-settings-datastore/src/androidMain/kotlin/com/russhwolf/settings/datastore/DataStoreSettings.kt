@@ -30,6 +30,7 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ExperimentalSettingsImplementation
 import com.russhwolf.settings.coroutines.FlowSettings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -55,58 +56,61 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
     }
 
     public override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> =
-        datastore.data.map { it[intPreferencesKey(key)] ?: defaultValue }
+        getValue { it[intPreferencesKey(key)] ?: defaultValue }
 
     public override fun getIntOrNullFlow(key: String): Flow<Int?> =
-        datastore.data.map { it[intPreferencesKey(key)] }
+        getValue { it[intPreferencesKey(key)] }
 
     public override suspend fun putLong(key: String, value: Long) {
         datastore.edit { it[longPreferencesKey(key)] = value }
     }
 
     public override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> =
-        datastore.data.map { it[longPreferencesKey(key)] ?: defaultValue }
+        getValue { it[longPreferencesKey(key)] ?: defaultValue }
 
     public override fun getLongOrNullFlow(key: String): Flow<Long?> =
-        datastore.data.map { it[longPreferencesKey(key)] }
+        getValue { it[longPreferencesKey(key)] }
 
     public override suspend fun putString(key: String, value: String) {
         datastore.edit { it[stringPreferencesKey(key)] = value }
     }
 
     public override fun getStringFlow(key: String, defaultValue: String): Flow<String> =
-        datastore.data.map { it[stringPreferencesKey(key)] ?: defaultValue }
+        getValue { it[stringPreferencesKey(key)] ?: defaultValue }
 
     public override fun getStringOrNullFlow(key: String): Flow<String?> =
-        datastore.data.map { it[stringPreferencesKey(key)] }
+        getValue { it[stringPreferencesKey(key)] }
 
     public override suspend fun putFloat(key: String, value: Float) {
         datastore.edit { it[floatPreferencesKey(key)] = value }
     }
 
     public override fun getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
-        datastore.data.map { it[floatPreferencesKey(key)] ?: defaultValue }
+        getValue { it[floatPreferencesKey(key)] ?: defaultValue }
 
     public override fun getFloatOrNullFlow(key: String): Flow<Float?> =
-        datastore.data.map { it[floatPreferencesKey(key)] }
+        getValue { it[floatPreferencesKey(key)] }
 
     public override suspend fun putDouble(key: String, value: Double) {
         datastore.edit { it[doublePreferencesKey(key)] = value }
     }
 
     public override fun getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
-        datastore.data.map { it[doublePreferencesKey(key)] ?: defaultValue }
+        getValue { it[doublePreferencesKey(key)] ?: defaultValue }
 
     public override fun getDoubleOrNullFlow(key: String): Flow<Double?> =
-        datastore.data.map { it[doublePreferencesKey(key)] }
+        getValue { it[doublePreferencesKey(key)] }
 
     public override suspend fun putBoolean(key: String, value: Boolean) {
         datastore.edit { it[booleanPreferencesKey(key)] = value }
     }
 
     public override fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =
-        datastore.data.map { it[booleanPreferencesKey(key)] ?: defaultValue }
+        getValue { it[booleanPreferencesKey(key)] ?: defaultValue }
 
     public override fun getBooleanOrNullFlow(key: String): Flow<Boolean?> =
-        datastore.data.map { it[booleanPreferencesKey(key)] }
+        getValue { it[booleanPreferencesKey(key)] }
+
+    private inline fun <T> getValue(crossinline getValue: (Preferences) -> T): Flow<T> =
+        datastore.data.map { getValue(it) }.distinctUntilChanged()
 }
