@@ -1,5 +1,9 @@
 # Changelog #
 
+## v0.7.6 *(2021-04-27)* ##
+
+- Update to Kotlin 1.5.0
+
 ## v0.7.5 *(2021-04-25)* ##
 
 - Update to Kotlin 1.4.32, Gradle 7.0, and Android Gradle Plugin 4.1.2

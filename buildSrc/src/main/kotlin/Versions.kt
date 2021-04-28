@@ -17,7 +17,7 @@
 @file:Suppress("KDocMissingDocumentation")
 
 object Versions {
-    const val multiplatformSettings = "0.7.5"
+    const val multiplatformSettings = "0.7.6"
 
     const val minSdk = 15
     const val compileSdk = 30
@@ -32,7 +32,7 @@ object Versions {
     const val coroutinesNativeMt = "1.4.3-native-mt"
     const val junit = "4.13.2"
     const val robolectric = "4.5.1"
-    const val serializationPlugin = "1.4.32"
+    const val serializationPlugin = "1.5.0"
     const val serializationRuntime = "1.1.0"
     const val turbine = "0.4.1"
 }
