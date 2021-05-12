@@ -255,7 +255,7 @@ This is a pre-1.0 library based on the alpha-release multiplatform functionality
 
 #### Apple Keychain
 
-In addition to the default `AppleSettings` implementation, there's also a `KeyChainSettings` on the Apple platforms that stores data on the Apple keychain. Construct it by passing a `String` which will be interpreted as a service name
+In addition to the default `AppleSettings` implementation, there's also a `KeychainSettings` on the Apple platforms that stores data on the Apple keychain. Construct it by passing a `String` which will be interpreted as a service name
 
 ```kotlin
 val serviceName: String // ...
