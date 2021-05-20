@@ -243,7 +243,7 @@ class SettingsSerializationTest {
         assertFalse("testClass.boolean?" in settings)
         assertEquals(1, settings.getInt("testClass.byte"))
         assertFalse("testClass.byte?" in settings)
-        assertEquals('2'.toInt(), settings.getInt("testClass.char"))
+        assertEquals('2'.code, settings.getInt("testClass.char"))
         assertFalse("testClass.char?" in settings)
         assertEquals(3.0, settings.getDouble("testClass.double"))
         assertFalse("testClass.double?" in settings)
@@ -356,7 +356,7 @@ class SettingsSerializationTest {
         assertEquals(true, settings.getBooleanOrNull("testClass.boolean?"))
         assertEquals(1, settings.getInt("testClass.byte"))
         assertEquals(true, settings.getBooleanOrNull("testClass.byte?"))
-        assertEquals('2'.toInt(), settings.getInt("testClass.char"))
+        assertEquals('2'.code, settings.getInt("testClass.char"))
         assertEquals(true, settings.getBooleanOrNull("testClass.char?"))
         assertEquals(3.0, settings.getDouble("testClass.double"))
         assertEquals(true, settings.getBooleanOrNull("testClass.double?"))
@@ -425,8 +425,6 @@ class SettingsSerializationTest {
 
     @Test
     fun docsExample() {
-        @Serializable
-        data class User(val nickname: String?)
 
         val defaultUser = User("Asdf")
 
@@ -505,6 +503,9 @@ class SettingsSerializationTest {
         assertEquals(null, settings.decodeValueOrNull(User.serializer(), "user"))
     }
 }
+
+@Serializable
+data class User(val nickname: String?)
 
 @Serializable
 data class Foo(val bar: String, val baz: Int = 42)

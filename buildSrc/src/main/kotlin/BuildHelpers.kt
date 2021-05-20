@@ -88,8 +88,7 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
     }
     targets.configureEach {
         it.compilations.configureEach {
-            // TODO having trouble suppressing warning about confliction coroutines versions
-//            it.kotlinOptions.allWarningsAsErrors = true
+            it.kotlinOptions.allWarningsAsErrors = true
         }
     }
 

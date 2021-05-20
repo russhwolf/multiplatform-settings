@@ -68,7 +68,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean macosX64Test iosX64Test watchosX86Test tvosX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMetadataPublicationToMavenLocal publishIosArm32PublicationToMavenLocal publishIosArm64PublicationToMavenLocal publishIosX64PublicationToMavenLocal publishMacosX64PublicationToMavenLocal publishWatchosArm32PublicationToMavenLocal publishWatchosArm64PublicationToMavenLocal publishWatchosX86PublicationToMavenLocal publishTvosArm64PublicationToMavenLocal publishTvosX64PublicationToMavenLocal'
+          tasks: 'clean macosX64Test iosX64Test watchosX86Test tvosX64Test publishKotlinMultiplatformPublicationToMavenLocal publishIosArm32PublicationToMavenLocal publishIosArm64PublicationToMavenLocal publishIosX64PublicationToMavenLocal publishMacosX64PublicationToMavenLocal publishWatchosArm32PublicationToMavenLocal publishWatchosArm64PublicationToMavenLocal publishWatchosX86PublicationToMavenLocal publishTvosArm64PublicationToMavenLocal publishTvosX64PublicationToMavenLocal'
           
       - task: Gradle@2
         inputs:
@@ -114,7 +114,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMetadataPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal'
+          tasks: 'clean mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal'
 
     pool:
       vmImage: 'windows-latest'
