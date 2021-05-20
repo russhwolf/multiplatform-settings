@@ -40,6 +40,7 @@ public final class com/russhwolf/settings/MockSettings$Factory : com/russhwolf/s
 }
 
 public final class com/russhwolf/settings/MockSettings$Listener : com/russhwolf/settings/SettingsListener {
+	public fun <init> (Ljava/util/List;Lkotlin/jvm/functions/Function0;)V
 	public fun deactivate ()V
 }
 

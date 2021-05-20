@@ -52,7 +52,7 @@ Then, simply add the dependency to your common source-set dependencies
 commonMain {
     dependencies {
         // ...
-        implementation("com.russhwolf:multiplatform-settings:0.7.6")
+        implementation("com.russhwolf:multiplatform-settings:0.7.7")
     }
 }
 ``` 
@@ -144,7 +144,7 @@ val factory: Settings.Factory = AppleSettings.Factory()
 To create a `Settings` instance from common without needing to pass platform-specific dependencies, add the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatform-settings` as an API dependency, so you can use it as a replacement for that default dependency.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-no-arg:0.7.6")
+implementation("com.russhwolf:multiplatform-settings-no-arg:0.7.7")
 ```
 
 Then from common code, you can write
@@ -238,7 +238,7 @@ Note that for the `AppleSettings` implementation, some entries are unremovable a
 A testing dependency is available to aid in testing code that interacts with this library.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-test:0.7.6")
+implementation("com.russhwolf:multiplatform-settings-test:0.7.7")
 ```    
 
 This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
@@ -309,7 +309,7 @@ On Apple platforms, the `AppleSettings` listeners are designed to work within th
 A `kotlinx-serialization` integration exists so it's easier to save non-primitive data
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-serialization:0.7.6")
+implementation("com.russhwolf:multiplatform-settings-serialization:0.7.7")
 ```
 
 This essentially uses the `Settings` store as a serialization format. Thus for a serializable class
@@ -346,10 +346,10 @@ Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalS
 A separate `multiplatform-settings-coroutines` dependency includes various coroutine APIs.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-coroutines:0.7.6")
+implementation("com.russhwolf:multiplatform-settings-coroutines:0.7.7")
 
 // Or, if you use native-mt coroutines release
-implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:0.7.6")
+implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:0.7.7")
 ```
 
 This adds flow extensions for all types which use the listener APIs internally.
@@ -389,7 +389,7 @@ val blockingSettings: Settings = suspendSettings.toBlockingSettings()
 An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-datastore:0.7.6")
+implementation("com.russhwolf:multiplatform-settings-datastore:0.7.7")
 ```
 
 This provides a `DataStoreSettings` class

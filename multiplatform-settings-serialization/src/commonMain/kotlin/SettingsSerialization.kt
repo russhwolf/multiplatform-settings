@@ -278,7 +278,7 @@ private class SettingsEncoder(
 
     public override fun encodeBoolean(value: Boolean) = settings.putBoolean(getKey(), value)
     public override fun encodeByte(value: Byte) = settings.putInt(getKey(), value.toInt())
-    public override fun encodeChar(value: Char) = settings.putInt(getKey(), value.toInt())
+    public override fun encodeChar(value: Char) = settings.putInt(getKey(), value.code)
     public override fun encodeDouble(value: Double) = settings.putDouble(getKey(), value)
     public override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) = settings.putInt(getKey(), index)
     public override fun encodeFloat(value: Float) = settings.putFloat(getKey(), value)

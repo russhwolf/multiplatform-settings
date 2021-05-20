@@ -31,9 +31,9 @@ private inline fun <T> ObservableSettings.createFlow(
     defaultValue: T,
     crossinline getter: Settings.(String, T) -> T
 ): Flow<T> = callbackFlow {
-    offer(getter(key, defaultValue))
+    send(getter(key, defaultValue))
     val listener = addListener(key) {
-        offer(getter(key, defaultValue))
+        trySend(getter(key, defaultValue))
     }
     awaitClose {
         listener.deactivate()
