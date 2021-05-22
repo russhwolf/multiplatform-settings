@@ -20,6 +20,12 @@ jobs:
             mkdir -p ./jdk/binaries/
             curl https://cdn.azul.com/zulu/bin/zulu8.42.0.23-ca-fx-jdk8.0.232-linux_x64.tar.gz --output ./jdk/zulu8.42.0.23-ca-fx-jdk8.0.232-linux_x64.tar.gz
 
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            sudo apt-get install libqdbm-dev
+
       - task: JavaToolInstaller@0
         inputs:
           jdkFile: ./jdk/zulu8.42.0.23-ca-fx-jdk8.0.232-linux_x64.tar.gz
