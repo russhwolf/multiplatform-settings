@@ -41,17 +41,17 @@ abstract class BaseCoroutineExtensionsTest {
         settings.setter("foo", firstValue)
         settings.flowBuilder("foo", defaultValue)
             .test {
-                assertEquals(firstValue, expectItem())
+                assertEquals(firstValue, awaitItem())
                 expectNoEvents()
                 settings.setter("foo", firstValue)
                 expectNoEvents()
                 settings.setter("bar", firstValue)
                 expectNoEvents()
                 settings.setter("foo", secondValue)
-                assertEquals(secondValue, expectItem())
+                assertEquals(secondValue, awaitItem())
                 expectNoEvents()
                 settings.remove("foo")
-                assertEquals(defaultValue, expectItem())
+                assertEquals(defaultValue, awaitItem())
                 expectNoEvents()
             }
     }

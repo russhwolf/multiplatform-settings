@@ -15,14 +15,14 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "1.4.32" apply false
-    kotlin("android") version "1.4.32" apply false
+    kotlin("multiplatform") version "1.5.30" apply false
+    kotlin("android") version "1.5.30" apply false
     id("com.android.library") version "4.1.2" apply false
     id("com.android.application") version "4.1.2" apply false
 }
 
 allprojects {
-    ext["library_version"] = "0.7.7"
+    ext["library_version"] = "0.8"
 
     repositories {
         mavenLocal()

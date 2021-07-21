@@ -1,11 +1,20 @@
 # Changelog #
 
+## v0.8 *(2021-08-26)* ##
+
+- Update to Kotlin 1.5.30 and Gradle 7.1
+- Enable hierarchical project model
+- Update `multiplatform-settings-coroutines` to use coroutines version 1.5.1
+- Update `multiplatform-settings-datastore` to use DataStore release version 1.0.0
+- Update `multiplatform-settings-serialization` to use serialization version 1.2.2
+- Other dependency version updates
+
 ## v0.7.7 *(2021-05-20)* ##
 
 - Fix missing Kotlin 1.5.0 updates
 - Update `multiplatform-settings-coroutines` to use coroutines version 1.5.0
 - Update `multiplatform-settings-datastore` to use DataStore version 1.0.0-beta01
-- Update `multiplatform-settings-serealization` to use serialization version 1.2.1
+- Update `multiplatform-settings-serialization` to use serialization version 1.2.1
 
 ## v0.7.6 *(2021-04-27)* ##
 

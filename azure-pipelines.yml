@@ -80,7 +80,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean iosTest'
+          tasks: 'clean iosX64Test'
 
       - task: Xcode@5
         inputs:

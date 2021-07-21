@@ -54,8 +54,7 @@ kotlin {
                 implementation(project(":tests"))
                 implementation(project(":multiplatform-settings-test"))
 
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
 
                 implementation("app.cash.turbine:turbine:${Versions.turbine}")
             }
@@ -67,8 +66,6 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
                 implementation("junit:junit:${Versions.junit}")
                 implementation("androidx.test:core:${Versions.androidxTest}")
                 implementation("androidx.test.ext:junit:${Versions.androidxTestExt}")
@@ -82,9 +79,8 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:${Versions.junit}")
+
+            implementation("junit:junit:${Versions.junit}")
             }
         }
 
