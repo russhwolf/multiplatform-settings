@@ -29,6 +29,8 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTargetPreset
+import org.jetbrains.kotlin.konan.target.Architecture
+import org.jetbrains.kotlin.konan.target.KonanTarget
 
 private val Project.kotlin: KotlinMultiplatformExtension
     get() = extensions.getByType(KotlinMultiplatformExtension::class.java)
@@ -88,7 +90,8 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
     }
     targets.configureEach {
         it.compilations.configureEach {
-            it.kotlinOptions.allWarningsAsErrors = true
+            // TODO reenable this once warnings are cleared
+//            it.kotlinOptions.allWarningsAsErrors = true
         }
     }
 
@@ -137,32 +140,15 @@ private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
             dependsOn(appleTest)
         }
 
-        // TODO this is just here to make the IDE happy (ish) while we wait for HMPP to improve
-        if (ideaActive) {
-            findByName("macosX64Main")?.apply {
-                kotlin.srcDirs(*nativeMain.kotlin.srcDirs.toTypedArray())
-                kotlin.srcDirs(*appleMain.kotlin.srcDirs.toTypedArray())
-                kotlin.srcDirs(*apple64Main.kotlin.srcDirs.toTypedArray())
-            }
-            findByName("macosX64Test")?.apply {
-                kotlin.srcDirs(*nativeTest.kotlin.srcDirs.toTypedArray())
-                kotlin.srcDirs(*appleTest.kotlin.srcDirs.toTypedArray())
-                kotlin.srcDirs(*apple64Test.kotlin.srcDirs.toTypedArray())
-            }
-            findByName("jvmMain")?.apply {
-                kotlin.srcDirs(*multithreadedMain.kotlin.srcDirs.toTypedArray())
-            }
-            findByName("jvmTest")?.apply {
-                kotlin.srcDirs(*multithreadedTest.kotlin.srcDirs.toTypedArray())
-            }
-        }
-
         targets
             .withType(KotlinNativeTarget::class.java)
             .matching { it.konanTarget.family.isAppleFamily }
             .configureEach {
                 it.apply {
-                    if (konanTarget.architecture.bitness == 32 || it.name == "watchosArm64") {
+                    if (
+                        konanTarget.architecture !in listOf(Architecture.X64, Architecture.ARM64) ||
+                        konanTarget in listOf<KonanTarget>(KonanTarget.WATCHOS_ARM64)
+                    ) {
                         compilations.getByName("main").defaultSourceSet.dependsOn(apple32Main)
                         compilations.getByName("test").defaultSourceSet.dependsOn(apple32Test)
                     } else {
