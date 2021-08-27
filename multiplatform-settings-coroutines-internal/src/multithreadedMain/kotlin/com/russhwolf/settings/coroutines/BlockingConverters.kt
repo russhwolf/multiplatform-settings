@@ -18,7 +18,6 @@ package com.russhwolf.settings.coroutines
 
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings
-import kotlinx.coroutines.runBlocking
 
 /**
  * Wraps this [SuspendSettings] in the [Settings] interface.

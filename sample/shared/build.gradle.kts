@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -29,14 +28,7 @@ kotlin {
         browser()
     }
 
-    val isDevice = System.getenv("SDK_NAME")?.startsWith("iphoneos") == true
-    val iosTarget = if (isDevice) {
-        presets.getByName("iosArm64")
-    } else {
-        presets.getByName("iosX64")
-    }
-    targetFromPreset(iosTarget, "ios") {
-        this as KotlinNativeTarget
+    ios {
         binaries {
             framework("Shared") {
                 // Make AppleSettings visible from Swift
@@ -124,22 +116,4 @@ android {
 
 tasks.withType<KotlinCompile>().all {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-
-task("copyFramework") {
-    val buildType = project.findProperty("kotlin.build.type") as? String ?: "DEBUG"
-    val framework = (kotlin.targets["ios"] as KotlinNativeTarget).compilations["main"].target.binaries.findFramework("Shared", buildType)!!
-    dependsOn(framework.linkTask)
-
-    doLast {
-        val srcFile = framework.outputFile
-        val targetDir = project.property("configuration.build.dir") as? String ?: ""
-        copy {
-            from(srcFile.parent)
-            into(targetDir)
-            include("Shared.framework/**")
-            include("Shared.framework.dSYM")
-        }
-    }
 }

@@ -35,8 +35,7 @@ kotlin {
             dependencies {
                 implementation(project(":tests"))
 
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
 
@@ -46,8 +45,6 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
                 implementation("junit:junit:${Versions.junit}")
             }
         }
@@ -58,8 +55,6 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
                 implementation("junit:junit:${Versions.junit}")
             }
         }

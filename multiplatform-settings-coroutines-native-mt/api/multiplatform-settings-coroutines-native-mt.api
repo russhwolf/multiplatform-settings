@@ -78,6 +78,11 @@ public abstract interface class com/russhwolf/settings/coroutines/FlowSettings :
 public final class com/russhwolf/settings/coroutines/FlowSettings$Companion {
 }
 
+public final class com/russhwolf/settings/coroutines/RunBlockingKt {
+	public static final fun runBlocking (Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
+	public static synthetic fun runBlocking$default (Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
 public abstract interface class com/russhwolf/settings/coroutines/SuspendSettings {
 	public static final field Companion Lcom/russhwolf/settings/coroutines/SuspendSettings$Companion;
 	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

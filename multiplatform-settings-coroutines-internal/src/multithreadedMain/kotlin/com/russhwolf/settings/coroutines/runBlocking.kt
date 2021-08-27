@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Russell Wolf
+ * Copyright 2021 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.5.30"
-}
+package com.russhwolf.settings.coroutines
 
-repositories {
-    google()
-    gradlePluginPortal()
-    mavenCentral()
-}
+import kotlinx.coroutines.CoroutineScope
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
-dependencies {
-    implementation(kotlin("gradle-plugin"))
-    implementation("com.android.tools.build:gradle:4.1.2")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.10.1")
-    implementation(kotlin("compiler-embeddable"))
-}
+internal expect fun <T> runBlocking(
+    context: CoroutineContext = EmptyCoroutineContext,
+    block: suspend CoroutineScope.() -> T
+): T

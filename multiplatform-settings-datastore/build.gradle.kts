@@ -40,7 +40,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
+                implementation(kotlin("test"))
 
                 implementation(project(":tests"))
                 implementation(project(":multiplatform-settings-test"))
@@ -55,8 +55,6 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
 
                 implementation("junit:junit:${Versions.junit}")
                 implementation("androidx.test:core:${Versions.androidxTest}")

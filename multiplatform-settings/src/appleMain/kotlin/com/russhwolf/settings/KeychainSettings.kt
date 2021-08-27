@@ -24,10 +24,7 @@ import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.value
-import platform.CoreFoundation.CFArrayGetCount
-import platform.CoreFoundation.CFArrayGetValueAtIndex
 import platform.CoreFoundation.CFArrayRefVar
-import platform.CoreFoundation.CFDictionaryCreate
 import platform.CoreFoundation.CFDictionaryGetValue
 import platform.CoreFoundation.CFDictionaryRef
 import platform.CoreFoundation.CFStringRef
@@ -43,9 +40,6 @@ import platform.Foundation.NSKeyedArchiver
 import platform.Foundation.NSKeyedUnarchiver
 import platform.Foundation.NSNumber
 import platform.Foundation.NSString
-import platform.Foundation.NSUTF8StringEncoding
-import platform.Foundation.create
-import platform.Foundation.dataUsingEncoding
 import platform.Foundation.numberWithBool
 import platform.Foundation.numberWithDouble
 import platform.Foundation.numberWithFloat
@@ -110,8 +104,8 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
             // NB using this instead of List(count) { i -> ... } to avoid platform-dependent Int/Long conversion
             val count = CFArrayGetCount(attributes.value)
             val keys = mutableListOf<String>()
-            for (i in 0 until count) {
-                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i)?.reinterpret()
+            for (i in 0 until count.asInt()) {
+                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.toCFIndex())?.reinterpret()
                 val cfKey: CFStringRef? = CFDictionaryGetValue(item, kSecAttrAccount)?.reinterpret()
                 val nsKey = CFBridgingRelease(cfKey) as NSString
                 keys.add(nsKey.toKString())
@@ -275,3 +269,4 @@ internal inline fun <T> cfRetain(vararg values: Any?, block: MemScope.(Array<CFT
         cfValues.forEach { CFBridgingRelease(it) }
     }
 }
+
