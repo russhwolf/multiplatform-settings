@@ -61,7 +61,7 @@ See also the sample project, which uses this structure.
 
 ## Usage
 
-The `Settings` interface has implementations on the Android, iOS, macOS, watchOOS, tvOS, JS, JVM, and Windows platforms. (Note that the two JVM implementations and the Windows implementation are currently marked as experimental.)
+The `Settings` interface has implementations on the Android, iOS, macOS, watchOS, tvOS, JS, JVM, and Windows platforms. (Note that the two JVM implementations and the Windows implementation are currently marked as experimental.)
 
 ### Creating a Settings instance
 
