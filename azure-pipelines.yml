@@ -82,13 +82,16 @@ jobs:
           testResultsFiles: '**/TEST-*.xml'
           tasks: 'clean iosX64Test'
 
-      - task: Xcode@5
-        inputs:
-          actions: 'build'
-          configuration: 'Debug'
-          scheme: 'SettingsDemo'
-          sdk: 'iphoneos'
-          packageApp: false
+    # TODO disabled because embedAndSign task needs more signing/provisioning config
+    #      - task: Xcode@5
+    #        inputs:
+    #          actions: 'build'
+    #          configuration: 'Debug'
+    #          scheme: 'SettingsDemo'
+    #          sdk: 'iphoneos'
+    #          packageApp: false
+    #          signingOption: default
+    #          args: '-allowProvisioningUpdates'
 
     # TODO Disabled because it isn't working in Azure
     #      - task: Xcode@5
