@@ -1,6 +1,6 @@
 # Changelog #
 
-## v0.8 *(2021-08-26)* ##
+## v0.8 *(2021-08-27)* ##
 
 - Update to Kotlin 1.5.30 and Gradle 7.1
 - Add new Apple ARM targets
