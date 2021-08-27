@@ -3,6 +3,7 @@
 ## v0.8 *(2021-08-26)* ##
 
 - Update to Kotlin 1.5.30 and Gradle 7.1
+- Add new Apple ARM targets
 - Enable hierarchical project model
 - Update `multiplatform-settings-coroutines` to use coroutines version 1.5.1
 - Update `multiplatform-settings-datastore` to use DataStore release version 1.0.0

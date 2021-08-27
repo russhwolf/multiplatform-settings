@@ -36,7 +36,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean publishIosArm32PublicationToMavenRepository publishIosArm64PublicationToMavenRepository publishIosX64PublicationToMavenRepository publishMacosX64PublicationToMavenRepository publishWatchosArm32PublicationToMavenRepository publishWatchosArm64PublicationToMavenRepository publishWatchosX86PublicationToMavenRepository publishTvosArm64PublicationToMavenRepository publishTvosX64PublicationToMavenRepository'
+          tasks: 'clean publishKotlinMultiplatformPublicationToMavenRepository publishIosArm32PublicationToMavenRepository publishIosArm64PublicationToMavenRepository publishIosSimulatorArm64PublicationToMavenRepository publishIosX64PublicationToMavenRepository publishMacosX64PublicationToMavenRepository publishMacosArm64PublicationToMavenRepository publishWatchosArm32PublicationToMavenRepository publishWatchosArm64PublicationToMavenRepository publishWatchosSimulatorArm64PublicationToMavenRepository publishWatchosX86PublicationToMavenRepository publishWatchosX64PublicationToMavenRepository publishTvosArm64PublicationToMavenRepository publishTvosSimulatorArm64PublicationToMavenRepository publishTvosX64PublicationToMavenRepository'
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: $(sonatype_username)
           ORG_GRADLE_PROJECT_sonatypePassword: $(sonatype_password)

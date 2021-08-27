@@ -68,7 +68,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean macosX64Test iosX64Test watchosX86Test tvosX64Test publishKotlinMultiplatformPublicationToMavenLocal publishIosArm32PublicationToMavenLocal publishIosArm64PublicationToMavenLocal publishIosX64PublicationToMavenLocal publishMacosX64PublicationToMavenLocal publishWatchosArm32PublicationToMavenLocal publishWatchosArm64PublicationToMavenLocal publishWatchosX86PublicationToMavenLocal publishTvosArm64PublicationToMavenLocal publishTvosX64PublicationToMavenLocal'
+          tasks: 'clean macosX64Test iosX64Test watchosX64Test watchosX86Test tvosX64Test publishKotlinMultiplatformPublicationToMavenLocal publishIosArm32PublicationToMavenLocal publishIosArm64PublicationToMavenLocal publishIosSimulatorArm64PublicationToMavenLocal publishIosX64PublicationToMavenLocal publishMacosX64PublicationToMavenLocal publishMacosArm64PublicationToMavenLocal publishWatchosArm32PublicationToMavenLocal publishWatchosArm64PublicationToMavenLocal publishWatchosSimulatorArm64PublicationToMavenLocal publishWatchosX86PublicationToMavenLocal publishWatchosX64PublicationToMavenLocal publishTvosArm64PublicationToMavenLocal publishTvosSimulatorArm64PublicationToMavenLocal publishTvosX64PublicationToMavenLocal'
           
       - task: Gradle@2
         inputs:
