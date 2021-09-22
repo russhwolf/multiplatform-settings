@@ -17,6 +17,7 @@
 package com.russhwolf.settings
 
 import kotlinx.cinterop.MemScope
+import kotlinx.cinterop.UnsafeNumber
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArrayOf
 import kotlinx.cinterop.convert
@@ -24,7 +25,10 @@ import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.value
+import platform.CoreFoundation.CFArrayGetCount
+import platform.CoreFoundation.CFArrayGetValueAtIndex
 import platform.CoreFoundation.CFArrayRefVar
+import platform.CoreFoundation.CFDictionaryCreate
 import platform.CoreFoundation.CFDictionaryGetValue
 import platform.CoreFoundation.CFDictionaryRef
 import platform.CoreFoundation.CFStringRef
@@ -40,6 +44,9 @@ import platform.Foundation.NSKeyedArchiver
 import platform.Foundation.NSKeyedUnarchiver
 import platform.Foundation.NSNumber
 import platform.Foundation.NSString
+import platform.Foundation.NSUTF8StringEncoding
+import platform.Foundation.create
+import platform.Foundation.dataUsingEncoding
 import platform.Foundation.numberWithBool
 import platform.Foundation.numberWithDouble
 import platform.Foundation.numberWithFloat
@@ -89,6 +96,7 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
 
     private val defaultProperties = mapOf(kSecClass to kSecClassGenericPassword) + mapOf(*defaultProperties)
 
+    @OptIn(UnsafeNumber::class)
     public override val keys: Set<String>
         get() = memScoped {
             val attributes = alloc<CFArrayRefVar>()
@@ -104,8 +112,8 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
             // NB using this instead of List(count) { i -> ... } to avoid platform-dependent Int/Long conversion
             val count = CFArrayGetCount(attributes.value)
             val keys = mutableListOf<String>()
-            for (i in 0 until count.asInt()) {
-                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.toCFIndex())?.reinterpret()
+            for (i in 0 until count.toInt()) {
+                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.convert())?.reinterpret()
                 val cfKey: CFStringRef? = CFDictionaryGetValue(item, kSecAttrAccount)?.reinterpret()
                 val nsKey = CFBridgingRelease(cfKey) as NSString
                 keys.add(nsKey.toKString())
@@ -132,10 +140,13 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
     public override fun getLong(key: String, defaultValue: Long): Long = getLongOrNull(key) ?: defaultValue
     public override fun getLongOrNull(key: String): Long? = unarchiveNumber(getKeychainItem(key))?.longLongValue
 
+    @OptIn(UnsafeNumber::class)
     public override fun putString(key: String, value: String): Unit =
         addOrUpdateKeychainItem(key, value.toNSString().dataUsingEncoding(NSUTF8StringEncoding))
 
     public override fun getString(key: String, defaultValue: String): String = getStringOrNull(key) ?: defaultValue
+
+    @OptIn(UnsafeNumber::class)
     public override fun getStringOrNull(key: String): String? =
         getKeychainItem(key)?.let { NSString.create(it, NSUTF8StringEncoding)?.toKString() }
 
@@ -240,6 +251,7 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
 internal inline fun MemScope.cfDictionaryOf(vararg items: Pair<CFStringRef?, CFTypeRef?>): CFDictionaryRef? =
     cfDictionaryOf(mapOf(*items))
 
+@OptIn(UnsafeNumber::class)
 internal inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>): CFDictionaryRef? {
     val size = map.size
     val keys = allocArrayOf(*map.keys.toTypedArray())

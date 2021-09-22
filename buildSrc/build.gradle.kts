@@ -15,13 +15,14 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.5.30"
+    kotlin("jvm") version "1.6.0-M1-493"
 }
 
 repositories {
     google()
     gradlePluginPortal()
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
 }
 
 dependencies {
