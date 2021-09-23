@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTargetPreset
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsTargetPreset
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmWithJavaTargetPreset
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetPreset
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTargetPreset
@@ -58,6 +59,8 @@ fun Project.standardConfiguration(
 private val ideaActive by lazy { System.getProperty("idea.active") == "true" }
 private val KotlinTargetPreset<*>.isJsTargetPreset: Boolean
     get() = this is KotlinJsTargetPreset || this is KotlinJsIrTargetPreset
+private val KotlinTargetPreset<*>.isNativeTargetPreset: Boolean
+    get() = this is KotlinNativeTargetPreset
 private val KotlinTarget.isJsTarget: Boolean
     get() = this is KotlinJsTarget || this is KotlinJsIrTarget
 
@@ -95,7 +98,9 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
         }
     }
 
-    linkNativeSourceSets()
+    if (targetPresets.any { it.isNativeTargetPreset }) {
+        linkNativeSourceSets()
+    }
 }
 
 private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
