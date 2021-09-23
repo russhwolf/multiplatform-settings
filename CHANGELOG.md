@@ -1,5 +1,13 @@
 # Changelog #
 
+## v0.8.1 *(2021-09-23)* ##
+
+- Update to Kotlin 1.5.31 and Gradle 7.2
+- Update `multiplatform-settings-coroutines` to use coroutines version 1.5.2
+- Update `multiplatform-settings-serialization` to use serialization version 1.3.0-RC
+- Add missing Apple targets to `multiplatform-settings-coroutines`, `multiplatform-settings-serialization`,
+  and `multiplatform-settings-no-arg`
+
 ## v0.8 *(2021-08-27)* ##
 
 - Update to Kotlin 1.5.30 and Gradle 7.1
