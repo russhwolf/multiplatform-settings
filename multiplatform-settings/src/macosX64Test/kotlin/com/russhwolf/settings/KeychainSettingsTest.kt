@@ -52,7 +52,7 @@ class KeychainSettingsTest : BaseSettingsTest(
         settings -= "key"
         settings["key"] = "value"
         val value = try {
-            cfRetain("key", "com.russhwolf.settings.test") { (cfKey, cfService) ->
+            cfRetain("key", "com.russhwolf.settings.test") { cfKey, cfService ->
                 val cfValue = alloc<CFTypeRefVar>()
                 val query = cfDictionaryOf(
                     kSecClass to kSecClassGenericPassword,

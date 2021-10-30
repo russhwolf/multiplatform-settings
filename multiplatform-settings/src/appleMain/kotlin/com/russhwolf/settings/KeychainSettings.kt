@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+@file:OptIn(UnsafeNumber::class) // due to CFIndex usage
+
 package com.russhwolf.settings
 
 import kotlinx.cinterop.MemScope
+import kotlinx.cinterop.UnsafeNumber
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArrayOf
-import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
@@ -30,6 +32,7 @@ import platform.CoreFoundation.CFArrayRefVar
 import platform.CoreFoundation.CFDictionaryCreate
 import platform.CoreFoundation.CFDictionaryGetValue
 import platform.CoreFoundation.CFDictionaryRef
+import platform.CoreFoundation.CFIndex
 import platform.CoreFoundation.CFStringRef
 import platform.CoreFoundation.CFTypeRef
 import platform.CoreFoundation.CFTypeRefVar
@@ -107,17 +110,14 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
                 return emptySet()
             }
 
-            // NB using this instead of List(count) { i -> ... } to avoid platform-dependent Int/Long conversion
-            val count = CFArrayGetCount(attributes.value)
-            val keys = mutableListOf<String>()
-            for (i in 0 until count) {
-                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i)?.reinterpret()
+            @Suppress("RemoveRedundantCallsOfConversionMethods") // IDE thinks CFIndex == Int but might be Long
+            val list = List(CFArrayGetCount(attributes.value).toInt()) { i ->
+                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.toCFIndex())?.reinterpret()
                 val cfKey: CFStringRef? = CFDictionaryGetValue(item, kSecAttrAccount)?.reinterpret()
                 val nsKey = CFBridgingRelease(cfKey) as NSString
-                keys.add(nsKey.toKString())
+                nsKey.toKString()
             }
-
-            return keys.toSet()
+            return list.toSet()
         }
 
     public override val size: Int get() = keys.size
@@ -177,7 +177,7 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
         }
     }
 
-    private inline fun addKeychainItem(key: String, value: NSData?): Unit = cfRetain(key, value) { (cfKey, cfValue) ->
+    private inline fun addKeychainItem(key: String, value: NSData?): Unit = cfRetain(key, value) { cfKey, cfValue ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
             kSecValueData to cfValue
@@ -185,23 +185,22 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
         status.checkError()
     }
 
-    private inline fun removeKeychainItem(key: String): Unit = cfRetain(key) { (cfKey) ->
+    private inline fun removeKeychainItem(key: String): Unit = cfRetain(key) { cfKey ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
         ) { SecItemDelete(it) }
         status.checkError(errSecItemNotFound)
     }
 
-    private inline fun updateKeychainItem(key: String, value: NSData?): Unit =
-        cfRetain(key, value) { (cfKey, cfValue) ->
-            val status = keyChainOperation(
-                kSecAttrAccount to cfKey,
-                kSecReturnData to kCFBooleanFalse
-            ) { SecItemUpdate(it, cfDictionaryOf(kSecValueData to cfValue)) }
-            status.checkError()
-        }
+    private inline fun updateKeychainItem(key: String, value: NSData?): Unit = cfRetain(key, value) { cfKey, cfValue ->
+        val status = keyChainOperation(
+            kSecAttrAccount to cfKey,
+            kSecReturnData to kCFBooleanFalse
+        ) { SecItemUpdate(it, cfDictionaryOf(kSecValueData to cfValue)) }
+        status.checkError()
+    }
 
-    private inline fun getKeychainItem(key: String): NSData? = cfRetain(key) { (cfKey) ->
+    private inline fun getKeychainItem(key: String): NSData? = cfRetain(key) { cfKey ->
         val cfValue = alloc<CFTypeRefVar>()
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
@@ -215,7 +214,7 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
         CFBridgingRelease(cfValue.value) as? NSData
     }
 
-    private inline fun hasKeychainItem(key: String): Boolean = cfRetain(key) { (cfKey) ->
+    private inline fun hasKeychainItem(key: String): Boolean = cfRetain(key) { cfKey ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
             kSecMatchLimit to kSecMatchLimitOne
@@ -254,7 +253,7 @@ internal inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>):
         kCFAllocatorDefault,
         keys.reinterpret(),
         values.reinterpret(),
-        size.convert(),
+        size.toCFIndex(),
         null,
         null
     )
@@ -267,12 +266,25 @@ internal inline fun String.toNSString() = this as NSString
 @Suppress("CAST_NEVER_SUCCEEDS")
 internal inline fun NSString.toKString() = this as String
 
-internal inline fun <T> cfRetain(vararg values: Any?, block: MemScope.(Array<CFTypeRef?>) -> T): T = memScoped {
-    val cfValues = Array(values.size) { i -> CFBridgingRetain(values[i]) }
+internal inline fun <T> cfRetain(value: Any?, block: MemScope.(CFTypeRef?) -> T): T = memScoped {
+    val cfValue = CFBridgingRetain(value)
     return try {
-        block(cfValues)
+        block(cfValue)
     } finally {
-        cfValues.forEach { CFBridgingRelease(it) }
+        CFBridgingRelease(cfValue)
     }
 }
 
+internal inline fun <T> cfRetain(value1: Any?, value2: Any?, block: MemScope.(CFTypeRef?, CFTypeRef?) -> T): T =
+    memScoped {
+        val cfValue1 = CFBridgingRetain(value1)
+        val cfValue2 = CFBridgingRetain(value2)
+        return try {
+            block(cfValue1, cfValue2)
+        } finally {
+            CFBridgingRelease(cfValue1)
+            CFBridgingRelease(cfValue2)
+        }
+    }
+
+internal expect fun Number.toCFIndex(): CFIndex
