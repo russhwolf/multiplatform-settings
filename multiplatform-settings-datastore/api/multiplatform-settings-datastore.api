@@ -1,0 +1,27 @@
+public final class com/russhwolf/settings/datastore/DataStoreSettings : com/russhwolf/settings/coroutines/FlowSettings {
+	public fun <init> (Landroidx/datastore/core/DataStore;)V
+	public fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBooleanFlow (Ljava/lang/String;Z)Lkotlinx/coroutines/flow/Flow;
+	public fun getBooleanOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun getDoubleFlow (Ljava/lang/String;D)Lkotlinx/coroutines/flow/Flow;
+	public fun getDoubleOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun getFloatFlow (Ljava/lang/String;F)Lkotlinx/coroutines/flow/Flow;
+	public fun getFloatOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun getIntFlow (Ljava/lang/String;I)Lkotlinx/coroutines/flow/Flow;
+	public fun getIntOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun getLongFlow (Ljava/lang/String;J)Lkotlinx/coroutines/flow/Flow;
+	public fun getLongOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun getStringFlow (Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun getStringOrNullFlow (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun hasKey (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun keys (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun putBoolean (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun putDouble (Ljava/lang/String;DLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun putFloat (Ljava/lang/String;FLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun putInt (Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun putLong (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun putString (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun remove (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun size (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

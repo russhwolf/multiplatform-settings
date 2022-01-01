@@ -98,12 +98,10 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
         }
     }
 
-    if (targetPresets.any { it.isNativeTargetPreset }) {
-        linkNativeSourceSets()
-    }
+    linkSourceSets(targetPresets)
 }
 
-private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
+private fun KotlinMultiplatformExtension.linkSourceSets(targetPresets: NamedDomainObjectCollection<KotlinTargetPreset<*>>) {
     sourceSets.apply {
         val commonMain = getByName("commonMain")
         val commonTest = getByName("commonTest")
@@ -114,64 +112,73 @@ private fun KotlinMultiplatformExtension.linkNativeSourceSets() {
         val multithreadedTest = create("multithreadedTest").apply {
             dependsOn(commonTest)
         }
-
-        findByName("androidMain")?.dependsOn(multithreadedMain)
-        findByName("androidTest")?.dependsOn(multithreadedTest)
-        findByName("jvmMain")?.dependsOn(multithreadedMain)
-        findByName("jvmTest")?.dependsOn(multithreadedTest)
-
-        val nativeMain = create("nativeMain").apply {
+        val jvmCommonMain = create("jvmCommonMain").apply {
             dependsOn(multithreadedMain)
         }
-        val nativeTest = create("nativeTest").apply {
+        val jvmCommonTest = create("jvmCommonTest").apply {
             dependsOn(multithreadedTest)
         }
-        val appleMain = create("appleMain").apply {
-            dependsOn(nativeMain)
-        }
-        val appleTest = create("appleTest").apply {
-            dependsOn(nativeTest)
-        }
-        val apple64Main = create("apple64Main").apply {
-            dependsOn(appleMain)
-        }
-        val apple64Test = create("apple64Test").apply {
-            dependsOn(appleTest)
-        }
-        val apple32Main = create("apple32Main").apply {
-            dependsOn(appleMain)
-        }
-        val apple32Test = create("apple32Test").apply {
-            dependsOn(appleTest)
-        }
 
-        targets
-            .withType(KotlinNativeTarget::class.java)
-            .matching { it.konanTarget.family.isAppleFamily }
-            .configureEach {
-                it.apply {
-                    if (
-                        konanTarget.architecture !in listOf(Architecture.X64, Architecture.ARM64) ||
-                        konanTarget in listOf<KonanTarget>(KonanTarget.WATCHOS_ARM64)
-                    ) {
-                        compilations.getByName("main").defaultSourceSet.dependsOn(apple32Main)
-                        compilations.getByName("test").defaultSourceSet.dependsOn(apple32Test)
-                    } else {
-                        compilations.getByName("main").defaultSourceSet.dependsOn(apple64Main)
-                        compilations.getByName("test").defaultSourceSet.dependsOn(apple64Test)
+        findByName("androidMain")?.dependsOn(jvmCommonMain)
+        findByName("androidTest")?.dependsOn(jvmCommonTest)
+        findByName("jvmMain")?.dependsOn(jvmCommonMain)
+        findByName("jvmTest")?.dependsOn(jvmCommonTest)
+
+        if (targetPresets.any { it.isNativeTargetPreset }) {
+
+            val nativeMain = create("nativeMain").apply {
+                dependsOn(multithreadedMain)
+            }
+            val nativeTest = create("nativeTest").apply {
+                dependsOn(multithreadedTest)
+            }
+            val appleMain = create("appleMain").apply {
+                dependsOn(nativeMain)
+            }
+            val appleTest = create("appleTest").apply {
+                dependsOn(nativeTest)
+            }
+            val apple64Main = create("apple64Main").apply {
+                dependsOn(appleMain)
+            }
+            val apple64Test = create("apple64Test").apply {
+                dependsOn(appleTest)
+            }
+            val apple32Main = create("apple32Main").apply {
+                dependsOn(appleMain)
+            }
+            val apple32Test = create("apple32Test").apply {
+                dependsOn(appleTest)
+            }
+
+            targets
+                .withType(KotlinNativeTarget::class.java)
+                .matching { it.konanTarget.family.isAppleFamily }
+                .configureEach {
+                    it.apply {
+                        if (
+                            konanTarget.architecture !in listOf(Architecture.X64, Architecture.ARM64) ||
+                            konanTarget in listOf<KonanTarget>(KonanTarget.WATCHOS_ARM64)
+                        ) {
+                            compilations.getByName("main").defaultSourceSet.dependsOn(apple32Main)
+                            compilations.getByName("test").defaultSourceSet.dependsOn(apple32Test)
+                        } else {
+                            compilations.getByName("main").defaultSourceSet.dependsOn(apple64Main)
+                            compilations.getByName("test").defaultSourceSet.dependsOn(apple64Test)
+                        }
                     }
                 }
-            }
 
-        targets
-            .withType(KotlinNativeTarget::class.java)
-            .matching { !it.konanTarget.family.isAppleFamily }
-            .configureEach {
-                it.apply {
-                    compilations.getByName("main").defaultSourceSet.dependsOn(nativeMain)
-                    compilations.getByName("test").defaultSourceSet.dependsOn(nativeTest)
+            targets
+                .withType(KotlinNativeTarget::class.java)
+                .matching { !it.konanTarget.family.isAppleFamily }
+                .configureEach {
+                    it.apply {
+                        compilations.getByName("main").defaultSourceSet.dependsOn(nativeMain)
+                        compilations.getByName("test").defaultSourceSet.dependsOn(nativeTest)
+                    }
                 }
-            }
+        }
     }
 
 }

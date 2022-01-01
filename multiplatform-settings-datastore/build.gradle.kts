@@ -24,7 +24,10 @@ plugins {
     signing
 }
 
-standardConfiguration("android")
+standardConfiguration(
+    "android",
+    "jvm"
+)
 
 kotlin {
     android()
@@ -45,23 +48,19 @@ kotlin {
                 implementation(project(":tests"))
                 implementation(project(":multiplatform-settings-test"))
 
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
+
                 implementation("app.cash.turbine:turbine:${Versions.turbine}")
             }
         }
-        val androidMain by getting {
+        val jvmCommonMain by getting {
             dependencies {
                 implementation("androidx.datastore:datastore-preferences-core:${Versions.androidxDatastore}")
             }
         }
-        val androidTest by getting {
+        val jvmCommonTest by getting {
             dependencies {
-
                 implementation("junit:junit:${Versions.junit}")
-                implementation("androidx.test:core:${Versions.androidxTest}")
-                implementation("androidx.test.ext:junit:${Versions.androidxTestExt}")
-
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
-
             }
         }
     }

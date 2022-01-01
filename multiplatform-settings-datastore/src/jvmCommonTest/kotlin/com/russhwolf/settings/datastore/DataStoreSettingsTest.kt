@@ -19,7 +19,6 @@
 package com.russhwolf.settings.datastore
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
@@ -36,9 +35,9 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
 import com.russhwolf.settings.coroutines.toBlockingSettings
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -50,22 +49,20 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineScope
-import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
 private val temporaryFolder = TemporaryFolder()
-private val testScope = TestCoroutineScope()
+
+// Shim to work around IDE issues. HMPP doesn't support JVM/Android so we can't see java.io.File here.
+internal expect fun TemporaryFolder.createDataStore(fileName: String): DataStore<Preferences>
 
 private val factory = object : Settings.Factory {
     override fun create(name: String?): Settings {
-        val dataStore: DataStore<Preferences> =
-            PreferenceDataStoreFactory.create { File(temporaryFolder.root, "$name.preferences_pb") }
+        val dataStore: DataStore<Preferences> = temporaryFolder.createDataStore("$name.preferences_pb")
         val settings = DataStoreSettings(dataStore)
         return BlockingDataStoreSettings(settings, dataStore)
     }
@@ -73,8 +70,7 @@ private val factory = object : Settings.Factory {
 
 class DataStoreSettingsTest : BaseSettingsTest(
     platformFactory = factory,
-    allowsDuplicateInstances = false,
-    syncListeners = { testScope.advanceUntilIdle() }
+    allowsDuplicateInstances = false
 ) {
 
     @Rule
@@ -82,16 +78,11 @@ class DataStoreSettingsTest : BaseSettingsTest(
 
     @Test
     fun constructor_datastore(): Unit = runBlocking {
-        val dataStore = PreferenceDataStoreFactory.create { File(temporaryFolder.root, "settings.preferences_pb") }
+        val dataStore = temporaryFolder.createDataStore("settings.preferences_pb")
         val settings = DataStoreSettings(dataStore)
 
         dataStore.edit { it[intPreferencesKey("a")] = 3 }
         assertEquals(3, settings.getInt("a"))
-    }
-
-    @After
-    fun tearDown() {
-        testScope.cleanupTestCoroutines()
     }
 }
 
@@ -124,12 +115,12 @@ private class BlockingDataStoreSettings(
                 String::class -> stringPreferencesKey(key)
                 Float::class -> floatPreferencesKey(key)
                 Double::class -> doublePreferencesKey(key)
-                Int::class -> booleanPreferencesKey(key)
+                Boolean::class -> booleanPreferencesKey(key)
                 else -> fail("invalid type")
             } as Preferences.Key<T>
         }
 
-        private val scope = CoroutineScope(testScope.coroutineContext + SupervisorJob(testScope.coroutineContext[Job]))
+        private val scope = CoroutineScope(Dispatchers.Unconfined + SupervisorJob())
 
         init {
             var prev: Any? = valueOrNull<String>()
