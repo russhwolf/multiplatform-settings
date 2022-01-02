@@ -1,3 +1,7 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.konan.target.Family.MINGW
+
 /*
  * Copyright 2020 Russell Wolf
  *
@@ -32,6 +36,7 @@ standardConfiguration(
     "jvm",
     "macosArm64",
     "macosX64",
+    "mingwX64",
     "tvosArm64",
     "tvosSimulatorArm64",
     "tvosX64",
@@ -43,6 +48,11 @@ standardConfiguration(
 )
 
 kotlin {
+    targets.withType<KotlinNativeTarget>().matching { it.konanTarget.family == MINGW }.configureEach {
+        // WindowsNoArgTest will check that we use this as our parent registry key
+        binaries.getTest(NativeBuildType.DEBUG).baseName = "com.russhwolf.settings.noarg.test"
+    }
+
     sourceSets {
         commonMain {
             dependencies {
