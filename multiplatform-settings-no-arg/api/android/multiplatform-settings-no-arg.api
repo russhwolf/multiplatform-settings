@@ -1,0 +1,15 @@
+public final class com/russhwolf/settings/InvokeKt {
+	public static final fun invoke (Lcom/russhwolf/settings/Settings$Companion;)Lcom/russhwolf/settings/Settings;
+}
+
+public final class com/russhwolf/settings/NoArgKt {
+	public static final fun Settings ()Lcom/russhwolf/settings/Settings;
+}
+
+public final class com/russhwolf/settings/no_arg/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
