@@ -1,0 +1,4 @@
+headers = villa.h
+package = com.russhwolf.settings.cinterop.qdbm.villa
+compilerOpts = -I/usr/include/qdbm
+linkerOpts = -lqdbm -L/usr/lib

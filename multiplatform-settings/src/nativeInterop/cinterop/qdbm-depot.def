@@ -1,0 +1,4 @@
+headers = depot.h
+package = com.russhwolf.settings.cinterop.qdbm.depot
+compilerOpts = -I/usr/include/qdbm
+linkerOpts = -lqdbm -L/usr/lib

@@ -25,6 +25,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-konan-
 
+      - name: QDBM install
+        run: |
+          sudo apt-get install libqdbm-dev
+
       - name: Linux build
         run: |
           ./gradlew build publishToMavenLocal --no-daemon --stacktrace
