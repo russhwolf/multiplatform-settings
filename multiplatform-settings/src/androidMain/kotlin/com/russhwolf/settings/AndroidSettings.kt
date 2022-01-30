@@ -109,10 +109,12 @@ public class AndroidSettings @JvmOverloads public constructor(
         }.applyOrCommit()
     }
 
+    @SuppressLint("CommitPrefEdits")
     public override fun remove(key: String): Unit = delegate.edit().remove(key).applyOrCommit()
 
     public override fun hasKey(key: String): Boolean = delegate.contains(key)
 
+    @SuppressLint("CommitPrefEdits")
     public override fun putInt(key: String, value: Int): Unit = delegate.edit().putInt(key, value).applyOrCommit()
 
     public override fun getInt(key: String, defaultValue: Int): Int = delegate.getInt(key, defaultValue)
@@ -120,6 +122,7 @@ public class AndroidSettings @JvmOverloads public constructor(
     public override fun getIntOrNull(key: String): Int? =
         if (delegate.contains(key)) delegate.getInt(key, 0) else null
 
+    @SuppressLint("CommitPrefEdits")
     public override fun putLong(key: String, value: Long): Unit = delegate.edit().putLong(key, value).applyOrCommit()
 
     public override fun getLong(key: String, defaultValue: Long): Long = delegate.getLong(key, defaultValue)
@@ -127,6 +130,7 @@ public class AndroidSettings @JvmOverloads public constructor(
     public override fun getLongOrNull(key: String): Long? =
         if (delegate.contains(key)) delegate.getLong(key, 0L) else null
 
+    @SuppressLint("CommitPrefEdits")
     public override fun putString(key: String, value: String): Unit =
         delegate.edit().putString(key, value).applyOrCommit()
 
@@ -136,6 +140,7 @@ public class AndroidSettings @JvmOverloads public constructor(
     public override fun getStringOrNull(key: String): String? =
         if (delegate.contains(key)) delegate.getString(key, "") else null
 
+    @SuppressLint("CommitPrefEdits")
     public override fun putFloat(key: String, value: Float): Unit = delegate.edit().putFloat(key, value).applyOrCommit()
 
     public override fun getFloat(key: String, defaultValue: Float): Float = delegate.getFloat(key, defaultValue)
@@ -143,6 +148,7 @@ public class AndroidSettings @JvmOverloads public constructor(
     public override fun getFloatOrNull(key: String): Float? =
         if (delegate.contains(key)) delegate.getFloat(key, 0f) else null
 
+    @SuppressLint("CommitPrefEdits")
     public override fun putDouble(key: String, value: Double): Unit =
         delegate.edit().putLong(key, value.toRawBits()).applyOrCommit()
 
@@ -152,6 +158,7 @@ public class AndroidSettings @JvmOverloads public constructor(
     public override fun getDoubleOrNull(key: String): Double? =
         if (delegate.contains(key)) Double.fromBits(delegate.getLong(key, 0.0.toRawBits())) else null
 
+    @SuppressLint("CommitPrefEdits")
     public override fun putBoolean(key: String, value: Boolean): Unit =
         delegate.edit().putBoolean(key, value).applyOrCommit()
 
