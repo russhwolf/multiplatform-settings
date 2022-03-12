@@ -17,6 +17,8 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 plugins {
     id("standard-configuration")
     id("module-publication")
@@ -27,6 +29,13 @@ standardConfig {
 }
 
 kotlin {
+    targets.getByName<KotlinNativeTarget>("linuxX64") {
+        compilations["main"].cinterops.create("lmdb")
+        binaries.configureEach {
+            // lmdb appears to be using a newer gcc than Kotlin. This lets us still work as long as host has newer gcc too
+            linkerOpts += "--allow-shlib-undefined"
+        }
+    }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
