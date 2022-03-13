@@ -1,4 +1,4 @@
-public final class com/russhwolf/settings/MockSettings : com/russhwolf/settings/ObservableSettings {
+public final class com/russhwolf/settings/MapSettings : com/russhwolf/settings/ObservableSettings {
 	public fun <init> ()V
 	public fun <init> (Ljava/util/Map;)V
 	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -30,7 +30,7 @@ public final class com/russhwolf/settings/MockSettings : com/russhwolf/settings/
 	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
 }
 
-public final class com/russhwolf/settings/MockSettings$Factory : com/russhwolf/settings/Settings$Factory {
+public final class com/russhwolf/settings/MapSettings$Factory : com/russhwolf/settings/Settings$Factory {
 	public fun <init> ()V
 	public fun <init> (Lkotlin/jvm/functions/Function0;Ljava/util/Map;)V
 	public synthetic fun <init> (Lkotlin/jvm/functions/Function0;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -39,7 +39,7 @@ public final class com/russhwolf/settings/MockSettings$Factory : com/russhwolf/s
 	public final fun setCacheValues (Ljava/lang/String;[Lkotlin/Pair;)V
 }
 
-public final class com/russhwolf/settings/MockSettings$Listener : com/russhwolf/settings/SettingsListener {
+public final class com/russhwolf/settings/MapSettings$Listener : com/russhwolf/settings/SettingsListener {
 	public fun deactivate ()V
 }
 

@@ -20,13 +20,13 @@ import platform.Foundation.NSUserDefaults
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-private val factory = AppleSettings.Factory()
+private val factory = NSUserDefaultsSettings.Factory()
 
-class AppleSettingsTest : BaseSettingsTest(factory) {
+class NSUserDefaultsSettingsTest : BaseSettingsTest(factory) {
     @Test
     fun constructor_userDefaults() {
         val userDefaults = NSUserDefaults(suiteName = "Settings")
-        val settings = AppleSettings(userDefaults)
+        val settings = NSUserDefaultsSettings(userDefaults)
 
         userDefaults.setObject("value", forKey = "a")
         assertEquals("value", settings["a", ""])

@@ -26,16 +26,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 private val context: Context = ApplicationProvider.getApplicationContext()
-private val factory = AndroidSettings.Factory(context)
+private val factory = SharedPreferencesSettings.Factory(context)
 
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [30])
-class AndroidSettingsTest : BaseSettingsTest(factory) {
+class SharedPreferencesSettingsTest : BaseSettingsTest(factory) {
 
     @Test
     fun constructor_sharedPreferences() {
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val settings = AndroidSettings(preferences)
+        val settings = SharedPreferencesSettings(preferences)
 
         preferences.edit().putInt("a", 3).apply()
         assertEquals(3, settings["a", 0])
@@ -44,7 +44,7 @@ class AndroidSettingsTest : BaseSettingsTest(factory) {
     @Test
     fun constructor_commit() {
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val settings = AndroidSettings(preferences, commit = true)
+        val settings = SharedPreferencesSettings(preferences, commit = true)
 
         settings.putInt("a", 3)
         assertEquals(3, preferences.getInt("a", -1))
@@ -53,7 +53,7 @@ class AndroidSettingsTest : BaseSettingsTest(factory) {
     @Test
     fun constructor_noCommit() {
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val settings = AndroidSettings(preferences, commit = false)
+        val settings = SharedPreferencesSettings(preferences, commit = false)
 
         settings.putInt("a", 3)
         assertEquals(3, preferences.getInt("a", -1))
@@ -85,7 +85,7 @@ class AndroidSettingsTest : BaseSettingsTest(factory) {
         // earlier, we assumed updatedKey was nonnull so this would crash.
 
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val settings = AndroidSettings(preferences)
+        val settings = SharedPreferencesSettings(preferences)
 
         settings.addIntListener("key") { }
         preferences.edit().clear().commit() // This will call OnSharedPreferenceChangeListener with updatedKey = null

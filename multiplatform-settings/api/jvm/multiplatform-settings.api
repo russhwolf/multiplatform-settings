@@ -37,74 +37,6 @@ public abstract interface annotation class com/russhwolf/settings/ExperimentalSe
 public abstract interface annotation class com/russhwolf/settings/ExperimentalSettingsImplementation : java/lang/annotation/Annotation {
 }
 
-public final class com/russhwolf/settings/JvmPreferencesSettings : com/russhwolf/settings/ObservableSettings {
-	public fun <init> (Ljava/util/prefs/Preferences;)V
-	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
-	public fun clear ()V
-	public fun getBoolean (Ljava/lang/String;Z)Z
-	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
-	public fun getDouble (Ljava/lang/String;D)D
-	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
-	public fun getFloat (Ljava/lang/String;F)F
-	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
-	public fun getInt (Ljava/lang/String;I)I
-	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
-	public fun getKeys ()Ljava/util/Set;
-	public fun getLong (Ljava/lang/String;J)J
-	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
-	public fun getSize ()I
-	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
-	public fun hasKey (Ljava/lang/String;)Z
-	public fun putBoolean (Ljava/lang/String;Z)V
-	public fun putDouble (Ljava/lang/String;D)V
-	public fun putFloat (Ljava/lang/String;F)V
-	public fun putInt (Ljava/lang/String;I)V
-	public fun putLong (Ljava/lang/String;J)V
-	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
-	public fun remove (Ljava/lang/String;)V
-	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
-}
-
-public final class com/russhwolf/settings/JvmPreferencesSettings$Factory : com/russhwolf/settings/Settings$Factory {
-	public fun <init> ()V
-	public fun <init> (Ljava/util/prefs/Preferences;)V
-	public synthetic fun <init> (Ljava/util/prefs/Preferences;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
-}
-
-public final class com/russhwolf/settings/JvmPreferencesSettings$Listener : com/russhwolf/settings/SettingsListener {
-	public fun deactivate ()V
-}
-
-public final class com/russhwolf/settings/JvmPropertiesSettings : com/russhwolf/settings/Settings {
-	public fun <init> (Ljava/util/Properties;Lkotlin/jvm/functions/Function1;)V
-	public synthetic fun <init> (Ljava/util/Properties;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun clear ()V
-	public fun getBoolean (Ljava/lang/String;Z)Z
-	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
-	public fun getDouble (Ljava/lang/String;D)D
-	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
-	public fun getFloat (Ljava/lang/String;F)F
-	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
-	public fun getInt (Ljava/lang/String;I)I
-	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
-	public fun getKeys ()Ljava/util/Set;
-	public fun getLong (Ljava/lang/String;J)J
-	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
-	public fun getSize ()I
-	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
-	public fun hasKey (Ljava/lang/String;)Z
-	public fun putBoolean (Ljava/lang/String;Z)V
-	public fun putDouble (Ljava/lang/String;D)V
-	public fun putFloat (Ljava/lang/String;F)V
-	public fun putInt (Ljava/lang/String;I)V
-	public fun putLong (Ljava/lang/String;J)V
-	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
-	public fun remove (Ljava/lang/String;)V
-}
-
 public final class com/russhwolf/settings/ListenerExtensionsKt {
 	public static final fun addBooleanListener (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public static synthetic fun addBooleanListener$default (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/russhwolf/settings/SettingsListener;
@@ -151,6 +83,74 @@ public final class com/russhwolf/settings/OperatorsKt {
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Ljava/lang/String;)V
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Ljava/lang/Void;)V
 	public static final fun set (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Z)V
+}
+
+public final class com/russhwolf/settings/PreferencesSettings : com/russhwolf/settings/ObservableSettings {
+	public fun <init> (Ljava/util/prefs/Preferences;)V
+	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
+	public fun clear ()V
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
+	public fun getDouble (Ljava/lang/String;D)D
+	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getSize ()I
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
+	public fun hasKey (Ljava/lang/String;)Z
+	public fun putBoolean (Ljava/lang/String;Z)V
+	public fun putDouble (Ljava/lang/String;D)V
+	public fun putFloat (Ljava/lang/String;F)V
+	public fun putInt (Ljava/lang/String;I)V
+	public fun putLong (Ljava/lang/String;J)V
+	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun remove (Ljava/lang/String;)V
+	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
+}
+
+public final class com/russhwolf/settings/PreferencesSettings$Factory : com/russhwolf/settings/Settings$Factory {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/prefs/Preferences;)V
+	public synthetic fun <init> (Ljava/util/prefs/Preferences;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
+}
+
+public final class com/russhwolf/settings/PreferencesSettings$Listener : com/russhwolf/settings/SettingsListener {
+	public fun deactivate ()V
+}
+
+public final class com/russhwolf/settings/PropertiesSettings : com/russhwolf/settings/Settings {
+	public fun <init> (Ljava/util/Properties;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Ljava/util/Properties;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun clear ()V
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
+	public fun getDouble (Ljava/lang/String;D)D
+	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getSize ()I
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
+	public fun hasKey (Ljava/lang/String;)Z
+	public fun putBoolean (Ljava/lang/String;Z)V
+	public fun putDouble (Ljava/lang/String;D)V
+	public fun putFloat (Ljava/lang/String;F)V
+	public fun putInt (Ljava/lang/String;I)V
+	public fun putLong (Ljava/lang/String;J)V
+	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun remove (Ljava/lang/String;)V
 }
 
 public abstract interface class com/russhwolf/settings/Settings {

@@ -21,10 +21,10 @@ import org.w3c.dom.set
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class JsSettingsTest : BaseSettingsTest(
+class StorageSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
-        override fun create(name: String?): JsSettings {
-            return JsSettings(localStorage)
+        override fun create(name: String?): StorageSettings {
+            return StorageSettings(localStorage)
         }
     },
     hasNamedInstances = false,
@@ -32,7 +32,7 @@ class JsSettingsTest : BaseSettingsTest(
 ) {
     @Test
     fun constructor_localStorage() {
-        val settings = JsSettings()
+        val settings = StorageSettings()
         localStorage["a"] = "value"
         assertEquals("value", settings["a", ""])
     }

@@ -38,10 +38,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 @OptIn(ExperimentalSettingsImplementation::class)
-private val factory = WindowsSettings.Factory("multiplatform-settings-test")
+private val factory = RegistrySettings.Factory("multiplatform-settings-test")
 
 @OptIn(ExperimentalSettingsImplementation::class, ExperimentalUnsignedTypes::class)
-class WindowsSettingsTest : BaseSettingsTest(
+class RegistrySettingsTest : BaseSettingsTest(
     platformFactory = factory,
     hasListeners = false
 ) {
@@ -56,7 +56,7 @@ class WindowsSettingsTest : BaseSettingsTest(
     @Test
     fun constructor_keyName() {
         val rootKeyName = "SOFTWARE\\multiplatform-settings-test"
-        val settings = WindowsSettings(rootKeyName)
+        val settings = RegistrySettings(rootKeyName)
         settings -= "key"
 
         insertTestValue(rootKeyName, "key")
@@ -86,7 +86,7 @@ class WindowsSettingsTest : BaseSettingsTest(
 
     @Test
     fun error_type() {
-        val settings = WindowsSettings("SOFTWARE\\multiplatform-settings-test")
+        val settings = RegistrySettings("SOFTWARE\\multiplatform-settings-test")
         settings["key"] = 3
         assertFailsWith<IllegalStateException> {
             @Suppress("UNUSED_VARIABLE")

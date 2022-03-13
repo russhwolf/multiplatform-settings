@@ -20,7 +20,7 @@ package com.russhwolf.settings.coroutines
 
 import com.russhwolf.settings.BaseSettingsTest
 import com.russhwolf.settings.ExperimentalSettingsApi
-import com.russhwolf.settings.MockSettings
+import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 // TODO we should have test-cases specific to SuspendSettings and FlowSettings, but until we do we test things by
 //  passing them through toBlockingSettings()
 
-private val mockSettingsFactory = MockSettings.Factory()
+private val mockSettingsFactory = MapSettings.Factory()
 
 @OptIn(ExperimentalSettingsApi::class)
 class ToSuspendSettingsTest : BaseSettingsTest(

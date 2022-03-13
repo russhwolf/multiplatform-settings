@@ -20,18 +20,18 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalSettingsApi::class)
-class MockSettingsTest : BaseSettingsTest(MockSettings.Factory()) {
+class MapSettingsTest : BaseSettingsTest(MapSettings.Factory()) {
 
     @Test
     fun mapConstructor() {
         val delegate = mutableMapOf<String, Any>("a" to 1, "b" to "value", "c" to false)
 
-        val settings1 = MockSettings(delegate)
+        val settings1 = MapSettings(delegate)
         assertEquals(1, settings1["a", 0])
         assertEquals("value", settings1["b", ""])
         assertEquals(false, settings1["c", true])
 
-        val settings2 = MockSettings(delegate)
+        val settings2 = MapSettings(delegate)
         assertEquals(1, settings2["a", 0])
         assertEquals("value", settings2["b", ""])
         assertEquals(false, settings2["c", true])
@@ -47,7 +47,7 @@ class MockSettingsTest : BaseSettingsTest(MockSettings.Factory()) {
 
     @Test
     fun varargConstructor() {
-        val settings = MockSettings("a" to 1, "b" to "value", "c" to false)
+        val settings = MapSettings("a" to 1, "b" to "value", "c" to false)
 
         assertEquals(1, settings["a", 0])
         assertEquals("value", settings["b", ""])
@@ -56,7 +56,7 @@ class MockSettingsTest : BaseSettingsTest(MockSettings.Factory()) {
 
     @Test
     fun factoryConstructor_readFromCache_vararg() {
-        val factory = MockSettings.Factory()
+        val factory = MapSettings.Factory()
         factory.setCacheValues("test", "a" to 1, "b" to "value", "c" to false)
 
         val settings1 = factory.create("test")
@@ -96,7 +96,7 @@ class MockSettingsTest : BaseSettingsTest(MockSettings.Factory()) {
 
     @Test
     fun factoryConstructor_readFromCache_map() {
-        val factory = MockSettings.Factory()
+        val factory = MapSettings.Factory()
         factory.setCacheValues("test", mutableMapOf<String, Any>("a" to 1, "b" to "value", "c" to false))
 
         val settings1 = factory.create("test")
@@ -136,7 +136,7 @@ class MockSettingsTest : BaseSettingsTest(MockSettings.Factory()) {
 
     @Test
     fun listener_types() {
-        val settings = MockSettings("a" to 3, "b" to false)
+        val settings = MapSettings("a" to 3, "b" to false)
         val verifierA = ListenerVerifier()
         val verifierB = ListenerVerifier()
         val listenerA = settings.addListener("a", verifierA.listener)

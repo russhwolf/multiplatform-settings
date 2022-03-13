@@ -21,6 +21,14 @@ import org.w3c.dom.Storage
 import org.w3c.dom.get
 import org.w3c.dom.set
 
+@Deprecated(
+    message = "JsSettings has been renamed to StorageSettings",
+    level = DeprecationLevel.WARNING,
+    replaceWith = ReplaceWith("StorageSettings", "com.russhwolf.settings.StorageSettings")
+)
+@Suppress("KDocMissingDocumentation")
+public typealias JsSettings = StorageSettings
+
 /**
  * A collection of storage-backed key-value data
  *
@@ -42,7 +50,7 @@ import org.w3c.dom.set
  *
  * The experimental listener APIs are not implemented in `JsSettings`.
  */
-public class JsSettings(private val delegate: Storage = localStorage) : Settings {
+public class StorageSettings(private val delegate: Storage = localStorage) : Settings {
 
     public override val keys: Set<String> get() = List(size) { delegate.key(it)!! }.toSet()
     public override val size: Int get() = delegate.length

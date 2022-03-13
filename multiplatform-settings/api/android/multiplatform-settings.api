@@ -1,43 +1,3 @@
-public final class com/russhwolf/settings/AndroidSettings : com/russhwolf/settings/ObservableSettings {
-	public fun <init> (Landroid/content/SharedPreferences;)V
-	public fun <init> (Landroid/content/SharedPreferences;Z)V
-	public synthetic fun <init> (Landroid/content/SharedPreferences;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
-	public fun clear ()V
-	public fun getBoolean (Ljava/lang/String;Z)Z
-	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
-	public fun getDouble (Ljava/lang/String;D)D
-	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
-	public fun getFloat (Ljava/lang/String;F)F
-	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
-	public fun getInt (Ljava/lang/String;I)I
-	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
-	public fun getKeys ()Ljava/util/Set;
-	public fun getLong (Ljava/lang/String;J)J
-	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
-	public fun getSize ()I
-	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
-	public fun hasKey (Ljava/lang/String;)Z
-	public fun putBoolean (Ljava/lang/String;Z)V
-	public fun putDouble (Ljava/lang/String;D)V
-	public fun putFloat (Ljava/lang/String;F)V
-	public fun putInt (Ljava/lang/String;I)V
-	public fun putLong (Ljava/lang/String;J)V
-	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
-	public fun remove (Ljava/lang/String;)V
-	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
-}
-
-public final class com/russhwolf/settings/AndroidSettings$Factory : com/russhwolf/settings/Settings$Factory {
-	public fun <init> (Landroid/content/Context;)V
-	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
-}
-
-public final class com/russhwolf/settings/AndroidSettings$Listener : com/russhwolf/settings/SettingsListener {
-	public fun deactivate ()V
-}
-
 public final class com/russhwolf/settings/BuildConfig {
 	public static final field BUILD_TYPE Ljava/lang/String;
 	public static final field DEBUG Z
@@ -178,5 +138,45 @@ public final class com/russhwolf/settings/Settings$Factory$DefaultImpls {
 
 public abstract interface class com/russhwolf/settings/SettingsListener {
 	public abstract fun deactivate ()V
+}
+
+public final class com/russhwolf/settings/SharedPreferencesSettings : com/russhwolf/settings/ObservableSettings {
+	public fun <init> (Landroid/content/SharedPreferences;)V
+	public fun <init> (Landroid/content/SharedPreferences;Z)V
+	public synthetic fun <init> (Landroid/content/SharedPreferences;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
+	public fun clear ()V
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
+	public fun getDouble (Ljava/lang/String;D)D
+	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getSize ()I
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
+	public fun hasKey (Ljava/lang/String;)Z
+	public fun putBoolean (Ljava/lang/String;Z)V
+	public fun putDouble (Ljava/lang/String;D)V
+	public fun putFloat (Ljava/lang/String;F)V
+	public fun putInt (Ljava/lang/String;I)V
+	public fun putLong (Ljava/lang/String;J)V
+	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun remove (Ljava/lang/String;)V
+	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
+}
+
+public final class com/russhwolf/settings/SharedPreferencesSettings$Factory : com/russhwolf/settings/Settings$Factory {
+	public fun <init> (Landroid/content/Context;)V
+	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
+}
+
+public final class com/russhwolf/settings/SharedPreferencesSettings$Listener : com/russhwolf/settings/SettingsListener {
+	public fun deactivate ()V
 }
 

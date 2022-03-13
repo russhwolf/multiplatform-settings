@@ -18,7 +18,7 @@
 
 package com.russhwolf.settings
 
-import com.russhwolf.settings.WindowsSettings.Factory
+import com.russhwolf.settings.RegistrySettings.Factory
 import kotlinx.cinterop.CVariable
 import kotlinx.cinterop.MemScope
 import kotlinx.cinterop.alloc
@@ -64,6 +64,14 @@ import platform.windows.ULONGLONGVar
 import platform.windows.ULONGVar
 import platform.windows.WCHARVar
 
+@Deprecated(
+    message = "WindowsSettings has been renamed to RegistrySettings",
+    level = DeprecationLevel.WARNING,
+    replaceWith = ReplaceWith("RegistrySettings", "com.russhwolf.settings.RegistrySettings")
+)
+@Suppress("KDocMissingDocumentation")
+public typealias WindowsSettings = RegistrySettings
+
 /**
  * A collection of storage-backed key-value data
  *
@@ -82,7 +90,7 @@ import platform.windows.WCHARVar
  */
 @ExperimentalSettingsImplementation
 @OptIn(ExperimentalUnsignedTypes::class)
-public class WindowsSettings public constructor(private val rootKeyName: String) : Settings {
+public class RegistrySettings public constructor(private val rootKeyName: String) : Settings {
 
     /**
      * A factory that can produce [Settings] instances.
@@ -94,7 +102,7 @@ public class WindowsSettings public constructor(private val rootKeyName: String)
     public class Factory(private val parentKeyName: String) : Settings.Factory {
         public override fun create(name: String?): Settings {
             val key = "SOFTWARE\\$parentKeyName" + if (name != null) "\\$name" else ""
-            return WindowsSettings(key)
+            return RegistrySettings(key)
         }
     }
 

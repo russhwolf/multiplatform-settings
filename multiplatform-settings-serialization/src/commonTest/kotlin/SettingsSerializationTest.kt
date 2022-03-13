@@ -17,7 +17,7 @@
 package com.russhwolf.settings.serialization
 
 import com.russhwolf.settings.ExperimentalSettingsApi
-import com.russhwolf.settings.MockSettings
+import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.contains
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -38,7 +38,7 @@ class SettingsSerializationTest {
     fun serialize() {
         val foo = Foo("hello", 43110)
 
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
 
         settings.encodeValue(Foo.serializer(), "foo", foo)
         settings.encodeValue(String.serializer(), "herp", "derp")
@@ -56,7 +56,7 @@ class SettingsSerializationTest {
 
     @Test
     fun deserialize_defaults() {
-        val settings: Settings = MockSettings(
+        val settings: Settings = MapSettings(
             "foo.bar" to "hello",
             "foo.baz" to 43110,
             "herp" to "derp",
@@ -78,7 +78,7 @@ class SettingsSerializationTest {
 
     @Test
     fun deserialize_defaults_empty() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
 
         val foo = settings.decodeValue(Foo.serializer(), "foo", Foo("goodbye"))
 
@@ -89,7 +89,7 @@ class SettingsSerializationTest {
 
     @Test
     fun deserialize_nullable_defaults() {
-        val settings: Settings = MockSettings(
+        val settings: Settings = MapSettings(
             "foo.bar" to "hello",
             "foo.baz" to 43110,
             "herp" to "derp",
@@ -111,7 +111,7 @@ class SettingsSerializationTest {
 
     @Test
     fun deserialize_nullable_defaults_empty() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
 
         val foo = settings.decodeValueOrNull(Foo.serializer(), "foo")
 
@@ -120,7 +120,7 @@ class SettingsSerializationTest {
 
     @Test
     fun delegate() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
         val delegate = settings.serializedValue(Foo.serializer(), "foo", Foo("goodbye"))
         var foo: Foo by delegate
         assertEquals(Foo("goodbye", 42), foo)
@@ -144,7 +144,7 @@ class SettingsSerializationTest {
 
     @Test
     fun delegate_nullable() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
         val delegate = settings.nullableSerializedValue(Foo.serializer(), "foo")
         var foo: Foo? by delegate
         assertNull(foo)
@@ -168,7 +168,7 @@ class SettingsSerializationTest {
 
     @Test
     fun delegate_keyless() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
         val delegate = settings.serializedValue(Foo.serializer(), defaultValue = Foo("goodbye"))
         var foo: Foo by delegate
         assertEquals(Foo("goodbye", 42), foo)
@@ -193,7 +193,7 @@ class SettingsSerializationTest {
 
     @Test
     fun delegate_nullable_keyless() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
         val delegate = settings.nullableSerializedValue(Foo.serializer())
         var foo: Foo? by delegate
         assertNull(foo)
@@ -218,7 +218,7 @@ class SettingsSerializationTest {
 
     @Test
     fun allTypes() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
         val testClass = TestClass(
             boolean = true,
             byte = 1,
@@ -331,7 +331,7 @@ class SettingsSerializationTest {
 
     @Test
     fun allTypesNullable() {
-        val settings: Settings = MockSettings()
+        val settings: Settings = MapSettings()
         val testClass = TestClassNullable(
             boolean = true,
             byte = 1,
@@ -453,7 +453,7 @@ class SettingsSerializationTest {
             )
         }
 
-        val settings = MockSettings()
+        val settings = MapSettings()
 
         settings.clear()
         assertEquals(defaultUser, settings.loadUser())

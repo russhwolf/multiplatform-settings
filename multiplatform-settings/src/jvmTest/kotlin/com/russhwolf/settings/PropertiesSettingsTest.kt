@@ -21,12 +21,12 @@ import java.util.Properties
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalSettingsImplementation::class)
-class JvmPropertiesSettingsTest : BaseSettingsTest(
+class PropertiesSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         val properties = Properties()
 
-        override fun create(name: String?): JvmPropertiesSettings {
-            return JvmPropertiesSettings(properties)
+        override fun create(name: String?): PropertiesSettings {
+            return PropertiesSettings(properties)
         }
     },
     hasNamedInstances = false,
@@ -35,7 +35,7 @@ class JvmPropertiesSettingsTest : BaseSettingsTest(
     @Test
     fun constructor_properties() {
         val properties = Properties()
-        val settings = JvmPropertiesSettings(properties)
+        val settings = PropertiesSettings(properties)
         properties["a"] = "value"
         assertEquals("value", settings["a", ""])
     }

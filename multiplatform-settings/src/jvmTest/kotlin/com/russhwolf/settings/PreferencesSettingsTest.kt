@@ -26,16 +26,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 private val preferences = Preferences.userRoot()
-private val factory = JvmPreferencesSettings.Factory(preferences)
+private val factory = PreferencesSettings.Factory(preferences)
 
-class JvmPreferencesSettingsTest : BaseSettingsTest(
+class PreferencesSettingsTest : BaseSettingsTest(
     platformFactory = factory,
     syncListeners = preferences::syncListeners
 ) {
     @Test
     fun constructor_preferences() {
         val preferences = Preferences.userRoot().node("Settings")
-        val settings = JvmPreferencesSettings(preferences)
+        val settings = PreferencesSettings(preferences)
 
         preferences.putInt("a", 3)
         assertEquals(3, settings["a", 0])

@@ -34,7 +34,7 @@ public actual fun Settings(): Settings {
     // Match the behavior of PreferenceManager.getDefaultSharedPreferences(), without AndroidX lib or deprecated API
     val preferencesName = "${appContext.packageName}_preferences"
     val delegate = appContext.getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
-    return AndroidSettings(delegate)
+    return SharedPreferencesSettings(delegate)
 }
 
 internal class SettingsInitializer : Initializer<Context> {

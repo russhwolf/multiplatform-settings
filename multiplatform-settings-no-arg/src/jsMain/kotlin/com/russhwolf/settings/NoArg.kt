@@ -21,4 +21,4 @@ package com.russhwolf.settings
  *
  * On JS, this delegates to [localStorage][kotlinx.browser.localStorage].
  */
-public actual fun Settings(): Settings = JsSettings()
+public actual fun Settings(): Settings = StorageSettings()

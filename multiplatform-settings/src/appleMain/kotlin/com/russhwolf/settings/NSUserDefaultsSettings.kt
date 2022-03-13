@@ -16,7 +16,7 @@
 
 package com.russhwolf.settings
 
-import com.russhwolf.settings.AppleSettings.Factory
+import com.russhwolf.settings.NSUserDefaultsSettings.Factory
 import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
@@ -24,6 +24,14 @@ import platform.Foundation.NSUserDefaultsDidChangeNotification
 import platform.darwin.NSObjectProtocol
 import kotlin.native.concurrent.AtomicReference
 import kotlin.native.concurrent.freeze
+
+@Deprecated(
+    message = "AppleSettings has been renamed to NSUserDefaultsSettings",
+    level = DeprecationLevel.WARNING,
+    replaceWith = ReplaceWith("NSUserDefaultsSettings", "com.russhwolf.settings.NSUserDefaultsSettings")
+)
+@Suppress("KDocMissingDocumentation")
+public typealias AppleSettings = NSUserDefaultsSettings
 
 /**
  * A collection of storage-backed key-value data
@@ -47,7 +55,7 @@ import kotlin.native.concurrent.freeze
  * freezing listeners, restrict interaction with this class to a single thread and set `useFrozenListeners` to `false`.
  */
 @OptIn(ExperimentalSettingsApi::class)
-public class AppleSettings public constructor(
+public class NSUserDefaultsSettings public constructor(
     private val delegate: NSUserDefaults,
     private val useFrozenListeners: Boolean = false
 ) : ObservableSettings {
@@ -83,7 +91,7 @@ public class AppleSettings public constructor(
          */
         public override fun create(name: String?): Settings {
             val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
-            return AppleSettings(delegate)
+            return NSUserDefaultsSettings(delegate)
         }
     }
 

@@ -42,5 +42,5 @@ public actual fun Settings(): Settings {
         )
         nameArray.toKString().takeLastWhile { it != '\\' }.removeSuffix(".exe")
     }
-    return WindowsSettings("SOFTWARE\\$name")
+    return RegistrySettings("SOFTWARE\\$name")
 }

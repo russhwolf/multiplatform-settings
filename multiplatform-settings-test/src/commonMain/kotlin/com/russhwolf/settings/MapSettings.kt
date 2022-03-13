@@ -16,6 +16,14 @@
 
 package com.russhwolf.settings
 
+@Deprecated(
+    message = "MockSettings has been renamed to to MapSettings",
+    level = DeprecationLevel.WARNING,
+    replaceWith = ReplaceWith("MapSettings", "com.russhwolf.settings.MapSettings")
+)
+@Suppress("KDocMissingDocumentation")
+public typealias MockSettings = MapSettings
+
 /**
  * A collection of storage-backed key-value data
  *
@@ -34,7 +42,7 @@ package com.russhwolf.settings
  * it shares the same behavior, assuming the default [mutableMapOf] delegate is used.
  */
 @OptIn(ExperimentalSettingsApi::class)
-public class MockSettings public constructor(private val delegate: MutableMap<String, Any> = mutableMapOf()) :
+public class MapSettings public constructor(private val delegate: MutableMap<String, Any> = mutableMapOf()) :
     ObservableSettings {
     private val listeners = mutableListOf<() -> Any>()
     private fun invokeListeners() = listeners.forEach { it() }
@@ -75,7 +83,7 @@ public class MockSettings public constructor(private val delegate: MutableMap<St
 
         public override fun create(name: String?): Settings {
             val delegate = delegateCache.getOrPut(name, mapFactory)
-            return MockSettings(delegate)
+            return MapSettings(delegate)
         }
     }
 

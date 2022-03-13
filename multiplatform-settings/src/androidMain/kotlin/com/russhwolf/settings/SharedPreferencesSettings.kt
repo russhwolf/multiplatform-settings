@@ -20,7 +20,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.russhwolf.settings.AndroidSettings.Factory
+import com.russhwolf.settings.SharedPreferencesSettings.Factory
+
+@Deprecated(
+    message = "AndroidSettings has been renamed to SharedPreferencesSettings",
+    level = DeprecationLevel.WARNING,
+    replaceWith = ReplaceWith("SharedPreferencesSettings", "com.russhwolf.settings.SharedPreferencesSettings")
+)
+@Suppress("KDocMissingDocumentation")
+public typealias AndroidSettings = SharedPreferencesSettings
 
 /**
  * A collection of storage-backed key-value data
@@ -44,9 +52,9 @@ import com.russhwolf.settings.AndroidSettings.Factory
  * (slower, but synchronous).
  */
 @OptIn(ExperimentalSettingsApi::class)
-public class AndroidSettings @JvmOverloads public constructor(
+public class SharedPreferencesSettings @JvmOverloads public constructor(
     private val delegate: SharedPreferences,
-    private val commit : Boolean = false
+    private val commit: Boolean = false
 ) : ObservableSettings {
 
     /**
@@ -78,7 +86,7 @@ public class AndroidSettings @JvmOverloads public constructor(
             // For null name, match the behavior of PreferenceManager.getDefaultSharedPreferences()
             val preferencesName = name ?: "${appContext.packageName}_preferences"
             val delegate = appContext.getSharedPreferences(preferencesName, MODE_PRIVATE)
-            return AndroidSettings(delegate)
+            return SharedPreferencesSettings(delegate)
         }
     }
 

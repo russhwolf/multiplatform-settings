@@ -33,10 +33,10 @@ import kotlin.test.assertTrue
 import kotlin.test.fail
 
 @OptIn(ExperimentalSettingsApi::class)
-class AppleSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
+class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
     override fun create(name: String?): Settings {
         val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
-        return AppleSettings(delegate, useFrozenListeners = true)
+        return NSUserDefaultsSettings(delegate, useFrozenListeners = true)
     }
 }) {
 
@@ -101,7 +101,7 @@ class AppleSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
     fun nonprimitive_value_across_threads(): Unit = memScoped {
         val mutableState = AtomicInt(0)
         val userDefaults = NSUserDefaults.standardUserDefaults
-        val settings = AppleSettings(userDefaults, true)
+        val settings = NSUserDefaultsSettings(userDefaults, true)
 
         settings.addListener("key") { mutableState.addAndGet(1) }
         val data = mapOf("foo" to "bar") as NSDictionary
@@ -118,7 +118,7 @@ class AppleSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
 
     @Test
     fun deactivate_listener_in_background() {
-        val settings = AppleSettings(NSUserDefaults.standardUserDefaults, true)
+        val settings = NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults, true)
         val listener = settings.addListener("key") { fail() }
         doInBackground {
             listener.deactivate()

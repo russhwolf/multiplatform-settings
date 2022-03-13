@@ -23,4 +23,4 @@ import platform.Foundation.NSUserDefaults
  *
  * On Apple platforms, this delegates to [NSUserDefaults.standardUserDefaults].
  */
-public actual fun Settings(): Settings = AppleSettings(NSUserDefaults.standardUserDefaults)
+public actual fun Settings(): Settings = NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults)
