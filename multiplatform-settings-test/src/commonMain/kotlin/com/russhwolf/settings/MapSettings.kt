@@ -158,6 +158,10 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
     public override fun getBooleanOrNull(key: String): Boolean? = delegate[key] as? Boolean
 
     @ExperimentalSettingsApi
+    @Deprecated(
+        "Use typed listener methods instead",
+        level = DeprecationLevel.WARNING
+    )
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         var prev = delegate[key]
 

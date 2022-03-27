@@ -19,7 +19,6 @@ package com.russhwolf.settings
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalSettingsApi::class)
 class MapSettingsTest : BaseSettingsTest(MapSettings.Factory()) {
 
     @Test
@@ -133,83 +132,4 @@ class MapSettingsTest : BaseSettingsTest(MapSettings.Factory()) {
         assertEquals("", settings3["b", ""])
         assertEquals(true, settings3["c", true])
     }
-
-    @Test
-    fun listener_types() {
-        val settings = MapSettings("a" to 3, "b" to false)
-        val verifierA = ListenerVerifier()
-        val verifierB = ListenerVerifier()
-        val listenerA = settings.addListener("a", verifierA.listener)
-        settings.addListener("b", verifierB.listener)
-
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.remove("a")
-        verifierA.assertInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.hasKey("a")
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.putInt("a", 1)
-        verifierA.assertInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.getInt("a")
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.putLong("a", 2)
-        verifierA.assertInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.getLong("a")
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.putString("a", "value")
-        verifierA.assertInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.getString("a")
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.putFloat("a", 1.5f)
-        verifierA.assertInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.getFloat("a")
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.putDouble("a", 2.5)
-        verifierA.assertInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.getDouble("a")
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.putBoolean("a", true)
-        verifierA.assertInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.getBoolean("a")
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-
-        settings.clear()
-        verifierA.assertInvoked()
-        verifierB.assertInvoked()
-
-        listenerA.deactivate()
-
-        settings.putInt("a", 3)
-        verifierA.assertNotInvoked()
-        verifierB.assertNotInvoked()
-    }
-
 }

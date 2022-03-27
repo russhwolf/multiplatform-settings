@@ -3,7 +3,19 @@ public final class com/russhwolf/settings/MapSettings : com/russhwolf/settings/O
 	public fun <init> (Ljava/util/Map;)V
 	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun <init> ([Lkotlin/Pair;)V
+	public fun addBooleanListener (Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addBooleanOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addDoubleListener (Ljava/lang/String;DLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addDoubleOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addFloatListener (Ljava/lang/String;FLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addFloatOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addIntListener (Ljava/lang/String;ILkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addIntOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addLongListener (Ljava/lang/String;JLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addLongOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addStringListener (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
+	public fun addStringOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun clear ()V
 	public fun getBoolean (Ljava/lang/String;Z)Z
 	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;

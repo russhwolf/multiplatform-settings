@@ -693,65 +693,65 @@ abstract class BaseSettingsTest(
         val settings = settings as? ObservableSettings
             ?: throw IllegalStateException("Must implement ObservableSettings or ignore this test")
 
-        val verifier = ListenerVerifier()
+        val verifier = ListenerValueVerifier<Int?>()
 
         // No invocation for call before listener was set
         settings["a"] = 2
-        val listener = settings.addListener("a", verifier.listener)
+        val listener = settings.addIntOrNullListener("a", verifier.listener)
         try {
             syncListeners()
-            verifier.assertNotInvoked()
+            verifier.assertNoValue()
 
             // No invocation on set to existing value
             settings["a"] = 2
             syncListeners()
-            verifier.assertNotInvoked()
+            verifier.assertNoValue()
 
             // New invocation on value change
             settings["a"] = 1
             syncListeners()
-            verifier.assertInvoked()
+            verifier.assertLastValue(1)
 
             // No invocation if value unchanged
             settings["a"] = 1
             syncListeners()
-            verifier.assertNotInvoked()
+            verifier.assertNoValue()
 
             // New invocation on remove
             settings -= "a"
             syncListeners()
-            verifier.assertInvoked()
+            verifier.assertLastValue(null)
 
             // New invocation on re-add with same value
             settings["a"] = 1
             syncListeners()
-            verifier.assertInvoked()
+            verifier.assertLastValue(1)
 
             // No invocation on other key change
             settings["b"] = 1
             syncListeners()
-            verifier.assertNotInvoked()
+            verifier.assertNoValue()
 
             // New invocation on clear
             settings.clear()
             syncListeners()
-            verifier.assertInvoked()
+            verifier.assertLastValue(null)
 
             // Second listener at the same key also gets called
-            val verifier2 = ListenerVerifier()
-            val listener2 = settings.addListener("a", verifier2.listener)
+            val verifier2 = ListenerValueVerifier<Int?>()
+            val listener2 = settings.addIntOrNullListener("a", verifier2.listener)
             try {
                 settings["a"] = 3
                 syncListeners()
-                verifier.assertInvoked()
-                verifier2.assertInvoked()
+                verifier.assertLastValue(3)
+                verifier2.assertLastValue(3)
 
                 // No invocation on listener which is removed
                 listener.deactivate()
                 settings["a"] = 2
                 syncListeners()
-                verifier.assertNotInvoked()
-                verifier2.assertInvoked()
+                verifier.assertNoValue()
+                verifier2.assertLastValue(2)
             } finally {
                 listener2.deactivate()
             }

@@ -61,6 +61,7 @@ kotlin {
 
                 implementation(kotlin("test"))
 
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesNativeMt}")
                 implementation("app.cash.turbine:turbine:${Versions.turbine}")
             }
         }

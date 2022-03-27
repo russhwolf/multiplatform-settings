@@ -1,4 +1,6 @@
 public final class com/russhwolf/settings/coroutines/BlockingConvertersKt {
+	public static final fun toBlockingObservableSettings (Lcom/russhwolf/settings/coroutines/FlowSettings;Lkotlinx/coroutines/CoroutineScope;)Lcom/russhwolf/settings/ObservableSettings;
+	public static synthetic fun toBlockingObservableSettings$default (Lcom/russhwolf/settings/coroutines/FlowSettings;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Lcom/russhwolf/settings/ObservableSettings;
 	public static final fun toBlockingSettings (Lcom/russhwolf/settings/coroutines/SuspendSettings;)Lcom/russhwolf/settings/Settings;
 }
 

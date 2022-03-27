@@ -43,7 +43,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
     private val incrementedOnMainThread = AtomicReference<Boolean?>(null)
 
     private fun observeThread() {
-        (settings as ObservableSettings).addListener("key") {
+        (settings as ObservableSettings).addIntListener("key") {
             incrementedOnMainThread.value = NSThread.isMainThread
         }
     }
@@ -103,7 +103,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
         val userDefaults = NSUserDefaults.standardUserDefaults
         val settings = NSUserDefaultsSettings(userDefaults, true)
 
-        settings.addListener("key") { mutableState.addAndGet(1) }
+        settings.addIntListener("key") { mutableState.addAndGet(1) }
         val data = mapOf("foo" to "bar") as NSDictionary
         assertFalse(data.isFrozen)
 
@@ -119,7 +119,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
     @Test
     fun deactivate_listener_in_background() {
         val settings = NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults, true)
-        val listener = settings.addListener("key") { fail() }
+        val listener = settings.addIntListener("key") { fail() }
         doInBackground {
             listener.deactivate()
         }

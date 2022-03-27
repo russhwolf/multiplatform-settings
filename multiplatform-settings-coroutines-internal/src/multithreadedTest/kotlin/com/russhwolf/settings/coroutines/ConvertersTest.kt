@@ -23,6 +23,7 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -49,8 +50,8 @@ class ToFlowSettingsTest : BaseSettingsTest(
         override fun create(name: String?): Settings {
             return (mockSettingsFactory.create(name) as ObservableSettings)
                 .toFlowSettings(Dispatchers.Unconfined)
-                .toBlockingSettings()
+                .toBlockingObservableSettings(CoroutineScope(Dispatchers.Unconfined))
         }
     },
-    hasListeners = false
+    hasListeners = true
 )

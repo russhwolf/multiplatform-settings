@@ -21,22 +21,6 @@ package com.russhwolf.settings
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
-class ListenerVerifier {
-    val listener: () -> Unit = { invokeCount = invokeCount.plus(1) }
-
-    private var invokeCount by threadSafeReference(0)
-
-    fun assertInvoked(times: Int = 1, message: String? = null) {
-        assertEquals(times, invokeCount, message)
-        invokeCount = 0
-    }
-
-    fun assertNotInvoked(message: String? = null) {
-        assertInvoked(0, message)
-    }
-}
-
-@OptIn(ExperimentalSettingsApi::class)
 class ListenerValueVerifier<T> {
     val listener: (T) -> Unit = {
         if (state != State.Empty) fail("ListenerValueVerifier was invoked a second time without clearing last value")

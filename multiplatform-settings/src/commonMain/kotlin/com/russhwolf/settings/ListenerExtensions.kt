@@ -1,14 +1,22 @@
+// These extensions are all now part of the ObservableSettings interface but we don't need deprecation replacements
+// because the calling syntax is unchanged.
+@file:Suppress("DeprecatedCallableAddReplaceWith", "EXTENSION_SHADOWED_BY_MEMBER", "DEPRECATION")
+
 package com.russhwolf.settings
 
 /**
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getInt] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addIntListener(
     key: String,
     defaultValue: Int = 0,
-    crossinline callback: (Int) -> Unit
+    crossinline callback: (Int) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getInt(key, defaultValue)) }
 
@@ -16,10 +24,14 @@ public inline fun ObservableSettings.addIntListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getIntOrNull] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addIntOrNullListener(
     key: String,
-    crossinline callback: (Int?) -> Unit
+    crossinline callback: (Int?) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getIntOrNull(key)) }
 
@@ -27,11 +39,15 @@ public inline fun ObservableSettings.addIntOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getLong] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addLongListener(
     key: String,
     defaultValue: Long = 0L,
-    crossinline callback: (Long) -> Unit
+    crossinline callback: (Long) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getLong(key, defaultValue)) }
 
@@ -39,10 +55,14 @@ public inline fun ObservableSettings.addLongListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getLongOrNull] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addLongOrNullListener(
     key: String,
-    crossinline callback: (Long?) -> Unit
+    crossinline callback: (Long?) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getLongOrNull(key)) }
 
@@ -50,11 +70,15 @@ public inline fun ObservableSettings.addLongOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getString] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addStringListener(
     key: String,
     defaultValue: String = "",
-    crossinline callback: (String) -> Unit
+    crossinline callback: (String) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getString(key, defaultValue)) }
 
@@ -62,10 +86,14 @@ public inline fun ObservableSettings.addStringListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getStringOrNull] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addStringOrNullListener(
     key: String,
-    crossinline callback: (String?) -> Unit
+    crossinline callback: (String?) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getStringOrNull(key)) }
 
@@ -73,11 +101,15 @@ public inline fun ObservableSettings.addStringOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getFloat] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addFloatListener(
     key: String,
     defaultValue: Float = 0f,
-    crossinline callback: (Float) -> Unit
+    crossinline callback: (Float) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getFloat(key, defaultValue)) }
 
@@ -85,10 +117,14 @@ public inline fun ObservableSettings.addFloatListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getFloatOrNull] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addFloatOrNullListener(
     key: String,
-    crossinline callback: (Float?) -> Unit
+    crossinline callback: (Float?) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getFloatOrNull(key)) }
 
@@ -96,11 +132,15 @@ public inline fun ObservableSettings.addFloatOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getDouble] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addDoubleListener(
     key: String,
     defaultValue: Double = 0.0,
-    crossinline callback: (Double) -> Unit
+    crossinline callback: (Double) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getDouble(key, defaultValue)) }
 
@@ -108,10 +148,14 @@ public inline fun ObservableSettings.addDoubleListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getDoubleOrNull] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addDoubleOrNullListener(
     key: String,
-    crossinline callback: (Double?) -> Unit
+    crossinline callback: (Double?) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getDoubleOrNull(key)) }
 
@@ -119,11 +163,15 @@ public inline fun ObservableSettings.addDoubleOrNullListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getBoolean] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addBooleanListener(
     key: String,
     defaultValue: Boolean = false,
-    crossinline callback: (Boolean) -> Unit
+    crossinline callback: (Boolean) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getBoolean(key, defaultValue)) }
 
@@ -131,9 +179,13 @@ public inline fun ObservableSettings.addBooleanListener(
  * Acts like [ObservableSettings.addListener], but passes the result of [Settings.getBooleanOrNull] to the callback as a
  * convenience.
  */
+@Deprecated(
+    "Typed listener extensions are deprecated because they're now part of the ObservableSettings interface",
+    level = DeprecationLevel.WARNING
+)
 @ExperimentalSettingsApi
 public inline fun ObservableSettings.addBooleanOrNullListener(
     key: String,
-    crossinline callback: (Boolean?) -> Unit
+    crossinline callback: (Boolean?) -> Unit,
 ): SettingsListener =
     addListener(key) { callback(getBooleanOrNull(key)) }

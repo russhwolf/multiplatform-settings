@@ -17,7 +17,16 @@
 package com.russhwolf.settings.coroutines
 
 import com.russhwolf.settings.ExperimentalSettingsApi
+import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
+import com.russhwolf.settings.SettingsListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -75,3 +84,85 @@ private open class BlockingSuspendSettings(private val delegate: SuspendSettings
     public final override fun getBooleanOrNull(key: String): Boolean? = runBlocking { delegate.getBooleanOrNull(key) }
 }
 
+/**
+ * Wraps this [FlowSettings] in the [ObservableSettings] interface.
+ *
+ * Note that listeners are created by launching `Flow`s in [GlobalScope] by default, but you may also supply your own
+ * scope which will be used instead.
+ */
+@ExperimentalSettingsApi
+@OptIn(DelicateCoroutinesApi::class)
+public fun FlowSettings.toBlockingObservableSettings(scope: CoroutineScope = GlobalScope): ObservableSettings =
+    BlockingObservableSettings(this, scope)
+
+@ExperimentalSettingsApi
+private class BlockingObservableSettings(
+    private val delegate: FlowSettings,
+    private val scope: CoroutineScope,
+) : BlockingSuspendSettings(delegate), ObservableSettings {
+
+    @Deprecated("Use typed listener methods instead")
+    @ExperimentalSettingsApi
+    override fun addListener(key: String, callback: () -> Unit): SettingsListener {
+        throw NotImplementedError("Can't add untyped listener in BlockingObservableSettings")
+    }
+
+    private class Listener<T>(flow: Flow<T>, scope: CoroutineScope, callback: (T) -> Unit) : SettingsListener {
+        // Drop 1, because `FlowSettings` emits the current value immediately, but `ObservableSettings` waits for a new
+        // value before the listener is called.
+        private val job = flow.drop(1).onEach { callback(it) }.launchIn(scope)
+
+        override fun deactivate() {
+            job.cancel()
+        }
+    }
+
+    @ExperimentalSettingsApi
+    override fun addIntListener(key: String, defaultValue: Int, callback: (Int) -> Unit): SettingsListener =
+        Listener(delegate.getIntFlow(key, defaultValue), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addLongListener(key: String, defaultValue: Long, callback: (Long) -> Unit): SettingsListener =
+        Listener(delegate.getLongFlow(key, defaultValue), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addStringListener(key: String, defaultValue: String, callback: (String) -> Unit): SettingsListener =
+        Listener(delegate.getStringFlow(key, defaultValue), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addFloatListener(key: String, defaultValue: Float, callback: (Float) -> Unit): SettingsListener =
+        Listener(delegate.getFloatFlow(key, defaultValue), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addDoubleListener(key: String, defaultValue: Double, callback: (Double) -> Unit): SettingsListener =
+        Listener(delegate.getDoubleFlow(key, defaultValue), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addBooleanListener(key: String, defaultValue: Boolean, callback: (Boolean) -> Unit): SettingsListener =
+        Listener(delegate.getBooleanFlow(key, defaultValue), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addIntOrNullListener(key: String, callback: (Int?) -> Unit): SettingsListener =
+        Listener(delegate.getIntOrNullFlow(key), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addLongOrNullListener(key: String, callback: (Long?) -> Unit): SettingsListener =
+        Listener(delegate.getLongOrNullFlow(key), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addStringOrNullListener(key: String, callback: (String?) -> Unit): SettingsListener =
+        Listener(delegate.getStringOrNullFlow(key), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addFloatOrNullListener(key: String, callback: (Float?) -> Unit): SettingsListener =
+        Listener(delegate.getFloatOrNullFlow(key), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addDoubleOrNullListener(key: String, callback: (Double?) -> Unit): SettingsListener =
+        Listener(delegate.getDoubleOrNullFlow(key), scope, callback)
+
+    @ExperimentalSettingsApi
+    override fun addBooleanOrNullListener(key: String, callback: (Boolean?) -> Unit): SettingsListener =
+        Listener(delegate.getBooleanOrNullFlow(key), scope, callback)
+
+}

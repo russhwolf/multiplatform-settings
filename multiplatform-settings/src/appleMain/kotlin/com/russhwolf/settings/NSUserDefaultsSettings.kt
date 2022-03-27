@@ -157,6 +157,10 @@ public class NSUserDefaultsSettings public constructor(
         if (hasKey(key)) delegate.boolForKey(key) else null
 
     @ExperimentalSettingsApi
+    @Deprecated(
+        "Use typed listener methods instead",
+        level = DeprecationLevel.WARNING
+    )
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         val (block, previousValue) = if (useFrozenListeners) {
             createBackgroundListener(key, callback)

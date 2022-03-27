@@ -123,6 +123,10 @@ public class PreferencesSettings public constructor(
         if (key in delegate.keys()) delegate.getBoolean(key, false) else null
 
     @ExperimentalSettingsApi
+    @Deprecated(
+        "Use typed listener methods instead",
+        level = DeprecationLevel.WARNING
+    )
     public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         var prev = delegate.get(key, null)
 
