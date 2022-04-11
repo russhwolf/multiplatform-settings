@@ -32,7 +32,7 @@ object Versions {
     const val coroutinesNativeMt = "1.6.0-native-mt"
     const val junit = "4.13.2"
     const val robolectric = "4.6.1"
-    const val serializationPlugin = "1.6.10"
+    const val serializationPlugin = "1.6.21"
     const val serializationRuntime = "1.3.0"
     const val turbine = "0.6.1"
 }
