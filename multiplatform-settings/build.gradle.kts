@@ -40,7 +40,7 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation("androidx.annotation:annotation:1.2.0")
+                implementation("androidx.annotation:annotation:1.3.0")
             }
         }
         val androidTest by getting {
