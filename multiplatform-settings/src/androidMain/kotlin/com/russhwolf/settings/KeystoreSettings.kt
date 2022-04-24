@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.russhwolf.settings.AndroidSettings.Factory
 import java.util.Collections
 
 /**
