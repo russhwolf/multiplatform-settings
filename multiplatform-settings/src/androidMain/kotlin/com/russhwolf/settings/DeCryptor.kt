@@ -75,7 +75,7 @@ internal class DeCryptor {
     }
 
     companion object {
-        private const val TRANSFORMATION = "AES/GCM/NoPadding"
+        private const val TRANSFORMATION = "RSA/ECB/PKCS1Padding"
         private const val ANDROID_KEY_STORE = "AndroidKeyStore"
     }
 }
