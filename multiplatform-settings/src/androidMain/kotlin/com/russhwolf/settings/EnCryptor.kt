@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -37,6 +38,8 @@ import javax.crypto.SecretKey
 
 /* reference: https://gist.github.com/JosiasSena/3bf4ca59777f7dedcaf41a495d96d984 */
 @RequiresApi(Build.VERSION_CODES.M)
+/* suppressing TrulyRandom as this lint check is only concerned with Android 4.3 and lower */
+@SuppressLint("TrulyRandom")
 internal class EnCryptor {
 
     private var encryption: ByteArray = ByteArray(0)
@@ -68,7 +71,9 @@ internal class EnCryptor {
         NoSuchProviderException::class,
         InvalidAlgorithmParameterException::class
     )
+    @SuppressLint("TrulyRandom")
     private fun getSecretKey(alias: String): SecretKey {
+
         val keyGenerator: KeyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE)
         keyGenerator.init(
             KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
@@ -80,7 +85,7 @@ internal class EnCryptor {
     }
 
     companion object {
-        private const val TRANSFORMATION = "RSA/ECB/PKCS1Padding"
+        private const val TRANSFORMATION = "AES/GCM/NoPadding"
         private const val ANDROID_KEY_STORE = "AndroidKeyStore"
     }
 }
