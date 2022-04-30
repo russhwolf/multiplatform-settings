@@ -16,10 +16,12 @@
 
 package com.russhwolf.settings
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -27,6 +29,7 @@ private val context: Context = ApplicationProvider.getApplicationContext()
 private val factory = AndroidSettings.Factory(context)
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [30])
 class AndroidSettingsTest : BaseSettingsTest(factory) {
 
     @Test
@@ -72,5 +75,19 @@ class AndroidSettingsTest : BaseSettingsTest(factory) {
 
         preferences.edit().putInt("a", 3).apply()
         assertEquals(3, settings["a", 0])
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @Test
+    fun issue_108() {
+        // In Android 11 (SDK level 30), we will get OnSharedPreferenceChangeListener callbacks with a null updatedKey
+        // if the user calls clear() on the SharedPreferenecs.Editor. On Multiplatform Settings versions 0.8.1 and
+        // earlier, we assumed updatedKey was nonnull so this would crash.
+
+        val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val settings = AndroidSettings(preferences)
+
+        settings.addIntListener("key") { }
+        preferences.edit().clear().commit() // This will call OnSharedPreferenceChangeListener with updatedKey = null
     }
 }

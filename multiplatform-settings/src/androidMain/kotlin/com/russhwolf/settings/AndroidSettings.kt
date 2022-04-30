@@ -173,7 +173,7 @@ public class AndroidSettings @JvmOverloads public constructor(
         var prev = delegate.all[key]
 
         val prefsListener =
-            SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, updatedKey: String ->
+            SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, updatedKey: String? ->
                 if (updatedKey != key) return@OnSharedPreferenceChangeListener
 
                 /*
