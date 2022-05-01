@@ -16,7 +16,6 @@
 
 package com.russhwolf.settings
 
-import android.content.ContentProvider
 import android.content.Context
 import androidx.startup.Initializer
 
@@ -27,7 +26,7 @@ private var appContext: Context? = null
  *
  * On Android, this delegates to the equivalent of
  * [PreferenceManager.getDefaultSharedPreferences][android.preference.PreferenceManager.getDefaultSharedPreferences].
- * It handles context via [ContextProvider], which is a no-op [ContentProvider].
+ * It handles context via androidx.startup
  */
 public actual fun Settings(): Settings {
     val appContext = appContext!!
