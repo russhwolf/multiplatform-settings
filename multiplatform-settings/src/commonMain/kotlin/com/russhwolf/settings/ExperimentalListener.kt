@@ -67,7 +67,8 @@ public annotation class ExperimentalSettingsImplementation
 @Suppress("KDocMissingDocumentation")
 @Deprecated(
     "ExperimentalListener has been replaced with ExperimentalSettingsApi",
-    replaceWith = ReplaceWith("ExperimentalSettingsApi", "com.russhwolf.settings")
+    replaceWith = ReplaceWith("ExperimentalSettingsApi", "com.russhwolf.settings"),
+    level = DeprecationLevel.HIDDEN
 )
 @Target(
     CLASS,

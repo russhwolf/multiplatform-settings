@@ -19,7 +19,8 @@ package com.russhwolf.settings
 @Suppress("KDocMissingDocumentation")
 @Deprecated(
     "ExperimentalWindows has been replaced with ExperimentalSettingsImplementation",
-    replaceWith = ReplaceWith("ExperimentalSettingsImplementation", "com.russhwolf.settings")
+    replaceWith = ReplaceWith("ExperimentalSettingsImplementation", "com.russhwolf.settings"),
+    level = DeprecationLevel.HIDDEN
 )
 @Target(
     AnnotationTarget.CLASS,

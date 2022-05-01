@@ -21,7 +21,8 @@ package com.russhwolf.settings
  */
 @Deprecated(
     message = "Operator fun is deprecated. Use Settings() function instead.",
-    replaceWith = ReplaceWith("Settings()", "com.russhwolf.settings.Settings")
+    replaceWith = ReplaceWith("Settings()", "com.russhwolf.settings.Settings"),
+    level = DeprecationLevel.HIDDEN
 )
 @Suppress("EXPERIMENTAL_API_USAGE")
 public operator fun Settings.Companion.invoke(): Settings = Settings()
