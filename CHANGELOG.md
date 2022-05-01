@@ -1,5 +1,16 @@
 # Changelog #
 
+## v0.9 *(2022-05-01)* ##
+
+- Update to Kotlin 1.6.21 and Gradle 7.3.2
+- Update `multiplatform-settings-coroutines` to use coroutines version 1.6.1
+- Update `multiplatform-settings-serialization` to use serialization version 1.3.2
+- Add Windows support to `multiplatform-settings-no-arg`
+- Add JVM support to `multiplatform-settings-datastore`
+- Refactor some internals to take advantage of better HMPP support in Kotlin 1.6+
+- Fix a crash that could occur on Android 11 and above when clearing data from SharedPreferences while listeners were
+  set by AndroidSettings
+
 ## v0.8.1 *(2021-09-23)* ##
 
 - Update to Kotlin 1.5.31 and Gradle 7.2
