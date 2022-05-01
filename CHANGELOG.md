@@ -1,5 +1,13 @@
 # Changelog #
 
+## v1.0.0-alpha01 *(2022-05-??)* ##
+
+- BREAKING: Rename Settings implementations to be based on the underlying API used rather than the platform
+- BREAKING: Migrate typed listeners from extension functions to members of ObservableSettings
+- BREAKING: Remove default values for defaultValue parameters
+- Remove `@ExperimentalSettingsApi` from `ObservableSettings`, `SettingsListener`, and related APIs
+- Remove `@ExperimentalSettingsImplementation` from JVM implementations
+
 ## v0.9 *(2022-05-01)* ##
 
 - Update to Kotlin 1.6.21 and Gradle 7.3.2
