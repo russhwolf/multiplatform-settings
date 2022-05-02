@@ -4,13 +4,29 @@ pr: none
 jobs:
   - job: "General"
     steps:
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            mkdir -p ./jdk/binaries/
+            curl https://cdn.azul.com/zulu/bin/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz --output ./jdk/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz 
+
+      - task: JavaToolInstaller@0
+        inputs:
+          jdkFile: ./jdk/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz
+          versionSpec: "11"
+          jdkArchitectureOption: x64
+          jdkSourceOption: LocalDirectory
+          jdkDestinationDirectory: "./jdk/binaries/"
+          cleanDestinationDirectory: true
+
       - task: Gradle@2
         inputs:
           workingDirectory: ''
           gradleWrapperFile: 'gradlew'
           gradleOptions: '-Xmx3072m'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.8'
+          jdkVersionOption: '11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
