@@ -686,7 +686,6 @@ abstract class BaseSettingsTest(
     }
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun listener() {
         if (!hasListeners) return
 
@@ -761,7 +760,6 @@ abstract class BaseSettingsTest(
     }
 
 
-    @OptIn(ExperimentalSettingsApi::class)
     private inline fun <reified T> typedListenerTest(
         defaultValue: T,
         otherValue: T,
@@ -791,56 +789,44 @@ abstract class BaseSettingsTest(
     }
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun intListener() = typedListenerTest(-1, 1, ObservableSettings::addIntListener)
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun intOrNullListener() =
         typedListenerTest(null, 1) { key, _, block -> addIntOrNullListener(key, block) }
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun longListener() = typedListenerTest(-1L, 1L, ObservableSettings::addLongListener)
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun longOrNullListener() =
         typedListenerTest(null, 1L) { key, _, block -> addLongOrNullListener(key, block) }
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun stringListener() = typedListenerTest("default", "foo", ObservableSettings::addStringListener)
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun stringOrNullListener() =
         typedListenerTest(null, "foo") { key, _, block -> addStringOrNullListener(key, block) }
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun floatListener() = typedListenerTest(-1f, 1f, ObservableSettings::addFloatListener)
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun floatOrNullListener() =
         typedListenerTest(null, 1f) { key, _, block -> addFloatOrNullListener(key, block) }
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun doubleListener() = typedListenerTest(-1.0, 1.0, ObservableSettings::addDoubleListener)
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun doubleOrNullListener() =
         typedListenerTest(null, 1.0) { key, _, block -> addDoubleOrNullListener(key, block) }
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun booleanListener() = typedListenerTest(true, false, ObservableSettings::addBooleanListener)
 
     @Test
-    @OptIn(ExperimentalSettingsApi::class)
     fun booleanOrNullListener() =
         typedListenerTest(null, false) { key, _, block -> addBooleanOrNullListener(key, block) }
 

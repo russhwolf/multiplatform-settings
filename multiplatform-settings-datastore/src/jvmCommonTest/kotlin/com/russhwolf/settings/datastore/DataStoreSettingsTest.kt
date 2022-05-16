@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalSettingsApi::class, ExperimentalCoroutinesApi::class, ExperimentalSettingsImplementation::class)
+@file:OptIn(ExperimentalSettingsApi::class, ExperimentalSettingsImplementation::class)
 
 package com.russhwolf.settings.datastore
 
@@ -29,7 +29,6 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.coroutines.toBlockingObservableSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test

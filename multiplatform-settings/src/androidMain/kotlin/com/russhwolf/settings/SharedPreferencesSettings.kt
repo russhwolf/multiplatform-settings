@@ -51,7 +51,6 @@ public typealias AndroidSettings = SharedPreferencesSettings
  * Set the [commit] parameter to true if you want your changes to be immediately committed to the persistent storage
  * (slower, but synchronous).
  */
-@OptIn(ExperimentalSettingsApi::class)
 public class SharedPreferencesSettings @JvmOverloads public constructor(
     private val delegate: SharedPreferences,
     private val commit: Boolean = false
@@ -176,7 +175,6 @@ public class SharedPreferencesSettings @JvmOverloads public constructor(
     public override fun getBooleanOrNull(key: String): Boolean? =
         if (delegate.contains(key)) delegate.getBoolean(key, false) else null
 
-    @ExperimentalSettingsApi
     @Deprecated(
         "Use typed listener methods instead",
         level = DeprecationLevel.WARNING
@@ -208,7 +206,6 @@ public class SharedPreferencesSettings @JvmOverloads public constructor(
      *
      * On the Android platform, this is a wrapper around [SharedPreferences.OnSharedPreferenceChangeListener].
      */
-    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val preferences: SharedPreferences,
         private val listener: SharedPreferences.OnSharedPreferenceChangeListener

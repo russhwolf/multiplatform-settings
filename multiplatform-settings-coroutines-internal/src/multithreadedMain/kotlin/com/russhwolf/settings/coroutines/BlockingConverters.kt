@@ -102,7 +102,6 @@ private class BlockingObservableSettings(
 ) : BlockingSuspendSettings(delegate), ObservableSettings {
 
     @Deprecated("Use typed listener methods instead")
-    @ExperimentalSettingsApi
     override fun addListener(key: String, callback: () -> Unit): SettingsListener {
         throw NotImplementedError("Can't add untyped listener in BlockingObservableSettings")
     }
@@ -117,51 +116,39 @@ private class BlockingObservableSettings(
         }
     }
 
-    @ExperimentalSettingsApi
     override fun addIntListener(key: String, defaultValue: Int, callback: (Int) -> Unit): SettingsListener =
         Listener(delegate.getIntFlow(key, defaultValue), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addLongListener(key: String, defaultValue: Long, callback: (Long) -> Unit): SettingsListener =
         Listener(delegate.getLongFlow(key, defaultValue), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addStringListener(key: String, defaultValue: String, callback: (String) -> Unit): SettingsListener =
         Listener(delegate.getStringFlow(key, defaultValue), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addFloatListener(key: String, defaultValue: Float, callback: (Float) -> Unit): SettingsListener =
         Listener(delegate.getFloatFlow(key, defaultValue), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addDoubleListener(key: String, defaultValue: Double, callback: (Double) -> Unit): SettingsListener =
         Listener(delegate.getDoubleFlow(key, defaultValue), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addBooleanListener(key: String, defaultValue: Boolean, callback: (Boolean) -> Unit): SettingsListener =
         Listener(delegate.getBooleanFlow(key, defaultValue), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addIntOrNullListener(key: String, callback: (Int?) -> Unit): SettingsListener =
         Listener(delegate.getIntOrNullFlow(key), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addLongOrNullListener(key: String, callback: (Long?) -> Unit): SettingsListener =
         Listener(delegate.getLongOrNullFlow(key), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addStringOrNullListener(key: String, callback: (String?) -> Unit): SettingsListener =
         Listener(delegate.getStringOrNullFlow(key), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addFloatOrNullListener(key: String, callback: (Float?) -> Unit): SettingsListener =
         Listener(delegate.getFloatOrNullFlow(key), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addDoubleOrNullListener(key: String, callback: (Double?) -> Unit): SettingsListener =
         Listener(delegate.getDoubleOrNullFlow(key), scope, callback)
 
-    @ExperimentalSettingsApi
     override fun addBooleanOrNullListener(key: String, callback: (Boolean?) -> Unit): SettingsListener =
         Listener(delegate.getBooleanOrNullFlow(key), scope, callback)
 

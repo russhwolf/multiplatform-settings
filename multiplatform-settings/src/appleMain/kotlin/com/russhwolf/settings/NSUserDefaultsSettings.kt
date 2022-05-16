@@ -54,7 +54,6 @@ public typealias AppleSettings = NSUserDefaultsSettings
  * the block passed to [addListener] will be frozen as well so that it can safely be triggered from any thread. To avoid
  * freezing listeners, restrict interaction with this class to a single thread and set `useFrozenListeners` to `false`.
  */
-@OptIn(ExperimentalSettingsApi::class)
 public class NSUserDefaultsSettings public constructor(
     private val delegate: NSUserDefaults,
     private val useFrozenListeners: Boolean = false
@@ -156,7 +155,6 @@ public class NSUserDefaultsSettings public constructor(
     public override fun getBooleanOrNull(key: String): Boolean? =
         if (hasKey(key)) delegate.boolForKey(key) else null
 
-    @ExperimentalSettingsApi
     @Deprecated(
         "Use typed listener methods instead",
         level = DeprecationLevel.WARNING
@@ -219,7 +217,6 @@ public class NSUserDefaultsSettings public constructor(
      *
      * On the iOS and macOS platforms, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
      */
-    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val delegate: NSObjectProtocol,
         private val previousValue: AtomicReference<Any?>?

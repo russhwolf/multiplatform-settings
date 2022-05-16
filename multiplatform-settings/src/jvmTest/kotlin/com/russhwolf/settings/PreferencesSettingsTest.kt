@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalSettingsImplementation::class)
-
 package com.russhwolf.settings
 
 import java.util.concurrent.CountDownLatch

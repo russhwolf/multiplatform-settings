@@ -16,7 +16,6 @@
 
 package com.russhwolf.settings.example
 
-import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
@@ -57,7 +56,6 @@ sealed class SettingConfig<T>(
     protected abstract fun getStringValue(settings: Settings, key: String, defaultValue: T): String
     protected abstract fun setStringValue(settings: Settings, key: String, value: String)
 
-    @ExperimentalSettingsApi
     private var listener: SettingsListener? = null
 
     fun remove() = settings.remove(key)
@@ -73,7 +71,6 @@ sealed class SettingConfig<T>(
         }
     }
 
-    @ExperimentalSettingsApi
     var isLoggingEnabled: Boolean
         get() = listener != null
         set(value) {

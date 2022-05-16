@@ -44,7 +44,7 @@ class ToSuspendSettingsTest : BaseSettingsTest(
     hasListeners = false
 )
 
-@OptIn(ExperimentalSettingsApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalSettingsApi::class)
 class ToFlowSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): Settings {

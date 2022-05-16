@@ -50,7 +50,6 @@ public typealias JvmPropertiesSettings = PropertiesSettings
  *
  * The experimental listener APIs are not implemented in `JvmPropertiesSettings`.
  */
-@ExperimentalSettingsImplementation
 public class PropertiesSettings public constructor(
     private val delegate: Properties,
     private val onModify: (Properties) -> Unit = {}

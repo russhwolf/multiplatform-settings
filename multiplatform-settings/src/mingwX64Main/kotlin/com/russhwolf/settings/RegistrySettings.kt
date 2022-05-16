@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.russhwolf.settings
 
 import com.russhwolf.settings.RegistrySettings.Factory
@@ -70,6 +68,7 @@ import platform.windows.WCHARVar
     replaceWith = ReplaceWith("RegistrySettings", "com.russhwolf.settings.RegistrySettings")
 )
 @Suppress("KDocMissingDocumentation")
+@ExperimentalSettingsImplementation
 public typealias WindowsSettings = RegistrySettings
 
 /**
@@ -89,7 +88,6 @@ public typealias WindowsSettings = RegistrySettings
  * registry key, or via a [Factory].
  */
 @ExperimentalSettingsImplementation
-@OptIn(ExperimentalUnsignedTypes::class)
 public class RegistrySettings public constructor(private val rootKeyName: String) : Settings {
 
     /**

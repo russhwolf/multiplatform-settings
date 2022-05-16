@@ -41,7 +41,6 @@ public typealias MockSettings = MapSettings
  * This implementation is verified against the same test suite as the real platform-specific implementations to ensure
  * it shares the same behavior, assuming the default [mutableMapOf] delegate is used.
  */
-@OptIn(ExperimentalSettingsApi::class)
 public class MapSettings public constructor(private val delegate: MutableMap<String, Any> = mutableMapOf()) :
     ObservableSettings {
     private val listeners = mutableListOf<() -> Any>()
@@ -157,7 +156,6 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
 
     public override fun getBooleanOrNull(key: String): Boolean? = delegate[key] as? Boolean
 
-    @ExperimentalSettingsApi
     @Deprecated(
         "Use typed listener methods instead",
         level = DeprecationLevel.WARNING
@@ -183,7 +181,6 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
      * mutating API is called. Unlike platform implementations, this listener will NOT be called if the underlying map
      * is mutated by something other than the `MockSettings` instance that originally created the listener.
      */
-    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val listeners: MutableList<() -> Any>,
         private val listener: () -> Unit

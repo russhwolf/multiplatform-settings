@@ -21,7 +21,6 @@ package com.russhwolf.settings
     replaceWith = ReplaceWith("JvmPreferencesSettings", "com.russhwolf.settings.JvmPreferencesSettings"),
     level = DeprecationLevel.HIDDEN
 )
-@ExperimentalSettingsImplementation
 @Suppress("UNUSED", "KDocMissingDocumentation")
 public typealias JvmSettings = PreferencesSettings
 

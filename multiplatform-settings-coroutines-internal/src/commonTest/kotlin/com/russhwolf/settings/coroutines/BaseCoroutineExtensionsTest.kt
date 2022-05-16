@@ -20,13 +20,12 @@ import app.cash.turbine.test
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalSettingsApi::class, ExperimentalCoroutinesApi::class, ExperimentalTime::class)
+@OptIn(ExperimentalSettingsApi::class, ExperimentalTime::class)
 abstract class BaseCoroutineExtensionsTest {
 
     abstract val settings: ObservableSettings

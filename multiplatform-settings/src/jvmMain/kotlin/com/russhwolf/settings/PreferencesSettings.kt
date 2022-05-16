@@ -49,8 +49,6 @@ public typealias JvmPreferencesSettings = PreferencesSettings
  *
  * This class is experimental as marked by the [ExperimentalSettingsImplementation] annotation.
  */
-@ExperimentalSettingsImplementation
-@OptIn(ExperimentalSettingsApi::class)
 public class PreferencesSettings public constructor(
     private val delegate: Preferences
 ) : ObservableSettings {
@@ -122,7 +120,6 @@ public class PreferencesSettings public constructor(
     public override fun getBooleanOrNull(key: String): Boolean? =
         if (key in delegate.keys()) delegate.getBoolean(key, false) else null
 
-    @ExperimentalSettingsApi
     @Deprecated(
         "Use typed listener methods instead",
         level = DeprecationLevel.WARNING
@@ -154,7 +151,6 @@ public class PreferencesSettings public constructor(
      *
      * On the JVM platform, this is a wrapper around [PreferenceChangeListener].
      */
-    @ExperimentalSettingsApi
     public class Listener internal constructor(
         private val preferences: Preferences,
         private val listener: PreferenceChangeListener

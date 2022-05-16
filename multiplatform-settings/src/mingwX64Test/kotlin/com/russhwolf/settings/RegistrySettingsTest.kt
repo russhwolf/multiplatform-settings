@@ -40,7 +40,7 @@ import kotlin.test.assertFailsWith
 @OptIn(ExperimentalSettingsImplementation::class)
 private val factory = RegistrySettings.Factory("multiplatform-settings-test")
 
-@OptIn(ExperimentalSettingsImplementation::class, ExperimentalUnsignedTypes::class)
+@OptIn(ExperimentalSettingsImplementation::class)
 class RegistrySettingsTest : BaseSettingsTest(
     platformFactory = factory,
     hasListeners = false

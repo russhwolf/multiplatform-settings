@@ -21,7 +21,6 @@ import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -39,7 +38,6 @@ public fun Settings.toSuspendSettings(
  * Wraps this [ObservableSettings] in the [FlowSettings] interface.
  */
 @ExperimentalSettingsApi
-@ExperimentalCoroutinesApi
 public fun ObservableSettings.toFlowSettings(
     dispatcher: CoroutineDispatcher = Dispatchers.Default
 ): FlowSettings =
@@ -130,7 +128,6 @@ private open class SuspendSettingsWrapper(
 }
 
 @ExperimentalSettingsApi
-@ExperimentalCoroutinesApi
 private class FlowSettingsWrapper(
     private val delegate: ObservableSettings,
     private val dispatcher: CoroutineDispatcher

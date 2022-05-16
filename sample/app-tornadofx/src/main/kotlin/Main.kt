@@ -16,8 +16,6 @@
 
 package com.russhwolf.settings.example.jvm
 
-import com.russhwolf.settings.ExperimentalSettingsApi
-import com.russhwolf.settings.ExperimentalSettingsImplementation
 import com.russhwolf.settings.JvmPreferencesSettings
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
@@ -42,7 +40,6 @@ fun main() = launch<SettingsDemoApp>()
 
 class SettingsDemoApp : App(SettingsDemoView::class)
 
-@OptIn(ExperimentalSettingsApi::class)
 class SettingsDemoView : View() {
     override val root: Parent = vbox {
         val selectedItem = SimpleObjectProperty<SettingConfig<*>>()
@@ -87,7 +84,6 @@ class SettingsDemoView : View() {
     }
 }
 
-@OptIn(ExperimentalSettingsImplementation::class)
 val settingsRepository: SettingsRepository by lazy {
     val preferences = Preferences.userRoot()
     val settings = JvmPreferencesSettings(preferences)

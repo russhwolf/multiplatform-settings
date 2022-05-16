@@ -20,12 +20,10 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 private inline fun <T> ObservableSettings.createFlow(
     key: String,
@@ -42,7 +40,6 @@ private inline fun <T> ObservableSettings.createFlow(
     }
 }
 
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 private inline fun <T> ObservableSettings.createNullableFlow(
     key: String,
@@ -56,7 +53,6 @@ private inline fun <T> ObservableSettings.createNullableFlow(
  * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * [defaultValue] will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int = 0): Flow<Int> =
     createFlow(key, defaultValue, Settings::getInt, ObservableSettings::addIntListener)
@@ -66,7 +62,6 @@ public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int = 0): Fl
  * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * [defaultValue] will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long = 0L): Flow<Long> =
     createFlow(key, defaultValue, Settings::getLong, ObservableSettings::addLongListener)
@@ -76,7 +71,6 @@ public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long = 0L):
  * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * [defaultValue] will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getStringFlow(key: String, defaultValue: String = ""): Flow<String> =
     createFlow(key, defaultValue, Settings::getString, ObservableSettings::addStringListener)
@@ -86,7 +80,6 @@ public fun ObservableSettings.getStringFlow(key: String, defaultValue: String = 
  * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * [defaultValue] will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float = 0f): Flow<Float> =
     createFlow(key, defaultValue, Settings::getFloat, ObservableSettings::addFloatListener)
@@ -96,7 +89,6 @@ public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float = 0f
  * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * [defaultValue] will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double = 0.0): Flow<Double> =
     createFlow(key, defaultValue, Settings::getDouble, ObservableSettings::addDoubleListener)
@@ -106,7 +98,6 @@ public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double = 
  * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * [defaultValue] will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean> =
     createFlow(key, defaultValue, Settings::getBoolean, ObservableSettings::addBooleanListener)
@@ -116,7 +107,6 @@ public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean 
  * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * `null` will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getIntOrNullFlow(key: String): Flow<Int?> =
     createNullableFlow(key, Settings::getIntOrNull, ObservableSettings::addIntOrNullListener)
@@ -126,7 +116,6 @@ public fun ObservableSettings.getIntOrNullFlow(key: String): Flow<Int?> =
  * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * `null` will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getLongOrNullFlow(key: String): Flow<Long?> =
     createNullableFlow(key, Settings::getLongOrNull, ObservableSettings::addLongOrNullListener)
@@ -136,7 +125,6 @@ public fun ObservableSettings.getLongOrNullFlow(key: String): Flow<Long?> =
  * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * `null` will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getStringOrNullFlow(key: String): Flow<String?> =
     createNullableFlow(key, Settings::getStringOrNull, ObservableSettings::addStringOrNullListener)
@@ -146,7 +134,6 @@ public fun ObservableSettings.getStringOrNullFlow(key: String): Flow<String?> =
  * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * `null` will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getFloatOrNullFlow(key: String): Flow<Float?> =
     createNullableFlow(key, Settings::getFloatOrNull, ObservableSettings::addFloatOrNullListener)
@@ -156,7 +143,6 @@ public fun ObservableSettings.getFloatOrNullFlow(key: String): Flow<Float?> =
  * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * `null` will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getDoubleOrNullFlow(key: String): Flow<Double?> =
     createNullableFlow(key, Settings::getDoubleOrNull, ObservableSettings::addDoubleOrNullListener)
@@ -166,7 +152,6 @@ public fun ObservableSettings.getDoubleOrNullFlow(key: String): Flow<Double?> =
  * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * `null` will be emitted instead.
  */
-@ExperimentalCoroutinesApi
 @ExperimentalSettingsApi
 public fun ObservableSettings.getBooleanOrNullFlow(key: String): Flow<Boolean?> =
     createNullableFlow(key, Settings::getBooleanOrNull, ObservableSettings::addBooleanOrNullListener)

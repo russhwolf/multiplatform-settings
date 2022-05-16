@@ -173,7 +173,6 @@ public interface Settings {
 /**
  * An extension to the [Settings] interface to include update listener functionality
  */
-@ExperimentalSettingsApi
 public interface ObservableSettings : Settings {
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -186,7 +185,6 @@ public interface ObservableSettings : Settings {
      * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
      * it's recommended that interaction with the listener APIs be confined to the main UI thread.
      */
-    @ExperimentalSettingsApi
     @Deprecated(
         "Use typed listener methods instead",
         level = DeprecationLevel.WARNING
@@ -199,7 +197,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addIntListener(
         key: String,
@@ -214,7 +211,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addLongListener(
         key: String,
@@ -229,7 +225,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addStringListener(
         key: String,
@@ -244,7 +239,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addFloatListener(
         key: String,
@@ -259,7 +253,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addDoubleListener(
         key: String,
@@ -274,7 +267,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addBooleanListener(
         key: String,
@@ -289,7 +281,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addIntOrNullListener(
         key: String,
@@ -303,7 +294,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addLongOrNullListener(
         key: String,
@@ -317,7 +307,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addStringOrNullListener(
         key: String,
@@ -331,7 +320,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addFloatOrNullListener(
         key: String,
@@ -345,7 +333,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addDoubleOrNullListener(
         key: String,
@@ -359,7 +346,6 @@ public interface ObservableSettings : Settings {
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
      * garbage-collected.
      */
-    @ExperimentalSettingsApi
     @Suppress("DEPRECATION")
     public fun addBooleanOrNullListener(
         key: String,
@@ -370,7 +356,6 @@ public interface ObservableSettings : Settings {
     /**
      * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
      */
-    @ExperimentalSettingsApi
     @Deprecated(
         message = "Use SettingsListener.deactivate() instead",
         replaceWith = ReplaceWith("listener.deactivate()"),
@@ -385,14 +370,12 @@ public interface ObservableSettings : Settings {
     replaceWith = ReplaceWith("ObservableSettings", "com.russhwolf.settings.ObservableSettings"),
     level = DeprecationLevel.HIDDEN
 )
-@ExperimentalSettingsApi
 @Suppress("UNUSED", "KDocMissingDocumentation")
 public typealias ListenableSettings = ObservableSettings
 
 /**
  * A handle to a listener instance returned by [ObservableSettings.addListener] so it can be deactivated as needed
  */
-@ExperimentalSettingsApi
 public interface SettingsListener {
     /**
      * Unsubscribes this [SettingsListener] from receiving updates to the value at the key it monitors
