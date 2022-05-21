@@ -1,6 +1,6 @@
 package com.russhwolf.settings.example
 
-import com.russhwolf.settings.MockSettings
+import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import kotlin.test.Test
@@ -15,14 +15,14 @@ private const val VALUE = "My String Value"
 class SettingsConfigTest {
     @Test
     fun stringConfig_get() {
-        val settings = MockSettings(KEY to VALUE)
+        val settings = MapSettings(KEY to VALUE)
 
-        val config1 = StringSettingConfig(settings, KEY)
+        val config1 = StringSettingConfig(settings, KEY, defaultValue = "")
         val nullableConfig1 = NullableStringSettingConfig(settings, KEY)
         assertEquals(VALUE, config1.get())
         assertEquals(VALUE, nullableConfig1.get())
 
-        val config2 = StringSettingConfig(settings, "Other Key")
+        val config2 = StringSettingConfig(settings, "Other Key", defaultValue = "")
         val nullableConfig2 = NullableStringSettingConfig(settings, "Other Key")
         assertEquals("", config2.get())
         assertEquals("null", nullableConfig2.get())
@@ -30,9 +30,9 @@ class SettingsConfigTest {
 
     @Test
     fun stringConfig_set() {
-        val settings = MockSettings()
+        val settings = MapSettings()
 
-        val config = StringSettingConfig(settings, KEY)
+        val config = StringSettingConfig(settings, KEY, defaultValue = "")
         config.set(VALUE)
         assertEquals(VALUE, settings[KEY, ""])
     }

@@ -17,7 +17,6 @@
 package com.russhwolf.settings.example.android
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -27,7 +26,8 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.russhwolf.settings.AndroidSettings
+import androidx.preference.PreferenceManager
+import com.russhwolf.settings.SharedPreferencesSettings
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private val settingsRepository by lazy {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        val settings = AndroidSettings(sharedPrefs)
+        val settings = SharedPreferencesSettings(sharedPrefs)
         SettingsRepository(settings)
     }
 

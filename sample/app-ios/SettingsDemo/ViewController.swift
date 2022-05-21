@@ -123,7 +123,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
 }
 
-let userDefaultsSettingsRepository: SettingsRepository = SettingsRepository(settings: AppleSettings(delegate: UserDefaults.standard))
+let userDefaultsSettingsRepository: SettingsRepository = SettingsRepository(settings: NSUserDefaultsSettings(delegate: UserDefaults.standard))
 let keychainSettingsRepository: SettingsRepository = SettingsRepository(settings: KeychainSettings(service: "Settings Demo"))
 
 var settingsRepository = userDefaultsSettingsRepository

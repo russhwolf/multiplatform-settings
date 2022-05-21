@@ -16,7 +16,7 @@
 
 package com.russhwolf.settings.example.jvm
 
-import com.russhwolf.settings.JvmPreferencesSettings
+import com.russhwolf.settings.PreferencesSettings
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
 import javafx.beans.property.SimpleObjectProperty
@@ -86,6 +86,6 @@ class SettingsDemoView : View() {
 
 val settingsRepository: SettingsRepository by lazy {
     val preferences = Preferences.userRoot()
-    val settings = JvmPreferencesSettings(preferences)
+    val settings = PreferencesSettings(preferences)
     SettingsRepository(settings)
 }

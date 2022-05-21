@@ -51,10 +51,16 @@ class SettingsRepository(private val settings: Settings) {
 sealed class SettingConfig<T>(
     private val settings: Settings,
     val key: String,
-    private val defaultValue: T,
+    private val defaultValue: T
 ) {
     protected abstract fun getStringValue(settings: Settings, key: String, defaultValue: T): String
     protected abstract fun setStringValue(settings: Settings, key: String, value: String)
+    protected abstract fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: T,
+        callback: (T) -> Unit
+    ): SettingsListener
 
     private var listener: SettingsListener? = null
 
@@ -77,7 +83,7 @@ sealed class SettingConfig<T>(
             val settings = settings as? ObservableSettings ?: return
             listener = if (value) {
                 listener?.deactivate() // just in case
-                settings.addListener(key) { println("$key = ${get()}") }
+                addListener(settings, key, defaultValue) { println("$key = ${get()}") }
             } else {
                 listener?.deactivate()
                 null
@@ -96,6 +102,20 @@ sealed class NullableSettingConfig<T : Any>(
 
     final override fun getStringValue(settings: Settings, key: String, defaultValue: T?): String =
         getStringValue(settings, key)
+
+    protected abstract fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        callback: (T?) -> Unit
+    ): SettingsListener
+
+    final override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: T?,
+        callback: (T?) -> Unit
+    ): SettingsListener =
+        addListener(settings, key, null, callback)
 }
 
 class StringSettingConfig(settings: Settings, key: String, defaultValue: String) :
@@ -106,6 +126,14 @@ class StringSettingConfig(settings: Settings, key: String, defaultValue: String)
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putString(key, value)
+
+    override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: String,
+        callback: (String) -> Unit
+    ): SettingsListener =
+        settings.addStringListener(key, defaultValue, callback)
 }
 
 class IntSettingConfig(settings: Settings, key: String, defaultValue: Int) :
@@ -116,6 +144,14 @@ class IntSettingConfig(settings: Settings, key: String, defaultValue: Int) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putInt(key, value.toInt())
+
+    override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: Int,
+        callback: (Int) -> Unit
+    ): SettingsListener =
+        settings.addIntListener(key, defaultValue, callback)
 }
 
 class LongSettingConfig(settings: Settings, key: String, defaultValue: Long) :
@@ -126,6 +162,14 @@ class LongSettingConfig(settings: Settings, key: String, defaultValue: Long) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putLong(key, value.toLong())
+
+    override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: Long,
+        callback: (Long) -> Unit
+    ): SettingsListener =
+        settings.addLongListener(key, defaultValue, callback)
 }
 
 class FloatSettingConfig(settings: Settings, key: String, defaultValue: Float) :
@@ -136,6 +180,14 @@ class FloatSettingConfig(settings: Settings, key: String, defaultValue: Float) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putFloat(key, value.toFloat())
+
+    override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: Float,
+        callback: (Float) -> Unit
+    ): SettingsListener =
+        settings.addFloatListener(key, defaultValue, callback)
 }
 
 class DoubleSettingConfig(settings: Settings, key: String, defaultValue: Double) :
@@ -146,6 +198,14 @@ class DoubleSettingConfig(settings: Settings, key: String, defaultValue: Double)
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putDouble(key, value.toDouble())
+
+    override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: Double,
+        callback: (Double) -> Unit
+    ): SettingsListener =
+        settings.addDoubleListener(key, defaultValue, callback)
 }
 
 class BooleanSettingConfig(settings: Settings, key: String, defaultValue: Boolean) :
@@ -156,6 +216,14 @@ class BooleanSettingConfig(settings: Settings, key: String, defaultValue: Boolea
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putBoolean(key, value.toBoolean())
+
+    override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        defaultValue: Boolean,
+        callback: (Boolean) -> Unit
+    ): SettingsListener =
+        settings.addBooleanListener(key, defaultValue, callback)
 }
 
 class NullableStringSettingConfig(settings: Settings, key: String) :
@@ -166,6 +234,9 @@ class NullableStringSettingConfig(settings: Settings, key: String) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putString(key, value)
+
+    override fun addListener(settings: ObservableSettings, key: String, callback: (String?) -> Unit): SettingsListener =
+        settings.addStringOrNullListener(key, callback)
 }
 
 class NullableIntSettingConfig(settings: Settings, key: String) :
@@ -176,6 +247,9 @@ class NullableIntSettingConfig(settings: Settings, key: String) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putInt(key, value.toInt())
+
+    override fun addListener(settings: ObservableSettings, key: String, callback: (Int?) -> Unit): SettingsListener =
+        settings.addIntOrNullListener(key, callback)
 }
 
 class NullableLongSettingConfig(settings: Settings, key: String) :
@@ -186,6 +260,9 @@ class NullableLongSettingConfig(settings: Settings, key: String) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putLong(key, value.toLong())
+
+    override fun addListener(settings: ObservableSettings, key: String, callback: (Long?) -> Unit): SettingsListener =
+        settings.addLongOrNullListener(key, callback)
 }
 
 class NullableFloatSettingConfig(settings: Settings, key: String) :
@@ -196,6 +273,9 @@ class NullableFloatSettingConfig(settings: Settings, key: String) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putFloat(key, value.toFloat())
+
+    override fun addListener(settings: ObservableSettings, key: String, callback: (Float?) -> Unit): SettingsListener =
+        settings.addFloatOrNullListener(key, callback)
 }
 
 class NullableDoubleSettingConfig(settings: Settings, key: String) :
@@ -206,6 +286,9 @@ class NullableDoubleSettingConfig(settings: Settings, key: String) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putDouble(key, value.toDouble())
+
+    override fun addListener(settings: ObservableSettings, key: String, callback: (Double?) -> Unit): SettingsListener =
+        settings.addDoubleOrNullListener(key, callback)
 }
 
 class NullableBooleanSettingConfig(settings: Settings, key: String) :
@@ -216,4 +299,11 @@ class NullableBooleanSettingConfig(settings: Settings, key: String) :
 
     override fun setStringValue(settings: Settings, key: String, value: String) =
         settings.putBoolean(key, value.toBoolean())
+
+    override fun addListener(
+        settings: ObservableSettings,
+        key: String,
+        callback: (Boolean?) -> Unit
+    ): SettingsListener =
+        settings.addBooleanOrNullListener(key, callback)
 }

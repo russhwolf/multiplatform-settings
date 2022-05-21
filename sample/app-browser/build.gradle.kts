@@ -38,5 +38,5 @@ dependencies {
 }
 
 tasks.withType<KotlinJsCompile> {
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }

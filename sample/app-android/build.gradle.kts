@@ -22,12 +22,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(31)
 
     defaultConfig {
         applicationId = "com.russhwolf.settings.example.android"
         minSdkVersion(15)
-        targetSdkVersion(30)
+        targetSdkVersion(31)
         versionCode = 1
         versionName = "1.0"
 
@@ -55,11 +55,12 @@ android {
 dependencies {
     implementation(project(":shared"))
     implementation(fileTree("include" to listOf("*.jar"), "dir" to "libs"))
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
 }
 
 tasks.withType<KotlinCompile>().all {
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }
