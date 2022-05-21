@@ -63,6 +63,6 @@ class DataStoreSettingsTest : BaseSettingsTest(
         val settings = DataStoreSettings(dataStore)
 
         dataStore.edit { it[intPreferencesKey("a")] = 3 }
-        assertEquals(3, settings.getInt("a"))
+        assertEquals(3, settings.getIntOrNull("a"))
     }
 }

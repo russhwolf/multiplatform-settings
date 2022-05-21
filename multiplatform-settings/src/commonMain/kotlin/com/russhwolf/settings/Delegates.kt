@@ -22,37 +22,37 @@ import kotlin.reflect.KProperty
 /**
  * Returns an [Int] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.int(key: String? = null, defaultValue: Int = 0): ReadWriteProperty<Any?, Int> =
+public fun Settings.int(key: String? = null, defaultValue: Int): ReadWriteProperty<Any?, Int> =
     IntDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Long] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.long(key: String? = null, defaultValue: Long = 0): ReadWriteProperty<Any?, Long> =
+public fun Settings.long(key: String? = null, defaultValue: Long): ReadWriteProperty<Any?, Long> =
     LongDelegate(this, key, defaultValue)
 
 /**
  * Returns a [String] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.string(key: String? = null, defaultValue: String = ""): ReadWriteProperty<Any?, String> =
+public fun Settings.string(key: String? = null, defaultValue: String): ReadWriteProperty<Any?, String> =
     StringDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Float] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.float(key: String? = null, defaultValue: Float = 0f): ReadWriteProperty<Any?, Float> =
+public fun Settings.float(key: String? = null, defaultValue: Float): ReadWriteProperty<Any?, Float> =
     FloatDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Double] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.double(key: String? = null, defaultValue: Double = 0.0): ReadWriteProperty<Any?, Double> =
+public fun Settings.double(key: String? = null, defaultValue: Double): ReadWriteProperty<Any?, Double> =
     DoubleDelegate(this, key, defaultValue)
 
 /**
  * Returns a [Boolean] property delegate, backed by this [Settings] instance using the provided [key], with initial value [defaultValue].
  */
-public fun Settings.boolean(key: String? = null, defaultValue: Boolean = false): ReadWriteProperty<Any?, Boolean> =
+public fun Settings.boolean(key: String? = null, defaultValue: Boolean): ReadWriteProperty<Any?, Boolean> =
     BooleanDelegate(this, key, defaultValue)
 
 /**
@@ -88,6 +88,54 @@ public fun Settings.nullableDouble(key: String? = null): ReadWriteProperty<Any?,
  */
 public fun Settings.nullableBoolean(key: String? = null): ReadWriteProperty<Any?, Boolean?> =
     NullableBooleanDelegate(this, key)
+
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("int(key, defaultValue = 0)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun Settings.int(key: String? = null): ReadWriteProperty<Any?, Int> = int(key, defaultValue = 0)
+
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("long(key, defaultValue = 0L)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun Settings.long(key: String? = null): ReadWriteProperty<Any?, Long> = long(key, defaultValue = 0L)
+
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("string(key, defaultValue = \"\")"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun Settings.string(key: String? = null): ReadWriteProperty<Any?, String> = string(key, defaultValue = "")
+
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("float(key, defaultValue = 0f)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun Settings.float(key: String? = null): ReadWriteProperty<Any?, Float> = float(key, defaultValue = 0f)
+
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("double(key, defaultValue = 0.0)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun Settings.double(key: String? = null): ReadWriteProperty<Any?, Double> = double(key, defaultValue = 0.0)
+
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("boolean(key, defaultValue = false)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun Settings.boolean(key: String? = null): ReadWriteProperty<Any?, Boolean> = boolean(key, defaultValue = false)
 
 private class IntDelegate(
     private val settings: Settings,

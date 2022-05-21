@@ -98,7 +98,7 @@ sealed class NullableSettingConfig<T : Any>(
         getStringValue(settings, key)
 }
 
-class StringSettingConfig(settings: Settings, key: String, defaultValue: String = "") :
+class StringSettingConfig(settings: Settings, key: String, defaultValue: String) :
     SettingConfig<String>(settings, key, defaultValue) {
 
     override fun getStringValue(settings: Settings, key: String, defaultValue: String): String =
@@ -108,7 +108,7 @@ class StringSettingConfig(settings: Settings, key: String, defaultValue: String 
         settings.putString(key, value)
 }
 
-class IntSettingConfig(settings: Settings, key: String, defaultValue: Int = 0) :
+class IntSettingConfig(settings: Settings, key: String, defaultValue: Int) :
     SettingConfig<Int>(settings, key, defaultValue) {
 
     override fun getStringValue(settings: Settings, key: String, defaultValue: Int): String =
@@ -118,7 +118,7 @@ class IntSettingConfig(settings: Settings, key: String, defaultValue: Int = 0) :
         settings.putInt(key, value.toInt())
 }
 
-class LongSettingConfig(settings: Settings, key: String, defaultValue: Long = 0) :
+class LongSettingConfig(settings: Settings, key: String, defaultValue: Long) :
     SettingConfig<Long>(settings, key, defaultValue) {
 
     override fun getStringValue(settings: Settings, key: String, defaultValue: Long): String =
@@ -128,7 +128,7 @@ class LongSettingConfig(settings: Settings, key: String, defaultValue: Long = 0)
         settings.putLong(key, value.toLong())
 }
 
-class FloatSettingConfig(settings: Settings, key: String, defaultValue: Float = 0f) :
+class FloatSettingConfig(settings: Settings, key: String, defaultValue: Float) :
     SettingConfig<Float>(settings, key, defaultValue) {
 
     override fun getStringValue(settings: Settings, key: String, defaultValue: Float): String =
@@ -138,7 +138,7 @@ class FloatSettingConfig(settings: Settings, key: String, defaultValue: Float = 
         settings.putFloat(key, value.toFloat())
 }
 
-class DoubleSettingConfig(settings: Settings, key: String, defaultValue: Double = 0.0) :
+class DoubleSettingConfig(settings: Settings, key: String, defaultValue: Double) :
     SettingConfig<Double>(settings, key, defaultValue) {
 
     override fun getStringValue(settings: Settings, key: String, defaultValue: Double): String =
@@ -148,7 +148,7 @@ class DoubleSettingConfig(settings: Settings, key: String, defaultValue: Double 
         settings.putDouble(key, value.toDouble())
 }
 
-class BooleanSettingConfig(settings: Settings, key: String, defaultValue: Boolean = false) :
+class BooleanSettingConfig(settings: Settings, key: String, defaultValue: Boolean) :
     SettingConfig<Boolean>(settings, key, defaultValue) {
 
     override fun getStringValue(settings: Settings, key: String, defaultValue: Boolean): String =

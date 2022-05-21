@@ -74,8 +74,8 @@ abstract class BaseSettingsTest(
         settings.putInt("a", 4)
         settings.putString("b", "value")
         settings.clear()
-        assertEquals(0, settings.getInt("a"))
-        assertEquals("", settings.getString("b"))
+        assertEquals(0, settings.getInt("a", 0))
+        assertEquals("", settings.getString("b", ""))
     }
 
     @Test
@@ -84,8 +84,8 @@ abstract class BaseSettingsTest(
         settings.putString("b", "value")
         settings.remove("a")
         settings.remove("c")
-        assertEquals(0, settings.getInt("a"))
-        assertEquals("value", settings.getString("b"))
+        assertEquals(0, settings.getInt("a", 0))
+        assertEquals("value", settings.getString("b", ""))
 
         settings["a"] = 3
         settings["b"] = "value"
@@ -109,13 +109,13 @@ abstract class BaseSettingsTest(
 
     @Test
     fun intBasic() {
-        assertEquals(0, settings.getInt("a"))
+        assertEquals(0, settings.getInt("a", 0))
         settings.putInt("a", 2)
-        assertEquals(2, settings.getInt("a"))
+        assertEquals(2, settings.getInt("a", 0))
         settings.putInt("a", Int.MIN_VALUE)
-        assertEquals(Int.MIN_VALUE, settings.getInt("a"))
+        assertEquals(Int.MIN_VALUE, settings.getInt("a", 0))
         settings.putInt("a", Int.MAX_VALUE)
-        assertEquals(Int.MAX_VALUE, settings.getInt("a"))
+        assertEquals(Int.MAX_VALUE, settings.getInt("a", 0))
 
         assertEquals(5, settings.getInt("b", 5))
     }
@@ -153,7 +153,7 @@ abstract class BaseSettingsTest(
         a = 0
         assertEquals(0, a)
 
-        val b by settings.int("b")
+        val b by settings.int("b", 0)
         assertEquals(0, b)
     }
 
@@ -178,7 +178,7 @@ abstract class BaseSettingsTest(
         a = 0
         assertEquals(0, a)
 
-        val b by settings.int()
+        val b by settings.int(defaultValue = 0)
         assertEquals(0, b)
     }
 
@@ -196,13 +196,13 @@ abstract class BaseSettingsTest(
 
     @Test
     fun longBasic() {
-        assertEquals(0L, settings.getLong("a"))
+        assertEquals(0L, settings.getLong("a", 0L))
         settings.putLong("a", 2L)
-        assertEquals(2L, settings.getLong("a"))
+        assertEquals(2L, settings.getLong("a", 0L))
         settings.putLong("a", Long.MIN_VALUE)
-        assertEquals(Long.MIN_VALUE, settings.getLong("a"))
+        assertEquals(Long.MIN_VALUE, settings.getLong("a", 0L))
         settings.putLong("a", Long.MAX_VALUE)
-        assertEquals(Long.MAX_VALUE, settings.getLong("a"))
+        assertEquals(Long.MAX_VALUE, settings.getLong("a", 0L))
 
         assertEquals(5L, settings.getLong("b", 5L))
     }
@@ -240,7 +240,7 @@ abstract class BaseSettingsTest(
         a = 0L
         assertEquals(0L, a)
 
-        val b by settings.long("b")
+        val b by settings.long("b", 0)
         assertEquals(0L, b)
     }
 
@@ -265,7 +265,7 @@ abstract class BaseSettingsTest(
         a = 0L
         assertEquals(0L, a)
 
-        val b by settings.long()
+        val b by settings.long(defaultValue = 0)
         assertEquals(0L, b)
     }
 
@@ -283,11 +283,11 @@ abstract class BaseSettingsTest(
 
     @Test
     fun stringBasic() {
-        assertEquals("", settings.getString("a"))
+        assertEquals("", settings.getString("a", ""))
         settings.putString("a", "value")
-        assertEquals("value", settings.getString("a"))
+        assertEquals("value", settings.getString("a", ""))
         settings.putString("a", "τ > 🥧")
-        assertEquals("τ > 🥧", settings.getString("a"))
+        assertEquals("τ > 🥧", settings.getString("a", ""))
 
         assertEquals("default", settings.getString("b", "default"))
     }
@@ -325,7 +325,7 @@ abstract class BaseSettingsTest(
         a = ""
         assertEquals("", a)
 
-        val b by settings.string("b")
+        val b by settings.string("b", "")
         assertEquals("", b)
     }
 
@@ -350,7 +350,7 @@ abstract class BaseSettingsTest(
         a = ""
         assertEquals("", a)
 
-        val b by settings.string("b")
+        val b by settings.string(defaultValue = "")
         assertEquals("", b)
     }
 
@@ -368,19 +368,19 @@ abstract class BaseSettingsTest(
 
     @Test
     fun floatBasic() {
-        assertEquals(0f, settings.getFloat("a"))
+        assertEquals(0f, settings.getFloat("a", 0f))
         settings.putFloat("a", 2f)
-        assertEquals(2f, settings.getFloat("a"))
+        assertEquals(2f, settings.getFloat("a", 0f))
         settings.putFloat("a", Float.MIN_VALUE)
-        assertEquals(Float.MIN_VALUE, settings.getFloat("a"))
+        assertEquals(Float.MIN_VALUE, settings.getFloat("a", 0f))
         settings.putFloat("a", Float.MAX_VALUE)
-        assertEquals(Float.MAX_VALUE, settings.getFloat("a"))
+        assertEquals(Float.MAX_VALUE, settings.getFloat("a", 0f))
         settings.putFloat("a", Float.NEGATIVE_INFINITY)
-        assertEquals(Float.NEGATIVE_INFINITY, settings.getFloat("a"))
+        assertEquals(Float.NEGATIVE_INFINITY, settings.getFloat("a", 0f))
         settings.putFloat("a", Float.POSITIVE_INFINITY)
-        assertEquals(Float.POSITIVE_INFINITY, settings.getFloat("a"))
+        assertEquals(Float.POSITIVE_INFINITY, settings.getFloat("a", 0f))
         settings.putFloat("a", Float.NaN)
-        assertEquals(Float.NaN, settings.getFloat("a"))
+        assertEquals(Float.NaN, settings.getFloat("a", 0f))
 
         assertEquals(5f, settings.getFloat("b", 5f))
     }
@@ -418,7 +418,7 @@ abstract class BaseSettingsTest(
         a = 0f
         assertEquals(0f, a)
 
-        val b by settings.float("b")
+        val b by settings.float("b", 0f)
         assertEquals(0f, b)
     }
 
@@ -443,7 +443,7 @@ abstract class BaseSettingsTest(
         a = 0f
         assertEquals(0f, a)
 
-        val b by settings.float()
+        val b by settings.float(defaultValue = 0f)
         assertEquals(0f, b)
     }
 
@@ -461,19 +461,19 @@ abstract class BaseSettingsTest(
 
     @Test
     fun doubleBasic() {
-        assertEquals(0.0, settings.getDouble("a"))
+        assertEquals(0.0, settings.getDouble("a", 0.0))
         settings.putDouble("a", 2.0)
-        assertEquals(2.0, settings.getDouble("a"))
+        assertEquals(2.0, settings.getDouble("a", 0.0))
         settings.putDouble("a", Double.MIN_VALUE)
-        assertEquals(Double.MIN_VALUE, settings.getDouble("a"))
+        assertEquals(Double.MIN_VALUE, settings.getDouble("a", 0.0))
         settings.putDouble("a", Double.MAX_VALUE)
-        assertEquals(Double.MAX_VALUE, settings.getDouble("a"))
+        assertEquals(Double.MAX_VALUE, settings.getDouble("a", 0.0))
         settings.putDouble("a", Double.NEGATIVE_INFINITY)
-        assertEquals(Double.NEGATIVE_INFINITY, settings.getDouble("a"))
+        assertEquals(Double.NEGATIVE_INFINITY, settings.getDouble("a", 0.0))
         settings.putDouble("a", Double.POSITIVE_INFINITY)
-        assertEquals(Double.POSITIVE_INFINITY, settings.getDouble("a"))
+        assertEquals(Double.POSITIVE_INFINITY, settings.getDouble("a", 0.0))
         settings.putDouble("a", Double.NaN)
-        assertEquals(Double.NaN, settings.getDouble("a"))
+        assertEquals(Double.NaN, settings.getDouble("a", 0.0))
 
         assertEquals(5.0, settings.getDouble("b", 5.0))
     }
@@ -512,7 +512,7 @@ abstract class BaseSettingsTest(
         a = 0.0
         assertEquals(0.0, a)
 
-        val b by settings.double("b")
+        val b by settings.double("b", 0.0)
         assertEquals(0.0, b)
     }
 
@@ -537,7 +537,7 @@ abstract class BaseSettingsTest(
         a = 0.0
         assertEquals(0.0, a)
 
-        val b by settings.double()
+        val b by settings.double(defaultValue = 0.0)
         assertEquals(0.0, b)
     }
 
@@ -555,9 +555,9 @@ abstract class BaseSettingsTest(
 
     @Test
     fun booleanBasic() {
-        assertEquals(false, settings.getBoolean("a"))
+        assertEquals(false, settings.getBoolean("a", false))
         settings.putBoolean("a", true)
-        assertEquals(true, settings.getBoolean("a"))
+        assertEquals(true, settings.getBoolean("a", false))
 
         assertEquals(true, settings.getBoolean("b", true))
     }
@@ -591,7 +591,7 @@ abstract class BaseSettingsTest(
         a = false
         assertEquals(false, a)
 
-        val b by settings.boolean("b")
+        val b by settings.boolean("b", false)
         assertEquals(false, b)
     }
 
@@ -612,7 +612,7 @@ abstract class BaseSettingsTest(
         a = false
         assertEquals(false, a)
 
-        val b by settings.boolean()
+        val b by settings.boolean(defaultValue = false)
         assertEquals(false, b)
     }
 
@@ -644,16 +644,16 @@ abstract class BaseSettingsTest(
     @Test
     @Suppress("UNUSED_VALUE", "ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     fun defaultKey() {
-        var a by settings.string()
+        var a by settings.string(defaultValue = "")
         a = "value"
-        assertEquals("value", settings.getString("a"))
+        assertEquals("value", settings.getStringOrNull("a"))
     }
 
     @Test
     fun delegateReuseTest() {
         // Is this a reasonable use-case? Might as well protect it for now. That way if we break it later it'll be on
         // purpose instead of by accident
-        val delegate = settings.int()
+        val delegate = settings.int(defaultValue = 0)
         var a by delegate
         var b by delegate
 

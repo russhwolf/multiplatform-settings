@@ -42,7 +42,7 @@ public interface FlowSettings : SuspendSettings {
      * Returns a [Flow] containing the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value
      * of a different type is stored at `key`, the behavior is not defined.
      */
-    public fun getIntFlow(key: String, defaultValue: Int = 0): Flow<Int>
+    public fun getIntFlow(key: String, defaultValue: Int): Flow<Int>
     public override suspend fun getInt(key: String, defaultValue: Int): Int = getIntFlow(key, defaultValue).first()
 
     /**
@@ -58,7 +58,7 @@ public interface FlowSettings : SuspendSettings {
      * Returns a [Flow] containing the `Long` value stored at [key], or [defaultValue] if no value was stored. If a
      * value of a different type is stored at `key`, the behavior is not defined.
      */
-    public fun getLongFlow(key: String, defaultValue: Long = 0): Flow<Long>
+    public fun getLongFlow(key: String, defaultValue: Long): Flow<Long>
     public override suspend fun getLong(key: String, defaultValue: Long): Long = getLongFlow(key, defaultValue).first()
 
     /**
@@ -74,7 +74,7 @@ public interface FlowSettings : SuspendSettings {
      * Returns a [Flow] containing the `String` value stored at [key], or [defaultValue] if no value was stored. If a
      * value of a different type is stored at `key`, the behavior is not defined.
      */
-    public fun getStringFlow(key: String, defaultValue: String = ""): Flow<String>
+    public fun getStringFlow(key: String, defaultValue: String): Flow<String>
     public override suspend fun getString(key: String, defaultValue: String): String =
         getStringFlow(key, defaultValue).first()
 
@@ -91,7 +91,7 @@ public interface FlowSettings : SuspendSettings {
      * Returns a [Flow] containing the `Float` value stored at [key], or [defaultValue] if no value was stored. If a
      * value of a different type is stored at `key`, the behavior is not defined.
      */
-    public fun getFloatFlow(key: String, defaultValue: Float = 0f): Flow<Float>
+    public fun getFloatFlow(key: String, defaultValue: Float): Flow<Float>
     public override suspend fun getFloat(key: String, defaultValue: Float): Float =
         getFloatFlow(key, defaultValue).first()
 
@@ -108,7 +108,7 @@ public interface FlowSettings : SuspendSettings {
      * Returns a [Flow] containing the `Double` value stored at [key], or [defaultValue] if no value was stored. If a
      * value of a different type is stored at `key`, the behavior is not defined.
      */
-    public fun getDoubleFlow(key: String, defaultValue: Double = 0.0): Flow<Double>
+    public fun getDoubleFlow(key: String, defaultValue: Double): Flow<Double>
     public override suspend fun getDouble(key: String, defaultValue: Double): Double =
         getDoubleFlow(key, defaultValue).first()
 
@@ -125,7 +125,7 @@ public interface FlowSettings : SuspendSettings {
      * Returns a [Flow] containing the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a
      * value of a different type is stored at `key`, the behavior is not defined.
      */
-    public fun getBooleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean>
+    public fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean>
     public override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         getBooleanFlow(key, defaultValue).first()
 
@@ -135,4 +135,52 @@ public interface FlowSettings : SuspendSettings {
      */
     public fun getBooleanOrNullFlow(key: String): Flow<Boolean?>
     public override suspend fun getBooleanOrNull(key: String): Boolean? = getBooleanOrNullFlow(key).first()
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getIntFlow(key, defaultValue = 0)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getIntFlow(key: String): Flow<Int> = getIntFlow(key, defaultValue = 0)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getLongFlow(key, defaultValue = 0L)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getLongFlow(key: String): Flow<Long> = getLongFlow(key, defaultValue = 0L)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getStringFlow(key, defaultValue = \"\")"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getStringFlow(key: String): Flow<String> = getStringFlow(key, defaultValue = "")
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getFloatFlow(key, defaultValue = 0f)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getFloatFlow(key: String): Flow<Float> = getFloatFlow(key, defaultValue = 0f)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getDoubleFlow(key, defaultValue = 0.0)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getDoubleFlow(key: String): Flow<Double> = getDoubleFlow(key, defaultValue = 0.0)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getBooleanFlow(key, defaultValue = false)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getBooleanFlow(key: String): Flow<Boolean> = getBooleanFlow(key, defaultValue = false)
 }

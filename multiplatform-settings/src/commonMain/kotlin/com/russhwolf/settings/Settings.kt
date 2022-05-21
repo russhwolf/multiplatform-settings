@@ -76,7 +76,7 @@ public interface Settings {
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public fun getInt(key: String, defaultValue: Int = 0): Int
+    public fun getInt(key: String, defaultValue: Int): Int
 
     /**
      * Returns the `Int` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -93,7 +93,7 @@ public interface Settings {
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public fun getLong(key: String, defaultValue: Long = 0): Long
+    public fun getLong(key: String, defaultValue: Long): Long
 
     /**
      * Returns the `Long` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -110,7 +110,7 @@ public interface Settings {
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public fun getString(key: String, defaultValue: String = ""): String
+    public fun getString(key: String, defaultValue: String): String
 
     /**
      * Returns the `String` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -127,7 +127,7 @@ public interface Settings {
      * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public fun getFloat(key: String, defaultValue: Float = 0f): Float
+    public fun getFloat(key: String, defaultValue: Float): Float
 
     /**
      * Returns the `Float` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -144,7 +144,7 @@ public interface Settings {
      * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public fun getDouble(key: String, defaultValue: Double = 0.0): Double
+    public fun getDouble(key: String, defaultValue: Double): Double
 
     /**
      * Returns the `Double` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -161,13 +161,61 @@ public interface Settings {
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
+    public fun getBoolean(key: String, defaultValue: Boolean): Boolean
 
     /**
      * Returns the `Boolean` value stored at [key], or `null` if no value was stored. If a value of a different type was
      * stored at `key`, the behavior is not defined.
      */
     public fun getBooleanOrNull(key: String): Boolean?
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getInt(key, defaultValue = 0)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getInt(key: String): Int = getInt(key, defaultValue = 0)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getLong(key, defaultValue = 0L)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getLong(key: String): Long = getLong(key, defaultValue = 0L)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getString(key, defaultValue = \"\")"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getString(key: String): String = getString(key, defaultValue = "")
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getFloat(key, defaultValue = 0f)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getFloat(key: String): Float = getFloat(key, defaultValue = 0f)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getDouble(key, defaultValue = 0.0)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getDouble(key: String): Double = getDouble(key, defaultValue = 0.0)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getBoolean(key, defaultValue = false)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public fun getBoolean(key: String): Boolean = getBoolean(key, defaultValue = false)
 }
 
 /**
@@ -200,7 +248,7 @@ public interface ObservableSettings : Settings {
     @Suppress("DEPRECATION")
     public fun addIntListener(
         key: String,
-        defaultValue: Int = 0,
+        defaultValue: Int,
         callback: (Int) -> Unit
     ): SettingsListener =
         addListener(key) { callback(getInt(key, defaultValue)) }
@@ -214,7 +262,7 @@ public interface ObservableSettings : Settings {
     @Suppress("DEPRECATION")
     public fun addLongListener(
         key: String,
-        defaultValue: Long = 0,
+        defaultValue: Long,
         callback: (Long) -> Unit
     ): SettingsListener =
         addListener(key) { callback(getLong(key, defaultValue)) }
@@ -228,7 +276,7 @@ public interface ObservableSettings : Settings {
     @Suppress("DEPRECATION")
     public fun addStringListener(
         key: String,
-        defaultValue: String = "",
+        defaultValue: String,
         callback: (String) -> Unit
     ): SettingsListener =
         addListener(key) { callback(getString(key, defaultValue)) }
@@ -242,7 +290,7 @@ public interface ObservableSettings : Settings {
     @Suppress("DEPRECATION")
     public fun addFloatListener(
         key: String,
-        defaultValue: Float = 0f,
+        defaultValue: Float,
         callback: (Float) -> Unit
     ): SettingsListener =
         addListener(key) { callback(getFloat(key, defaultValue)) }
@@ -256,7 +304,7 @@ public interface ObservableSettings : Settings {
     @Suppress("DEPRECATION")
     public fun addDoubleListener(
         key: String,
-        defaultValue: Double = 0.0,
+        defaultValue: Double,
         callback: (Double) -> Unit
     ): SettingsListener =
         addListener(key) { callback(getDouble(key, defaultValue)) }
@@ -270,7 +318,7 @@ public interface ObservableSettings : Settings {
     @Suppress("DEPRECATION")
     public fun addBooleanListener(
         key: String,
-        defaultValue: Boolean = false,
+        defaultValue: Boolean,
         callback: (Boolean) -> Unit
     ): SettingsListener =
         addListener(key) { callback(getBoolean(key, defaultValue)) }

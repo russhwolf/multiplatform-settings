@@ -65,7 +65,7 @@ public interface SuspendSettings {
      * Returns the `Int` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public suspend fun getInt(key: String, defaultValue: Int = 0): Int
+    public suspend fun getInt(key: String, defaultValue: Int): Int
 
     /**
      * Returns the `Int` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -82,7 +82,7 @@ public interface SuspendSettings {
      * Returns the `Long` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public suspend fun getLong(key: String, defaultValue: Long = 0): Long
+    public suspend fun getLong(key: String, defaultValue: Long): Long
 
     /**
      * Returns the `Long` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -99,7 +99,7 @@ public interface SuspendSettings {
      * Returns the `String` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public suspend fun getString(key: String, defaultValue: String = ""): String
+    public suspend fun getString(key: String, defaultValue: String): String
 
     /**
      * Returns the `String` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -116,7 +116,7 @@ public interface SuspendSettings {
      * Returns the `Float` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public suspend fun getFloat(key: String, defaultValue: Float = 0f): Float
+    public suspend fun getFloat(key: String, defaultValue: Float): Float
 
     /**
      * Returns the `Float` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -133,7 +133,7 @@ public interface SuspendSettings {
      * Returns the `Double` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public suspend fun getDouble(key: String, defaultValue: Double = 0.0): Double
+    public suspend fun getDouble(key: String, defaultValue: Double): Double
 
     /**
      * Returns the `Double` value stored at [key], or `null` if no value was stored. If a value of a different type was
@@ -150,12 +150,61 @@ public interface SuspendSettings {
      * Returns the `Boolean` value stored at [key], or [defaultValue] if no value was stored. If a value of a different
      * type was stored at `key`, the behavior is not defined.
      */
-    public suspend fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
+    public suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean
 
     /**
      * Returns the `Boolean` value stored at [key], or `null` if no value was stored. If a value of a different type was
      * stored at `key`, the behavior is not defined.
      */
     public suspend fun getBooleanOrNull(key: String): Boolean?
+
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getInt(key, defaultValue = 0)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public suspend fun getInt(key: String): Int = getInt(key, defaultValue = 0)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getLong(key, defaultValue = 0L)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public suspend fun getLong(key: String): Long = getLong(key, defaultValue = 0L)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getString(key, defaultValue = \"\")"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public suspend fun getString(key: String): String = getString(key, defaultValue = "")
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getFloat(key, defaultValue = 0f)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public suspend fun getFloat(key: String): Float = getFloat(key, defaultValue = 0f)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getDouble(key, defaultValue = 0.0)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public suspend fun getDouble(key: String): Double = getDouble(key, defaultValue = 0.0)
+
+    @Deprecated(
+        message = "Default values for defaultValue parameters are deprecated",
+        replaceWith = ReplaceWith("getBoolean(key, defaultValue = false)"),
+        level = DeprecationLevel.ERROR
+    )
+    @Suppress("KDocMissingDocumentation")
+    public suspend fun getBoolean(key: String): Boolean = getBoolean(key, defaultValue = false)
 }
 

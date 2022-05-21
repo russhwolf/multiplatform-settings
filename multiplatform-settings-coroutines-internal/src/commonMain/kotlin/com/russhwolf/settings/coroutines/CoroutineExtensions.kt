@@ -54,7 +54,7 @@ private inline fun <T> ObservableSettings.createNullableFlow(
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int = 0): Flow<Int> =
+public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int): Flow<Int> =
     createFlow(key, defaultValue, Settings::getInt, ObservableSettings::addIntListener)
 
 /**
@@ -63,7 +63,7 @@ public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int = 0): Fl
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long = 0L): Flow<Long> =
+public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long): Flow<Long> =
     createFlow(key, defaultValue, Settings::getLong, ObservableSettings::addLongListener)
 
 /**
@@ -72,7 +72,7 @@ public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long = 0L):
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getStringFlow(key: String, defaultValue: String = ""): Flow<String> =
+public fun ObservableSettings.getStringFlow(key: String, defaultValue: String): Flow<String> =
     createFlow(key, defaultValue, Settings::getString, ObservableSettings::addStringListener)
 
 /**
@@ -81,7 +81,7 @@ public fun ObservableSettings.getStringFlow(key: String, defaultValue: String = 
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float = 0f): Flow<Float> =
+public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
     createFlow(key, defaultValue, Settings::getFloat, ObservableSettings::addFloatListener)
 
 /**
@@ -90,7 +90,7 @@ public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float = 0f
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double = 0.0): Flow<Double> =
+public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
     createFlow(key, defaultValue, Settings::getDouble, ObservableSettings::addDoubleListener)
 
 /**
@@ -99,7 +99,7 @@ public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double = 
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean> =
+public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =
     createFlow(key, defaultValue, Settings::getBoolean, ObservableSettings::addBooleanListener)
 
 /**
@@ -155,3 +155,57 @@ public fun ObservableSettings.getDoubleOrNullFlow(key: String): Flow<Double?> =
 @ExperimentalSettingsApi
 public fun ObservableSettings.getBooleanOrNullFlow(key: String): Flow<Boolean?> =
     createNullableFlow(key, Settings::getBooleanOrNull, ObservableSettings::addBooleanOrNullListener)
+
+@ExperimentalSettingsApi
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("getIntFlow(key, defaultValue = 0)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun ObservableSettings.getIntFlow(key: String): Flow<Int> = getIntFlow(key, defaultValue = 0)
+
+@ExperimentalSettingsApi
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("getLongFlow(key, defaultValue = 0L)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun ObservableSettings.getLongFlow(key: String): Flow<Long> = getLongFlow(key, defaultValue = 0L)
+
+@ExperimentalSettingsApi
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("getStringFlow(key, defaultValue = \"\")"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun ObservableSettings.getStringFlow(key: String): Flow<String> = getStringFlow(key, defaultValue = "")
+
+@ExperimentalSettingsApi
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("getFloatFlow(key, defaultValue = 0f)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun ObservableSettings.getFloatFlow(key: String): Flow<Float> = getFloatFlow(key, defaultValue = 0f)
+
+@ExperimentalSettingsApi
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("getDoubleFlow(key, defaultValue = 0.0)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun ObservableSettings.getDoubleFlow(key: String): Flow<Double> = getDoubleFlow(key, defaultValue = 0.0)
+
+@ExperimentalSettingsApi
+@Deprecated(
+    message = "Default values for defaultValue parameters are deprecated",
+    replaceWith = ReplaceWith("getBooleanFlow(key, defaultValue = false)"),
+    level = DeprecationLevel.ERROR
+)
+@Suppress("KDocMissingDocumentation")
+public fun ObservableSettings.getBooleanFlow(key: String): Flow<Boolean> = getBooleanFlow(key, defaultValue = false)
