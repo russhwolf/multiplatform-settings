@@ -5,6 +5,7 @@
 - BREAKING: Rename Settings implementations to be based on the underlying API used rather than the platform
 - BREAKING: Migrate typed listeners from extension functions to members of ObservableSettings
 - BREAKING: Remove default values for defaultValue parameters
+- BREAKING: Remove `multiplatform-settings-coroutines-native-mt` module
 - Remove `@ExperimentalSettingsApi` from `ObservableSettings`, `SettingsListener`, and related APIs
 - Remove `@ExperimentalSettingsImplementation` from JVM implementations
 - Add `Factory` implementation for `KeychainSettings`
