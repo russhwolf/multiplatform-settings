@@ -98,6 +98,20 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
 
     private val defaultProperties = mapOf(kSecClass to kSecClassGenericPassword) + mapOf(*defaultProperties)
 
+    /**
+     * A factory that can produce [Settings] instances.
+     *
+     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
+     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
+     * multiple `Settings` objects is the one-time creation of a single `Factory`.
+     *
+     * This class creates `Settings` objects backed by the Apple keychain.
+     */
+    public class Factory : Settings.Factory {
+        override fun create(name: String?): Settings =
+            if (name != null) KeychainSettings(name) else KeychainSettings()
+    }
+
     public override val keys: Set<String>
         get() = memScoped {
             val attributes = alloc<CFArrayRefVar>()
