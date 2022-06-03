@@ -1,6 +1,6 @@
 # Changelog #
 
-## v1.0.0-alpha01 *(2022-05-??)* ##
+## v1.0.0-alpha01 *(2022-06-02)* ##
 
 - BREAKING: Rename Settings implementations to be based on the underlying API used rather than the platform
 - BREAKING: Migrate typed listeners from extension functions to members of ObservableSettings
