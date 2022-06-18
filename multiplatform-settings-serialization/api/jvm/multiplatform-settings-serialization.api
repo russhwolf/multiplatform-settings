@@ -1,4 +1,6 @@
 public final class com/russhwolf/settings/serialization/SettingsSerializationKt {
+	public static final fun containsValue (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;)Z
+	public static synthetic fun containsValue$default (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)Z
 	public static final fun decodeValue (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/modules/SerializersModule;)Ljava/lang/Object;
 	public static synthetic fun decodeValue$default (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun decodeValueOrNull (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;)Ljava/lang/Object;
@@ -7,6 +9,8 @@ public final class com/russhwolf/settings/serialization/SettingsSerializationKt 
 	public static synthetic fun encodeValue$default (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)V
 	public static final fun nullableSerializedValue (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;)Lkotlin/properties/ReadWriteProperty;
 	public static synthetic fun nullableSerializedValue$default (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)Lkotlin/properties/ReadWriteProperty;
+	public static final fun removeValue (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;)V
+	public static synthetic fun removeValue$default (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)V
 	public static final fun serializedValue (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/modules/SerializersModule;)Lkotlin/properties/ReadWriteProperty;
 	public static synthetic fun serializedValue$default (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)Lkotlin/properties/ReadWriteProperty;
 }
