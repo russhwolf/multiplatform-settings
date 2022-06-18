@@ -29,6 +29,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 // TODO Add a test case with a non-empty SerializersModule?
 @OptIn(ExperimentalSerializationApi::class, ExperimentalSettingsApi::class)
@@ -116,6 +117,93 @@ class SettingsSerializationTest {
         val foo = settings.decodeValueOrNull(Foo.serializer(), "foo")
 
         assertNull(foo)
+    }
+
+    @Test
+    fun removeValue() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "foo.baz" to 43110,
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.1" to 2,
+            "list.2" to 3,
+            "list.size" to 3,
+        )
+
+        settings.removeValue(Foo.serializer(), "foo")
+        settings.removeValue(String.serializer(), "herp")
+        settings.removeValue(ListSerializer(Int.serializer()), "list")
+
+        assertEquals(0, settings.size)
+    }
+
+    @Test
+    fun removeValue_partial() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.size" to 3,
+        )
+
+        settings.removeValue(Foo.serializer(), "foo")
+        settings.removeValue(String.serializer(), "herp")
+        settings.removeValue(ListSerializer(Int.serializer()), "list")
+
+        assertEquals(0, settings.size)
+    }
+
+    @Test
+    fun removeValue_ignorePartial() {
+        val settings: Settings = MapSettings(
+            "list.0" to 1,
+            "list.size" to 3,
+        )
+
+        settings.removeValue(ListSerializer(Int.serializer()), "list", ignorePartial = true)
+        assertEquals(2, settings.size)
+
+        settings.removeValue(ListSerializer(Int.serializer()), "list", ignorePartial = false)
+        assertEquals(0, settings.size)
+    }
+
+    @Test
+    fun containsValue() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "foo.baz" to 43110,
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.1" to 2,
+            "list.2" to 3,
+            "list.size" to 3,
+        )
+
+        val containsFoo = settings.containsValue(Foo.serializer(), "foo")
+        val containsHerp = settings.containsValue(String.serializer(), "herp")
+        val containsList = settings.containsValue(ListSerializer(Int.serializer()), "list")
+
+        assertTrue(containsFoo)
+        assertTrue(containsHerp)
+        assertTrue(containsList)
+    }
+
+    @Test
+    fun containsValue_partial() {
+        val settings: Settings = MapSettings(
+            "foo.baz" to 43110,
+            "list.0" to 1,
+            "list.size" to 3,
+        )
+
+        val containsFoo = settings.containsValue(Foo.serializer(), "foo")
+        val containsHerp = settings.containsValue(String.serializer(), "herp")
+        val containsList = settings.containsValue(ListSerializer(Int.serializer()), "list")
+
+        assertFalse(containsFoo)
+        assertFalse(containsHerp)
+        assertFalse(containsList)
     }
 
     @Test
@@ -329,6 +417,11 @@ class SettingsSerializationTest {
                 )
             )
         )
+
+        assertTrue(settings.containsValue(TestClass.serializer(), "testClass"))
+
+        settings.removeValue(TestClass.serializer(), "testClass")
+        assertEquals(0, settings.size)
     }
 
     @Test
@@ -423,6 +516,12 @@ class SettingsSerializationTest {
             testClass,
             settings.decodeValue(TestClassNullable.serializer().nullable, "testClass", TestClassNullable())
         )
+
+        assertTrue(settings.containsValue(TestClass.serializer().nullable, "testClass"))
+
+        settings.removeValue(TestClass.serializer().nullable, "testClass")
+        assertEquals(0, settings.size)
+
     }
 
     @Test
@@ -503,6 +602,40 @@ class SettingsSerializationTest {
         assertEquals(defaultUser, settings.decodeValue(User.serializer(), "user", defaultUser))
         assertEquals(null, settings.loadUserOrNull())
         assertEquals(null, settings.decodeValueOrNull(User.serializer(), "user"))
+    }
+
+    @Test
+    fun issue_81() {
+        @Serializable
+        data class User(
+            val name: String,
+            val company: String? = null
+        )
+
+        class UserRepository(private val settings: Settings) {
+            fun addUser(user: User) {
+                settings.encodeValue(User.serializer(), user.name, user)
+            }
+
+            fun deleteUser(user: User) {
+                settings.removeValue(User.serializer(), user.name)
+            }
+
+            fun getKeysSize() = settings.keys.size
+        }
+
+        val settings: Settings = MapSettings()
+
+        // given
+        val repo = UserRepository(settings)
+        val user = User("Bob")
+
+        // when
+        repo.addUser(user)
+        repo.deleteUser(user)
+
+        // then
+        assertEquals(0, repo.getKeysSize())
     }
 
     @Test
