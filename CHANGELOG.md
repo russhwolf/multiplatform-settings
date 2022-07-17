@@ -3,6 +3,16 @@
 ## v1.0.0-alpha01 *(2022-06-02)* ##
 
 - BREAKING: Rename Settings implementations to be based on the underlying API used rather than the platform
+
+| Old name | New name |
+| --- | --- |
+| AndroidSettings | SharedPreferencesSettings |
+| AppleSettings | NSUserDefaultsSettings |
+| JvmPreferencesSettings | PreferencesSettings |
+| JvmPropertiesSettings | PropertiesSettings |
+| WindowsSettings | RegistrySettings|
+| MockSettings | MapSettings |
+
 - BREAKING: Migrate typed listeners from extension functions to members of ObservableSettings
 - BREAKING: Remove default values for defaultValue parameters
 - BREAKING: Remove `multiplatform-settings-coroutines-native-mt` module
