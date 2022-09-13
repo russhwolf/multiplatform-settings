@@ -80,7 +80,7 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
             setCacheValues(name, mapFactory().apply { putAll(items) })
         }
 
-        public override fun create(name: String?): Settings {
+        public override fun create(name: String?): ObservableSettings {
             val delegate = delegateCache.getOrPut(name, mapFactory)
             return MapSettings(delegate)
         }

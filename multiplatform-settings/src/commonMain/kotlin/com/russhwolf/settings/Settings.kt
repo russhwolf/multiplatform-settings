@@ -30,7 +30,7 @@ public interface Settings {
     public companion object;
 
     /**
-     * A factory that can produce [Settings] instances.
+     * A factory that can produce [Settings] instances or derivations thereof.
      */
     public interface Factory {
         /**

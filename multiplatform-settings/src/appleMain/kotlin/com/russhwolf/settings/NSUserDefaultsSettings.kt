@@ -88,7 +88,7 @@ public class NSUserDefaultsSettings public constructor(
          * On the iOS and macOS platforms, this is implemented by calling [NSUserDefaults.init] and passing [name]. If `name` is
          * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
          */
-        public override fun create(name: String?): Settings {
+        public override fun create(name: String?): ObservableSettings {
             val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
             return NSUserDefaultsSettings(delegate)
         }
