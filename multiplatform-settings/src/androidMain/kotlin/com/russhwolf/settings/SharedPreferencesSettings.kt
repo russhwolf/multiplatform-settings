@@ -81,7 +81,7 @@ public class SharedPreferencesSettings @JvmOverloads public constructor(
          * On the Android platform, this is implemented by calling [Context.getSharedPreferences] and passing [name]. If
          * `name` is `null` then a default package-specific name will be used instead.
          */
-        public override fun create(name: String?): Settings {
+        public override fun create(name: String?): ObservableSettings {
             // For null name, match the behavior of PreferenceManager.getDefaultSharedPreferences()
             val preferencesName = name ?: "${appContext.packageName}_preferences"
             val delegate = appContext.getSharedPreferences(preferencesName, MODE_PRIVATE)
