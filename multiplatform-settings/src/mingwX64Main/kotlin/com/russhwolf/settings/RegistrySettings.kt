@@ -98,7 +98,7 @@ public class RegistrySettings public constructor(private val rootKeyName: String
      * Instances created by this factory will be subkeys of that key.
      */
     public class Factory(private val parentKeyName: String) : Settings.Factory {
-        public override fun create(name: String?): Settings {
+        public override fun create(name: String?): RegistrySettings {
             val key = "SOFTWARE\\$parentKeyName" + if (name != null) "\\$name" else ""
             return RegistrySettings(key)
         }
