@@ -178,7 +178,8 @@ public final class com/russhwolf/settings/PreferencesSettings$Factory : com/russ
 	public fun <init> ()V
 	public fun <init> (Ljava/util/prefs/Preferences;)V
 	public synthetic fun <init> (Ljava/util/prefs/Preferences;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
+	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/PreferencesSettings;
+	public synthetic fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
 }
 
 public final class com/russhwolf/settings/PreferencesSettings$Listener : com/russhwolf/settings/SettingsListener {

@@ -52,7 +52,8 @@ public final class com/russhwolf/settings/MapSettings$Factory : com/russhwolf/se
 	public fun <init> ()V
 	public fun <init> (Lkotlin/jvm/functions/Function0;Ljava/util/Map;)V
 	public synthetic fun <init> (Lkotlin/jvm/functions/Function0;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
+	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/MapSettings;
+	public synthetic fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
 	public final fun setCacheValues (Ljava/lang/String;Ljava/util/Map;)V
 	public final fun setCacheValues (Ljava/lang/String;[Lkotlin/Pair;)V
 }

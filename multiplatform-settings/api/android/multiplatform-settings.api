@@ -239,7 +239,8 @@ public final class com/russhwolf/settings/SharedPreferencesSettings : com/russhw
 
 public final class com/russhwolf/settings/SharedPreferencesSettings$Factory : com/russhwolf/settings/Settings$Factory {
 	public fun <init> (Landroid/content/Context;)V
-	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
+	public synthetic fun create (Ljava/lang/String;)Lcom/russhwolf/settings/Settings;
+	public fun create (Ljava/lang/String;)Lcom/russhwolf/settings/SharedPreferencesSettings;
 }
 
 public final class com/russhwolf/settings/SharedPreferencesSettings$Listener : com/russhwolf/settings/SettingsListener {
