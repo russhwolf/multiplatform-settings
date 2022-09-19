@@ -63,7 +63,7 @@ public class PreferencesSettings public constructor(
      * On the JVM platform, this class creates `Settings` objects backed by [Preferences].
      */
     public class Factory(private val rootPreferences: Preferences = Preferences.userRoot()) : Settings.Factory {
-        public override fun create(name: String?): ObservableSettings {
+        public override fun create(name: String?): PreferencesSettings {
             val preferences = if (name != null) rootPreferences.node(name) else rootPreferences
             return PreferencesSettings(preferences)
         }

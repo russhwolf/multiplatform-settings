@@ -108,7 +108,7 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
      * This class creates `Settings` objects backed by the Apple keychain.
      */
     public class Factory : Settings.Factory {
-        override fun create(name: String?): Settings =
+        override fun create(name: String?): KeychainSettings =
             if (name != null) KeychainSettings(name) else KeychainSettings()
     }
 
