@@ -17,21 +17,21 @@
 @file:Suppress("KDocMissingDocumentation")
 
 object Versions {
-    const val multiplatformSettings = "1.0.0-alpha01"
+    const val multiplatformSettings = "1.0.0-RC"
 
     const val minSdk = 15
-    const val compileSdk = 31
+    const val compileSdk = 33
 
     const val androidxDatastore = "1.0.0"
-    const val androidxPreference = "1.1.1"
-    const val androidxStartup = "1.1.0"
+    const val androidxPreference = "1.2.0"
+    const val androidxStartup = "1.1.1"
     const val androidxTest = "1.4.0"
     const val androidxTestExt = "1.1.3"
-    const val binaryCompatibilityValidator = "0.8.0"
-    const val coroutines = "1.6.1"
+    const val binaryCompatibilityValidator = "0.11.1"
+    const val coroutines = "1.6.4"
     const val junit = "4.13.2"
-    const val robolectric = "4.6.1"
-    const val serializationPlugin = "1.6.21"
-    const val serializationRuntime = "1.3.0"
-    const val turbine = "0.6.1"
+    const val robolectric = "4.8.2"
+    const val serializationPlugin = "1.7.20-RC"
+    const val serializationRuntime = "1.4.0"
+    const val turbine = "0.8.0"
 }

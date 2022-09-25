@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-
 plugins {
     id("binary-compatibility-validator") version Versions.binaryCompatibilityValidator
 }
@@ -91,12 +88,6 @@ allprojects {
 
         tasks.withType<Sign>().configureEach {
             onlyIf { isReleaseBuild }
-        }
-
-        tasks.withType(DokkaTask::class.java) {
-            multiplatform {
-                extensions.findByType<KotlinMultiplatformExtension>()?.targets?.forEach { create(it.name) }
-            }
         }
     }
 }

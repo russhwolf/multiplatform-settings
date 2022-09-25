@@ -96,6 +96,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
         assertEquals(false, incrementedOnMainThread.value)
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     @Test
     fun nonprimitive_value_across_threads(): Unit = memScoped {
         val mutableState = AtomicInt(0)
@@ -104,7 +105,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
 
         settings.addIntListener("key") { mutableState.addAndGet(1) }
         val data = mapOf("foo" to "bar") as NSDictionary
-        assertFalse(data.isFrozen)
+        if (!isExperimentalMM()) assertFalse(data.isFrozen)
 
         doInBackground {
             userDefaults.setObject(data, "key")
@@ -112,7 +113,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
         userDefaults.setObject("hello", "key")
 
         assertEquals(2, mutableState.value)
-        assertTrue(data.isFrozen)
+        if (!isExperimentalMM()) assertTrue(data.isFrozen)
     }
 
     @Test

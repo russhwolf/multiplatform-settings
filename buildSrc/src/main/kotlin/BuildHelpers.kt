@@ -81,6 +81,7 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
     targetPresets.forEach {
         if (it is KotlinJvmWithJavaTargetPreset) return@forEach // Probably don't need this, and it chokes on Android plugin
         if (it.isJsTargetPreset && targets.any { it.isJsTarget }) return@forEach // Ignore repeat js targets
+        if (it.name.contains("wasm")) return@forEach // No more Kotlin/Native WASM. TODO re-add new WASM
         if (targets.findByName(it.name) == null) {
             targetFromPreset(it)
         }
