@@ -22,12 +22,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(33)
 
     defaultConfig {
         applicationId = "com.russhwolf.settings.example.android"
         minSdkVersion(15)
-        targetSdkVersion(31)
+        targetSdkVersion(33)
         versionCode = 1
         versionName = "1.0"
 
@@ -55,7 +55,6 @@ android {
 dependencies {
     implementation(project(":shared"))
     implementation(fileTree("include" to listOf("*.jar"), "dir" to "libs"))
-    implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")

@@ -25,13 +25,13 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.preference.PreferenceManager
 import com.russhwolf.settings.SharedPreferencesSettings
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private val settingsRepository by lazy {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)

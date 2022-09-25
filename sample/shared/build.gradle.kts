@@ -102,7 +102,7 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(33)
 
     defaultConfig {
         minSdkVersion(15)
