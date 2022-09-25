@@ -52,7 +52,7 @@ Then, simply add the dependency to your common source-set dependencies
 commonMain {
     dependencies {
         // ...
-        implementation("com.russhwolf:multiplatform-settings:0.9")
+        implementation("com.russhwolf:multiplatform-settings:1.0.0-RC")
     }
 }
 ``` 
@@ -98,18 +98,18 @@ See [No-arg module](#no-arg-module) below for more details.
 
 #### Platform constructors
 
-The Android implementation is `AndroidSettings`, which wraps `SharedPreferences`.
+The Android implementation is `SharedPreferencesSettings`, which wraps `SharedPreferences`.
 
 ```kotlin
 val delegate: SharedPreferences // ...
-val settings: Settings = AndroidSettings(delegate)
+val settings: Settings = SharedPreferencesSettings(delegate)
 ```
 
-On iOS, macOS, tvOS, or watchOS, `AppleSettings` wraps `NSUserDefaults`.
+On iOS, macOS, tvOS, or watchOS, `NSUserDefaultsSettings` wraps `NSUserDefaults`.
 
 ```kotlin
 val delegate: NSUserDefaults // ...
-val settings: Settings = AppleSettings(delegate)
+val settings: Settings = NSUserDefaultsSettings(delegate)
 ```
 
 On JS, `JsSettings` wraps `Storage`.
@@ -130,13 +130,13 @@ On Android, this factory needs a `Context` parameter
 
 ```kotlin
 val context: Context // ...
-val factory: Settings.Factory = AndroidSettings.Factory(context)
+val factory: Settings.Factory = SharedPreferencesSettings.Factory(context)
 ```    
 
 On iOS and macOS, the factory can be instantiated without passing any parameter
 
 ```kotlin
-val factory: Settings.Factory = AppleSettings.Factory()
+val factory: Settings.Factory = NSUserDefaultsSettings.Factory()
 ```   
 
 #### No-arg module
@@ -144,7 +144,7 @@ val factory: Settings.Factory = AppleSettings.Factory()
 To create a `Settings` instance from common without needing to pass platform-specific dependencies, add the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatform-settings` as an API dependency, so you can use it as a replacement for that default dependency.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-no-arg:0.9")
+implementation("com.russhwolf:multiplatform-settings-no-arg:1.0.0-RC")
 ```
 
 Then from common code, you can write
@@ -231,17 +231,20 @@ The set of keys and amount of entries can be retrieved
 val keys: Set<String> = settings.keys
 val size: Int = settings.size
 ```
-Note that for the `AppleSettings` implementation, some entries are unremovable and therefore may still be present after a `clear()` call. Thus, `size` is not generally guaranteed to be zero after a `clear()`.
+
+Note that for the `NSUserDefaultsSettings` implementation, some entries are unremovable and therefore may still be
+present after a `clear()` call. Thus, `size` is not generally guaranteed to be zero after a `clear()`.
 
 ### Testing
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-test:0.9")
+implementation("com.russhwolf:multiplatform-settings-test:1.0.0-RC")
 ```    
 
-This includes a `MockSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap` on all platforms.
+This includes a `MapSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap`
+on all platforms.
 
 ### Other platforms
 
@@ -255,7 +258,9 @@ This is a pre-1.0 library based on the alpha-release multiplatform functionality
 
 #### Apple Keychain
 
-In addition to the default `AppleSettings` implementation, there's also a `KeychainSettings` on the Apple platforms that stores data on the Apple keychain. Construct it by passing a `String` which will be interpreted as a service name
+In addition to the default `NSUserDefaultsSettings` implementation, there's also a `KeychainSettings` on the Apple
+platforms that stores data on the Apple keychain. Construct it by passing a `String` which will be interpreted as a
+service name
 
 ```kotlin
 val serviceName: String // ...
@@ -264,28 +269,31 @@ val settings: Settings = KeychainSettings(serviceName)
 
 #### JVM
 
-Two pure-JVM implementations exist. `JvmPreferencesSettings` wraps `Preferences` and `JvmPropertiesSettings` wraps `Properties`.
+Two pure-JVM implementations exist. `PreferencesSettings` wraps `Preferences` and `PropertiesSettings`
+wraps `Properties`.
 
 ```kotlin
 val delegate: Preferences // ...
-val settings: Settings = JvmPreferencesSettings(delegate)
+val settings: Settings = PreferencesSettings(delegate)
 
 val delegate: Properties // ...
-val settings: Settings = JvmPropertiesSettings(delegate)
+val settings: Settings = PropertiesSettings(delegate)
 ```
 
 #### Windows
 
-There is a Windows implementation `WindowsSettings` which wraps the Windows registry.
+There is a Windows implementation `RegistrySettings` which wraps the Windows registry.
 
 ```kotlin
 val rootKey: String = "SOFTWARE\\..." // Will be interpreted as subkey of HKEY_CURRENT_USER
-val settings: Settings = WindowsSettings(rootKey)
+val settings: Settings = RegistrySettings(rootKey)
 ```
 
 ### Listeners
 
-Update listeners are available using an experimental API, only for the `AndroidSettings`, `AppleSettings`, and `JvmPreferencesSettings` implementations. These are marked with the `ObservableSettings` interface, which includes an `addListener()` method.
+Update listeners are available using an experimental API, only for
+the `SharedPreferencesSettings`, `NSUserDefaultsSettings`, and `PreferencesSettings` implementations. These are marked
+with the `ObservableSettings` interface, which includes an `addListener()` method.
 
 ```kotlin
 val observableSettings: ObservableSettings // ...
@@ -302,14 +310,17 @@ The `SettingsListener` returned from the call should be used to signal when you'
 settingsListener.deactivate()
 ```    
 
-On Apple platforms, the `AppleSettings` listeners are designed to work within the Kotlin/Native threading model. If all interaction with the class is on a single thread, then nothing will be frozen. In multithreaded usage, the `AppleSettings` can be configured to freeze listeners, making it safe to set listeners when the class might be used across threads.
+On Apple platforms, the `NSUserDefaultsSettings` listeners are designed to work within the Kotlin/Native threading
+model. If all interaction with the class is on a single thread, then nothing will be frozen. In multithreaded usage,
+the `NSUserDefaultsSettings` can be configured to freeze listeners, making it safe to set listeners when the class might
+be used across threads.
 
 ### Serialization module
 
 A `kotlinx-serialization` integration exists so it's easier to save non-primitive data
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-serialization:0.9")
+implementation("com.russhwolf:multiplatform-settings-serialization:1.0.0-RC")
 ```
 
 This essentially uses the `Settings` store as a serialization format. Thus for a serializable class
@@ -346,10 +357,10 @@ Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalS
 A separate `multiplatform-settings-coroutines` dependency includes various coroutine APIs.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-coroutines:0.9")
+implementation("com.russhwolf:multiplatform-settings-coroutines:1.0.0-RC")
 
 // Or, if you use native-mt coroutines release
-implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:0.9")
+implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:1.0.0-RC")
 ```
 
 This adds flow extensions for all types which use the listener APIs internally.
@@ -389,7 +400,7 @@ val blockingSettings: Settings = suspendSettings.toBlockingSettings()
 An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-datastore:0.9")
+implementation("com.russhwolf:multiplatform-settings-datastore:1.0.0-RC")
 ```
 
 This provides a `DataStoreSettings` class
@@ -409,7 +420,7 @@ expect val settings: FlowSettings
 actual val settings: FlowSettings = DataStoreSettings(/*...*/)
 
 // iOS
-actual val settings: FlowSettings = AppleSettings(/*...*/).toFlowSettings()
+actual val settings: FlowSettings = NSUserDefaultsSettings(/*...*/).toFlowSettings()
 ```
 
 Or, if you also include platforms without listener support, you can use `SuspendSettings` instead.
@@ -422,7 +433,7 @@ expect val settings: SuspendSettings
 actual val settings: SuspendSettings = DataStoreSettings(/*...*/)
 
 // iOS
-actual val settings: SuspendSettings = AppleSettings(/*...*/).toSuspendSettings()
+actual val settings: SuspendSettings = NSUserDefaultsSettings(/*...*/).toSuspendSettings()
 
 // JS
 actual val settings: SuspendSettings = JsSettings().toSuspendSettings()
@@ -440,9 +451,15 @@ The library logic lives in the `commonMain`, `androidMain`, and `iosMain` source
 
 Some unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the android-specific behavior, and use the ios simulator to run the ios tests. The macOS tests run natively on macOS hosts. The experimental JS implementation uses the default test setup for the new JS plugin, and the experimental JVM implementation runs standard junit tests.
 
-There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in the `sample` directory. It includes a `shared` module with common, and platform-specific sources, to demo a shared logic layer consuming the library. Several gradle modules consume `shared`, including `app-android` for Android, `app-tornadofx` for TornadoFX on the JVM, and `app-browser` for the Javascript browser target. In addition, the `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced by `shared`.
- 
- The `shared` module includes some simple unit tests in common code to demonstrate using the `MockSettings` implementation to mock out the `Settings` interface when testing code that interacts with it.
+There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in
+the `sample` directory. It includes a `shared` module with common, and platform-specific sources, to demo a shared logic
+layer consuming the library. Several gradle modules consume `shared`, including `app-android` for
+Android, `app-tornadofx` for TornadoFX on the JVM, and `app-browser` for the Javascript browser target. In addition,
+the `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced
+by `shared`.
+
+The `shared` module includes some simple unit tests in common code to demonstrate using the `MapSettings` implementation
+to mock out the `Settings` interface when testing code that interacts with it.
 
 ## License
         
