@@ -87,7 +87,7 @@ class SharedPreferencesSettingsTest : BaseSettingsTest(factory) {
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val settings = SharedPreferencesSettings(preferences)
 
-        settings.addIntListener("key") { }
+        settings.addIntListener("key", 0) { }
         preferences.edit().clear().commit() // This will call OnSharedPreferenceChangeListener with updatedKey = null
     }
 }

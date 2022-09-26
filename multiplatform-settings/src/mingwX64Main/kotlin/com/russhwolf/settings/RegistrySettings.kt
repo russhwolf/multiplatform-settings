@@ -62,15 +62,6 @@ import platform.windows.ULONGLONGVar
 import platform.windows.ULONGVar
 import platform.windows.WCHARVar
 
-@Deprecated(
-    message = "WindowsSettings has been renamed to RegistrySettings",
-    level = DeprecationLevel.WARNING,
-    replaceWith = ReplaceWith("RegistrySettings", "com.russhwolf.settings.RegistrySettings")
-)
-@Suppress("KDocMissingDocumentation")
-@ExperimentalSettingsImplementation
-public typealias WindowsSettings = RegistrySettings
-
 /**
  * A collection of storage-backed key-value data
  *

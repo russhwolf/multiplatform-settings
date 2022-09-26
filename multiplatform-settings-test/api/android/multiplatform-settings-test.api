@@ -11,30 +11,23 @@ public final class com/russhwolf/settings/MapSettings : com/russhwolf/settings/O
 	public fun addFloatOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun addIntListener (Ljava/lang/String;ILkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun addIntOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
-	public fun addListener (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lcom/russhwolf/settings/SettingsListener;
 	public fun addLongListener (Ljava/lang/String;JLkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun addLongOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun addStringListener (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun addStringOrNullListener (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/russhwolf/settings/SettingsListener;
 	public fun clear ()V
-	public fun getBoolean (Ljava/lang/String;)Z
 	public fun getBoolean (Ljava/lang/String;Z)Z
 	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
-	public fun getDouble (Ljava/lang/String;)D
 	public fun getDouble (Ljava/lang/String;D)D
 	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
-	public fun getFloat (Ljava/lang/String;)F
 	public fun getFloat (Ljava/lang/String;F)F
 	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
-	public fun getInt (Ljava/lang/String;)I
 	public fun getInt (Ljava/lang/String;I)I
 	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
 	public fun getKeys ()Ljava/util/Set;
-	public fun getLong (Ljava/lang/String;)J
 	public fun getLong (Ljava/lang/String;J)J
 	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
 	public fun getSize ()I
-	public fun getString (Ljava/lang/String;)Ljava/lang/String;
 	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
 	public fun hasKey (Ljava/lang/String;)Z
@@ -45,7 +38,6 @@ public final class com/russhwolf/settings/MapSettings : com/russhwolf/settings/O
 	public fun putLong (Ljava/lang/String;J)V
 	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
 	public fun remove (Ljava/lang/String;)V
-	public synthetic fun removeListener (Lcom/russhwolf/settings/SettingsListener;)V
 }
 
 public final class com/russhwolf/settings/MapSettings$Factory : com/russhwolf/settings/Settings$Factory {

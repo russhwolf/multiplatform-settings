@@ -157,54 +157,5 @@ public interface SuspendSettings {
      * stored at `key`, the behavior is not defined.
      */
     public suspend fun getBooleanOrNull(key: String): Boolean?
-
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getInt(key, defaultValue = 0)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public suspend fun getInt(key: String): Int = getInt(key, defaultValue = 0)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getLong(key, defaultValue = 0L)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public suspend fun getLong(key: String): Long = getLong(key, defaultValue = 0L)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getString(key, defaultValue = \"\")"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public suspend fun getString(key: String): String = getString(key, defaultValue = "")
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getFloat(key, defaultValue = 0f)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public suspend fun getFloat(key: String): Float = getFloat(key, defaultValue = 0f)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getDouble(key, defaultValue = 0.0)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public suspend fun getDouble(key: String): Double = getDouble(key, defaultValue = 0.0)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getBoolean(key, defaultValue = false)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public suspend fun getBoolean(key: String): Boolean = getBoolean(key, defaultValue = false)
 }
 

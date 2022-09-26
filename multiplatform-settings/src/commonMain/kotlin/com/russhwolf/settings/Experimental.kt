@@ -63,23 +63,3 @@ public annotation class ExperimentalSettingsApi
     TYPEALIAS
 )
 public annotation class ExperimentalSettingsImplementation
-
-@Suppress("KDocMissingDocumentation")
-@Deprecated(
-    "ExperimentalListener has been replaced with ExperimentalSettingsApi",
-    replaceWith = ReplaceWith("ExperimentalSettingsApi", "com.russhwolf.settings"),
-    level = DeprecationLevel.HIDDEN
-)
-@Target(
-    CLASS,
-    PROPERTY,
-    FIELD,
-    LOCAL_VARIABLE,
-    VALUE_PARAMETER,
-    CONSTRUCTOR,
-    FUNCTION,
-    PROPERTY_GETTER,
-    PROPERTY_SETTER,
-    TYPEALIAS
-)
-public annotation class ExperimentalListener

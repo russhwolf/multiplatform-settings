@@ -168,76 +168,12 @@ public interface Settings {
      * stored at `key`, the behavior is not defined.
      */
     public fun getBooleanOrNull(key: String): Boolean?
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getInt(key, defaultValue = 0)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public fun getInt(key: String): Int = getInt(key, defaultValue = 0)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getLong(key, defaultValue = 0L)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public fun getLong(key: String): Long = getLong(key, defaultValue = 0L)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getString(key, defaultValue = \"\")"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public fun getString(key: String): String = getString(key, defaultValue = "")
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getFloat(key, defaultValue = 0f)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public fun getFloat(key: String): Float = getFloat(key, defaultValue = 0f)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getDouble(key, defaultValue = 0.0)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public fun getDouble(key: String): Double = getDouble(key, defaultValue = 0.0)
-
-    @Deprecated(
-        message = "Default values for defaultValue parameters are deprecated",
-        replaceWith = ReplaceWith("getBoolean(key, defaultValue = false)"),
-        level = DeprecationLevel.ERROR
-    )
-    @Suppress("KDocMissingDocumentation")
-    public fun getBoolean(key: String): Boolean = getBoolean(key, defaultValue = false)
 }
 
 /**
  * An extension to the [Settings] interface to include update listener functionality
  */
 public interface ObservableSettings : Settings {
-    /**
-     * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
-     * reference is returned which should be passed to [removeListener] when you no longer need it so that the
-     * associated platform resources can be cleaned up.
-     *
-     * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
-     * garbage-collected on Android.
-     *
-     * No attempt is made in the current implementation to safely handle multithreaded interaction with the listener, so
-     * it's recommended that interaction with the listener APIs be confined to the main UI thread.
-     */
-    @Deprecated(
-        "Use typed listener methods instead",
-        level = DeprecationLevel.WARNING
-    )
-    public fun addListener(key: String, callback: () -> Unit): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -250,8 +186,7 @@ public interface ObservableSettings : Settings {
         key: String,
         defaultValue: Int,
         callback: (Int) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getInt(key, defaultValue)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -264,8 +199,7 @@ public interface ObservableSettings : Settings {
         key: String,
         defaultValue: Long,
         callback: (Long) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getLong(key, defaultValue)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -278,8 +212,7 @@ public interface ObservableSettings : Settings {
         key: String,
         defaultValue: String,
         callback: (String) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getString(key, defaultValue)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -292,8 +225,7 @@ public interface ObservableSettings : Settings {
         key: String,
         defaultValue: Float,
         callback: (Float) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getFloat(key, defaultValue)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -306,8 +238,7 @@ public interface ObservableSettings : Settings {
         key: String,
         defaultValue: Double,
         callback: (Double) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getDouble(key, defaultValue)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -320,8 +251,7 @@ public interface ObservableSettings : Settings {
         key: String,
         defaultValue: Boolean,
         callback: (Boolean) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getBoolean(key, defaultValue)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -333,8 +263,7 @@ public interface ObservableSettings : Settings {
     public fun addIntOrNullListener(
         key: String,
         callback: (Int?) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getIntOrNull(key)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -346,8 +275,7 @@ public interface ObservableSettings : Settings {
     public fun addLongOrNullListener(
         key: String,
         callback: (Long?) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getLongOrNull(key)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -359,8 +287,7 @@ public interface ObservableSettings : Settings {
     public fun addStringOrNullListener(
         key: String,
         callback: (String?) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getStringOrNull(key)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -372,21 +299,19 @@ public interface ObservableSettings : Settings {
     public fun addFloatOrNullListener(
         key: String,
         callback: (Float?) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getFloatOrNull(key)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
      * reference is returned which can be used to halt callbacks by calling [deactivate()][SettingsListener.deactivate].
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
-     * garbage-collected.
+     * garbaze-collected.
      */
     @Suppress("DEPRECATION")
     public fun addDoubleOrNullListener(
         key: String,
         callback: (Double?) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getDoubleOrNull(key)) }
+    ): SettingsListener
 
     /**
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
@@ -398,28 +323,9 @@ public interface ObservableSettings : Settings {
     public fun addBooleanOrNullListener(
         key: String,
         callback: (Boolean?) -> Unit
-    ): SettingsListener =
-        addListener(key) { callback(getBooleanOrNull(key)) }
-
-    /**
-     * Unsubscribes the [listener] from receiving updates to the value at the key it monitors
-     */
-    @Deprecated(
-        message = "Use SettingsListener.deactivate() instead",
-        replaceWith = ReplaceWith("listener.deactivate()"),
-        level = DeprecationLevel.HIDDEN
-    )
-    public fun removeListener(listener: SettingsListener): Unit = listener.deactivate()
+    ): SettingsListener
 
 }
-
-@Deprecated(
-    "ListenableSettings has been renamed ObservableSettings",
-    replaceWith = ReplaceWith("ObservableSettings", "com.russhwolf.settings.ObservableSettings"),
-    level = DeprecationLevel.HIDDEN
-)
-@Suppress("UNUSED", "KDocMissingDocumentation")
-public typealias ListenableSettings = ObservableSettings
 
 /**
  * A handle to a listener instance returned by [ObservableSettings.addListener] so it can be deactivated as needed

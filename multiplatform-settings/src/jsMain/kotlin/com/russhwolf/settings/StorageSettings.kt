@@ -21,14 +21,6 @@ import org.w3c.dom.Storage
 import org.w3c.dom.get
 import org.w3c.dom.set
 
-@Deprecated(
-    message = "JsSettings has been renamed to StorageSettings",
-    level = DeprecationLevel.WARNING,
-    replaceWith = ReplaceWith("StorageSettings", "com.russhwolf.settings.StorageSettings")
-)
-@Suppress("KDocMissingDocumentation")
-public typealias JsSettings = StorageSettings
-
 /**
  * A collection of storage-backed key-value data
  *

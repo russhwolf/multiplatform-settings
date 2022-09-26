@@ -89,54 +89,6 @@ public fun Settings.nullableDouble(key: String? = null): ReadWriteProperty<Any?,
 public fun Settings.nullableBoolean(key: String? = null): ReadWriteProperty<Any?, Boolean?> =
     NullableBooleanDelegate(this, key)
 
-@Deprecated(
-    message = "Default values for defaultValue parameters are deprecated",
-    replaceWith = ReplaceWith("int(key, defaultValue = 0)"),
-    level = DeprecationLevel.ERROR
-)
-@Suppress("KDocMissingDocumentation")
-public fun Settings.int(key: String? = null): ReadWriteProperty<Any?, Int> = int(key, defaultValue = 0)
-
-@Deprecated(
-    message = "Default values for defaultValue parameters are deprecated",
-    replaceWith = ReplaceWith("long(key, defaultValue = 0L)"),
-    level = DeprecationLevel.ERROR
-)
-@Suppress("KDocMissingDocumentation")
-public fun Settings.long(key: String? = null): ReadWriteProperty<Any?, Long> = long(key, defaultValue = 0L)
-
-@Deprecated(
-    message = "Default values for defaultValue parameters are deprecated",
-    replaceWith = ReplaceWith("string(key, defaultValue = \"\")"),
-    level = DeprecationLevel.ERROR
-)
-@Suppress("KDocMissingDocumentation")
-public fun Settings.string(key: String? = null): ReadWriteProperty<Any?, String> = string(key, defaultValue = "")
-
-@Deprecated(
-    message = "Default values for defaultValue parameters are deprecated",
-    replaceWith = ReplaceWith("float(key, defaultValue = 0f)"),
-    level = DeprecationLevel.ERROR
-)
-@Suppress("KDocMissingDocumentation")
-public fun Settings.float(key: String? = null): ReadWriteProperty<Any?, Float> = float(key, defaultValue = 0f)
-
-@Deprecated(
-    message = "Default values for defaultValue parameters are deprecated",
-    replaceWith = ReplaceWith("double(key, defaultValue = 0.0)"),
-    level = DeprecationLevel.ERROR
-)
-@Suppress("KDocMissingDocumentation")
-public fun Settings.double(key: String? = null): ReadWriteProperty<Any?, Double> = double(key, defaultValue = 0.0)
-
-@Deprecated(
-    message = "Default values for defaultValue parameters are deprecated",
-    replaceWith = ReplaceWith("boolean(key, defaultValue = false)"),
-    level = DeprecationLevel.ERROR
-)
-@Suppress("KDocMissingDocumentation")
-public fun Settings.boolean(key: String? = null): ReadWriteProperty<Any?, Boolean> = boolean(key, defaultValue = false)
-
 private class IntDelegate(
     private val settings: Settings,
     key: String?,

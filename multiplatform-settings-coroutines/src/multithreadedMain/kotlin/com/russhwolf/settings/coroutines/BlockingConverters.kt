@@ -101,11 +101,6 @@ private class BlockingObservableSettings(
     private val scope: CoroutineScope,
 ) : BlockingSuspendSettings(delegate), ObservableSettings {
 
-    @Deprecated("Use typed listener methods instead")
-    override fun addListener(key: String, callback: () -> Unit): SettingsListener {
-        throw NotImplementedError("Can't add untyped listener in BlockingObservableSettings")
-    }
-
     private class Listener<T>(flow: Flow<T>, scope: CoroutineScope, callback: (T) -> Unit) : SettingsListener {
         // Drop 1, because `FlowSettings` emits the current value immediately, but `ObservableSettings` waits for a new
         // value before the listener is called.

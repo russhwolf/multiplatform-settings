@@ -22,14 +22,6 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.russhwolf.settings.SharedPreferencesSettings.Factory
 
-@Deprecated(
-    message = "AndroidSettings has been renamed to SharedPreferencesSettings",
-    level = DeprecationLevel.WARNING,
-    replaceWith = ReplaceWith("SharedPreferencesSettings", "com.russhwolf.settings.SharedPreferencesSettings")
-)
-@Suppress("KDocMissingDocumentation")
-public typealias AndroidSettings = SharedPreferencesSettings
-
 /**
  * A collection of storage-backed key-value data
  *
@@ -175,11 +167,85 @@ public class SharedPreferencesSettings @JvmOverloads public constructor(
     public override fun getBooleanOrNull(key: String): Boolean? =
         if (delegate.contains(key)) delegate.getBoolean(key, false) else null
 
-    @Deprecated(
-        "Use typed listener methods instead",
-        level = DeprecationLevel.WARNING
-    )
-    public override fun addListener(key: String, callback: () -> Unit): SettingsListener {
+    public override fun addIntListener(
+        key: String,
+        defaultValue: Int,
+        callback: (Int) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getInt(key, defaultValue)) }
+
+    public override fun addLongListener(
+        key: String,
+        defaultValue: Long,
+        callback: (Long) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getLong(key, defaultValue)) }
+
+    public override fun addStringListener(
+        key: String,
+        defaultValue: String,
+        callback: (String) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getString(key, defaultValue)) }
+
+    public override fun addFloatListener(
+        key: String,
+        defaultValue: Float,
+        callback: (Float) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getFloat(key, defaultValue)) }
+
+    public override fun addDoubleListener(
+        key: String,
+        defaultValue: Double,
+        callback: (Double) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getDouble(key, defaultValue)) }
+
+    public override fun addBooleanListener(
+        key: String,
+        defaultValue: Boolean,
+        callback: (Boolean) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getBoolean(key, defaultValue)) }
+
+    public override fun addIntOrNullListener(
+        key: String,
+        callback: (Int?) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getIntOrNull(key)) }
+
+    public override fun addLongOrNullListener(
+        key: String,
+        callback: (Long?) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getLongOrNull(key)) }
+
+    public override fun addStringOrNullListener(
+        key: String,
+        callback: (String?) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getStringOrNull(key)) }
+
+    public override fun addFloatOrNullListener(
+        key: String,
+        callback: (Float?) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getFloatOrNull(key)) }
+
+    public override fun addDoubleOrNullListener(
+        key: String,
+        callback: (Double?) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getDoubleOrNull(key)) }
+
+    public override fun addBooleanOrNullListener(
+        key: String,
+        callback: (Boolean?) -> Unit
+    ): SettingsListener =
+        addListener(key) { callback(getBooleanOrNull(key)) }
+
+    private fun addListener(key: String, callback: () -> Unit): SettingsListener {
         var prev = delegate.all[key]
 
         val prefsListener =

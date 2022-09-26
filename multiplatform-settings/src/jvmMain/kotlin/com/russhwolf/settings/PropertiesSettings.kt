@@ -18,14 +18,6 @@ package com.russhwolf.settings
 
 import java.util.Properties
 
-@Deprecated(
-    message = "JvmPropertiesSettings has been renamed to PropertiesSettings",
-    replaceWith = ReplaceWith("PropertiesSettings", "com.russhwolf.settings.PropertiesSettings"),
-    level = DeprecationLevel.WARNING
-)
-@Suppress("KDocMissingDocumentation")
-public typealias JvmPropertiesSettings = PropertiesSettings
-
 /**
  * A collection of storage-backed key-value data
  *

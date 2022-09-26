@@ -1,7 +1,3 @@
-public final class com/russhwolf/settings/InvokeKt {
-	public static final synthetic fun invoke (Lcom/russhwolf/settings/Settings$Companion;)Lcom/russhwolf/settings/Settings;
-}
-
 public final class com/russhwolf/settings/NoArgKt {
 	public static final fun Settings ()Lcom/russhwolf/settings/Settings;
 }
