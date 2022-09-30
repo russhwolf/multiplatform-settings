@@ -36,7 +36,6 @@ include(
     ":multiplatform-settings-test",
     ":multiplatform-settings-no-arg",
     ":multiplatform-settings-coroutines",
-    ":multiplatform-settings-coroutines-native-mt",
     ":multiplatform-settings-datastore",
     ":multiplatform-settings-serialization",
     ":tests"
