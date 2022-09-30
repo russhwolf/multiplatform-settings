@@ -35,7 +35,7 @@ import kotlin.test.fail
 class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
     override fun create(name: String?): Settings {
         val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
-        return NSUserDefaultsSettings(delegate, useFrozenListeners = true)
+        return NSUserDefaultsSettings(delegate)
     }
 }) {
 
@@ -101,7 +101,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
     fun nonprimitive_value_across_threads(): Unit = memScoped {
         val mutableState = AtomicInt(0)
         val userDefaults = NSUserDefaults.standardUserDefaults
-        val settings = NSUserDefaultsSettings(userDefaults, true)
+        val settings = NSUserDefaultsSettings(userDefaults)
 
         settings.addIntListener("key", 0) { mutableState.addAndGet(1) }
         val data = mapOf("foo" to "bar") as NSDictionary
@@ -118,7 +118,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
 
     @Test
     fun deactivate_listener_in_background() {
-        val settings = NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults, true)
+        val settings = NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults)
         val listener = settings.addIntListener("key", 0) { fail() }
         doInBackground {
             listener.deactivate()
