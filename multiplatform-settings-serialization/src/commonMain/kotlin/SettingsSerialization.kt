@@ -69,7 +69,7 @@ public fun <T> Settings.encodeValue(
     serializer: KSerializer<T>,
     key: String,
     value: T,
-    serializersModule: SerializersModule = EmptySerializersModule
+    serializersModule: SerializersModule = EmptySerializersModule()
 ): Unit =
     serializer.serialize(SettingsEncoder(this, key, serializersModule), value)
 
@@ -112,7 +112,7 @@ public fun <T> Settings.decodeValue(
     serializer: KSerializer<T>,
     key: String,
     defaultValue: T,
-    serializersModule: SerializersModule = EmptySerializersModule
+    serializersModule: SerializersModule = EmptySerializersModule()
 ): T = deserializeOrElse(defaultValue) { serializer.deserialize(SettingsDecoder(this, key, serializersModule)) }
 
 /**
@@ -153,7 +153,7 @@ public fun <T> Settings.decodeValue(
 public fun <T> Settings.decodeValueOrNull(
     serializer: KSerializer<T>,
     key: String,
-    serializersModule: SerializersModule = EmptySerializersModule
+    serializersModule: SerializersModule = EmptySerializersModule()
 ): T? = deserializeOrElse(null) { serializer.deserialize(SettingsDecoder(this, key, serializersModule)) }
 
 /**
@@ -166,7 +166,7 @@ public fun <T> Settings.serializedValue(
     serializer: KSerializer<T>,
     key: String? = null,
     defaultValue: T,
-    context: SerializersModule = EmptySerializersModule
+    context: SerializersModule = EmptySerializersModule()
 ): ReadWriteProperty<Any?, T> =
     SettingsSerializationDelegate(this, serializer, key, defaultValue, context)
 
@@ -179,7 +179,7 @@ public fun <T> Settings.serializedValue(
 public fun <T : Any> Settings.nullableSerializedValue(
     serializer: KSerializer<T>,
     key: String? = null,
-    context: SerializersModule = EmptySerializersModule
+    context: SerializersModule = EmptySerializersModule()
 ): ReadWriteProperty<Any?, T?> =
     SettingsSerializationDelegate(this, serializer.nullable, key, null, context)
 

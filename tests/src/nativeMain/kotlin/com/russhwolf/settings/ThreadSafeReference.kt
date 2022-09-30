@@ -17,7 +17,6 @@
 package com.russhwolf.settings
 
 import kotlin.native.concurrent.AtomicReference
-import kotlin.native.concurrent.freeze
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -29,13 +28,13 @@ import kotlin.reflect.KProperty
  */
 internal actual fun <T> threadSafeReference(initialValue: T): ReadWriteProperty<Any?, T> =
     object : ReadWriteProperty<Any?, T> {
-        private val reference = AtomicReference(initialValue.freeze())
+        private val reference = AtomicReference(initialValue)
 
         override fun getValue(thisRef: Any?, property: KProperty<*>): T {
             return reference.value
         }
 
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            reference.value = value.freeze()
+            reference.value = value
         }
     }

@@ -24,20 +24,13 @@ import kotlin.native.concurrent.AtomicInt
 import kotlin.native.concurrent.AtomicReference
 import kotlin.native.concurrent.TransferMode
 import kotlin.native.concurrent.Worker
-import kotlin.native.concurrent.freeze
-import kotlin.native.concurrent.isFrozen
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.Factory {
-    override fun create(name: String?): Settings {
-        val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
-        return NSUserDefaultsSettings(delegate)
-    }
-}) {
+class NSUserDefaultsSettingsBackgroundTest {
+
+    private val settings = NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults)
 
     private val incrementedOnMainThread = AtomicReference<Boolean?>(null)
 
@@ -105,7 +98,6 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
 
         settings.addIntListener("key", 0) { mutableState.addAndGet(1) }
         val data = mapOf("foo" to "bar") as NSDictionary
-        if (!isExperimentalMM()) assertFalse(data.isFrozen)
 
         doInBackground {
             userDefaults.setObject(data, "key")
@@ -113,7 +105,6 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
         userDefaults.setObject("hello", "key")
 
         assertEquals(2, mutableState.value)
-        if (!isExperimentalMM()) assertTrue(data.isFrozen)
     }
 
     @Test
@@ -129,7 +120,7 @@ class NSUserDefaultsSettingsBackgroundTest : BaseSettingsTest(object : Settings.
 
 private fun <T> doInBackground(block: () -> T): T {
     val worker = Worker.start()
-    val result = worker.execute(TransferMode.SAFE, { block.freeze() }, { it.invoke() }).result
+    val result = worker.execute(TransferMode.SAFE, { block }, { it.invoke() }).result
     worker.requestTermination()
     return result
 }
