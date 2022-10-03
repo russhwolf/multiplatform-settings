@@ -1,5 +1,12 @@
 # Changelog #
 
+## v1.0.0-RC *(2022-10-02)* ##
+
+- Update to Kotlin 1.7.20, Gradle 7.5.1, and Android Gradle Plugin 7.2.2.
+- BREAKING: Remove all deprecated API.
+- BREAKING: Remove `useFrosenListeners` parameter from `NSUserDefaultsSettings`.
+- BREAKING: Factory implementations now return a specific type from `create()` rather than returning `Settings`.
+
 ## v1.0.0-alpha01 *(2022-06-02)* ##
 
 - BREAKING: Rename Settings implementations to be based on the underlying API used rather than the platform
