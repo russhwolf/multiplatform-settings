@@ -22,7 +22,6 @@ import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSUserDefaultsDidChangeNotification
 import platform.darwin.NSObjectProtocol
-import kotlin.native.concurrent.AtomicReference
 
 /**
  * A collection of storage-backed key-value data
@@ -39,11 +38,6 @@ import kotlin.native.concurrent.AtomicReference
  *
  * On the iOS and macOS platforms, this class can be created by passing a [NSUserDefaults] instance which will be used as a
  * delegate, or via a [Factory].
- *
- * Note that this class is frozen on construction, and is safe to use in a multi-threaded environment. If the listener
- * APIs will be used in such an environment, then [useFrozenListeners] should be set to true on creation. In that case,
- * the block passed to [addListener] will be frozen as well so that it can safely be triggered from any thread. To avoid
- * freezing listeners, restrict interaction with this class to a single thread and set `useFrozenListeners` to `false`.
  */
 public class NSUserDefaultsSettings public constructor(
     private val delegate: NSUserDefaults
@@ -52,11 +46,7 @@ public class NSUserDefaultsSettings public constructor(
     /**
      * A factory that can produce [Settings] instances.
      *
-     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
-     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
-     * multiple `Settings` objects is the one-time creation of a single `Factory`.
-     *
-     * On the iOS and macOS platforms, this class creates `Settings` objects backed by [NSUserDefaults].
+     * This class creates `Settings` objects backed by [NSUserDefaults].
      */
     public class Factory : Settings.Factory {
 
@@ -238,7 +228,8 @@ public class NSUserDefaultsSettings public constructor(
     }
 
     /**
-     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     * A handle to a listener instance returned by one of the addListener methods of [ObservableSettings], so it can be
+     * deactivated as needed.
      *
      * On the iOS and macOS platforms, this is a wrapper around the object returned by [NSNotificationCenter.addObserverForName]
      */

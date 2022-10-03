@@ -48,10 +48,6 @@ public class PreferencesSettings public constructor(
     /**
      * A factory that can produce [Settings] instances.
      *
-     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
-     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
-     * multiple `Settings` objects is the one-time creation of a single `Factory`.
-     *
      * On the JVM platform, this class creates `Settings` objects backed by [Preferences].
      */
     public class Factory(private val rootPreferences: Preferences = Preferences.userRoot()) : Settings.Factory {
@@ -213,7 +209,8 @@ public class PreferencesSettings public constructor(
     }
 
     /**
-     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     * A handle to a listener instance returned by one of the addListener methods of [ObservableSettings], so it can be
+     * deactivated as needed.
      *
      * On the JVM platform, this is a wrapper around [PreferenceChangeListener].
      */

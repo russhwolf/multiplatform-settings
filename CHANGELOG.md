@@ -4,14 +4,14 @@
 
 - BREAKING: Rename Settings implementations to be based on the underlying API used rather than the platform
 
-| Old name | New name |
-| --- | --- |
-| AndroidSettings | SharedPreferencesSettings |
-| AppleSettings | NSUserDefaultsSettings |
-| JvmPreferencesSettings | PreferencesSettings |
-| JvmPropertiesSettings | PropertiesSettings |
-| WindowsSettings | RegistrySettings|
-| MockSettings | MapSettings |
+| Old name               | New name                  |
+|------------------------|---------------------------|
+| AndroidSettings        | SharedPreferencesSettings |
+| AppleSettings          | NSUserDefaultsSettings    |
+| JvmPreferencesSettings | PreferencesSettings       |
+| JvmPropertiesSettings  | PropertiesSettings        |
+| WindowsSettings        | RegistrySettings          |
+| MockSettings           | MapSettings               |
 
 - BREAKING: Migrate typed listeners from extension functions to members of ObservableSettings
 - BREAKING: Remove default values for defaultValue parameters

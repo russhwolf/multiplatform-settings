@@ -89,7 +89,6 @@ class NSUserDefaultsSettingsBackgroundTest {
         assertEquals(false, incrementedOnMainThread.value)
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     @Test
     fun nonprimitive_value_across_threads(): Unit = memScoped {
         val mutableState = AtomicInt(0)

@@ -81,7 +81,7 @@ class SharedPreferencesSettingsTest : BaseSettingsTest(factory) {
     @Test
     fun issue_108() {
         // In Android 11 (SDK level 30), we will get OnSharedPreferenceChangeListener callbacks with a null updatedKey
-        // if the user calls clear() on the SharedPreferenecs.Editor. On Multiplatform Settings versions 0.8.1 and
+        // if the user calls clear() on the SharedPreferences.Editor. On Multiplatform Settings versions 0.8.1 and
         // earlier, we assumed updatedKey was nonnull so this would crash.
 
         val preferences = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)

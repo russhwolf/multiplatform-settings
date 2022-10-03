@@ -61,23 +61,31 @@ See also the sample project, which uses this structure.
 
 ## Usage
 
-The `Settings` interface has implementations on the Android, iOS, macOS, watchOS, tvOS, JS, JVM, and Windows platforms. (Note that the two JVM implementations and the Windows implementation are currently marked as experimental.)
+The `Settings` interface has implementations on the Android, iOS, macOS, watchOS, tvOS, JS, JVM, and Windows platforms.
 
 ### Creating a Settings instance
 
-When writing multiplatform code, you might need to interoperate with platform-specific code which needs to share the same data-source. To facilitate this, all `Settings` implementations wrap a delegate object which you could also use in your platform code.
+When writing multiplatform code, you might need to interoperate with platform-specific code which needs to share the
+same data-source. To facilitate this, all `Settings` implementations wrap a delegate object which you could also use in
+your platform code.
 
-Since that delegate is a constructor argument, it should be possible to connect it via any dependency-injection strategy you might already be using. If your project doesn't have such a system already in place, one strategy is to use `expect` declarations, for example
- 
+Since that delegate is a constructor argument, it should be possible to connect it via any dependency-injection strategy
+you might already be using. If your project doesn't have such a system already in place, one strategy is to use `expect`
+declarations, for example
+
 ```kotlin
 expect val settings: Settings
+
 // or
 expect fun createSettings(): Settings
 ```
 
-Then the `actual` implementations can pass the platform-specific delegates. See [Platform constructors](#platform-constructors) below for more details on these delegates.
+Then the `actual` implementations can pass the platform-specific delegates.
+See [Platform constructors](#platform-constructors) below for more details on these delegates.
 
-Some platform implementations also include `Factory` classes. These make it easier to manage multiple named `Settings` objects from common code, or to automate some platform-specific configuration so that delegates don't need to be created manually. The factory still needs to be injected from platform code, but then from common you can call 
+Some platform implementations also include `Factory` classes. These make it easier to manage multiple named `Settings`
+objects from common code, or to automate some platform-specific configuration so that delegates don't need to be created
+manually. The factory still needs to be injected from platform code, but then from common you can call
 
 ```kotlin
 val settings1: Settings = factory.create("my_first_settings")
@@ -112,6 +120,24 @@ val delegate: NSUserDefaults // ...
 val settings: Settings = NSUserDefaultsSettings(delegate)
 ```
 
+You can also use `KeychainSettings` which writes to the Keychain. Construct it by passing a String which will be
+interpreted as a service name.
+
+```kotlin
+val serviceName: String // ...
+val settings: Settings = KeychainSettings(serviceName)
+```
+
+Two JVM implementations exist. `PreferencesSettings` wraps `Preference`s and `PropertiesSettings` wraps `Properties`.
+
+```kotlin
+val delegate: Preferences // ...
+val settings: Settings = PreferencesSettings(delegate)
+
+val delegate: Properties // ...
+val settings: Settings = PropertiesSettings(delegate)
+```
+
 On JS, `JsSettings` wraps `Storage`.
 
 ```kotlin
@@ -119,7 +145,14 @@ val delegate: Storage // ...
 val settings: Settings = JsSettings(delegate)
 
 val settings: Settings = JsSettings() // use localStorage by default
-```     
+```
+
+There is a Windows implementation `RegistrySettings` which wraps the Windows registry.
+
+```kotlin
+val rootKey: String = "SOFTWARE\\..." // Will be interpreted as subkey of HKEY_CURRENT_USER
+val settings: Settings = RegistrySettings(rootKey)
+```
 
 #### Factories
 
@@ -133,15 +166,27 @@ val context: Context // ...
 val factory: Settings.Factory = SharedPreferencesSettings.Factory(context)
 ```    
 
-On iOS and macOS, the factory can be instantiated without passing any parameter
+On most other platforms, the factory can be instantiated without passing any parameter
 
 ```kotlin
 val factory: Settings.Factory = NSUserDefaultsSettings.Factory()
-```   
+```
+
+If you have a `Factory` reference from your common code, then you can use it to create multiple `Settings` with
+different names.
+
+```kotlin
+val settings1: Settings = factory.create("my_first_settings")
+val settings2: Settings = factory.create("my_other_settings")
+```
+
+If the default `Factory`s don't do what you need, you can also implement your own.
 
 #### No-arg module
 
-To create a `Settings` instance from common without needing to pass platform-specific dependencies, add the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatform-settings` as an API dependency, so you can use it as a replacement for that default dependency.
+To create a `Settings` instance from common without needing to pass platform-specific dependencies, add
+the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatform-settings` as an API dependency, so
+you can use it as a replacement for that default dependency.
 
 ```kotlin
 implementation("com.russhwolf:multiplatform-settings-no-arg:1.0.0-RC")
@@ -153,39 +198,52 @@ Then from common code, you can write
 val settings: Settings = Settings()
 ```
 
-This is implemented via an extension function `operator fun Settings.Companion.invoke()` to provide constructor-like syntax even though `Settings` has no constructor.
+This is implemented via an extension function `operator fun Settings.Companion.invoke()` to provide constructor-like
+syntax even though `Settings` has no constructor.
 
-On Android, this delegates to the equivalent of `PreferenceManager.getDefaultSharedPreferences()` internally. It makes use of a content-provider to get a context reference without needing to pass one manually.
- 
-On Apple platforms, it uses `NSUserDefaults.standardUserDefaults`. On JS, it uses `localStorage`. On JVM, it uses the `JvmPreferences` implementation with `Preferences.userRoot()` as a delegate.
+On Android, this delegates to the equivalent of `PreferenceManager.getDefaultSharedPreferences()` internally. It makes
+use of a content-provider to get a context reference without needing to pass one manually. On Apple platforms, it
+uses `NSUserDefaults.standardUserDefaults`. On JS, it uses `localStorage`. On JVM, it uses the `Preferences`
+implementation with `Preferences.userRoot()` as a delegate. On Windows, it reads the name of the executable being built
+and writes to a subkey of `HKEY_CURRENT_USER\SOFTWARE` using that name.
 
-Note that while the main `multiplatform-settings` module publishes common code to all available Kotlin platforms, the `multiplatform-settings-no-arg` module only publishes to platforms which have concrete implementations.
+Note that while the main `multiplatform-settings` module publishes common code to all available Kotlin platforms,
+the `multiplatform-settings-no-arg` module only publishes to platforms which have concrete implementations.
+
+Note also that the `no-arg` module is there to make getting started easier with less configuration, but there are plenty
+of things it doesn't provide, such as the ability to use an encrypted implementation on platforms that support it, or
+the ability to substitute a test implementation. If you need a non-default setup you likely are better off not
+using `multiplatform-settings-no-arg`.
 
 ### Settings API
 
-Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their operator shortcuts
+Once the `Settings` instance is created, you can store values by calling the various `putXXX()` methods, or their
+operator shortcuts
 
 ```kotlin
 settings.putInt("key", 3)
 settings["key"] = 3
 ```
 
-You can retrieve stored values via the `getXXX()` methods or their operator shortcuts. If a key is not present, then the supplied default will be returned instead.
+You can retrieve stored values via the `getXXX()` methods or their operator shortcuts. If a key is not present, then the
+supplied default will be returned instead.
 
 ```kotlin
 val a: Int = settings.getInt("key")
-val b: Int = settings.getInt("key", defaultValue = -1) 
+val b: Int = settings.getInt("key", defaultValue = -1)
 val c: Int = settings["key", -1]
 ```    
 
-Nullable methods are also available to avoid the need to use a default value. Instead, `null` will be returned if a key is not present.
+Nullable methods are also available to avoid the need to use a default value. Instead, `null` will be returned if a key
+is not present.
 
 ```kotlin
 val a: Int? = settings.getIntOrNull("key")
 val b: Int? = settings["key"]
 ```    
 
-The `getXXX()` and `putXXX()` operation for a given key can be wrapped using a property delegate. This has the advantage of ensuring that the key is always accessed with a consistent type.
+The `getXXX()` and `putXXX()` operation for a given key can be wrapped using a property delegate. This has the advantage
+of ensuring that the key is always accessed with a consistent type.
 
 ```kotlin
 val a: Int by settings.int("key")
@@ -209,7 +267,7 @@ Existence of a key can be queried
 ```kotlin     
 val a: Boolean = settings.hasKey("key")
 val b: Boolean = "key" in settings
-```     
+```
 
 Values can also be removed by key
 
@@ -235,7 +293,27 @@ val size: Int = settings.size
 Note that for the `NSUserDefaultsSettings` implementation, some entries are unremovable and therefore may still be
 present after a `clear()` call. Thus, `size` is not generally guaranteed to be zero after a `clear()`.
 
-### Testing
+#### Listeners
+
+Update listeners are available for some implementations. These are marked
+with the `ObservableSettings` interface, which includes an `addListener()` method.
+
+```kotlin
+val observableSettings: ObservableSettings // ...
+val settingsListener: SettingsListener = observableSettings.addIntListener(key) { value: Int -> /* ... */ }
+val settingsListener: SettingsListener = observableSettings.addNullableIntListener(key) { value: Int? -> /* ... */ }
+```
+
+The `SettingsListener` returned from the call should be used to signal when you're done listening:
+
+```kotlin
+settingsListener.deactivate()
+```    
+
+If you don't hold a strong reference to the `SettingsListener`, it's possible in some implementations that it will be
+garbage-collected and stop sending updates.
+
+#### Testing
 
 A testing dependency is available to aid in testing code that interacts with this library.
 
@@ -248,72 +326,23 @@ on all platforms.
 
 ### Other platforms
 
-The `Settings` interface is published to all available platforms. Developers who desire implementations outside of the defaults provided are free to add their own implementations, and welcome to make pull requests if the implementation might be generally useful to others. Note that implementations which require external dependencies should be places in a separate gradle module in order to keep the core `multiplatform-settings` module dependency-free.
+The `Settings` interface is published to all available platforms. Developers who desire implementations outside of the
+defaults provided are free to add their own implementations, and are welcome to make pull requests if the implementation
+might be generally useful to others. Note that implementations which require external dependencies should be places in a
+separate gradle module in order to keep the core `multiplatform-settings` module dependency-free.
 
 ## Experimental API
 
-This is a pre-1.0 library based on the alpha-release multiplatform functionality, so some occasional API breakage may occur. Certain APIs are marked with `@ExperimentalSettingsApi` or `@ExperimentalSettingsImplementation` to highlight areas that have extra risk of API changes or unexpected behavior. 
+Certain APIs are marked with `@ExperimentalSettingsApi` or `@ExperimentalSettingsImplementation` to highlight areas that
+may have the potential to break in the future and should not be considered stable to depend on.
 
 ### Experimental Implementations
 
 #### Apple Keychain
 
-In addition to the default `NSUserDefaultsSettings` implementation, there's also a `KeychainSettings` on the Apple
-platforms that stores data on the Apple keychain. Construct it by passing a `String` which will be interpreted as a
-service name
-
-```kotlin
-val serviceName: String // ...
-val settings: Settings = KeychainSettings(serviceName)
-```
-
-#### JVM
-
-Two pure-JVM implementations exist. `PreferencesSettings` wraps `Preferences` and `PropertiesSettings`
-wraps `Properties`.
-
-```kotlin
-val delegate: Preferences // ...
-val settings: Settings = PreferencesSettings(delegate)
-
-val delegate: Properties // ...
-val settings: Settings = PropertiesSettings(delegate)
-```
-
-#### Windows
-
-There is a Windows implementation `RegistrySettings` which wraps the Windows registry.
-
-```kotlin
-val rootKey: String = "SOFTWARE\\..." // Will be interpreted as subkey of HKEY_CURRENT_USER
-val settings: Settings = RegistrySettings(rootKey)
-```
-
-### Listeners
-
-Update listeners are available using an experimental API, only for
-the `SharedPreferencesSettings`, `NSUserDefaultsSettings`, and `PreferencesSettings` implementations. These are marked
-with the `ObservableSettings` interface, which includes an `addListener()` method.
-
-```kotlin
-val observableSettings: ObservableSettings // ...
-val settingsListener: SettingsListener = observableSettings.addListener(key) { /* ... */ }
-
-// Typed listener extension functions are also available
-val settingsListener: SettingsListener = observableSettings.addIntListener(key) { int: Int -> /* ... */ }
-val settingsListener: SettingsListener = observableSettings.addNullableIntListener(key) { int: Int? -> /* ... */ }
-```
-
-The `SettingsListener` returned from the call should be used to signal when you're done listening:
-
-```kotlin
-settingsListener.deactivate()
-```    
-
-On Apple platforms, the `NSUserDefaultsSettings` listeners are designed to work within the Kotlin/Native threading
-model. If all interaction with the class is on a single thread, then nothing will be frozen. In multithreaded usage,
-the `NSUserDefaultsSettings` can be configured to freeze listeners, making it safe to set listeners when the class might
-be used across threads.
+The `KeychainSettings` implementation on Apple platforms and the `RegistrySettings` implementation on Windows are
+considered experimental. Feel free to reach out if they're working well for you, or if you encounter any issues with
+them, to help remove that experimental status.
 
 ### Serialization module
 
@@ -329,7 +358,9 @@ This essentially uses the `Settings` store as a serialization format. Thus for a
 @Serializable
 class SomeClass(val someProperty: String, anotherProperty: Int)
 ```
+
 an instance can be stored or retrieved
+
 ```kotlin
 val someClass: SomeClass
 val settings: Settings
@@ -351,16 +382,12 @@ val nullableSomeClass: SomeClass? by settings.nullableSerializedValue(SomeClass.
 
 Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalSerializationApi` annotations.
 
-
 ### Coroutine APIs
 
 A separate `multiplatform-settings-coroutines` dependency includes various coroutine APIs.
 
 ```kotlin
 implementation("com.russhwolf:multiplatform-settings-coroutines:1.0.0-RC")
-
-// Or, if you use native-mt coroutines release
-implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:1.0.0-RC")
 ```
 
 This adds flow extensions for all types which use the listener APIs internally.
@@ -371,9 +398,9 @@ val flow: Flow<Int> by observableSettings.intFlow("key", defaultValue)
 val nullableFlow: Flow<Int?> by observableSettings.intOrNullFlow("key")
 ```
 
-Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalCoroutinesApi` annotations.
-
-In addition, there are two new `Settings`-like interfaces: `SuspendSettings`, which looks similar to `Settings` but all functions are marked `suspend`, and `FlowSettings` which extends `SuspendSettings` to also include `Flow`-based getters similar to the extensions mentioned above.
+In addition, there are two new `Settings`-like interfaces: `SuspendSettings`, which looks similar to `Settings` but all
+functions are marked `suspend`, and `FlowSettings` which extends `SuspendSettings` to also include `Flow`-based getters
+similar to the extensions mentioned above.
 
 ```kotlin
 val suspendSettings: SuspendSettings // ...
@@ -383,7 +410,8 @@ val flowSettings: FlowSettings // ...
 val flow: Flow<Int> = flowSettings.getIntFlow("key")
 ```
 
-There are APIs provided to convert between these different interfaces so that you can select one to use primarily from common.
+There are APIs provided to convert between these different interfaces so that you can select one to use primarily from
+common.
 
 ```kotlin
 val settings: Settings // ...
@@ -394,10 +422,13 @@ val flowSettings: FlowSettings = observableSettings.toFlowSettings()
 
 // Wrap suspend calls in runBlocking
 val blockingSettings: Settings = suspendSettings.toBlockingSettings()
+val blockingSettings: ObservableSettings = flowSettings.toBlockingObservableSettings()
 ```
 
 #### DataStore
-An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
+
+An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based
+on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
 
 ```kotlin
 implementation("com.russhwolf:multiplatform-settings-datastore:1.0.0-RC")
@@ -441,29 +472,19 @@ actual val settings: SuspendSettings = JsSettings().toSuspendSettings()
 
 ## Building
 
-The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `master` branch, the script in `azure-pipelines.yml` runs. This builds the library and runs unit tests for all platforms across Linux, Mac, and Windows hosts. In addition, the library build artifacts are deployed to the local maven repository and the sample project is built for the platforms on which it is implemented. This ensures that the sample remains in sync with updates to the library.
+The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `master` branch, the
+script in `azure-pipelines.yml` runs. This builds the library and runs unit tests for all platforms across Linux, Mac,
+and Windows hosts. In addition, the library build artifacts are deployed to the local maven repository and the sample
+project is built for the platforms on which it is implemented. This ensures that the sample remains in sync with updates
+to the library.
 
-An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This builds the library for all platforms and uploads artifacts to Bintray. Uploaded artifacts must still be published manually.
-
-
-## Project Structure
-The library logic lives in the `commonMain`, `androidMain`, and `iosMain` sources. The common source holds the `Settings` interface which exposes apis for persisting values of the `Int`, `Long`, `String`, `Float`, `Double`, and `Boolean` types. The common source also holds property delegate wrappers and other operator functions for cleaner syntax and usage. The platform sources then hold implementations, delegating to whichever delegate that platform uses. The macOS platform reads from the same sources as iOS. The experimental JVM and JS implementations reside in the `jvmMain` and `jsMain` sources, respectively
-
-Some unit tests are defined which can be run via `./gradlew test`. These use Robolectric on Android to mock out the android-specific behavior, and use the ios simulator to run the ios tests. The macOS tests run natively on macOS hosts. The experimental JS implementation uses the default test setup for the new JS plugin, and the experimental JVM implementation runs standard junit tests.
-
-There is also a sample project to demonstrate usage, which is configured as a separate IDEA/gradle project in
-the `sample` directory. It includes a `shared` module with common, and platform-specific sources, to demo a shared logic
-layer consuming the library. Several gradle modules consume `shared`, including `app-android` for
-Android, `app-tornadofx` for TornadoFX on the JVM, and `app-browser` for the Javascript browser target. In addition,
-the `app-ios` directory holds an Xcode project which builds an iOS app in the usual way, consuming a framework produced
-by `shared`.
-
-The `shared` module includes some simple unit tests in common code to demonstrate using the `MapSettings` implementation
-to mock out the `Settings` interface when testing code that interacts with it.
+An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This
+builds the library for all platforms and uploads artifacts to staging on Maven Central. Uploaded artifacts must still be
+published manually
 
 ## License
-        
-    Copyright 2018-2020 Russell Wolf
+
+    Copyright 2018-2022 Russell Wolf
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -478,6 +499,7 @@ to mock out the `Settings` interface when testing code that interacts with it.
     limitations under the License.
 
 #
+
 [![Jetbrains Logo](images/jetbrains.png)](https://www.jetbrains.com/?from=Multiplatform-Settings)
 
 Made with JetBrains tools 

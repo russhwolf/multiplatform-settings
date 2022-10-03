@@ -20,7 +20,6 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalSettingsImplementation::class)
 abstract class NoArgTest {
     // clear() inside the lazy block in case subclasses need to do their setup first
     private val settings by lazy { Settings().also { it.clear() } }

@@ -51,11 +51,7 @@ public class SharedPreferencesSettings @JvmOverloads public constructor(
     /**
      * A factory that can produce [Settings] instances.
      *
-     * This class can only be instantiated via a platform-specific constructor. It's purpose is so that `Settings`
-     * objects can be created in common code, so that the only platform-specific behavior necessary in order to use
-     * multiple `Settings` objects is the one-time creation of a single `Factory`.
-     *
-     * On the Android platform, this class creates `Settings` objects backed by [SharedPreferences]. It  can only be
+     * This class creates `Settings` objects backed by [SharedPreferences]. It can only be
      * created by supplying a [Context] instance. The `Factory` will hold onto a reference to the
      * [applicationContext][Context.getApplicationContext] property of the supplied `context` and will use that to
      * create [SharedPreferences] objects.
@@ -268,7 +264,8 @@ public class SharedPreferencesSettings @JvmOverloads public constructor(
     }
 
     /**
-     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     * A handle to a listener instance returned by one of the addListener methods of [ObservableSettings], so it can be
+     * deactivated as needed.
      *
      * On the Android platform, this is a wrapper around [SharedPreferences.OnSharedPreferenceChangeListener].
      */

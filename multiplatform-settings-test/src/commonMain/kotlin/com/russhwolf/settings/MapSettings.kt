@@ -22,11 +22,8 @@ package com.russhwolf.settings
  * This class allows storage of values with the [Int], [Long], [String], [Float], [Double], or [Boolean] types, using a
  * [String] reference as a key.
  *
- * The `MockSettings` implementation is intended for use in unit tests. The mock persisted state is represented by a
- * [Map] and can be injected at construction time.
- *
- * Operator extensions are defined in order to simplify usage. In addition, property delegates are provided for cleaner
- * syntax and better type-safety when interacting with values stored in a `Settings` instance.
+ * The `MapSettings` implementation is intended for use in unit tests. It differs from production implementations
+ * because the state exists only in-memory and has no mechanism for persistence.
  *
  * This class can be instantiated by wrapping a [MutableMap] or set of [Pair] entries, or via a [Factory].
  *
@@ -55,7 +52,7 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
     ) : Settings.Factory {
 
         /**
-         * Assigns the values in [delegate] to the cache that will be used to back any [MockSettings] this factory
+         * Assigns the values in [delegate] to the cache that will be used to back any [MapSettings] this factory
          * creates named [name]
          */
         public fun setCacheValues(name: String?, delegate: Map<String, Any>) {
@@ -65,7 +62,7 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
         }
 
         /**
-         * Assigns the values in [items] to the cache that will be used to back any [MockSettings] this factory
+         * Assigns the values in [items] to the cache that will be used to back any [MapSettings] this factory
          * creates named [name]
          */
         public fun setCacheValues(name: String?, vararg items: Pair<String, Any>) {
@@ -241,11 +238,12 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
     }
 
     /**
-     * A handle to a listener instance created in [addListener] so it can be passed to [removeListener]
+     * A handle to a listener instance returned by one of the addListener methods of [ObservableSettings], so it can be
+     * deactivated as needed.
      *
-     * In the [MockSettings] implementation this simply wraps a lambda parameter which is being called whenever a
+     * In the [MapSettings] implementation this simply wraps a lambda parameter which is being called whenever a
      * mutating API is called. Unlike platform implementations, this listener will NOT be called if the underlying map
-     * is mutated by something other than the `MockSettings` instance that originally created the listener.
+     * is mutated by something other than the `MapSettings` instance that originally created the listener.
      */
     public class Listener internal constructor(
         private val listeners: MutableList<() -> Any>,

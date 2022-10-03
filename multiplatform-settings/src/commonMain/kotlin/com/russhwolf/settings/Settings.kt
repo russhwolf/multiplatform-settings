@@ -305,7 +305,7 @@ public interface ObservableSettings : Settings {
      * Adds a listener which will call the supplied [callback] anytime the value at [key] changes. A [SettingsListener]
      * reference is returned which can be used to halt callbacks by calling [deactivate()][SettingsListener.deactivate].
      * A strong reference should be held to the `SettingsListener` returned by this method in order to avoid it being
-     * garbaze-collected.
+     * garbage-collected.
      */
     @Suppress("DEPRECATION")
     public fun addDoubleOrNullListener(
@@ -328,11 +328,13 @@ public interface ObservableSettings : Settings {
 }
 
 /**
- * A handle to a listener instance returned by [ObservableSettings.addListener] so it can be deactivated as needed
+ * A handle to a listener instance returned by one of the addListener methods of [ObservableSettings], so it can be
+ * deactivated as needed.
  */
 public interface SettingsListener {
     /**
-     * Unsubscribes this [SettingsListener] from receiving updates to the value at the key it monitors
+     * Unsubscribes this [SettingsListener] from receiving updates to the value at the key it monitors. After calling
+     * this method you should no longer hold a reference to the listener.
      */
     public fun deactivate()
 }

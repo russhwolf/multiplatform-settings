@@ -103,7 +103,7 @@ public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean)
     createFlow(key, defaultValue, Settings::getBoolean, ObservableSettings::addBooleanListener)
 
 /**
- * Create a new flow, based on observing the given [key] as an nullable `Int`. This flow will immediately emit the
+ * Create a new flow, based on observing the given [key] as a nullable `Int`. This flow will immediately emit the
  * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
  * `null` will be emitted instead.
  */

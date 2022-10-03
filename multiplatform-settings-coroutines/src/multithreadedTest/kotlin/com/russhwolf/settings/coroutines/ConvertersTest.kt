@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package com.russhwolf.settings.coroutines
 
 import com.russhwolf.settings.BaseSettingsTest
@@ -25,7 +23,6 @@ import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 // TODO we should have test-cases specific to SuspendSettings and FlowSettings, but until we do we test things by
 //  passing them through toBlockingSettings()
