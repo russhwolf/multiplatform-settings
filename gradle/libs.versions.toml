@@ -10,7 +10,7 @@ android-compileSdk = "34"
 kotlinx-coroutines = "1.8.0"
 kotlinx-serialization = "1.6.3"
 
-androidx-datastore = "1.1.0"
+androidx-datastore = "1.1.1"
 androidx-preference = "1.2.1"
 androidx-startup = "1.1.1"
 androidx-test = "1.5.0"
@@ -19,6 +19,7 @@ androidx-testExt = "1.1.5"
 binaryCompatibilityValidator = "0.13.2"
 nexus-publish = "2.0.0-rc-1"
 junit = "4.13.2"
+okio = "3.3.0"
 robolectric = "4.10.3"
 turbine = "1.1.0"
 
@@ -42,6 +43,7 @@ androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-te
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-testExt" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
+okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 

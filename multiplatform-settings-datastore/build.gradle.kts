@@ -25,7 +25,13 @@ kotlin {
     androidTarget {
         publishAllLibraryVariants()
     }
+    iosArm64()
+    iosSimulatorArm64()
+    iosX64()
     jvm()
+    linuxX64()
+    macosArm64()
+    macosX64()
 
     sourceSets {
         commonMain {
@@ -34,6 +40,8 @@ kotlin {
                 implementation(project(":multiplatform-settings-coroutines"))
 
                 implementation(libs.kotlinx.coroutines.core)
+
+                implementation(libs.androidx.datastore.preferences.core)
             }
         }
         commonTest {
@@ -46,11 +54,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.test)
 
                 implementation(libs.turbine)
-            }
-        }
-        val jvmCommonMain by getting {
-            dependencies {
-                implementation(libs.androidx.datastore.preferences.core)
+                implementation(libs.okio.fakefilesystem)
             }
         }
     }
