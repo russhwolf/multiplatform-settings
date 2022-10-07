@@ -18,7 +18,9 @@
 
 package com.russhwolf.settings.datastore
 
-import androidx.datastore.core.DataStore
+import androidx.datastore.core.okio.OkioSerializer
+import androidx.datastore.core.okio.OkioStorage
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -29,20 +31,28 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.coroutines.toBlockingObservableSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.TemporaryFolder
+import okio.FileSystem
+import okio.Path.Companion.toPath
+import okio.fakefilesystem.FakeFileSystem
+import kotlin.test.AfterTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
-private val temporaryFolder = TemporaryFolder()
+expect val preferencesSerializer: OkioSerializer<Preferences>
 
-// Shim to work around IDE issues. HMPP doesn't support JVM/Android so we can't see java.io.File here.
-internal expect fun TemporaryFolder.createDataStore(fileName: String): DataStore<Preferences>
+private var scope: CoroutineScope = CoroutineScope(SupervisorJob())
+
+private val fakeFileSystem = FakeFileSystem()
 
 private val factory = object : Settings.Factory {
     override fun create(name: String?): Settings {
-        val dataStore: DataStore<Preferences> = temporaryFolder.createDataStore("$name.preferences_pb")
+        val storage = OkioStorage(fakeFileSystem, preferencesSerializer) {
+            FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "${name ?: "settings"}.preferences_pb".toPath()
+        }
+        val dataStore = PreferenceDataStoreFactory.create(storage, scope = scope)
         val settings = DataStoreSettings(dataStore)
         return settings.toBlockingObservableSettings(CoroutineScope(Dispatchers.Unconfined))
     }
@@ -53,13 +63,20 @@ class DataStoreSettingsTest : BaseSettingsTest(
     allowsDuplicateInstances = false,
     hasListeners = true
 ) {
-
-    @Rule
-    fun temporaryFolder() = temporaryFolder
+    @AfterTest
+    fun tearDown() {
+        scope.cancel()
+        scope = CoroutineScope(SupervisorJob())
+        fakeFileSystem.checkNoOpenFiles()
+    }
 
     @Test
     fun constructor_datastore(): Unit = runBlocking {
-        val dataStore = temporaryFolder.createDataStore("settings.preferences_pb")
+        val storage = OkioStorage(fakeFileSystem, preferencesSerializer) {
+            FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "test.preferences_pb".toPath()
+        }
+        val dataStore = PreferenceDataStoreFactory.create(storage, scope = scope)
+
         val settings = DataStoreSettings(dataStore)
 
         dataStore.edit { it[intPreferencesKey("a")] = 3 }

@@ -22,7 +22,7 @@ object Versions {
     const val minSdk = 15
     const val compileSdk = 34
 
-    const val androidxDatastore = "1.0.0"
+    const val androidxDatastore = "1.1.0-dev01"
     const val androidxPreference = "1.2.1"
     const val androidxStartup = "1.1.1"
     const val androidxTest = "1.5.0"

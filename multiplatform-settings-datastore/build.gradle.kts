@@ -20,13 +20,20 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.dokka")
+    id("org.jetbrains.kotlin.plugin.serialization") version Versions.serializationPlugin
     `maven-publish`
     signing
 }
 
 standardConfiguration(
     "android",
-    "jvm"
+    "iosArm64",
+    "iosSimulatorArm64",
+    "iosX64",
+    "jvm",
+    "linuxX64",
+    "macosArm64",
+    "macosX64"
 )
 
 kotlin {
@@ -39,6 +46,8 @@ kotlin {
                 implementation(project(":multiplatform-settings-coroutines"))
 
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
+
+                implementation("androidx.datastore:datastore-preferences-core:${Versions.androidxDatastore}")
             }
         }
         val commonTest by getting {
@@ -51,11 +60,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
 
                 implementation("app.cash.turbine:turbine:${Versions.turbine}")
-            }
-        }
-        val jvmCommonMain by getting {
-            dependencies {
-                implementation("androidx.datastore:datastore-preferences-core:${Versions.androidxDatastore}")
+                implementation("com.squareup.okio:okio-fakefilesystem:3.2.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }
         }
         val jvmCommonTest by getting {
