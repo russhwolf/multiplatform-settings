@@ -206,7 +206,12 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
             kSecReturnData to kCFBooleanFalse
-        ) { SecItemUpdate(it, cfDictionaryOf(kSecValueData to cfValue)) }
+        ) {
+            val attributes = cfDictionaryOf(kSecValueData to cfValue)
+            val output = SecItemUpdate(it, attributes)
+            CFBridgingRelease(attributes)
+            output
+        }
         status.checkError()
     }
 
@@ -238,7 +243,9 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
         operation: (query: CFDictionaryRef?) -> OSStatus,
     ): OSStatus {
         val query = cfDictionaryOf(defaultProperties + mapOf(*input))
-        return operation(query)
+        val output = operation(query)
+        CFBridgingRelease(query)
+        return output
     }
 
     private inline fun OSStatus.checkError(vararg expectedErrors: OSStatus) {
