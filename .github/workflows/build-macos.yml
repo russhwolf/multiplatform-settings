@@ -1,0 +1,63 @@
+name: Build macOS
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: JDK setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: corretto
+
+      # TODO Remove with Kotlin 1.8.
+      - name: Don't use Xcode 14
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '13.4.1'
+
+      - name: Mac build
+        run: |
+          ./gradlew macosX64Test iosX64Test watchosX64Test watchosX86Test tvosX64Test \
+          publishKotlinMultiplatformPublicationToMavenLocal \
+          publishIosArm32PublicationToMavenLocal \
+          publishIosArm64PublicationToMavenLocal \
+          publishIosSimulatorArm64PublicationToMavenLocal \
+          publishIosX64PublicationToMavenLocal \
+          publishMacosX64PublicationToMavenLocal \
+          publishMacosArm64PublicationToMavenLocal \
+          publishWatchosArm32PublicationToMavenLocal \
+          publishWatchosArm64PublicationToMavenLocal \
+          publishWatchosSimulatorArm64PublicationToMavenLocal \
+          publishWatchosX86PublicationToMavenLocal \
+          publishWatchosX64PublicationToMavenLocal \
+          publishTvosArm64PublicationToMavenLocal \
+          publishTvosSimulatorArm64PublicationToMavenLocal \
+          publishTvosX64PublicationToMavenLocal \
+          --no-daemon --stacktrace
+
+      - name: Mac sample Gradle build
+        run: |
+          cd sample
+          ./gradlew iosX64Test --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
+
+      - name: Mac sample Xcode simulator build
+        run: |
+          cd sample/app-ios
+          xcodebuild -configuration Debug -scheme SettingsDemo -sdk iphonesimulator -arch x86_64

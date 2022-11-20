@@ -1,0 +1,31 @@
+name: Build Windows
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: JDK setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: corretto
+
+      - name: Windows build
+        run: |
+          ./gradlew mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
