@@ -1,7 +1,6 @@
-[![Linux Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?job=General&label=JVM%2FJS%2FAndroid%2FLinux%20Build&logo=Linux&logoColor=black)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
-[![Mac Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?job=Mac&label=iOS%2FmacOS%2FtvOS%2FwatchOS%20Build&logo=Apple)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
-[![Windows Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?job=Windows&label=Windows%20Build&logo=Windows)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
-![Test Results](https://img.shields.io/azure-devops/tests/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?logo=kotlin&label=Tests)
+[![Linux Build Status](https://img.shields.io/github/actions/workflow/status/russhwolf/multiplatform-settings/build-linux.yml?branch=main&label=JVM%2FJS%2FAndroid%2FLinux%20Build&logo=Linux&logoColor=black)](https://github.com/russhwolf/multiplatform-settings/actions/workflows/build-linux.yml)
+[![Mac Build Status](https://img.shields.io/github/actions/workflow/status/russhwolf/multiplatform-settings/build-macos.yml?branch=main&label=iOS%2FmacOS%2FtvOS%2FwatchOS%20Build&logo=Apple)](https://github.com/russhwolf/multiplatform-settings/actions/workflows/build-macos.yml)
+[![Windows Build Status](https://img.shields.io/github/actions/workflow/status/russhwolf/multiplatform-settings/build-windows.yml?branch=main&label=Windows%20Build&logo=Windows)](https://github.com/russhwolf/multiplatform-settings/actions/workflows/build-windows.yml)
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.russhwolf/multiplatform-settings?label=Maven%20Central)](https://search.maven.org/artifact/com.russhwolf/multiplatform-settings)
 

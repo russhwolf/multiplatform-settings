@@ -1,0 +1,44 @@
+name: Build Linux
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download JavaFX JDK
+        run: |
+          mkdir -p ./jdk/binaries/
+          curl https://cdn.azul.com/zulu/bin/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz --output ./jdk/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz 
+
+      - name: JDK setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: jdkfile
+          jdkFile: ./jdk/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz
+
+      - name: Linux build
+        run: |
+          ./gradlew build publishToMavenLocal --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
+
+      - name: Linux sample build
+        run: |
+          cd sample
+          ./gradlew build --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
