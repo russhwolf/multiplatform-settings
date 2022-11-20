@@ -1,7 +1,7 @@
-[![Linux Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/master?job=General&label=JVM%2FJS%2FAndroid%2FLinux%20Build&logo=Linux&logoColor=black)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
-[![Mac Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/master?job=Mac&label=iOS%2FmacOS%2FtvOS%2FwatchOS%20Build&logo=Apple)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
-[![Windows Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/master?job=Windows&label=Windows%20Build&logo=Windows)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
-![Test Results](https://img.shields.io/azure-devops/tests/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/master?logo=kotlin&label=Tests)
+[![Linux Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?job=General&label=JVM%2FJS%2FAndroid%2FLinux%20Build&logo=Linux&logoColor=black)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
+[![Mac Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?job=Mac&label=iOS%2FmacOS%2FtvOS%2FwatchOS%20Build&logo=Apple)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
+[![Windows Build Status](https://img.shields.io/azure-devops/build/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?job=Windows&label=Windows%20Build&logo=Windows)](https://dev.azure.com/russhwolf/Multiplatform%20Settings/_build/latest?definitionId=2&branchName=master)
+![Test Results](https://img.shields.io/azure-devops/tests/russhwolf/038fde2a-0787-46e9-aca3-f0ab32d0a534/2/main?logo=kotlin&label=Tests)
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.russhwolf/multiplatform-settings?label=Maven%20Central)](https://search.maven.org/artifact/com.russhwolf/multiplatform-settings)
 
@@ -472,7 +472,7 @@ actual val settings: SuspendSettings = JsSettings().toSuspendSettings()
 
 ## Building
 
-The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `master` branch, the
+The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `main` branch, the
 script in `azure-pipelines.yml` runs. This builds the library and runs unit tests for all platforms across Linux, Mac,
 and Windows hosts. In addition, the library build artifacts are deployed to the local maven repository and the sample
 project is built for the platforms on which it is implemented. This ensures that the sample remains in sync with updates

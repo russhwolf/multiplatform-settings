@@ -1,11 +1,11 @@
 trigger:
   branches:
     include:
-      - master
+      - main
 pr:
   branches:
     include:
-      - master
+      - main
 
 jobs:
   - job: "General"
