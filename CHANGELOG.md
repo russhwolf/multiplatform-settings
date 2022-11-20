@@ -1,5 +1,10 @@
 # Changelog #
 
+## v1.0.0 *(2022-22-11-XX)* ##
+
+- First stable release!
+- Fix memory leak in `KeychainSettings`.
+
 ## v1.0.0-RC *(2022-10-02)* ##
 
 - Update to Kotlin 1.7.20, Gradle 7.5.1, and Android Gradle Plugin 7.2.2.
