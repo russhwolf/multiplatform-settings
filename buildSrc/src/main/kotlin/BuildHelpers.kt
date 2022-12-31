@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// If you're reading this file looking for clever ideas, look elsewhere. This setup is terrible.
+
 @file:Suppress("KDocMissingDocumentation")
 
 import com.android.build.gradle.BaseExtension
