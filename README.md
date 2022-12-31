@@ -471,15 +471,14 @@ actual val settings: SuspendSettings = JsSettings().toSuspendSettings()
 
 ## Building
 
-The project includes multiple CI jobs configured using Azure pipelines. On PRs or updates to the `main` branch, the
-script in `azure-pipelines.yml` runs. This builds the library and runs unit tests for all platforms across Linux, Mac,
-and Windows hosts. In addition, the library build artifacts are deployed to the local maven repository and the sample
-project is built for the platforms on which it is implemented. This ensures that the sample remains in sync with updates
-to the library.
+The project includes multiple CI jobs configured using Github Actions. On PRs or updates to the `main` branch, the build
+will run the scripts in `build-linux.yml`, `build-macos.yml`, `build-windows.yml`, and `validate-gradle-wrapper.yml`.
+These builds the library and runs unit tests for all platforms across Linux, Mac, and Windows hosts. In addition, the
+library build artifacts are deployed to the local maven repository and the sample project is built for the platforms on
+which it is implemented. This ensures that the sample remains in sync with updates to the library.
 
-An addition pipeline is defined in `azure-pipelines-deploy.yml`, which runs whenever a tag is pushed to the remote. This
-builds the library for all platforms and uploads artifacts to staging on Maven Central. Uploaded artifacts must still be
-published manually
+An addition build script is defined in `deploy.yml`, which runs on a manual trigger. This builds the library for all
+platforms and uploads artifacts to staging on Maven Central. Uploaded artifacts must still be published manually
 
 ## License
 
