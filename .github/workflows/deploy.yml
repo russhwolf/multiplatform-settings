@@ -49,6 +49,7 @@ jobs:
           publishMacosArm64PublicationToMavenRepository \
           publishWatchosArm32PublicationToMavenRepository \
           publishWatchosArm64PublicationToMavenRepository \
+          publishWatchosDeviceArm64PublicationToMavenRepository \
           publishWatchosSimulatorArm64PublicationToMavenRepository \
           publishWatchosX86PublicationToMavenRepository \
           publishWatchosX64PublicationToMavenRepository \
