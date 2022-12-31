@@ -123,7 +123,7 @@ private fun KotlinMultiplatformExtension.linkSourceSets(targetPresets: NamedDoma
         }
 
         findByName("androidMain")?.dependsOn(jvmCommonMain)
-        findByName("androidTest")?.dependsOn(jvmCommonTest)
+        findByName("androidUnitTest")?.dependsOn(jvmCommonTest)
         findByName("jvmMain")?.dependsOn(jvmCommonMain)
         findByName("jvmTest")?.dependsOn(jvmCommonTest)
 

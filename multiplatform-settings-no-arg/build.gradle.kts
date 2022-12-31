@@ -74,7 +74,7 @@ kotlin {
                 implementation("androidx.startup:startup-runtime:${Versions.androidxStartup}")
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation("junit:junit:${Versions.junit}")
                 implementation("androidx.test:core:${Versions.androidxTest}")
