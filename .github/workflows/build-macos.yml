@@ -24,12 +24,6 @@ jobs:
           java-version: 11
           distribution: corretto
 
-      # TODO Remove with Kotlin 1.8.
-      - name: Don't use Xcode 14
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '13.4.1'
-
       - name: Mac build
         run: |
           ./gradlew macosX64Test iosX64Test watchosX64Test watchosX86Test tvosX64Test \
