@@ -1,9 +1,13 @@
 # Changelog #
 
-## v1.0.0 *(2022-22-11-XX)* ##
+## v1.0.0 *(2023-01-XX)* ##
 
 - First stable release!
+- Update to Kotlin 1.8.0
 - Fix memory leak in `KeychainSettings`.
+- BREAKING: Remove support for legacy Javascript backend.
+- Add watchosDeviceArm64 target to `multiplatform-settings`, `multiplatform-settings-no-arg`,
+  and `multiplatform-settings-test`.
 
 ## v1.0.0-RC *(2022-10-02)* ##
 
