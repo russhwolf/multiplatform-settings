@@ -36,6 +36,7 @@ jobs:
           publishMacosArm64PublicationToMavenLocal \
           publishWatchosArm32PublicationToMavenLocal \
           publishWatchosArm64PublicationToMavenLocal \
+          publishWatchosDeviceArm64PublicationToMavenLocal \
           publishWatchosSimulatorArm64PublicationToMavenLocal \
           publishWatchosX86PublicationToMavenLocal \
           publishWatchosX64PublicationToMavenLocal \
