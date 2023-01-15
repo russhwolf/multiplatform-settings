@@ -482,7 +482,7 @@ platforms and uploads artifacts to staging on Maven Central. Uploaded artifacts 
 
 ## License
 
-    Copyright 2018-2022 Russell Wolf
+    Copyright 2018-2023 Russell Wolf
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
