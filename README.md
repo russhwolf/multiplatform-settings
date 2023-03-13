@@ -197,22 +197,25 @@ Then from common code, you can write
 val settings: Settings = Settings()
 ```
 
-This is implemented via an extension function `operator fun Settings.Companion.invoke()` to provide constructor-like
+This is implemented via a top-level function `Settings()` to provide constructor-like
 syntax even though `Settings` has no constructor.
 
 On Android, this delegates to the equivalent of `PreferenceManager.getDefaultSharedPreferences()` internally. It makes
-use of a content-provider to get a context reference without needing to pass one manually. On Apple platforms, it
-uses `NSUserDefaults.standardUserDefaults`. On JS, it uses `localStorage`. On JVM, it uses the `Preferences`
-implementation with `Preferences.userRoot()` as a delegate. On Windows, it reads the name of the executable being built
-and writes to a subkey of `HKEY_CURRENT_USER\SOFTWARE` using that name.
+use of [`androidx-startup`](https://developer.android.com/jetpack/androidx/releases/startup) to get a `Context`
+reference without needing to pass one manually. On Apple platforms, it uses `NSUserDefaults.standardUserDefaults`. On 
+JS, it uses `localStorage`. On JVM, it uses the `Preferences` implementation with `Preferences.userRoot()` as a 
+delegate. On Windows, it reads the name of the executable being built and writes to a subkey of 
+`HKEY_CURRENT_USER\SOFTWARE` using that name.
 
 Note that while the main `multiplatform-settings` module publishes common code to all available Kotlin platforms,
 the `multiplatform-settings-no-arg` module only publishes to platforms which have concrete implementations.
 
 Note also that the `no-arg` module is there to make getting started easier with less configuration, but there are plenty
 of things it doesn't provide, such as the ability to use an encrypted implementation on platforms that support it, or
-the ability to substitute a test implementation. If you need a non-default setup you likely are better off not
-using `multiplatform-settings-no-arg`.
+the ability to substitute a test implementation. Notably, you can't call `Settings()` from an Android unit test because
+the internals that allow it to get a `Context` reference won't run (not even if you use Robolectric).
+
+If you need a non-default setup you likely are better off not using `multiplatform-settings-no-arg`.
 
 ### Settings API
 
