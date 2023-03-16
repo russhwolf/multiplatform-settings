@@ -137,13 +137,13 @@ val delegate: Properties // ...
 val settings: Settings = PropertiesSettings(delegate)
 ```
 
-On JS, `JsSettings` wraps `Storage`.
+On JS, `StorageSettings` wraps `Storage`.
 
 ```kotlin
 val delegate: Storage // ...
-val settings: Settings = JsSettings(delegate)
+val settings: Settings = StorageSettings(delegate)
 
-val settings: Settings = JsSettings() // use localStorage by default
+val settings: Settings = StorageSettings() // use localStorage by default
 ```
 
 There is a Windows implementation `RegistrySettings` which wraps the Windows registry.
@@ -469,7 +469,7 @@ actual val settings: SuspendSettings = DataStoreSettings(/*...*/)
 actual val settings: SuspendSettings = NSUserDefaultsSettings(/*...*/).toSuspendSettings()
 
 // JS
-actual val settings: SuspendSettings = JsSettings().toSuspendSettings()
+actual val settings: SuspendSettings = StorageSettings().toSuspendSettings()
 ```
 
 ## Building
