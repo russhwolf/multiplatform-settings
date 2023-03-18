@@ -37,10 +37,8 @@ import org.w3c.dom.set
  * On the JS platform, this class can be created by passing a [Storage] instance which will be used as a delegate. By
  * default [localStorage] will be used if nothing is provided.
  *
- * Unlike the implementations on Android and iOS, `JsSettings` does not include a [Settings.Factory] because
+ * Unlike the implementations on Android and iOS, `StorageSettings` does not include a [Settings.Factory] because
  * the `Storage` API does not provide a way to create multiple named instances.
- *
- * The experimental listener APIs are not implemented in `JsSettings`.
  */
 public class StorageSettings(private val delegate: Storage = localStorage) : Settings {
 
