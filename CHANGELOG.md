@@ -24,6 +24,7 @@
 |------------------------|---------------------------|
 | AndroidSettings        | SharedPreferencesSettings |
 | AppleSettings          | NSUserDefaultsSettings    |
+| JsSettings             | StorageSettings           |
 | JvmPreferencesSettings | PreferencesSettings       |
 | JvmPropertiesSettings  | PropertiesSettings        |
 | WindowsSettings        | RegistrySettings          |
