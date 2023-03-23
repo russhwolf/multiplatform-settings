@@ -60,7 +60,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
 
                 implementation("app.cash.turbine:turbine:${Versions.turbine}")
-                implementation("com.squareup.okio:okio-fakefilesystem:3.2.0")
+                implementation("com.squareup.okio:okio-fakefilesystem:3.3.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }
         }

@@ -18,10 +18,9 @@
 
 package com.russhwolf.settings.datastore
 
-import androidx.datastore.core.okio.OkioSerializer
 import androidx.datastore.core.okio.OkioStorage
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.PreferencesSerializer
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.russhwolf.settings.BaseSettingsTest
@@ -41,15 +40,14 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-expect val preferencesSerializer: OkioSerializer<Preferences>
-
 private var scope: CoroutineScope = CoroutineScope(SupervisorJob())
 
 private val fakeFileSystem = FakeFileSystem()
 
+@OptIn(ExperimentalSettingsApi::class, ExperimentalSettingsImplementation::class)
 private val factory = object : Settings.Factory {
     override fun create(name: String?): Settings {
-        val storage = OkioStorage(fakeFileSystem, preferencesSerializer) {
+        val storage = OkioStorage(fakeFileSystem, PreferencesSerializer) {
             FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "${name ?: "settings"}.preferences_pb".toPath()
         }
         val dataStore = PreferenceDataStoreFactory.create(storage, scope = scope)
@@ -72,7 +70,7 @@ class DataStoreSettingsTest : BaseSettingsTest(
 
     @Test
     fun constructor_datastore(): Unit = runBlocking {
-        val storage = OkioStorage(fakeFileSystem, preferencesSerializer) {
+        val storage = OkioStorage(fakeFileSystem, PreferencesSerializer) {
             FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "test.preferences_pb".toPath()
         }
         val dataStore = PreferenceDataStoreFactory.create(storage, scope = scope)
