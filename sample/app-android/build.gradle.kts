@@ -22,6 +22,8 @@ plugins {
 }
 
 android {
+    namespace = "com.russhwolf.settings.example.android"
+
     compileSdkVersion(33)
 
     defaultConfig {
@@ -41,9 +43,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-
     packagingOptions {
-        exclude("META-INF/*.kotlin_module")
+        resources {
+            excludes += setOf("META-INF/*.kotlin_module")
+        }
     }
 
     compileOptions {

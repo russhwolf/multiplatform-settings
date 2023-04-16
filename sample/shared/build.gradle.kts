@@ -102,6 +102,8 @@ kotlin {
 }
 
 android {
+    namespace = "com.russhwolf.settings.example"
+
     compileSdkVersion(33)
 
     defaultConfig {
