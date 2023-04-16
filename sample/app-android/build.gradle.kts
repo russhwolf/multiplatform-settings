@@ -66,7 +66,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.compose.material:material-icons-core")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
 }
