@@ -24,7 +24,7 @@ plugins {
 android {
     namespace = "com.russhwolf.settings.example.android"
 
-    compileSdk = (33)
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.russhwolf.settings.example.android"
