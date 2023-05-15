@@ -140,7 +140,7 @@ private fun App(
         ) {
             Text(text = "Clear All Values")
         }
-        LabelledCheckbox(
+        LabeledCheckbox(
             checked = enableLoggingChecked,
             onClick = { value ->
                 settingConfig.isLoggingEnabled = value
@@ -183,7 +183,7 @@ private fun <T> Spinner(
 }
 
 @Composable
-private fun LabelledCheckbox(
+private fun LabeledCheckbox(
     checked: Boolean,
     onClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
