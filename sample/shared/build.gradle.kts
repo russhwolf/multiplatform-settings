@@ -102,10 +102,12 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(33)
+    namespace = "com.russhwolf.settings.example"
+
+    compileSdk = 33
 
     defaultConfig {
-        minSdkVersion(15)
+        minSdk = 15
     }
 
     compileOptions {

@@ -22,12 +22,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion(33)
+    namespace = "com.russhwolf.settings.example.android"
+
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.russhwolf.settings.example.android"
-        minSdkVersion(21)
-        targetSdkVersion(33)
+        minSdk = 21
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
