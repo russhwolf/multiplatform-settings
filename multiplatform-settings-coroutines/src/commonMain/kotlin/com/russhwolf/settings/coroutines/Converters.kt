@@ -20,7 +20,6 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -30,7 +29,7 @@ import kotlinx.coroutines.withContext
  */
 @ExperimentalSettingsApi
 public fun Settings.toSuspendSettings(
-    dispatcher: CoroutineDispatcher = Dispatchers.Default
+    dispatcher: CoroutineDispatcher = converterDefaultDispatcher
 ): SuspendSettings =
     SuspendSettingsWrapper(this, dispatcher)
 
@@ -39,7 +38,7 @@ public fun Settings.toSuspendSettings(
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.toFlowSettings(
-    dispatcher: CoroutineDispatcher = Dispatchers.Default
+    dispatcher: CoroutineDispatcher = converterDefaultDispatcher
 ): FlowSettings =
     FlowSettingsWrapper(this, dispatcher)
 
