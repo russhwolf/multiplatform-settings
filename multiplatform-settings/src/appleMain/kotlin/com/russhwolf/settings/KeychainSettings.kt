@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-@file:OptIn(UnsafeNumber::class) // due to CFIndex usage
+@file:OptIn(
+    UnsafeNumber::class, // due to CFIndex usage
+    ExperimentalForeignApi::class // Due to lots of cinterop internals (and one public-facing constructor)
+)
 
 package com.russhwolf.settings
 
+import kotlinx.cinterop.BetaInteropApi
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.MemScope
 import kotlinx.cinterop.UnsafeNumber
 import kotlinx.cinterop.alloc
@@ -91,10 +96,15 @@ import platform.darwin.OSStatus
  * every key, if the default behavior does not fit your needs.
  */
 @ExperimentalSettingsImplementation
-public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTypeRef?>) : Settings {
+public class KeychainSettings @ExperimentalSettingsApi constructor(vararg defaultProperties: Pair<CFStringRef?, CFTypeRef?>) :
+    Settings {
 
+    @OptIn(ExperimentalSettingsApi::class) // IDE is wrong when it says this is redundant
     // NB this calls CFBridgingRetain() without ever calling CFBridgingRelease()
     public constructor(service: String) : this(kSecAttrService to CFBridgingRetain(service))
+
+    @OptIn(ExperimentalSettingsApi::class) // IDE is wrong when it says this is redundant
+    public constructor() : this(*emptyArray())
 
     private val defaultProperties = mapOf(kSecClass to kSecClassGenericPassword) + mapOf(*defaultProperties)
 
@@ -152,6 +162,8 @@ public class KeychainSettings(vararg defaultProperties: Pair<CFStringRef?, CFTyp
         addOrUpdateKeychainItem(key, value.toNSString().dataUsingEncoding(NSUTF8StringEncoding))
 
     public override fun getString(key: String, defaultValue: String): String = getStringOrNull(key) ?: defaultValue
+
+    @OptIn(BetaInteropApi::class)
     public override fun getStringOrNull(key: String): String? =
         getKeychainItem(key)?.let { NSString.create(it, NSUTF8StringEncoding)?.toKString() }
 

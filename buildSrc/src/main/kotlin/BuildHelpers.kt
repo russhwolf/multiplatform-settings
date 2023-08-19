@@ -68,7 +68,7 @@ private val KotlinTarget.isJsTarget: Boolean
 
 private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDomainObjectCollection<KotlinTargetPreset<*>>) {
     if (targetPresets.findByName("android") != null) {
-        android {
+        androidTarget {
             publishAllLibraryVariants()
         }
     }

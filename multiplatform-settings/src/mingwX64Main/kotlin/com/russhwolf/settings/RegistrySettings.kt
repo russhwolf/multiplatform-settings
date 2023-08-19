@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalForeignApi::class)
+
 package com.russhwolf.settings
 
 import com.russhwolf.settings.RegistrySettings.Factory
 import kotlinx.cinterop.CVariable
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.MemScope
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArray
@@ -204,7 +207,7 @@ public class RegistrySettings public constructor(private val rootKeyName: String
             rootKey,
             key,
             0u,
-            REG_SZ,
+            REG_SZ.toUInt(),
             cValue.ptr.reinterpret(),
             cValue.size.toUInt()
         ).checkWinApiSuccess { "Unable to put value for key \"$key\"" }
@@ -314,7 +317,7 @@ public class RegistrySettings public constructor(private val rootKeyName: String
                 rootKeyName,
                 0u,
                 null,
-                REG_OPTION_NON_VOLATILE,
+                REG_OPTION_NON_VOLATILE.toUInt(),
                 (KEY_READ or KEY_WRITE).toUInt(),
                 null,
                 hkey.ptr,

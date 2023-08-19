@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalForeignApi::class)
+
 package com.russhwolf.settings
 
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
@@ -55,7 +58,7 @@ class WindowsNoArgTest : NoArgTest() {
             "SOFTWARE\\$subKey",
             0u,
             null,
-            REG_OPTION_NON_VOLATILE,
+            REG_OPTION_NON_VOLATILE.toUInt(),
             (KEY_READ or KEY_WRITE).toUInt(),
             null,
             hkey.ptr,
@@ -103,7 +106,7 @@ class WindowsNoArgTest : NoArgTest() {
                 "SOFTWARE\\$subKey",
                 0u,
                 null,
-                REG_OPTION_NON_VOLATILE,
+                REG_OPTION_NON_VOLATILE.toUInt(),
                 (KEY_READ or KEY_WRITE).toUInt(),
                 null,
                 hkey.ptr,
@@ -115,7 +118,7 @@ class WindowsNoArgTest : NoArgTest() {
                 hkey.value,
                 keyName,
                 0u,
-                REG_SZ,
+                REG_SZ.toUInt(),
                 cValue.ptr.reinterpret(),
                 cValue.size.toUInt()
             ).also { assertEquals(ERROR_SUCCESS, it) }

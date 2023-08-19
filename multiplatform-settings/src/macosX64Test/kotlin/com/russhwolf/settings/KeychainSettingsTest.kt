@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings
 
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.value
@@ -39,6 +40,7 @@ import kotlin.test.assertEquals
 
 // TODO figure out how to get this running on ios, watchos, and tvos simulators
 @ExperimentalSettingsImplementation
+@OptIn(ExperimentalForeignApi::class)
 class KeychainSettingsTest : BaseSettingsTest(
     platformFactory = object : Settings.Factory {
         override fun create(name: String?): Settings = KeychainSettings(name ?: "com.russhwolf.settings.test")

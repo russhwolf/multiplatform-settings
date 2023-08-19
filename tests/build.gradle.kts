@@ -27,14 +27,12 @@ kotlin {
             dependencies {
                 implementation(project(":multiplatform-settings"))
 
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:${Versions.junit}")
             }
@@ -42,7 +40,6 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:${Versions.junit}")
             }
@@ -50,7 +47,6 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation(kotlin("test-js"))
             }
         }
     }

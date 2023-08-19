@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings
 
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.reinterpret
@@ -32,13 +33,14 @@ import platform.windows.WCHARVar
  * based on the name returned by [GetModuleFileNameW], with the directory and extension removed.
  */
 @ExperimentalSettingsImplementation
+@OptIn(ExperimentalForeignApi::class)
 public actual fun Settings(): Settings {
     val name = memScoped {
         val nameArray = allocArray<WCHARVar>(MAX_PATH)
         GetModuleFileNameW(
             null,
             nameArray.reinterpret(),
-            MAX_PATH
+            MAX_PATH.toUInt()
         )
         nameArray.toKString().takeLastWhile { it != '\\' }.removeSuffix(".exe")
     }

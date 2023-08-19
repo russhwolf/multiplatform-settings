@@ -15,7 +15,7 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.9.0"
 }
 
 repositories {
@@ -27,6 +27,6 @@ repositories {
 dependencies {
     implementation(kotlin("gradle-plugin"))
     implementation("com.android.tools.build:gradle:7.2.2")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.7.10")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.8.20")
     implementation(kotlin("compiler-embeddable"))
 }

@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings
 
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
@@ -40,7 +41,7 @@ import kotlin.test.assertFailsWith
 @OptIn(ExperimentalSettingsImplementation::class)
 private val factory = RegistrySettings.Factory("multiplatform-settings-test")
 
-@OptIn(ExperimentalSettingsImplementation::class)
+@OptIn(ExperimentalSettingsImplementation::class, ExperimentalForeignApi::class)
 class RegistrySettingsTest : BaseSettingsTest(
     platformFactory = factory,
     hasListeners = false
@@ -102,7 +103,7 @@ class RegistrySettingsTest : BaseSettingsTest(
                 rootKeyName,
                 0u,
                 null,
-                REG_OPTION_NON_VOLATILE,
+                REG_OPTION_NON_VOLATILE.toUInt(),
                 (KEY_READ or KEY_WRITE).toUInt(),
                 null,
                 hkey.ptr,
@@ -113,7 +114,7 @@ class RegistrySettingsTest : BaseSettingsTest(
                 hkey.value,
                 keyName,
                 0u,
-                REG_DWORD,
+                REG_DWORD.toUInt(),
                 alloc<ULONGVar> { this.value = 3u }.ptr.reinterpret(),
                 sizeOf<ULONGVar>().toUInt()
             ).also { assertEquals(ERROR_SUCCESS, it) }

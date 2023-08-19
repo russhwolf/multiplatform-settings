@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalForeignApi::class)
+
 package com.russhwolf.settings
 
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.memScoped
 import platform.Foundation.NSDictionary
 import platform.Foundation.NSThread
 import platform.Foundation.NSUserDefaults
-import kotlin.native.concurrent.AtomicInt
-import kotlin.native.concurrent.AtomicReference
+import kotlin.concurrent.AtomicInt
+import kotlin.concurrent.AtomicReference
+import kotlin.native.concurrent.ObsoleteWorkersApi
 import kotlin.native.concurrent.TransferMode
 import kotlin.native.concurrent.Worker
 import kotlin.test.Test
@@ -117,6 +121,7 @@ class NSUserDefaultsSettingsBackgroundTest {
     }
 }
 
+@OptIn(ObsoleteWorkersApi::class)
 private fun <T> doInBackground(block: () -> T): T {
     val worker = Worker.start()
     val result = worker.execute(TransferMode.SAFE, { block }, { it.invoke() }).result
