@@ -131,12 +131,14 @@ class SettingsSerializationTest {
         assertEquals("hello", settings.getStringOrNull("foo.bar"))
         assertEquals(43110, settings.getIntOrNull("foo.baz"))
         assertEquals(2, settings.size)
+        assertEquals(Foo("hello", 43110), foo)
 
         foo = Foo("hi", 41)
 
         assertEquals("hi", settings.getStringOrNull("foo.bar"))
         assertEquals(41, settings.getIntOrNull("foo.baz"))
         assertEquals(2, settings.size)
+        assertEquals(Foo("hi", 41), foo)
 
         val foo2: Foo by delegate
         assertEquals(foo, foo2)
@@ -501,6 +503,42 @@ class SettingsSerializationTest {
         assertEquals(defaultUser, settings.decodeValue(User.serializer(), "user", defaultUser))
         assertEquals(null, settings.loadUserOrNull())
         assertEquals(null, settings.decodeValueOrNull(User.serializer(), "user"))
+    }
+
+    @Test
+    fun issue_160() {
+        val settings: Settings = MapSettings()
+
+        var users: List<User> by settings.serializedValue(
+            ListSerializer(User.serializer()),
+            defaultValue = listOf(User("default"))
+        )
+        assertEquals(listOf(User("default")), users)
+
+        users = listOf(User("test"))
+        assertEquals(listOf(User("test")), users)
+
+        users = emptyList()
+        assertEquals(emptyList(), users)
+    }
+
+    @Test
+    fun issue_162() {
+        class Preferences(settings: Settings) {
+            @OptIn(ExperimentalSerializationApi::class, ExperimentalSettingsApi::class)
+            var list by settings.serializedValue(
+                serializer = ListSerializer(String.serializer()),
+                key = "something",
+                defaultValue = emptyList(),
+            )
+        }
+
+        val preferences = Preferences(MapSettings())
+        assertEquals(expected = emptyList(), actual = preferences.list)
+
+        val list = listOf("Hello", "World")
+        preferences.list = list
+        assertEquals(expected = list, actual = preferences.list)
     }
 }
 

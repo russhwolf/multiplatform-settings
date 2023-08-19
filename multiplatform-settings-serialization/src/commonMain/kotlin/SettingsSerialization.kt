@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.russhwolf.settings.serialization
 
 import com.russhwolf.settings.ExperimentalSettingsApi
@@ -113,7 +111,7 @@ public fun <T> Settings.decodeValue(
     key: String,
     defaultValue: T,
     serializersModule: SerializersModule = EmptySerializersModule()
-): T = deserializeOrElse(defaultValue) { serializer.deserialize(SettingsDecoder(this, key, serializersModule)) }
+): T = serializer.deserializeOrElse(SettingsDecoder(this, key, serializersModule), defaultValue)
 
 /**
  * Decode a structured value using the data in this [Settings] via kotlinx.serialization. If all expected data for that
@@ -154,7 +152,7 @@ public fun <T> Settings.decodeValueOrNull(
     serializer: KSerializer<T>,
     key: String,
     serializersModule: SerializersModule = EmptySerializersModule()
-): T? = deserializeOrElse(null) { serializer.deserialize(SettingsDecoder(this, key, serializersModule)) }
+): T? = serializer.deserializeOrElse(SettingsDecoder(this, key, serializersModule), null)
 
 /**
  * Returns a property delegate backed by this [Settings] via kotlinx.serialization. It reads and writes values using the
@@ -220,6 +218,7 @@ private open class SettingsSerializationDelegate<T>(
         return try {
             serializer.deserialize(decoder)
         } catch (e: DeserializationException) {
+            decoder.reset()
             defaultValue
         }
     }
@@ -384,14 +383,39 @@ private class SettingsDecoder(
     public override fun decodeLong(): Long = settings.getLongOrNull(getKey()) ?: deserializationError()
     public override fun decodeShort(): Short = settings.getIntOrNull(getKey())?.toShort() ?: deserializationError()
     public override fun decodeString(): String = settings.getStringOrNull(getKey()) ?: deserializationError()
+
+    // Hook to reset state after we throw during deserializationError()
+    internal fun reset() {
+        keyStack.clear()
+        indexStack.clear()
+        depth = 0
+        keyStack.add(key)
+        indexStack.add(0)
+    }
 }
 
 private class DeserializationException : IllegalStateException()
 
 private inline fun deserializationError(): Nothing = throw DeserializationException()
-private inline fun <T> deserializeOrElse(defaultValue: T, block: () -> T) =
+
+//@ExperimentalSerializationApi
+//private inline fun <T> KSerializer<T>.deserializeOrNull(decoder: SettingsDecoder): T? =
+//    try {
+//        deserialize(decoder)
+//    } catch (_: DeserializationException) {
+//        decoder.reset()
+//        null
+//    }
+
+//@ExperimentalSerializationApi
+//private inline fun <T> KSerializer<T>.deserializeOrNull(decoder: SettingsDecoder): T? =
+//    deserializeOrElse(decoder, null)
+
+@ExperimentalSerializationApi
+private inline fun <V, T : V> KSerializer<T>.deserializeOrElse(decoder: SettingsDecoder, defaultValue: V): V =
     try {
-        block()
+        deserialize(decoder)
     } catch (_: DeserializationException) {
+        decoder.reset()
         defaultValue
     }
