@@ -213,7 +213,6 @@ class SettingsSerializationTest {
         var foo: Foo by delegate
         assertEquals(Foo("goodbye", 42), foo)
 
-        @Suppress("UNUSED_VALUE")
         foo = Foo("hello", 43110)
 
         assertEquals("hello", settings.getStringOrNull("foo.bar"))
@@ -249,7 +248,6 @@ class SettingsSerializationTest {
         val foo2: Foo? by delegate
         assertEquals(foo, foo2)
 
-        @Suppress("UNUSED_VALUE")
         foo = null
 
         assertEquals(false, settings.getBooleanOrNull("foo?"))
@@ -263,14 +261,12 @@ class SettingsSerializationTest {
         var foo: Foo by delegate
         assertEquals(Foo("goodbye", 42), foo)
 
-        @Suppress("UNUSED_VALUE")
         foo = Foo("hello", 43110)
 
         assertEquals("hello", settings.getStringOrNull("foo.bar"))
         assertEquals(43110, settings.getIntOrNull("foo.baz"))
         assertEquals(2, settings.size)
 
-        @Suppress("UNUSED_VALUE")
         foo = Foo("hi", 41)
 
         assertEquals("hi", settings.getStringOrNull("foo.bar"))
@@ -288,7 +284,6 @@ class SettingsSerializationTest {
         var foo: Foo? by delegate
         assertNull(foo)
 
-        @Suppress("UNUSED_VALUE")
         foo = Foo("hello", 43110)
 
         assertEquals(true, settings.getBooleanOrNull("foo?"))
@@ -299,7 +294,6 @@ class SettingsSerializationTest {
         val foo2: Foo? by delegate
         assertNull(foo2)
 
-        @Suppress("UNUSED_VALUE")
         foo = null
 
         assertEquals(false, settings.getBooleanOrNull("foo?"))
