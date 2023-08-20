@@ -16,10 +16,24 @@
 
 package com.russhwolf.settings
 
-import kotlinx.browser.localStorage
-import org.w3c.dom.Storage
-import org.w3c.dom.get
-import org.w3c.dom.set
+// Manual expect/actual because Kotlin doesn't appear to pick up shared wasm/js dependencies yet
+@Suppress("KDocMissingDocumentation")
+public expect abstract class Storage {
+    public val length: Int
+    public fun getItem(key: String): String?
+    public fun setItem(key: String, value: String)
+    public fun clear()
+    public fun key(index: Int): String?
+    public fun removeItem(key: String)
+}
+
+internal expect val localStorage: Storage
+
+@Suppress("NOTHING_TO_INLINE")
+internal inline operator fun Storage.get(key: String): String? = getItem(key)
+
+@Suppress("NOTHING_TO_INLINE")
+internal inline operator fun Storage.set(key: String, value: String) = setItem(key, value)
 
 /**
  * A collection of storage-backed key-value data

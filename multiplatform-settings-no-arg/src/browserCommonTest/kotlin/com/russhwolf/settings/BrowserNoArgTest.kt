@@ -16,13 +16,11 @@
 
 package com.russhwolf.settings
 
-import kotlinx.browser.localStorage
-import org.w3c.dom.get
-import org.w3c.dom.set
+internal expect val testStorage: Storage
 
-class JsNoArgTest : NoArgTest() {
-    override fun getString(key: String, defaultValue: String): String = localStorage[key] ?: defaultValue
+class BrowserNoArgTest : NoArgTest() {
+    override fun getString(key: String, defaultValue: String): String = testStorage.getItem(key) ?: defaultValue
     override fun setString(key: String, value: String) {
-        localStorage[key] = value
+        testStorage.setItem(key, value)
     }
 }

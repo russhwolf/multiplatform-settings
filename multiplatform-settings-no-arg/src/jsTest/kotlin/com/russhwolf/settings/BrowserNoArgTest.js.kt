@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2023 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,23 +17,5 @@
 package com.russhwolf.settings
 
 import kotlinx.browser.localStorage
-import org.w3c.dom.set
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
-class StorageSettingsTest : BaseSettingsTest(
-    platformFactory = object : Settings.Factory {
-        override fun create(name: String?): StorageSettings {
-            return StorageSettings(localStorage)
-        }
-    },
-    hasNamedInstances = false,
-    hasListeners = false
-) {
-    @Test
-    fun constructor_localStorage() {
-        val settings = StorageSettings()
-        localStorage["a"] = "value"
-        assertEquals("value", settings["a", ""])
-    }
-}
+internal actual inline val testStorage: Storage get() = localStorage

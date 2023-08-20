@@ -30,6 +30,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmWithJavaTargetPreset
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetPreset
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTargetPreset
 import org.jetbrains.kotlin.konan.target.Architecture
@@ -78,12 +79,19 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
             browser()
         }
     }
+    if (targetPresets.findByName("wasm") != null) {
+        // TODO include nodejs and d8 somehow?
+        @OptIn(ExperimentalWasmDsl::class)
+        wasm {
+            browser()
+        }
+    }
 
     // Create empty targets for presets with no specific configuration
     targetPresets.forEach {
         if (it is KotlinJvmWithJavaTargetPreset) return@forEach // Probably don't need this, and it chokes on Android plugin
         if (it.isJsTargetPreset && targets.any { it.isJsTarget }) return@forEach // Ignore repeat js targets
-        if (it.name.contains("wasm")) return@forEach // No more Kotlin/Native WASM. TODO re-add new WASM
+        if (it.name.contains("wasm")) return@forEach // No more Kotlin/Native WASM.
         if (targets.findByName(it.name) == null) {
             targetFromPreset(it)
         }
@@ -126,6 +134,18 @@ private fun KotlinMultiplatformExtension.linkSourceSets(targetPresets: NamedDoma
         findByName("androidUnitTest")?.dependsOn(jvmCommonTest)
         findByName("jvmMain")?.dependsOn(jvmCommonMain)
         findByName("jvmTest")?.dependsOn(jvmCommonTest)
+
+        // shared js and wasm browser code
+        val browserCommonMain = create("browserCommonMain").apply {
+            dependsOn(commonMain)
+        }
+        val browserCommonTest = create("browserCommonTest").apply {
+            dependsOn(commonTest)
+        }
+        findByName("jsMain")?.dependsOn(browserCommonMain)
+        findByName("jsTest")?.dependsOn(browserCommonTest)
+        findByName("wasmMain")?.dependsOn(browserCommonMain)
+        findByName("wasmTest")?.dependsOn(browserCommonTest)
 
         if (targetPresets.any { it.isNativeTargetPreset }) {
 

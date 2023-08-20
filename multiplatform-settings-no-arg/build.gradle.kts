@@ -40,6 +40,7 @@ standardConfiguration(
     "tvosArm64",
     "tvosSimulatorArm64",
     "tvosX64",
+    "wasm",
     "watchosArm32",
     "watchosArm64",
     "watchosDeviceArm64",
