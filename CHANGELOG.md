@@ -1,5 +1,18 @@
 # Changelog #
 
+## v1.1.0 *(2023-08-??)* ##
+
+- Update to Kotlin 1.9.0
+- Remove deprecated Kotlin/Native targets
+- Add wasm browser target to `multiplatform-settings`, `multiplatform-settings-test`,
+  and `multiplatform-settings-no-arg` (issue #142). This uses the same `StorageSettings` implementation as in the
+  current js target.
+- Use Dispatchers.IO rather than Dispatchers.Default in `multiplatform-settings-coroutines` on platforms where it is
+  available (issue #157)
+- Add serialization-aware `removeValue()` and `containsValue()` functions to `multiplatform-settings-serialization` (
+  issue #81)
+- Fix issue with serialization delegates incorrectly falling back to default values (issues #160 and #162)
+
 ## v1.0.0 *(2023-01-14)* ##
 
 - First stable release!
