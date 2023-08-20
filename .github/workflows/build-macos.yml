@@ -26,9 +26,8 @@ jobs:
 
       - name: Mac build
         run: |
-          ./gradlew macosX64Test iosX64Test watchosX64Test watchosX86Test tvosX64Test \
+          ./gradlew macosX64Test iosX64Test watchosX64Test tvosX64Test \
           publishKotlinMultiplatformPublicationToMavenLocal \
-          publishIosArm32PublicationToMavenLocal \
           publishIosArm64PublicationToMavenLocal \
           publishIosSimulatorArm64PublicationToMavenLocal \
           publishIosX64PublicationToMavenLocal \
@@ -38,7 +37,6 @@ jobs:
           publishWatchosArm64PublicationToMavenLocal \
           publishWatchosDeviceArm64PublicationToMavenLocal \
           publishWatchosSimulatorArm64PublicationToMavenLocal \
-          publishWatchosX86PublicationToMavenLocal \
           publishWatchosX64PublicationToMavenLocal \
           publishTvosArm64PublicationToMavenLocal \
           publishTvosSimulatorArm64PublicationToMavenLocal \

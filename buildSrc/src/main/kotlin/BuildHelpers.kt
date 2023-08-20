@@ -89,6 +89,9 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
 
     // Create empty targets for presets with no specific configuration
     targetPresets.forEach {
+        if (it.name in listOf("iosArm32", "linuxArm32Hfp", "linuxMips32", "linuxMipsel32", "mingwX86", "watchosX86")) {
+            return@forEach // Ignore deprecated targets
+        }
         if (it is KotlinJvmWithJavaTargetPreset) return@forEach // Probably don't need this, and it chokes on Android plugin
         if (it.isJsTargetPreset && targets.any { it.isJsTarget }) return@forEach // Ignore repeat js targets
         if (it.name.contains("wasm")) return@forEach // No more Kotlin/Native WASM.

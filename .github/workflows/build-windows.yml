@@ -26,6 +26,6 @@ jobs:
 
       - name: Windows build
         run: |
-          ./gradlew mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMingwX64PublicationToMavenLocal publishMingwX86PublicationToMavenLocal --no-daemon --stacktrace
+          ./gradlew mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMingwX64PublicationToMavenLocal --no-daemon --stacktrace
         env:
           GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"

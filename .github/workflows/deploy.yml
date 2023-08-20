@@ -41,7 +41,6 @@ jobs:
       - name: Mac deploy
         run: |
           ./gradlew \
-          publishIosArm32PublicationToMavenRepository \
           publishIosArm64PublicationToMavenRepository \
           publishIosSimulatorArm64PublicationToMavenRepository \
           publishIosX64PublicationToMavenRepository \
@@ -51,7 +50,6 @@ jobs:
           publishWatchosArm64PublicationToMavenRepository \
           publishWatchosDeviceArm64PublicationToMavenRepository \
           publishWatchosSimulatorArm64PublicationToMavenRepository \
-          publishWatchosX86PublicationToMavenRepository \
           publishWatchosX64PublicationToMavenRepository \
           publishTvosArm64PublicationToMavenRepository \
           publishTvosSimulatorArm64PublicationToMavenRepository \
