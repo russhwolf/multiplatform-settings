@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
 }
 
 kotlin {
-    android()
+    jvmToolchain(17)
+
+    androidTarget()
     jvm()
     js {
         browser()
@@ -39,12 +39,6 @@ kotlin {
     }
 
     sourceSets {
-        all {
-            languageSettings.apply {
-                optIn("kotlin.RequiresOptIn")
-            }
-        }
-
         commonMain {
             dependencies {
                 api("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
@@ -55,7 +49,6 @@ kotlin {
                 implementation("com.russhwolf:multiplatform-settings-test:${rootProject.ext["library_version"]}")
 
                 implementation(kotlin("test"))
-                implementation(kotlin("test-annotations-common"))
             }
         }
 
@@ -63,7 +56,7 @@ kotlin {
             dependencies {
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
@@ -81,12 +74,10 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-js"))
             }
         }
         val jsTest by getting {
             dependencies {
-                implementation(kotlin("test-js"))
             }
         }
 
@@ -102,18 +93,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(33)
+    namespace = "com.russhwolf.settings.example"
+
+    compileSdk = 34
 
     defaultConfig {
-        minSdkVersion(15)
+        minSdk = 15
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-}
-
-tasks.withType<KotlinCompile>().all {
-    kotlinOptions.jvmTarget = "1.8"
 }

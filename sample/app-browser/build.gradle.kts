@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
-
 /*
  * Copyright 2019 Russell Wolf
  *
@@ -17,26 +15,26 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
  */
 
 plugins {
-    kotlin("js")
+    kotlin("multiplatform")
 }
 
 kotlin {
     js {
         browser {
             runTask {
-                outputFileName = "settings-demo.js"
+                mainOutputFileName = "settings-demo.js"
             }
         }
         binaries.executable()
     }
-}
 
-dependencies {
-    implementation(project(":shared"))
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.8.0")
-    implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
-}
-
-tasks.withType<KotlinJsCompile> {
-    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    sourceSets {
+        val jsMain by getting {
+            dependencies {
+                implementation(project(":shared"))
+                implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.8.0")
+                implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
+            }
+        }
+    }
 }

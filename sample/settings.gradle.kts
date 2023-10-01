@@ -31,4 +31,4 @@ pluginManagement {
         maven(url = "https://plugins.gradle.org/m2/")
     }
 }
-include(":shared", ":app-android", ":app-tornadofx", ":app-browser")
+include(":shared", ":app-android", ":app-browser")

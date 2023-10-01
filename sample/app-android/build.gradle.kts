@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.android.application")
     kotlin("android")
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 android {
-    compileSdkVersion(33)
+    namespace = "com.russhwolf.settings.example.android"
+
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.russhwolf.settings.example.android"
-        minSdkVersion(15)
-        targetSdkVersion(33)
+        minSdk = 15
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -41,15 +45,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-
-    packagingOptions {
-        exclude("META-INF/*.kotlin_module")
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
@@ -58,8 +53,4 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
-}
-
-tasks.withType<KotlinCompile>().all {
-    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }
