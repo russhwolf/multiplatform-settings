@@ -294,13 +294,7 @@ private open class SettingsSerializationDelegate<T>(
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
         checkKey(property.name)
         val decoder = decoder ?: SettingsDecoder(settings, property.name, context).also { decoder = it }
-        // TODO ??? for some reason jsLegacy delegate tests fail when this uses deserializeOrElse()
-        return try {
-            serializer.deserialize(decoder)
-        } catch (e: DeserializationException) {
-            decoder.reset()
-            defaultValue
-        }
+        return serializer.deserializeOrElse(decoder, defaultValue)
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
@@ -449,10 +443,7 @@ private class SettingsDecoder(
     // Unfortunately the only way we can interrupt serialization if data is missing is to throw here and catch elsewhere
     public override fun decodeBoolean(): Boolean = settings.getBooleanOrNull(getKey()) ?: deserializationError()
     public override fun decodeByte(): Byte = settings.getIntOrNull(getKey())?.toByte() ?: deserializationError()
-    public override fun decodeChar(): Char {
-        // TODO ??? for some reason jsLegacy allTypes tests fail when this is an expression function.
-        return settings.getIntOrNull(getKey())?.toChar() ?: deserializationError()
-    }
+    public override fun decodeChar(): Char = settings.getIntOrNull(getKey())?.toChar() ?: deserializationError()
 
     public override fun decodeDouble(): Double = settings.getDoubleOrNull(getKey()) ?: deserializationError()
     public override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
