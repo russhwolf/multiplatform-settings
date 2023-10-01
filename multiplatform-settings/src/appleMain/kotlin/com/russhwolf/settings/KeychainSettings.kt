@@ -15,7 +15,7 @@
  */
 
 @file:OptIn(
-    UnsafeNumber::class, // due to CFIndex usage
+    UnsafeNumber::class, // Due to CFIndex usage.
     ExperimentalForeignApi::class // Due to lots of cinterop internals (and one public-facing constructor)
 )
 
