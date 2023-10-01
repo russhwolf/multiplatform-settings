@@ -371,8 +371,23 @@ val settings: Settings
 settings.encodeValue(SomeClass.serializer(), "key", someClass)
 
 // Create a new instance of SomeClass based on the data in settings
-val newInstance: SomeClass = settings.decodeValue(SomeClass.serializer(), "someClass", defaultValue)
-val nullableNewInstance: SomeClass = settings.decodeValueOrNull(SomeClass.serializer(), "someClass")
+val newInstance: SomeClass = settings.decodeValue(SomeClass.serializer(), "key", defaultValue)
+val nullableNewInstance: SomeClass = settings.decodeValueOrNull(SomeClass.serializer(), "key")
+```
+
+To remove a serialized value, use `removeValue()` rather than `remove()`
+
+```kotlin
+settings.removeValue(SomeClass.serializer(), "key")
+
+// Don't remove if not all expected data is preset
+settings.removeValue(SomeClass.serializer(), "key", ignorePartial = true)
+```
+
+To check for the existance of a serialized value, use `containsValue()` rather than `contains()`.
+
+```kotlin
+val isPresent = settings.containsValue(SomeClass.serializer(), "key")
 ```
 
 There's also a delegate API, similar to that for primitives

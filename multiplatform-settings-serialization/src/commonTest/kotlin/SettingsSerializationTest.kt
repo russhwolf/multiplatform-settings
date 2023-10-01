@@ -548,6 +548,33 @@ class SettingsSerializationTest {
             )
         }
 
+        fun Settings.removeUser(ignorePartial: Boolean) {
+            if (ignorePartial) {
+                when (getBooleanOrNull("user.nickname?")) {
+                    true -> {
+                        if (contains("user.nickname")) {
+                            remove("user.nickname?")
+                            remove("user.nickname")
+                        }
+                    }
+
+                    false -> remove("user.nickname?")
+                    null -> {}
+                }
+            } else {
+                remove("user.nickname?")
+                remove("user.nickname")
+            }
+        }
+
+        fun Settings.containsUser(): Boolean {
+            return when (getBooleanOrNull("user.nickname?")) {
+                true -> contains("user.nickname")
+                false -> true
+                null -> false
+            }
+        }
+
         val settings = MapSettings()
 
         settings.clear()
@@ -555,6 +582,8 @@ class SettingsSerializationTest {
         assertEquals(defaultUser, settings.decodeValue(User.serializer(), "user", defaultUser))
         assertEquals(null, settings.loadUserOrNull())
         assertEquals(null, settings.decodeValueOrNull(User.serializer(), "user"))
+        assertFalse(settings.containsValue(User.serializer(), "user"))
+        assertFalse(settings.containsUser())
 
         settings.encodeValue(User.serializer(), "user", User("Qwerty"))
         assertEquals(User("Qwerty"), settings.loadUser())
@@ -563,6 +592,8 @@ class SettingsSerializationTest {
         assertEquals(User("Qwerty"), settings.decodeValueOrNull(User.serializer(), "user"))
         assertEquals("Qwerty", settings.getStringOrNull("user.nickname"))
         assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
+        assertTrue(settings.containsValue(User.serializer(), "user"))
+        assertTrue(settings.containsUser())
 
         settings.encodeValue(User.serializer(), "user", User(null))
         assertEquals(User(null), settings.loadUser())
@@ -571,16 +602,16 @@ class SettingsSerializationTest {
         assertEquals(User(null), settings.decodeValueOrNull(User.serializer(), "user"))
         assertEquals(null, settings.getStringOrNull("user.nickname"))
         assertEquals(false, settings.getBooleanOrNull("user.nickname?"))
+        assertTrue(settings.containsValue(User.serializer(), "user"))
+        assertTrue(settings.containsUser())
 
-        settings.clear()
-
-        settings.saveUser(User("Qwerty"))
-        assertEquals(User("Qwerty"), settings.loadUser())
-        assertEquals(User("Qwerty"), settings.decodeValue(User.serializer(), "user", defaultUser))
-        assertEquals(User("Qwerty"), settings.loadUserOrNull())
-        assertEquals(User("Qwerty"), settings.decodeValueOrNull(User.serializer(), "user"))
-        assertEquals("Qwerty", settings.getStringOrNull("user.nickname"))
-        assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
+        settings.removeValue(User.serializer(), "user")
+        assertEquals(defaultUser, settings.loadUser())
+        assertEquals(defaultUser, settings.decodeValue(User.serializer(), "user", defaultUser))
+        assertEquals(null, settings.loadUserOrNull())
+        assertEquals(null, settings.decodeValueOrNull(User.serializer(), "user"))
+        assertFalse(settings.containsValue(User.serializer(), "user"))
+        assertFalse(settings.containsUser())
 
         settings.saveUser(User(null))
         assertEquals(User(null), settings.loadUser())
@@ -589,13 +620,49 @@ class SettingsSerializationTest {
         assertEquals(User(null), settings.decodeValueOrNull(User.serializer(), "user"))
         assertEquals(null, settings.getStringOrNull("user.nickname"))
         assertEquals(false, settings.getBooleanOrNull("user.nickname?"))
+        assertTrue(settings.containsValue(User.serializer(), "user"))
+        assertTrue(settings.containsUser())
 
-        settings.clear()
+        settings.saveUser(User("Qwerty"))
+        assertEquals(User("Qwerty"), settings.loadUser())
+        assertEquals(User("Qwerty"), settings.decodeValue(User.serializer(), "user", defaultUser))
+        assertEquals(User("Qwerty"), settings.loadUserOrNull())
+        assertEquals(User("Qwerty"), settings.decodeValueOrNull(User.serializer(), "user"))
+        assertEquals("Qwerty", settings.getStringOrNull("user.nickname"))
+        assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
+        assertTrue(settings.containsValue(User.serializer(), "user"))
+        assertTrue(settings.containsUser())
+
+        settings.removeUser(ignorePartial = false)
+        assertEquals(defaultUser, settings.loadUser())
+        assertEquals(defaultUser, settings.decodeValue(User.serializer(), "user", defaultUser))
+        assertEquals(null, settings.loadUserOrNull())
+        assertEquals(null, settings.decodeValueOrNull(User.serializer(), "user"))
+        assertFalse(settings.containsValue(User.serializer(), "user"))
+        assertFalse(settings.containsUser())
+
         settings.putBoolean("user.nickname?", true)
         assertEquals(defaultUser, settings.loadUser())
         assertEquals(defaultUser, settings.decodeValue(User.serializer(), "user", defaultUser))
         assertEquals(null, settings.loadUserOrNull())
         assertEquals(null, settings.decodeValueOrNull(User.serializer(), "user"))
+        assertFalse(settings.containsValue(User.serializer(), "user"))
+        assertFalse(settings.containsUser())
+
+        settings.removeValue(User.serializer(), "user", ignorePartial = true)
+        assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
+        settings.removeUser(ignorePartial = true)
+        assertEquals(true, settings.getBooleanOrNull("user.nickname?"))
+        settings.removeValue(User.serializer(), "user", ignorePartial = false)
+        assertEquals(null, settings.getBooleanOrNull("user.nickname?"))
+
+        settings.encodeValue(User.serializer(), "user", User("Qwerty"))
+        settings.removeUser(ignorePartial = true)
+        assertEquals(0, settings.size)
+
+        settings.encodeValue(User.serializer(), "user", User("Qwerty"))
+        settings.removeValue(User.serializer(), "user", ignorePartial = true)
+        assertEquals(0, settings.size)
     }
 
     @Test

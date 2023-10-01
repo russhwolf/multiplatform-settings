@@ -154,6 +154,34 @@ public fun <T> Settings.decodeValueOrNull(
     serializersModule: SerializersModule = EmptySerializersModule()
 ): T? = serializer.deserializeOrElse(SettingsDecoder(this, key, serializersModule), null)
 
+/**
+ * Remove all data that encodes a structured value in this [Settings] via kotlinx.serialization. If not all expected
+ * data for that value is present, then [ignorePartial] determined whether the values that do exist are removed.
+ *
+ * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
+ * recurse through their structure to find primitives.
+ *
+ * Nullable properties first read an additional `Boolean` value, whose key is the key for that property with "?"
+ * appended. If this value is true, then the value at the property key will be used for deserialization.
+ *
+ * Similarly, collection properties read from an additional `Int` to represent the collection size, whose key is the
+ * property's key with `.size` appended.
+ *
+ * For example, consider a class defined as
+ * ```kotlin
+ * @Serializable
+ * class User(val nickname: String?)
+ * ```
+ * Calling `removeValue(User.serializer(), "user")` is equivalent to
+ * ```kotlin
+ * remove("user.nickname?")
+ * remove("user.nickname")
+ * ```
+ *
+ * Note that because the `Settings` API is not transactional, it's possible for a failed operation to result in
+ * inconsistent data being removed. If you need greater reliability for more complex structured data, prefer a
+ * database such as sqlite to this API.
+ */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
 public fun <T> Settings.removeValue(
@@ -171,6 +199,33 @@ public fun <T> Settings.removeValue(
     enumerator.removeKeys()
 }
 
+/**
+ * Reports whether data that encodes a structured value is present in this [Settings] via kotlinx.serialization. If data
+ * is only partially present, returns `false`.
+ *
+ * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
+ * recurse through their structure to find primitives.
+ *
+ * Nullable properties first read an additional `Boolean` value, whose key is the key for that property with "?"
+ * appended. If this value is true, then the value at the property key will be used for deserialization.
+ *
+ * Similarly, collection properties read from an additional `Int` to represent the collection size, whose key is the
+ * property's key with `.size` appended.
+ *
+ * For example, consider a class defined as
+ * ```kotlin
+ * @Serializable
+ * class User(val nickname: String?)
+ * ```
+ * Calling `containsValue(User.serializer(), "user")` is equivalent to
+ * ```kotlin
+ * when (getBooleanOrNull("user.nickname?")) {
+ *     true -> contains("user.nickname")
+ *     false -> true
+ *     null -> false
+ * }
+ * ```
+ */
 @ExperimentalSerializationApi
 @ExperimentalSettingsApi
 public fun <T> Settings.containsValue(
