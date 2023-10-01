@@ -20,18 +20,18 @@ object Versions {
     const val multiplatformSettings = "1.1.0"
 
     const val minSdk = 15
-    const val compileSdk = 33
+    const val compileSdk = 34
 
     const val androidxDatastore = "1.0.0"
-    const val androidxPreference = "1.2.0"
+    const val androidxPreference = "1.2.1"
     const val androidxStartup = "1.1.1"
-    const val androidxTest = "1.4.0"
-    const val androidxTestExt = "1.1.3"
+    const val androidxTest = "1.5.0"
+    const val androidxTestExt = "1.1.5"
     const val binaryCompatibilityValidator = "0.13.2"
     const val coroutines = "1.7.3"
     const val junit = "4.13.2"
-    const val robolectric = "4.8.2"
-    const val serializationPlugin = "1.9.0"
-    const val serializationRuntime = "1.4.0"
-    const val turbine = "0.8.0"
+    const val robolectric = "4.10.3"
+    const val serializationPlugin = "1.9.10"
+    const val serializationRuntime = "1.6.0"
+    const val turbine = "1.0.0"
 }

@@ -110,5 +110,6 @@ kotlin {
 }
 
 android {
+    namespace = "com.russhwolf.settings.no_arg"
     testOptions.unitTests.isIncludeAndroidResources = true
 }

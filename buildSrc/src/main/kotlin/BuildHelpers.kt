@@ -19,9 +19,12 @@
 @file:Suppress("KDocMissingDocumentation")
 
 import com.android.build.gradle.BaseExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetPreset
@@ -33,6 +36,7 @@ import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTargetPreset
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.jetbrains.kotlin.konan.target.Architecture
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
@@ -56,6 +60,21 @@ fun Project.standardConfiguration(
             explicitApi()
         }
         configureTests()
+    }
+
+    compatiblityConfig()
+}
+
+private fun Project.compatiblityConfig() {
+    tasks.withType(KotlinJvmCompile::class.java).configureEach {
+        it.kotlinOptions.apply {
+            // Keeping 1.8 compatibility until it becomes burdensome
+            jvmTarget = "1.8"
+        }
+    }
+    android.apply {
+        // Oops, this was on in 1.0, so now technically a breaking change to turn it off
+        buildFeatures.buildConfig = true
     }
 }
 

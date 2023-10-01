@@ -103,6 +103,7 @@ kotlin {
 }
 
 android {
+    namespace = "com.russhwolf.settings.coroutines"
     testOptions.unitTests.isIncludeAndroidResources = true
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

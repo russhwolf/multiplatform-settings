@@ -51,3 +51,7 @@ kotlin {
         }
     }
 }
+
+android {
+    namespace = "com.russhwolf.settings.tests"
+}

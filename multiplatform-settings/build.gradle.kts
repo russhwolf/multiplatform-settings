@@ -74,5 +74,6 @@ kotlin {
 }
 
 android {
+    namespace = "com.russhwolf.settings"
     testOptions.unitTests.isIncludeAndroidResources = true
 }

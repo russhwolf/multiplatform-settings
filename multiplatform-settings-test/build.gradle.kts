@@ -70,3 +70,7 @@ kotlin {
         }
     }
 }
+
+android {
+    namespace = "com.russhwolf.settings.test"
+}
