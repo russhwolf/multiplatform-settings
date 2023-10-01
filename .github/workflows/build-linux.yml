@@ -18,17 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download JavaFX JDK
-        run: |
-          mkdir -p ./jdk/binaries/
-          curl https://cdn.azul.com/zulu/bin/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz --output ./jdk/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz 
-
       - name: JDK setup
         uses: actions/setup-java@v3
         with:
-          java-version: 11
-          distribution: jdkfile
-          jdkFile: ./jdk/zulu11.56.19-ca-fx-jdk11.0.15-linux_x64.tar.gz
+          java-version: 17
+          distribution: corretto
 
       - name: Linux build
         run: |
