@@ -18,7 +18,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose") version "1.5.2"
+    id("org.jetbrains.compose") version "1.5.10"
 }
 
 dependencies {
@@ -27,6 +27,10 @@ dependencies {
 
     implementation(compose.desktop.currentOs)
     testImplementation(compose.desktop.uiTestJUnit4)
+}
+
+compose {
+    kotlinCompilerPlugin.set("1.5.3")
 }
 
 compose.desktop {

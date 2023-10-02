@@ -15,8 +15,8 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "1.9.10" apply false
-    kotlin("android") version "1.9.10" apply false
+    kotlin("multiplatform") version "1.9.20" apply false
+    kotlin("android") version "1.9.20" apply false
     id("com.android.library") version "8.1.2" apply false
     id("com.android.application") version "8.1.2" apply false
 }
@@ -28,5 +28,7 @@ allprojects {
         mavenLocal()
         google()
         mavenCentral()
+        maven(url = "https://androidx.dev/storage/compose-compiler/repository/")
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
