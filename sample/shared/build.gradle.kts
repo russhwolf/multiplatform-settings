@@ -30,7 +30,7 @@ kotlin {
         browser()
     }
     @OptIn(ExperimentalWasmDsl::class)
-    wasm {
+    wasmJs {
         browser()
     }
 

@@ -19,12 +19,9 @@
 @file:Suppress("KDocMissingDocumentation")
 
 import com.android.build.gradle.BaseExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetPreset
@@ -98,10 +95,10 @@ private fun KotlinMultiplatformExtension.buildAllTargets(targetPresets: NamedDom
             browser()
         }
     }
-    if (targetPresets.findByName("wasm") != null) {
+    if (targetPresets.findByName("wasmJs") != null) {
         // TODO include nodejs and d8 somehow?
         @OptIn(ExperimentalWasmDsl::class)
-        wasm {
+        wasmJs {
             browser()
         }
     }
@@ -166,8 +163,8 @@ private fun KotlinMultiplatformExtension.linkSourceSets(targetPresets: NamedDoma
         }
         findByName("jsMain")?.dependsOn(browserCommonMain)
         findByName("jsTest")?.dependsOn(browserCommonTest)
-        findByName("wasmMain")?.dependsOn(browserCommonMain)
-        findByName("wasmTest")?.dependsOn(browserCommonTest)
+        findByName("wasmJsMain")?.dependsOn(browserCommonMain)
+        findByName("wasmJsTest")?.dependsOn(browserCommonTest)
 
         if (targetPresets.any { it.isNativeTargetPreset }) {
 

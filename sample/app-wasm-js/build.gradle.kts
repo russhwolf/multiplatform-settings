@@ -18,12 +18,11 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.5.2"
 }
 
 kotlin {
     @OptIn(ExperimentalWasmDsl::class)
-    wasm {
+    wasmJs {
         browser {
             runTask {
                 mainOutputFileName = "settings-demo.js"
@@ -33,7 +32,7 @@ kotlin {
     }
 
     sourceSets {
-        val wasmMain by getting {
+        val wasmJsMain by getting {
             dependencies {
                 implementation(project(":shared"))
                 implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
