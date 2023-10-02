@@ -20,6 +20,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,9 +41,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -74,7 +78,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MaterialTheme {
+            MaterialTheme(
+                colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()
+            ) {
                 App(
                     settings = settingsRepository.mySettings,
                     onClearSettings = { settingsRepository.clear() },
@@ -95,59 +101,61 @@ private fun App(
     var valueText by remember { mutableStateOf("") }
     var outputText by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-    ) {
-        Spinner(
-            text = settingConfig.key,
-            items = settings,
-            itemText = { it.key },
-            onClick = { setting ->
-                settingConfig = setting
-                enableLoggingChecked = setting.isLoggingEnabled
-            },
-        )
-        TextField(
-            value = valueText,
-            onValueChange = { valueText = it },
-            modifier = Modifier.padding(vertical = 8.dp),
-            placeholder = { Text(text = "Value") },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        )
-        Button(
-            onClick = { outputText = (if (settingConfig.set(valueText)) "" else "INVALID VALUE!") },
+    Surface {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
         ) {
-            Text(text = "Set Value")
+            Spinner(
+                text = settingConfig.key,
+                items = settings,
+                itemText = { it.key },
+                onClick = { setting ->
+                    settingConfig = setting
+                    enableLoggingChecked = setting.isLoggingEnabled
+                },
+            )
+            TextField(
+                value = valueText,
+                onValueChange = { valueText = it },
+                modifier = Modifier.padding(vertical = 8.dp),
+                placeholder = { Text(text = "Value") },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            )
+            Button(
+                onClick = { outputText = (if (settingConfig.set(valueText)) "" else "INVALID VALUE!") },
+            ) {
+                Text(text = "Set Value")
+            }
+            Button(onClick = { outputText = settingConfig.get() }) {
+                Text(text = "Get Value")
+            }
+            Button(
+                onClick = {
+                    settingConfig.remove()
+                    outputText = "Setting removed!"
+                },
+            ) {
+                Text(text = "Remove Value")
+            }
+            Button(
+                onClick = {
+                    onClearSettings()
+                    outputText = "Settings cleared!"
+                },
+            ) {
+                Text(text = "Clear All Values")
+            }
+            LabeledCheckbox(
+                checked = enableLoggingChecked,
+                onClick = { value ->
+                    settingConfig.isLoggingEnabled = value
+                    enableLoggingChecked = value
+                },
+            )
+            Text(text = outputText, modifier = Modifier.padding(top = 8.dp))
         }
-        Button(onClick = { outputText = settingConfig.get() }) {
-            Text(text = "Get Value")
-        }
-        Button(
-            onClick = {
-                settingConfig.remove()
-                outputText = "Setting removed!"
-            },
-        ) {
-            Text(text = "Remove Value")
-        }
-        Button(
-            onClick = {
-                onClearSettings()
-                outputText = "Settings cleared!"
-            },
-        ) {
-            Text(text = "Clear All Values")
-        }
-        LabeledCheckbox(
-            checked = enableLoggingChecked,
-            onClick = { value ->
-                settingConfig.isLoggingEnabled = value
-                enableLoggingChecked = value
-            },
-        )
-        Text(text = outputText, modifier = Modifier.padding(top = 8.dp))
     }
 }
 
