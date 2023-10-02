@@ -1,8 +1,8 @@
 # Changelog #
 
-## v1.1.0 *(2023-08-??)* ##
+## v1.1.0 *(2023-10-??)* ##
 
-- Update to Kotlin 1.9.0
+- Update to Kotlin 1.9.10, Gradle 8.3, and Android Gradle Plugin 8.1.2
 - Remove deprecated Kotlin/Native targets
 - Add wasm browser target to `multiplatform-settings`, `multiplatform-settings-test`,
   and `multiplatform-settings-no-arg` (issue #142). This uses the same `StorageSettings` implementation as in the
