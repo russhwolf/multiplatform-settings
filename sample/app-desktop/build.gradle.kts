@@ -29,6 +29,10 @@ dependencies {
     testImplementation(compose.desktop.uiTestJUnit4)
 }
 
+compose {
+    kotlinCompilerPlugin.set("1.5.2.1-Beta3")
+}
+
 compose.desktop {
     application {
         mainClass = "com.russhwolf.settings.example.jvm.MainKt"

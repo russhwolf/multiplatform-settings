@@ -29,6 +29,8 @@ pluginManagement {
         google()
         mavenCentral()
         maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://androidx.dev/storage/compose-compiler/repository/")
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 include(

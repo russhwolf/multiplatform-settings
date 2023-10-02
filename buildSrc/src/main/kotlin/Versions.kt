@@ -31,7 +31,7 @@ object Versions {
     const val coroutines = "1.7.3"
     const val junit = "4.13.2"
     const val robolectric = "4.10.3"
-    const val serializationPlugin = "1.9.10"
+    const val serializationPlugin = "1.9.20-Beta2"
     const val serializationRuntime = "1.6.0"
     const val turbine = "1.0.0"
 }
