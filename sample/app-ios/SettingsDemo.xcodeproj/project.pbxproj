@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		46D39ECE209D76D00080F90D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D39ECD209D76D00080F90D /* AppDelegate.swift */; };
-		46D39ED0209D76D00080F90D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D39ECF209D76D00080F90D /* ViewController.swift */; };
-		46D39ED3209D76D10080F90D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D39ED1209D76D10080F90D /* Main.storyboard */; };
+		468A7D322ACA69980063243C /* SettingsDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468A7D312ACA69980063243C /* SettingsDemoApp.swift */; };
+		468A7D6A2ACA6A220063243C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468A7D692ACA6A220063243C /* ContentView.swift */; };
 		46D39ED5209D76D30080F90D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46D39ED4209D76D30080F90D /* Assets.xcassets */; };
-		46D39ED8209D76D30080F90D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D39ED6209D76D30080F90D /* LaunchScreen.storyboard */; };
 		46D39EE3209D76D30080F90D /* SettingsDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D39EE2209D76D30080F90D /* SettingsDemoTests.swift */; };
 		46D39EEE209D76D30080F90D /* SettingsDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D39EED209D76D30080F90D /* SettingsDemoUITests.swift */; };
 /* End PBXBuildFile section */
@@ -47,13 +45,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		468A7D312ACA69980063243C /* SettingsDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDemoApp.swift; sourceTree = "<group>"; };
+		468A7D692ACA6A220063243C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		46D39ECA209D76D00080F90D /* SettingsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SettingsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		46D39ECD209D76D00080F90D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		46D39ECF209D76D00080F90D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		46D39ED2209D76D10080F90D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		46D39ED4209D76D30080F90D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		46D39ED7209D76D30080F90D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		46D39ED9209D76D30080F90D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46D39EDE209D76D30080F90D /* SettingsDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SettingsDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D39EE2209D76D30080F90D /* SettingsDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDemoTests.swift; sourceTree = "<group>"; };
 		46D39EE4209D76D30080F90D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -110,12 +105,9 @@
 		46D39ECC209D76D00080F90D /* SettingsDemo */ = {
 			isa = PBXGroup;
 			children = (
-				46D39ECD209D76D00080F90D /* AppDelegate.swift */,
-				46D39ECF209D76D00080F90D /* ViewController.swift */,
-				46D39ED1209D76D10080F90D /* Main.storyboard */,
 				46D39ED4209D76D30080F90D /* Assets.xcassets */,
-				46D39ED6209D76D30080F90D /* LaunchScreen.storyboard */,
-				46D39ED9209D76D30080F90D /* Info.plist */,
+				468A7D312ACA69980063243C /* SettingsDemoApp.swift */,
+				468A7D692ACA6A220063243C /* ContentView.swift */,
 			);
 			path = SettingsDemo;
 			sourceTree = "<group>";
@@ -208,16 +200,16 @@
 				TargetAttributes = {
 					46D39EC9209D76D00080F90D = {
 						CreatedOnToolsVersion = 9.3;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = "";
 					};
 					46D39EDD209D76D30080F90D = {
 						CreatedOnToolsVersion = 9.3;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = "";
 						TestTargetID = 46D39EC9209D76D00080F90D;
 					};
 					46D39EE8209D76D30080F90D = {
 						CreatedOnToolsVersion = 9.3;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = "";
 						TestTargetID = 46D39EC9209D76D00080F90D;
 					};
 				};
@@ -247,9 +239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46D39ED8209D76D30080F90D /* LaunchScreen.storyboard in Resources */,
 				46D39ED5209D76D30080F90D /* Assets.xcassets in Resources */,
-				46D39ED3209D76D10080F90D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,8 +285,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46D39ED0209D76D00080F90D /* ViewController.swift in Sources */,
-				46D39ECE209D76D00080F90D /* AppDelegate.swift in Sources */,
+				468A7D6A2ACA6A220063243C /* ContentView.swift in Sources */,
+				468A7D322ACA69980063243C /* SettingsDemoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,25 +320,6 @@
 			targetProxy = 46D39EEA209D76D30080F90D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		46D39ED1209D76D10080F90D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				46D39ED2209D76D10080F90D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		46D39ED6209D76D30080F90D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				46D39ED7209D76D30080F90D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		46D39EF0209D76D30080F90D /* Debug */ = {
@@ -470,14 +441,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QDQ7CWKQQ6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
-				INFOPLIST_FILE = SettingsDemo/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -495,14 +470,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QDQ7CWKQQ6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
-				INFOPLIST_FILE = SettingsDemo/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -522,7 +501,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QDQ7CWKQQ6;
-				INFOPLIST_FILE = SettingsDemoTests/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -543,7 +523,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QDQ7CWKQQ6;
-				INFOPLIST_FILE = SettingsDemoTests/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -563,7 +544,8 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QDQ7CWKQQ6;
-				INFOPLIST_FILE = SettingsDemoUITests/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -583,7 +565,8 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QDQ7CWKQQ6;
-				INFOPLIST_FILE = SettingsDemoUITests/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
