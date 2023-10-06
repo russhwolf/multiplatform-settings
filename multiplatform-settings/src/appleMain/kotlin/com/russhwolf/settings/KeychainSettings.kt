@@ -27,6 +27,7 @@ import kotlinx.cinterop.MemScope
 import kotlinx.cinterop.UnsafeNumber
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArrayOf
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
@@ -37,7 +38,6 @@ import platform.CoreFoundation.CFArrayRefVar
 import platform.CoreFoundation.CFDictionaryCreate
 import platform.CoreFoundation.CFDictionaryGetValue
 import platform.CoreFoundation.CFDictionaryRef
-import platform.CoreFoundation.CFIndex
 import platform.CoreFoundation.CFStringRef
 import platform.CoreFoundation.CFTypeRef
 import platform.CoreFoundation.CFTypeRefVar
@@ -132,7 +132,7 @@ public class KeychainSettings @ExperimentalSettingsApi constructor(vararg defaul
 
             @Suppress("RemoveRedundantCallsOfConversionMethods") // IDE thinks CFIndex == Int but might be Long
             val list = List(CFArrayGetCount(attributes.value).toInt()) { i ->
-                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.toCFIndex())?.reinterpret()
+                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.convert())?.reinterpret()
                 val cfKey: CFStringRef? = CFDictionaryGetValue(item, kSecAttrAccount)?.reinterpret()
                 val nsKey = CFBridgingRelease(cfKey) as NSString
                 nsKey.toKString()
@@ -282,7 +282,7 @@ internal inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>):
         kCFAllocatorDefault,
         keys.reinterpret(),
         values.reinterpret(),
-        size.toCFIndex(),
+        size.convert(),
         null,
         null
     )
@@ -315,5 +315,3 @@ internal inline fun <T> cfRetain(value1: Any?, value2: Any?, block: MemScope.(CF
             CFBridgingRelease(cfValue2)
         }
     }
-
-internal expect fun Number.toCFIndex(): CFIndex
