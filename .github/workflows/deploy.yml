@@ -70,4 +70,4 @@ jobs:
 
       - name: Windows deploy
         run: |
-          ./gradlew publishMingwX64PublicationToMavenRepository publishMingwX86PublicationToMavenRepository --no-daemon --stacktrace
+          ./gradlew publishMingwX64PublicationToMavenRepository --no-daemon --stacktrace
