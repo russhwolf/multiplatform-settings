@@ -1,5 +1,3 @@
-import org.jetbrains.dokka.gradle.DokkaTask
-
 /*
  * Copyright 2020 Russell Wolf
  *
@@ -29,73 +27,67 @@ allprojects {
         mavenCentral()
     }
 
-    if (plugins.hasPlugin("maven-publish")) {
-        val dokkaJavadoc by tasks.withType<DokkaTask>()
+    val emptyJavadocJar by tasks.registering(Jar::class) {
+        archiveClassifier.set("javadoc")
+    }
 
-        val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
-            archiveClassifier.set("javadoc")
-            dependsOn(dokkaJavadoc)
-            from(dokkaJavadoc.outputDirectory)
+    afterEvaluate {
+        extensions.findByType<PublishingExtension>()?.apply {
+            repositories {
+                maven {
+                    url = uri(
+                        if (isReleaseBuild) {
+                            "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                        } else {
+                            "https://oss.sonatype.org/content/repositories/snapshots"
+                        }
+                    )
+                    credentials {
+                        username = properties["sonatypeUsername"].toString()
+                        password = properties["sonatypePassword"].toString()
+                    }
+                }
+            }
+
+            publications.withType<MavenPublication>().configureEach {
+                artifact(emptyJavadocJar.get())
+
+                pom {
+                    name.set("Multiplatform Settings")
+                    description.set("A Kotlin Multiplatform library for saving simple key-value data")
+                    url.set("https://github.com/russhwolf/multiplatform-settings")
+
+                    licenses {
+                        license {
+                            name.set("The Apache Software License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                            distribution.set("repo")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("russhwolf")
+                            name.set("Russell Wolf")
+                        }
+                    }
+                    scm {
+                        url.set("https://github.com/russhwolf/multiplatform-settings")
+                    }
+                }
+            }
         }
 
-        afterEvaluate {
-            extensions.findByType<PublishingExtension>()?.apply {
-                repositories {
-                    maven {
-                        url = uri(
-                            if (isReleaseBuild) {
-                                "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-                            } else {
-                                "https://oss.sonatype.org/content/repositories/snapshots"
-                            }
-                        )
-                        credentials {
-                            username = properties["sonatypeUsername"].toString()
-                            password = properties["sonatypePassword"].toString()
-                        }
-                    }
-                }
+        extensions.findByType<SigningExtension>()?.apply {
+            val publishing = extensions.findByType<PublishingExtension>() ?: return@apply
+            val key = properties["signingKey"]?.toString()?.replace("\\n", "\n")
+            val password = properties["signingPassword"]?.toString()
 
-                publications.withType<MavenPublication>().configureEach {
-                    artifact(javadocJar.get())
+            useInMemoryPgpKeys(key, password)
+            sign(publishing.publications)
+        }
 
-                    pom {
-                        name.set("Multiplatform Settings")
-                        description.set("A Kotlin Multiplatform library for saving simple key-value data")
-                        url.set("https://github.com/russhwolf/multiplatform-settings")
-
-                        licenses {
-                            license {
-                                name.set("The Apache Software License, Version 2.0")
-                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                                distribution.set("repo")
-                            }
-                        }
-                        developers {
-                            developer {
-                                id.set("russhwolf")
-                                name.set("Russell Wolf")
-                            }
-                        }
-                        scm {
-                            url.set("https://github.com/russhwolf/multiplatform-settings")
-                        }
-                    }
-                }
-            }
-
-            extensions.findByType<SigningExtension>()?.apply {
-                val publishing = extensions.findByType<PublishingExtension>() ?: return@apply
-                val key = properties["signingKey"]?.toString()?.replace("\\n", "\n")
-                val password = properties["signingPassword"]?.toString()
-
-                useInMemoryPgpKeys(key, password)
-                sign(publishing.publications)
-            }
-
-            tasks.withType<Sign>().configureEach {
-                onlyIf { isReleaseBuild }
-            }
+        tasks.withType<Sign>().configureEach {
+            onlyIf { isReleaseBuild }
         }
     }
 }
