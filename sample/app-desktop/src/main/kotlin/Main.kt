@@ -16,6 +16,7 @@
 
 package com.russhwolf.settings.example.jvm
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -53,6 +54,7 @@ import androidx.compose.ui.window.application
 import com.russhwolf.settings.PreferencesSettings
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
+import com.russhwolf.settings.example.StringSettingConfig
 import java.util.prefs.Preferences
 
 fun main() = application {
@@ -198,4 +200,14 @@ private fun LabeledCheckbox(
         Checkbox(checked = checked, onCheckedChange = null)
         Text(text = "Enable Logging")
     }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    val settings = PreferencesSettings(Preferences.userRoot())
+    App(
+        settings = listOf(StringSettingConfig(settings, "MY_STRING", "default")),
+        onClearSettings = {},
+    )
 }
