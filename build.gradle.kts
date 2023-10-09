@@ -50,7 +50,12 @@ allprojects {
             }
 
             publications.withType<MavenPublication>().configureEach {
-                artifact(emptyJavadocJar.get())
+                val publication = this
+                val javadocJar = tasks.register("${publication.name}JavadocJar", Jar::class) {
+                    archiveClassifier.set("javadoc")
+                    archiveBaseName.set("${archiveBaseName.get()}-${publication.name}")
+                }
+                artifact(javadocJar)
 
                 pom {
                     name.set("Multiplatform Settings")
