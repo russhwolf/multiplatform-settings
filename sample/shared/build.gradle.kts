@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 /*
  * Copyright 2020 Russell Wolf
  *
@@ -25,6 +27,10 @@ kotlin {
     androidTarget()
     jvm()
     js {
+        browser()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasm {
         browser()
     }
 

@@ -35,5 +35,6 @@ include(
     ":shared",
     ":app-android",
     ":app-browser",
-    ":app-desktop"
+    ":app-desktop",
+    ":app-wasm-js"
 )
