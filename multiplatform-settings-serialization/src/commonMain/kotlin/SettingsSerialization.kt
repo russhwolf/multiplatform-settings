@@ -21,6 +21,7 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.contains
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
@@ -31,6 +32,7 @@ import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.serializer
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -112,6 +114,61 @@ public fun <T> Settings.decodeValue(
     defaultValue: T,
     serializersModule: SerializersModule = EmptySerializersModule()
 ): T = serializer.deserializeOrElse(SettingsDecoder(this, key, serializersModule), defaultValue)
+
+/**
+ * Encode a structured value to this [Settings] via kotlinx.serialization.
+ *
+ * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
+ * recurse through their structure to find primitives.
+ *
+ * Nullable properties add an additional `Boolean` value, whose key is the name of that property with "?" appended. This
+ * will be set to `true` if the property was present and `false` if it was `null`.
+ *
+ * Similarly, collection properties encode an additional `Int` to represent the collection size, whose key is the
+ * property's name with `.size` appended.
+ *
+ * Note that because the `Settings` API is not transactional, it's possible for a failed operation to result in
+ * inconsistent data being saved to disk. If you need greater reliability for more complex structured data, prefer a
+ * database such as sqlite to this API.
+ * 
+ * @throws SerializationException If serializer cannot be created (provided T or its type argument is not serializable).
+ */
+@ExperimentalSerializationApi
+@ExperimentalSettingsApi
+public inline fun <reified T> Settings.encodeValue(
+	key: String,
+	value: T,
+    serializersModule: SerializersModule = EmptySerializersModule()
+): Unit =
+	encodeValue(serializer(), key, value, serializersModule)
+    
+/**
+ * Decode a structured value using the data in this [Settings] via kotlinx.serialization. If all expected data for that
+ * value is not present, then [defaultValue] will be returned instead.
+ *
+ * Primitive properties are serialized by combining the [key] parameter with the property name. Non-primitive properties
+ * recurse through their structure to find primitives.
+ *
+ * Nullable properties first read an additional `Boolean` value, whose key is the key for that property with "?"
+ * appended. If this value is true, then the value at the property key will be used for deserialization.
+ *
+ * Similarly, collection properties read from an additional `Int` to represent the collection size, whose key is the
+ * property's key with `.size` appended.
+ *
+ * Note that because the `Settings` API is not transactional, it's possible for a failed operation to result in
+ * inconsistent data being deserialized. If you need greater reliability for more complex structured data, prefer a
+ * database such as sqlite to this API.
+ * 
+ * @throws SerializationException If serializer cannot be created (provided T or its type argument is not serializable).
+ */
+@ExperimentalSerializationApi
+@ExperimentalSettingsApi
+public inline fun <reified T> Settings.decodeValue(
+    key: String,
+    defaultValue: T,
+    serializersModule: SerializersModule = EmptySerializersModule()
+): T =
+	decodeValue(serializer(), key, defaultValue, serializersModule)
 
 /**
  * Decode a structured value using the data in this [Settings] via kotlinx.serialization. If all expected data for that

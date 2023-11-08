@@ -42,17 +42,20 @@ class SettingsSerializationTest {
         val settings: Settings = MapSettings()
 
         settings.encodeValue(Foo.serializer(), "foo", foo)
+        settings.encodeValue("foo2", foo)
         settings.encodeValue(String.serializer(), "herp", "derp")
         settings.encodeValue(ListSerializer(Int.serializer()), "list", listOf(1, 2, 3))
 
         assertEquals("hello", settings.getStringOrNull("foo.bar"))
         assertEquals(43110, settings.getIntOrNull("foo.baz"))
+        assertEquals("hello", settings.getStringOrNull("foo2.bar"))
+        assertEquals(43110, settings.getIntOrNull("foo2.baz"))
         assertEquals("derp", settings.getStringOrNull("herp"))
         assertEquals(1, settings.getIntOrNull("list.0"))
         assertEquals(2, settings.getIntOrNull("list.1"))
         assertEquals(3, settings.getIntOrNull("list.2"))
         assertEquals(3, settings.getIntOrNull("list.size"))
-        assertEquals(7, settings.size)
+        assertEquals(9, settings.size)
     }
 
     @Test
@@ -60,6 +63,8 @@ class SettingsSerializationTest {
         val settings: Settings = MapSettings(
             "foo.bar" to "hello",
             "foo.baz" to 43110,
+            "foo2.bar" to "hello",
+            "foo2.baz" to 43110,
             "herp" to "derp",
             "list.0" to 1,
             "list.1" to 2,
@@ -68,11 +73,14 @@ class SettingsSerializationTest {
         )
 
         val foo = settings.decodeValue(Foo.serializer(), "foo", Foo("goodbye"))
+        val foo2 = settings.decodeValue("foo2", Foo("goodbye"))
         val herp = settings.decodeValue(String.serializer(), "herp", "")
         val list = settings.decodeValue(ListSerializer(Int.serializer()), "list", listOf())
 
         assertEquals("hello", foo.bar)
         assertEquals(43110, foo.baz)
+        assertEquals("hello", foo2.bar)
+        assertEquals(43110, foo2.baz)
         assertEquals("derp", herp)
         assertEquals(listOf(1, 2, 3), list)
     }
