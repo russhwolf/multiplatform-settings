@@ -22,11 +22,13 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.contains
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -42,20 +44,39 @@ class SettingsSerializationTest {
         val settings: Settings = MapSettings()
 
         settings.encodeValue(Foo.serializer(), "foo", foo)
-        settings.encodeValue("foo2", foo)
         settings.encodeValue(String.serializer(), "herp", "derp")
         settings.encodeValue(ListSerializer(Int.serializer()), "list", listOf(1, 2, 3))
 
         assertEquals("hello", settings.getStringOrNull("foo.bar"))
         assertEquals(43110, settings.getIntOrNull("foo.baz"))
-        assertEquals("hello", settings.getStringOrNull("foo2.bar"))
-        assertEquals(43110, settings.getIntOrNull("foo2.baz"))
         assertEquals("derp", settings.getStringOrNull("herp"))
         assertEquals(1, settings.getIntOrNull("list.0"))
         assertEquals(2, settings.getIntOrNull("list.1"))
         assertEquals(3, settings.getIntOrNull("list.2"))
         assertEquals(3, settings.getIntOrNull("list.size"))
-        assertEquals(9, settings.size)
+        assertEquals(7, settings.size)
+    }
+
+    @Test
+    fun serialize_inferSerializer() {
+        val foo = Foo("hello", 43110)
+
+        val settings: Settings = MapSettings()
+
+        settings.encodeValue("foo", foo)
+        settings.encodeValue("herp", "derp")
+        settings.encodeValue("list", listOf(1, 2, 3))
+
+        assertFailsWith(SerializationException::class) { settings.encodeValue("fake", Fake()) }
+
+        assertEquals("hello", settings.getStringOrNull("foo.bar"))
+        assertEquals(43110, settings.getIntOrNull("foo.baz"))
+        assertEquals("derp", settings.getStringOrNull("herp"))
+        assertEquals(1, settings.getIntOrNull("list.0"))
+        assertEquals(2, settings.getIntOrNull("list.1"))
+        assertEquals(3, settings.getIntOrNull("list.2"))
+        assertEquals(3, settings.getIntOrNull("list.size"))
+        assertEquals(7, settings.size)
     }
 
     @Test
@@ -73,14 +94,37 @@ class SettingsSerializationTest {
         )
 
         val foo = settings.decodeValue(Foo.serializer(), "foo", Foo("goodbye"))
-        val foo2 = settings.decodeValue("foo2", Foo("goodbye"))
         val herp = settings.decodeValue(String.serializer(), "herp", "")
         val list = settings.decodeValue(ListSerializer(Int.serializer()), "list", listOf())
 
         assertEquals("hello", foo.bar)
         assertEquals(43110, foo.baz)
-        assertEquals("hello", foo2.bar)
-        assertEquals(43110, foo2.baz)
+        assertEquals("derp", herp)
+        assertEquals(listOf(1, 2, 3), list)
+    }
+
+    @Test
+    fun deserialize_defaults_inferredSerializer() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "foo.baz" to 43110,
+            "foo2.bar" to "hello",
+            "foo2.baz" to 43110,
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.1" to 2,
+            "list.2" to 3,
+            "list.size" to 3,
+        )
+
+        val foo = settings.decodeValue("foo", Foo("goodbye"))
+        val herp = settings.decodeValue("herp", "")
+        val list = settings.decodeValue("list", listOf<Int>())
+
+        assertFailsWith(SerializationException::class) { settings.decodeValue("fake", Fake()) }
+
+        assertEquals("hello", foo.bar)
+        assertEquals(43110, foo.baz)
         assertEquals("derp", herp)
         assertEquals(listOf(1, 2, 3), list)
     }
@@ -90,6 +134,16 @@ class SettingsSerializationTest {
         val settings: Settings = MapSettings()
 
         val foo = settings.decodeValue(Foo.serializer(), "foo", Foo("goodbye"))
+
+        assertEquals("goodbye", foo.bar)
+        assertEquals(42, foo.baz)
+    }
+
+    @Test
+    fun deserialize_defaults_empty_inferredSerializer() {
+        val settings: Settings = MapSettings()
+
+        val foo = settings.decodeValue("foo", Foo("goodbye"))
 
         assertEquals("goodbye", foo.bar)
         assertEquals(42, foo.baz)
@@ -118,11 +172,45 @@ class SettingsSerializationTest {
         assertEquals(listOf(1, 2, 3), list)
     }
 
+
+    @Test
+    fun deserialize_nullable_defaults_inferredSerializer() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "foo.baz" to 43110,
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.1" to 2,
+            "list.2" to 3,
+            "list.size" to 3,
+        )
+
+        val foo = settings.decodeValueOrNull<Foo>("foo")
+        val herp = settings.decodeValueOrNull<String>("herp")
+        val list = settings.decodeValueOrNull<List<Int>>("list")
+
+        assertFailsWith(SerializationException::class) { settings.decodeValueOrNull<Fake>("fake") }
+
+        assertEquals("hello", foo?.bar)
+        assertEquals(43110, foo?.baz)
+        assertEquals("derp", herp)
+        assertEquals(listOf(1, 2, 3), list)
+    }
+
     @Test
     fun deserialize_nullable_defaults_empty() {
         val settings: Settings = MapSettings()
 
         val foo = settings.decodeValueOrNull(Foo.serializer(), "foo")
+
+        assertNull(foo)
+    }
+
+    @Test
+    fun deserialize_nullable_defaults_empty_inferredSerializer() {
+        val settings: Settings = MapSettings()
+
+        val foo = settings.decodeValueOrNull<Foo>("foo")
 
         assertNull(foo)
     }
@@ -147,6 +235,27 @@ class SettingsSerializationTest {
     }
 
     @Test
+    fun removeValue_inferredSerializer() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "foo.baz" to 43110,
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.1" to 2,
+            "list.2" to 3,
+            "list.size" to 3,
+        )
+
+        settings.removeValue<Foo>("foo")
+        settings.removeValue<String>("herp")
+        settings.removeValue<List<Int>>("list")
+
+        assertFailsWith(SerializationException::class) { settings.removeValue<Fake>("fake") }
+
+        assertEquals(0, settings.size)
+    }
+
+    @Test
     fun removeValue_partial() {
         val settings: Settings = MapSettings(
             "foo.bar" to "hello",
@@ -163,6 +272,22 @@ class SettingsSerializationTest {
     }
 
     @Test
+    fun removeValue_partial_inferredSerializer() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.size" to 3,
+        )
+
+        settings.removeValue<Foo>("foo")
+        settings.removeValue<String>("herp")
+        settings.removeValue<List<Int>>("list")
+
+        assertEquals(0, settings.size)
+    }
+
+    @Test
     fun removeValue_ignorePartial() {
         val settings: Settings = MapSettings(
             "list.0" to 1,
@@ -173,6 +298,20 @@ class SettingsSerializationTest {
         assertEquals(2, settings.size)
 
         settings.removeValue(ListSerializer(Int.serializer()), "list", ignorePartial = false)
+        assertEquals(0, settings.size)
+    }
+
+    @Test
+    fun removeValue_ignorePartial_inferredSerializer() {
+        val settings: Settings = MapSettings(
+            "list.0" to 1,
+            "list.size" to 3,
+        )
+
+        settings.removeValue<List<Int>>("list", ignorePartial = true)
+        assertEquals(2, settings.size)
+
+        settings.removeValue<List<Int>>("list", ignorePartial = false)
         assertEquals(0, settings.size)
     }
 
@@ -198,6 +337,29 @@ class SettingsSerializationTest {
     }
 
     @Test
+    fun containsValue_inferredSerializer() {
+        val settings: Settings = MapSettings(
+            "foo.bar" to "hello",
+            "foo.baz" to 43110,
+            "herp" to "derp",
+            "list.0" to 1,
+            "list.1" to 2,
+            "list.2" to 3,
+            "list.size" to 3,
+        )
+
+        val containsFoo = settings.containsValue<Foo>("foo")
+        val containsHerp = settings.containsValue<String>("herp")
+        val containsList = settings.containsValue<List<Int>>("list")
+
+        assertFailsWith(SerializationException::class) { settings.containsValue<Fake>("fake") }
+
+        assertTrue(containsFoo)
+        assertTrue(containsHerp)
+        assertTrue(containsList)
+    }
+
+    @Test
     fun containsValue_partial() {
         val settings: Settings = MapSettings(
             "foo.baz" to 43110,
@@ -208,6 +370,23 @@ class SettingsSerializationTest {
         val containsFoo = settings.containsValue(Foo.serializer(), "foo")
         val containsHerp = settings.containsValue(String.serializer(), "herp")
         val containsList = settings.containsValue(ListSerializer(Int.serializer()), "list")
+
+        assertFalse(containsFoo)
+        assertFalse(containsHerp)
+        assertFalse(containsList)
+    }
+
+    @Test
+    fun containsValue_partial_inferredSerializer() {
+        val settings: Settings = MapSettings(
+            "foo.baz" to 43110,
+            "list.0" to 1,
+            "list.size" to 3,
+        )
+
+        val containsFoo = settings.containsValue<Foo>("foo")
+        val containsHerp = settings.containsValue<String>("herp")
+        val containsList = settings.containsValue<List<Int>>("list")
 
         assertFalse(containsFoo)
         assertFalse(containsHerp)
@@ -240,6 +419,37 @@ class SettingsSerializationTest {
     }
 
     @Test
+    fun delegate_inferredSerializer() {
+        val settings: Settings = MapSettings()
+        val delegate = settings.serializedValue("foo", Foo("goodbye"))
+        var foo: Foo by delegate
+        assertEquals(Foo("goodbye", 42), foo)
+
+        foo = Foo("hello", 43110)
+
+        assertEquals("hello", settings.getStringOrNull("foo.bar"))
+        assertEquals(43110, settings.getIntOrNull("foo.baz"))
+        assertEquals(2, settings.size)
+        assertEquals(Foo("hello", 43110), foo)
+
+        foo = Foo("hi", 41)
+
+        assertEquals("hi", settings.getStringOrNull("foo.bar"))
+        assertEquals(41, settings.getIntOrNull("foo.baz"))
+        assertEquals(2, settings.size)
+        assertEquals(Foo("hi", 41), foo)
+
+        val foo2: Foo by delegate
+        assertEquals(foo, foo2)
+    }
+
+    @Test
+    fun delegate_inferredSerializer_failsNotSerializable() {
+        val settings: Settings = MapSettings()
+        assertFailsWith(SerializationException::class) { settings.serializedValue<Fake>("fake", Fake()) }
+    }
+
+    @Test
     fun delegate_nullable() {
         val settings: Settings = MapSettings()
         val delegate = settings.nullableSerializedValue(Foo.serializer(), "foo")
@@ -260,6 +470,35 @@ class SettingsSerializationTest {
 
         assertEquals(false, settings.getBooleanOrNull("foo?"))
         assertEquals(3, settings.size) // TODO turns out we don't actually clear out the other the keys here
+    }
+
+    @Test
+    fun delegate_nullable_inferredSerializer() {
+        val settings: Settings = MapSettings()
+        val delegate = settings.nullableSerializedValue<Foo>("foo")
+        var foo: Foo? by delegate
+        assertNull(foo)
+
+        foo = Foo("hello", 43110)
+
+        assertEquals(true, settings.getBooleanOrNull("foo?"))
+        assertEquals("hello", settings.getStringOrNull("foo.bar"))
+        assertEquals(43110, settings.getIntOrNull("foo.baz"))
+        assertEquals(3, settings.size)
+
+        val foo2: Foo? by delegate
+        assertEquals(foo, foo2)
+
+        foo = null
+
+        assertEquals(false, settings.getBooleanOrNull("foo?"))
+        assertEquals(3, settings.size) // TODO turns out we don't actually clear out the other the keys here
+    }
+
+    @Test
+    fun delegate_nullable_inferredSerializer_failsNotSerializable() {
+        val settings: Settings = MapSettings()
+        assertFailsWith(SerializationException::class) { settings.nullableSerializedValue<Fake>("fake") }
     }
 
     @Test
@@ -286,9 +525,55 @@ class SettingsSerializationTest {
     }
 
     @Test
+    fun delegate_keyless_inferredSerializer() {
+        val settings: Settings = MapSettings()
+        val delegate = settings.serializedValue(defaultValue = Foo("goodbye"))
+        var foo: Foo by delegate
+        assertEquals(Foo("goodbye", 42), foo)
+
+        foo = Foo("hello", 43110)
+
+        assertEquals("hello", settings.getStringOrNull("foo.bar"))
+        assertEquals(43110, settings.getIntOrNull("foo.baz"))
+        assertEquals(2, settings.size)
+
+        foo = Foo("hi", 41)
+
+        assertEquals("hi", settings.getStringOrNull("foo.bar"))
+        assertEquals(41, settings.getIntOrNull("foo.baz"))
+        assertEquals(2, settings.size)
+
+        val foo2: Foo by delegate
+        assertEquals(Foo("goodbye", 42), foo2)
+    }
+
+    @Test
     fun delegate_nullable_keyless() {
         val settings: Settings = MapSettings()
         val delegate = settings.nullableSerializedValue(Foo.serializer())
+        var foo: Foo? by delegate
+        assertNull(foo)
+
+        foo = Foo("hello", 43110)
+
+        assertEquals(true, settings.getBooleanOrNull("foo?"))
+        assertEquals("hello", settings.getStringOrNull("foo.bar"))
+        assertEquals(43110, settings.getIntOrNull("foo.baz"))
+        assertEquals(3, settings.size)
+
+        val foo2: Foo? by delegate
+        assertNull(foo2)
+
+        foo = null
+
+        assertEquals(false, settings.getBooleanOrNull("foo?"))
+        assertEquals(3, settings.size) // TODO turns out we don't actually clear out the other the keys here
+    }
+
+    @Test
+    fun delegate_nullable_keyless_inferredSerializer() {
+        val settings: Settings = MapSettings()
+        val delegate = settings.nullableSerializedValue<Foo>()
         var foo: Foo? by delegate
         assertNull(foo)
 
@@ -749,6 +1034,8 @@ data class User(val nickname: String?)
 
 @Serializable
 data class Foo(val bar: String, val baz: Int = 42)
+
+data class Fake(val bar: String = "fake", val baz: Int = 42)
 
 @Serializable
 data class TestClass(
