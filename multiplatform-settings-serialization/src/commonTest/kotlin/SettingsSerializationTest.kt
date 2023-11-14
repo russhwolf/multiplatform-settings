@@ -84,8 +84,6 @@ class SettingsSerializationTest {
         val settings: Settings = MapSettings(
             "foo.bar" to "hello",
             "foo.baz" to 43110,
-            "foo2.bar" to "hello",
-            "foo2.baz" to 43110,
             "herp" to "derp",
             "list.0" to 1,
             "list.1" to 2,
@@ -108,8 +106,6 @@ class SettingsSerializationTest {
         val settings: Settings = MapSettings(
             "foo.bar" to "hello",
             "foo.baz" to 43110,
-            "foo2.bar" to "hello",
-            "foo2.baz" to 43110,
             "herp" to "derp",
             "list.0" to 1,
             "list.1" to 2,
