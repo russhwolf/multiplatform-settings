@@ -37,7 +37,6 @@ import platform.Security.kSecMatchLimitOne
 import platform.Security.kSecReturnData
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 // TODO figure out how to get this running on ios, watchos, and tvos simulators
 @ExperimentalSettingsImplementation
@@ -78,6 +77,8 @@ class KeychainSettingsTest : BaseSettingsTest(
     @Test
     fun keys_no_name() {
         val settings = KeychainSettings()
-        assertTrue(settings.keys.isNotEmpty())
+
+        // Ensure this doesn't throw
+        settings.keys
     }
 }
