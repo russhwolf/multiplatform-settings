@@ -130,14 +130,16 @@ public class KeychainSettings @ExperimentalSettingsApi constructor(vararg defaul
                 return emptySet()
             }
 
-            @Suppress("RemoveRedundantCallsOfConversionMethods") // IDE thinks CFIndex == Int but might be Long
-            val list = List(CFArrayGetCount(attributes.value).toInt()) { i ->
-                val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.toCFIndex())?.reinterpret()
-                val cfKey: CFStringRef? = CFDictionaryGetValue(item, kSecAttrAccount)?.reinterpret()
-                val nsKey = CFBridgingRelease(cfKey) as NSString
-                nsKey.toKString()
+            return buildSet {
+                for (i in 0..<CFArrayGetCount(attributes.value)) {
+                    val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.toCFIndex())?.reinterpret()
+                    val cfKey: CFStringRef? = CFDictionaryGetValue(item, kSecAttrAccount)?.reinterpret()
+                    if (cfKey != null) {
+                        val nsKey = CFBridgingRelease(cfKey) as NSString
+                        add(nsKey.toKString())
+                    }
+                }
             }
-            return list.toSet()
         }
 
     public override val size: Int get() = keys.size

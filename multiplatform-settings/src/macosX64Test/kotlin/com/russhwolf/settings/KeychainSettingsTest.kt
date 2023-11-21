@@ -73,4 +73,12 @@ class KeychainSettingsTest : BaseSettingsTest(
         }
         assertEquals("value", value)
     }
+
+    @Test
+    fun keys_no_name() {
+        val settings = KeychainSettings()
+
+        // Ensure this doesn't throw
+        settings.keys
+    }
 }
