@@ -1,5 +1,10 @@
 # Changelog #
 
+## v1.1.1 *(2023-11-20)* ##
+
+- Update to Kotlin 1.9.20
+- Fix a crash that could happen when using the no-argument `KeychainSettings` constructor (#175)
+
 ## v1.1.0 *(2023-10-09)* ##
 
 - Update to Kotlin 1.9.10, Gradle 8.3, and Android Gradle Plugin 8.1.2
