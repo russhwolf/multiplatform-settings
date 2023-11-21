@@ -2,7 +2,9 @@
 
 ## v1.2.0 *(2023-12-XX)* ##
 
-- 
+- Add alternative APIs to `multiplatform-settings-serialization` that don't require manually passing a serializer (#172)
+- Make `SettingsInitializer` public so it's easier to configure custom android.startup initialization or write tests
+  when using `multiplatform-settings-no-arg`
 
 ## v1.1.1 *(2023-11-20)* ##
 
