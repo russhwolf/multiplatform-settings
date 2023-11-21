@@ -17,7 +17,7 @@
 @file:Suppress("KDocMissingDocumentation")
 
 object Versions {
-    const val multiplatformSettings = "1.1.1"
+    const val multiplatformSettings = "1.2.0"
 
     const val minSdk = 15
     const val compileSdk = 34

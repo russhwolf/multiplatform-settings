@@ -48,7 +48,7 @@ Then, simply add the dependency to your common source-set dependencies
 commonMain {
     dependencies {
         // ...
-        implementation("com.russhwolf:multiplatform-settings:1.1.1")
+        implementation("com.russhwolf:multiplatform-settings:1.2.0")
     }
 }
 ``` 
@@ -185,7 +185,7 @@ the `multiplatform-settings-no-arg` gradle dependency. This exports `multiplatfo
 you can use it as a replacement for that default dependency.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
+implementation("com.russhwolf:multiplatform-settings-no-arg:1.2.0")
 ```
 
 Then from common code, you can write
@@ -317,7 +317,7 @@ garbage-collected and stop sending updates.
 A testing dependency is available to aid in testing code that interacts with this library.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-test:1.1.1")
+implementation("com.russhwolf:multiplatform-settings-test:1.2.0")
 ```    
 
 This includes a `MapSettings` implementation of the `Settings` interface, which is backed by an in-memory `MutableMap`
@@ -348,7 +348,7 @@ them, to help remove that experimental status.
 A `kotlinx-serialization` integration exists so it's easier to save non-primitive data
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-serialization:1.1.1")
+implementation("com.russhwolf:multiplatform-settings-serialization:1.2.0")
 ```
 
 This essentially uses the `Settings` store as a serialization format. Thus for a serializable class
@@ -401,7 +401,7 @@ Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalS
 A separate `multiplatform-settings-coroutines` dependency includes various coroutine APIs.
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-coroutines:1.1.1")
+implementation("com.russhwolf:multiplatform-settings-coroutines:1.2.0")
 ```
 
 This adds flow extensions for all types which use the listener APIs internally.
@@ -445,7 +445,7 @@ An implementation of `FlowSettings` on the Android exists in the `multiplatform-
 on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
 
 ```kotlin
-implementation("com.russhwolf:multiplatform-settings-datastore:1.1.1")
+implementation("com.russhwolf:multiplatform-settings-datastore:1.2.0")
 ```
 
 This provides a `DataStoreSettings` class
