@@ -37,7 +37,11 @@ public actual fun Settings(): Settings {
     return SharedPreferencesSettings(delegate)
 }
 
-internal class SettingsInitializer : Initializer<Context> {
+/**
+ * Initializer component to pass a context to the no-arg `Settings()` call on Android. Pass a `Context` to  `create()`
+ * if you're doing custom initialization logic or need to call `Settings()` from tests.
+ */
+public class SettingsInitializer : Initializer<Context> {
     override fun create(context: Context): Context = context.applicationContext.also { appContext = it }
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }
