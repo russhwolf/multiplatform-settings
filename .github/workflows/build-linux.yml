@@ -24,6 +24,10 @@ jobs:
           java-version: 17
           distribution: corretto
 
+      - name: LMDB install
+        run: |
+          sudo apt-get install liblmdb-dev
+
       - name: Linux build
         run: |
           ./gradlew build publishToMavenLocal --no-daemon --stacktrace
