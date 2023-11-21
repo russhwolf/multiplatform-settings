@@ -24,6 +24,14 @@ jobs:
           java-version: 17
           distribution: corretto
 
+      - name: Cache konan directory
+        uses: actions/cache@v3
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ hashFiles('*.gradle.kts', 'buildSrc/*') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
+
       - name: Windows build
         run: |
           ./gradlew mingwX64Test publishKotlinMultiplatformPublicationToMavenLocal publishMingwX64PublicationToMavenLocal --no-daemon --stacktrace
