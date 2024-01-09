@@ -15,38 +15,14 @@
  */
 
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.kotlin.plugin.serialization") version Versions.serializationPlugin
-    id("org.jetbrains.dokka")
-    `maven-publish`
-    signing
+    id("standard-configuration")
+    id("module-publication")
+    alias(libs.plugins.kotlin.serialization)
 }
 
-standardConfiguration(
-    "android",
-    "iosArm32",
-    "iosArm64",
-    "iosSimulatorArm64",
-    "iosX64",
-    "js",
-    "jvm",
-    "linuxArm32Hfp",
-    "linuxArm64",
-    "linuxX64",
-    "macosArm64",
-    "macosX64",
-    "mingwX64",
-    "mingwX86",
-    "tvosArm64",
-    "tvosSimulatorArm64",
-    "tvosX64",
-    "watchosArm32",
-    "watchosArm64",
-    "watchosSimulatorArm64",
-    "watchosX64",
-    "watchosX86"
-)
+standardConfig {
+    defaultTargets()
+}
 
 kotlin {
     sourceSets {
@@ -54,44 +30,15 @@ kotlin {
             dependencies {
                 implementation(project(":multiplatform-settings"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.serializationRuntime}")
+                implementation(libs.kotlinx.serialization.core)
             }
         }
+
         commonTest {
             dependencies {
-                implementation(kotlin("test"))
+                implementation(libs.kotlin.test)
 
                 implementation(project(":multiplatform-settings-test"))
-            }
-        }
-
-        val androidMain by getting {
-            dependencies {
-            }
-        }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation("junit:junit:${Versions.junit}")
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation("junit:junit:${Versions.junit}")
-            }
-        }
-
-        val jsMain by getting {
-            dependencies {
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
             }
         }
     }

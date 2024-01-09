@@ -5,6 +5,9 @@
 - Add alternative APIs to `multiplatform-settings-serialization` that don't require manually passing a serializer (#172)
 - Make `SettingsInitializer` public so it's easier to configure custom android.startup initialization or write tests
   when using `multiplatform-settings-no-arg`
+- Add all supported targets to `multiplatform-settings-coroutines` and `multiplatform-settings-serialization`.
+- Modernize gradle and publication config. This shouldn't impact consumers, but please file an issue if you notice
+  anything missing.
 
 ## v1.1.1 *(2023-11-20)* ##
 

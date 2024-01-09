@@ -17,86 +17,40 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
  */
 
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.dokka")
-    `maven-publish`
-    signing
+    id("standard-configuration")
+    id("module-publication")
 }
 
-standardConfiguration(
-    "android",
-    "iosArm32",
-    "iosArm64",
-    "iosSimulatorArm64",
-    "iosX64",
-    "js",
-    "jvm",
-    "linuxX64",
-    "macosArm64",
-    "macosX64",
-    "mingwX64",
-    "tvosArm64",
-    "tvosSimulatorArm64",
-    "tvosX64",
-    "watchosArm32",
-    "watchosArm64",
-    "watchosSimulatorArm64",
-    "watchosX64",
-    "watchosX86"
-)
+standardConfig {
+    defaultTargets()
+}
+
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(project(":multiplatform-settings"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(project(":tests"))
                 implementation(project(":multiplatform-settings-test"))
 
-                implementation(kotlin("test"))
+                implementation(libs.kotlin.test)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
-                implementation("app.cash.turbine:turbine:${Versions.turbine}")
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.turbine)
             }
         }
 
-        val androidMain by getting {
-            dependencies {
-            }
-        }
         val androidUnitTest by getting {
             dependencies {
-                implementation("junit:junit:${Versions.junit}")
-                implementation("androidx.test:core:${Versions.androidxTest}")
-                implementation("androidx.test.ext:junit:${Versions.androidxTestExt}")
-                implementation("org.robolectric:robolectric:${Versions.robolectric}")
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-
-            implementation("junit:junit:${Versions.junit}")
-            }
-        }
-
-        val jsMain by getting {
-            dependencies {
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
+                implementation(libs.androidx.test.core)
+                implementation(libs.androidx.test.junit)
+                implementation(libs.robolectric)
             }
         }
     }

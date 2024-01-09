@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Russell Wolf
+ * Copyright 2024 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.9.20"
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
-repositories {
-    google()
-    gradlePluginPortal()
-    mavenCentral()
-}
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 
-dependencies {
-    implementation(kotlin("gradle-plugin"))
-    implementation("com.android.tools.build:gradle:8.1.2")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.0")
-    implementation(kotlin("compiler-embeddable"))
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }

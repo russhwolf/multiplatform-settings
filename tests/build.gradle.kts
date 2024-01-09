@@ -14,39 +14,38 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
-    id("com.android.library")
-    kotlin("multiplatform")
+    id("standard-configuration")
 }
 
-standardConfiguration(isTestModule = true)
+standardConfig {
+    defaultTargets()
+}
 
 kotlin {
+    explicitApi = ExplicitApiMode.Disabled
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
+
     sourceSets {
         commonMain {
             dependencies {
                 implementation(project(":multiplatform-settings"))
 
-                implementation(kotlin("test"))
+                implementation(libs.kotlin.test)
             }
         }
 
-        val androidMain by getting {
+        val jvmCommonMain by getting {
             dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:${Versions.junit}")
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:${Versions.junit}")
-            }
-        }
-
-        val jsMain by getting {
-            dependencies {
+                implementation(libs.kotlin.test.junit)
+                implementation(libs.junit)
             }
         }
     }

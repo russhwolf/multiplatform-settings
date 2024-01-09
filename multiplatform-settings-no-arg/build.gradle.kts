@@ -1,7 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import org.jetbrains.kotlin.konan.target.Family.MINGW
-
 /*
  * Copyright 2020 Russell Wolf
  *
@@ -18,38 +14,43 @@ import org.jetbrains.kotlin.konan.target.Family.MINGW
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.konan.target.Family.MINGW
+
 plugins {
-    id("com.android.library")
-    kotlin("multiplatform")
-    id("org.jetbrains.dokka")
-    `maven-publish`
-    signing
+    id("standard-configuration")
+    id("module-publication")
 }
 
-standardConfiguration(
-    "android",
-    "iosArm32",
-    "iosArm64",
-    "iosSimulatorArm64",
-    "iosX64",
-    "js",
-    "jvm",
-    "macosArm64",
-    "macosX64",
-    "mingwX64",
-    "tvosArm64",
-    "tvosSimulatorArm64",
-    "tvosX64",
-    "wasmJs",
-    "watchosArm32",
-    "watchosArm64",
-    "watchosDeviceArm64",
-    "watchosSimulatorArm64",
-    "watchosX64",
-    "watchosX86"
-)
-
 kotlin {
+    androidTarget {
+        publishAllLibraryVariants()
+    }
+    iosArm64()
+    iosSimulatorArm64()
+    iosX64()
+    js {
+        browser()
+    }
+    jvm()
+    macosArm64()
+    macosX64()
+    mingwX64()
+    tvosArm64()
+    tvosSimulatorArm64()
+    tvosX64()
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
+    watchosArm32()
+    watchosArm64()
+    watchosDeviceArm64()
+    watchosSimulatorArm64()
+    watchosX64()
+
     targets.withType<KotlinNativeTarget>().matching { it.konanTarget.family == MINGW }.configureEach {
         // WindowsNoArgTest will check that we use this as our parent registry key
         binaries.getTest(NativeBuildType.DEBUG).baseName = "com.russhwolf.settings.noarg.test"
@@ -63,47 +64,24 @@ kotlin {
         }
         commonTest {
             dependencies {
-                implementation(kotlin("test"))
+                implementation(libs.kotlin.test)
 
                 implementation(project(":tests"))
             }
         }
 
-
-        val androidMain by getting {
+        androidMain {
             dependencies {
-                implementation("androidx.startup:startup-runtime:${Versions.androidxStartup}")
+                implementation(libs.androidx.startup.runtime)
             }
         }
         val androidUnitTest by getting {
             dependencies {
-                implementation("junit:junit:${Versions.junit}")
-                implementation("androidx.test:core:${Versions.androidxTest}")
-                implementation("androidx.test.ext:junit:${Versions.androidxTestExt}")
-                implementation("org.robolectric:robolectric:${Versions.robolectric}")
+                implementation(libs.androidx.test.core)
+                implementation(libs.androidx.test.junit)
+                implementation(libs.robolectric)
 
-                implementation("androidx.preference:preference:${Versions.androidxPreference}")
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-            }
-        }
-        val jvmTest by getting {
-            languageSettings.optIn("com.russhwolf.settings.ExperimentalSettingsImplementation")
-            dependencies {
-                implementation("junit:junit:${Versions.junit}")
-            }
-        }
-
-        val jsMain by getting {
-            dependencies {
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
+                implementation(libs.androidx.preference)
             }
         }
     }

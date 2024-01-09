@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.id) {
-                "com.android.library" -> useModule("com.android.tools.build:gradle:${requested.version}")
-                "binary-compatibility-validator" -> useModule("org.jetbrains.kotlinx:binary-compatibility-validator:${requested.version}")
-            }
-        }
+    includeBuild("convention-plugins")
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
     }
+}
 
+dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://plugins.gradle.org/m2/")
     }
 }
+
 rootProject.name = "MultiplatformSettings"
 
 include(

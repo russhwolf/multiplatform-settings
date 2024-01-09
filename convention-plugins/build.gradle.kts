@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Russell Wolf
+ * Copyright 2024 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    repositories {
-        google()
-        gradlePluginPortal()
-        mavenCentral()
-    }
+
+plugins {
+    `kotlin-dsl`
+}
+
+dependencies {
+    implementation(libs.kotlin.gradle)
+    implementation(libs.kotlin.compiler.embeddable)
+    implementation(libs.android.gradle)
+
+    // h4x so we can access version catalog from convention script
+    // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
