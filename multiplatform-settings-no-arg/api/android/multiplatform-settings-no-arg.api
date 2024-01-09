@@ -2,6 +2,13 @@ public final class com/russhwolf/settings/NoArgKt {
 	public static final fun Settings ()Lcom/russhwolf/settings/Settings;
 }
 
+public final class com/russhwolf/settings/SettingsInitializer : androidx/startup/Initializer {
+	public fun <init> ()V
+	public fun create (Landroid/content/Context;)Landroid/content/Context;
+	public synthetic fun create (Landroid/content/Context;)Ljava/lang/Object;
+	public fun dependencies ()Ljava/util/List;
+}
+
 public final class com/russhwolf/settings/no_arg/BuildConfig {
 	public static final field BUILD_TYPE Ljava/lang/String;
 	public static final field DEBUG Z
