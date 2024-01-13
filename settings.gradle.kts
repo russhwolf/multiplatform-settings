@@ -33,6 +33,7 @@ rootProject.name = "MultiplatformSettings"
 
 include(
     ":multiplatform-settings",
+    ":multiplatform-settings:keychain-tests",
     ":multiplatform-settings-test",
     ":multiplatform-settings-no-arg",
     ":multiplatform-settings-coroutines",
