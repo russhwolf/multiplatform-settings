@@ -55,11 +55,14 @@ kotlin {
         }
     }
 }
-tasks.create<Exec>("launchIosSimulator") {
-    commandLine("open", "-a", "Simulator")
+if ("mac" in System.getProperties()["os.name"].toString().lowercase()) {
+    tasks.create<Exec>("launchIosSimulator") {
+        commandLine("open", "-a", "Simulator")
+    }
+
+    tasks.getByName("iosX64Test").dependsOn("launchIosSimulator")
 }
 tasks.withType<KotlinNativeSimulatorTest>().getByName("iosX64Test") {
     standalone.set(false)
     device.set("booted")
-    dependsOn("launchIosSimulator")
 }
