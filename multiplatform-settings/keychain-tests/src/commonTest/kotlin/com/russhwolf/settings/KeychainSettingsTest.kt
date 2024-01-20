@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalForeignApi::class)
+
 package com.russhwolf.settings
 
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.MemScope
 import kotlinx.cinterop.alloc
+import kotlinx.cinterop.allocArrayOf
+import kotlinx.cinterop.convert
+import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
+import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.value
+import platform.CoreFoundation.CFDictionaryCreate
+import platform.CoreFoundation.CFDictionaryRef
+import platform.CoreFoundation.CFStringRef
+import platform.CoreFoundation.CFTypeRef
 import platform.CoreFoundation.CFTypeRefVar
+import platform.CoreFoundation.kCFAllocatorDefault
 import platform.CoreFoundation.kCFBooleanTrue
 import platform.Foundation.CFBridgingRelease
+import platform.Foundation.CFBridgingRetain
 import platform.Foundation.NSData
 import platform.Foundation.NSString
 import platform.Foundation.NSUTF8StringEncoding
@@ -38,7 +51,6 @@ import platform.Security.kSecReturnData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-// TODO figure out how to get this running on ios, watchos, and tvos simulators
 @ExperimentalSettingsImplementation
 @OptIn(ExperimentalForeignApi::class)
 class KeychainSettingsTest : BaseSettingsTest(
@@ -82,3 +94,49 @@ class KeychainSettingsTest : BaseSettingsTest(
         settings.keys
     }
 }
+
+// Copy/paste utilities since we can't access internals now that this is a separate module
+private inline fun MemScope.cfDictionaryOf(vararg items: Pair<CFStringRef?, CFTypeRef?>): CFDictionaryRef? =
+    cfDictionaryOf(mapOf(*items))
+
+private inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>): CFDictionaryRef? {
+    val size = map.size
+    val keys = allocArrayOf(*map.keys.toTypedArray())
+    val values = allocArrayOf(*map.values.toTypedArray())
+    return CFDictionaryCreate(
+        kCFAllocatorDefault,
+        keys.reinterpret(),
+        values.reinterpret(),
+        size.convert(),
+        null,
+        null
+    )
+}
+
+// Turn casts into dot calls for better readability
+@Suppress("CAST_NEVER_SUCCEEDS")
+private inline fun String.toNSString() = this as NSString
+
+@Suppress("CAST_NEVER_SUCCEEDS")
+private inline fun NSString.toKString() = this as String
+
+private inline fun <T> cfRetain(value: Any?, block: MemScope.(CFTypeRef?) -> T): T = memScoped {
+    val cfValue = CFBridgingRetain(value)
+    return try {
+        block(cfValue)
+    } finally {
+        CFBridgingRelease(cfValue)
+    }
+}
+
+private inline fun <T> cfRetain(value1: Any?, value2: Any?, block: MemScope.(CFTypeRef?, CFTypeRef?) -> T): T =
+    memScoped {
+        val cfValue1 = CFBridgingRetain(value1)
+        val cfValue2 = CFBridgingRetain(value2)
+        return try {
+            block(cfValue1, cfValue2)
+        } finally {
+            CFBridgingRelease(cfValue1)
+            CFBridgingRelease(cfValue2)
+        }
+    }
