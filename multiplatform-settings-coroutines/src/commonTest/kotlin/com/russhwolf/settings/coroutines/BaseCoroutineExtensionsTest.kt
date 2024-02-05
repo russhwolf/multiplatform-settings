@@ -20,23 +20,28 @@ import app.cash.turbine.test
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalSettingsApi::class)
-abstract class BaseCoroutineExtensionsTest {
+abstract class BaseCoroutineExtensionsTest(
+    private val syncListeners: () -> Unit = {}
+) {
 
     abstract val settings: ObservableSettings
 
-    private fun <T> flowTest(
+    private suspend fun <T> turbineTest(
         flowBuilder: ObservableSettings.(String, T) -> Flow<T>,
         setter: Settings.(String, T) -> Unit,
         defaultValue: T,
         firstValue: T,
         secondValue: T
-    ) = runTest {
+    ) {
         settings.setter("foo", firstValue)
         settings.flowBuilder("foo", defaultValue)
             .test {
@@ -50,9 +55,52 @@ abstract class BaseCoroutineExtensionsTest {
                 assertEquals(secondValue, awaitItem())
                 expectNoEvents()
                 settings.remove("foo")
-                assertEquals(defaultValue, awaitItem())
+                if (secondValue != defaultValue) { // Usually true, but false for nonnull bool
+                    assertEquals(defaultValue, awaitItem())
+                }
                 expectNoEvents()
             }
+    }
+
+    private fun <T> flowTest(
+        flowBuilder: ObservableSettings.(String, T) -> Flow<T>,
+        setter: Settings.(String, T) -> Unit,
+        defaultValue: T,
+        firstValue: T,
+        secondValue: T
+    ) = runTest {
+        turbineTest(flowBuilder, setter, defaultValue, firstValue, secondValue)
+    }
+
+    private fun <T> stateFlowTest(
+        stateFlowBuilder: ObservableSettings.(CoroutineScope, String, T) -> StateFlow<T>,
+        setter: Settings.(String, T) -> Unit,
+        defaultValue: T,
+        firstValue: T,
+        secondValue: T
+    ) = runTest {
+        // We want StataFlow updates in unconfined dispatcher, so we don't need to wait for updates before asserting.
+        // If everything runs in UnconfinedTestDispatcher, we deadlock, so just use unconfined for creating StateFlows
+        val stateFlowScope = CoroutineScope(UnconfinedTestDispatcher(testScheduler))
+        val stateFlow = settings.stateFlowBuilder(stateFlowScope, "foo", defaultValue)
+        assertEquals(defaultValue, stateFlow.value)
+        settings.setter("foo", firstValue)
+        syncListeners()
+        assertEquals(firstValue, stateFlow.value)
+        settings.setter("foo", secondValue)
+        syncListeners()
+        assertEquals(secondValue, stateFlow.value)
+        settings.remove("foo")
+        syncListeners()
+        assertEquals(defaultValue, stateFlow.value)
+
+        turbineTest(
+            { key, defaultValue -> stateFlowBuilder(stateFlowScope, key, defaultValue) },
+            setter,
+            defaultValue,
+            firstValue,
+            secondValue
+        )
     }
 
     private inline fun <reified T : Any> nullableFlowTest(
@@ -62,6 +110,19 @@ abstract class BaseCoroutineExtensionsTest {
         secondValue: T
     ) = flowTest(
         flowBuilder = { key, _ -> flowBuilder(key) },
+        setter = { key, value -> if (value != null) setter(key, value) else remove(key) },
+        defaultValue = null,
+        firstValue = firstValue,
+        secondValue = secondValue
+    )
+
+    private inline fun <reified T : Any> nullableStateFlowTest(
+        crossinline stateFlowBuilder: ObservableSettings.(CoroutineScope, String) -> StateFlow<T?>,
+        crossinline setter: Settings.(String, T) -> Unit,
+        firstValue: T,
+        secondValue: T
+    ) = stateFlowTest(
+        stateFlowBuilder = { coroutineScope, key, _ -> stateFlowBuilder(coroutineScope, key) },
         setter = { key, value -> if (value != null) setter(key, value) else remove(key) },
         defaultValue = null,
         firstValue = firstValue,
@@ -165,6 +226,108 @@ abstract class BaseCoroutineExtensionsTest {
     @Test
     fun booleanOrNullFlowTest() = nullableFlowTest(
         flowBuilder = ObservableSettings::getBooleanOrNullFlow,
+        setter = Settings::putBoolean,
+        firstValue = true,
+        secondValue = false
+    )
+
+    @Test
+    fun intStateFlowTest() = stateFlowTest(
+        stateFlowBuilder = ObservableSettings::getIntStateFlow,
+        setter = Settings::putInt,
+        defaultValue = 0,
+        firstValue = 3,
+        secondValue = 8
+    )
+
+    @Test
+    fun longStateFlowTest() = stateFlowTest(
+        stateFlowBuilder = ObservableSettings::getLongStateFlow,
+        setter = Settings::putLong,
+        defaultValue = 0L,
+        firstValue = 3L,
+        secondValue = 8L
+    )
+
+    @Test
+    fun stringStateFlowTest() = stateFlowTest(
+        stateFlowBuilder = ObservableSettings::getStringStateFlow,
+        setter = Settings::putString,
+        defaultValue = "",
+        firstValue = "bar",
+        secondValue = "baz"
+    )
+
+    @Test
+    fun floatStateFlowTest() = stateFlowTest(
+        stateFlowBuilder = ObservableSettings::getFloatStateFlow,
+        setter = Settings::putFloat,
+        defaultValue = 0f,
+        firstValue = 3f,
+        secondValue = 8f
+    )
+
+    @Test
+    fun doubleStateFlowTest() = stateFlowTest(
+        stateFlowBuilder = ObservableSettings::getDoubleStateFlow,
+        setter = Settings::putDouble,
+        defaultValue = 0.0,
+        firstValue = 3.0,
+        secondValue = 8.0
+    )
+
+    @Test
+    fun booleanStateFlowTest() = stateFlowTest(
+        stateFlowBuilder = ObservableSettings::getBooleanStateFlow,
+        setter = Settings::putBoolean,
+        defaultValue = false,
+        firstValue = true,
+        secondValue = false
+    )
+
+    @Test
+    fun intOrNullStateFlowTest() = nullableStateFlowTest(
+        stateFlowBuilder = ObservableSettings::getIntOrNullStateFlow,
+        setter = Settings::putInt,
+        firstValue = 3,
+        secondValue = 8
+    )
+
+    @Test
+    fun longOrNullStateFlowTest() = nullableStateFlowTest(
+        stateFlowBuilder = ObservableSettings::getLongOrNullStateFlow,
+        setter = Settings::putLong,
+        firstValue = 3L,
+        secondValue = 8L
+    )
+
+    @Test
+    fun stringOrNullStateFlowTest() = nullableStateFlowTest(
+        stateFlowBuilder = ObservableSettings::getStringOrNullStateFlow,
+        setter = Settings::putString,
+        firstValue = "bar",
+        secondValue = "baz"
+    )
+
+    @Test
+    fun floatOrNullStateFlowTest() = nullableStateFlowTest(
+        stateFlowBuilder = ObservableSettings::getFloatOrNullStateFlow,
+        setter = Settings::putFloat,
+        firstValue = 3f,
+        secondValue = 8f
+    )
+
+    @Test
+    fun doubleOrNullStateFlowTest() = nullableStateFlowTest(
+        stateFlowBuilder = ObservableSettings::getDoubleOrNullStateFlow,
+        setter = Settings::putDouble,
+        firstValue = 3.0,
+        secondValue = 8.0
+    )
+
+    @Test
+    fun booleanOrNullStateFlowTest() = nullableStateFlowTest(
+        stateFlowBuilder = ObservableSettings::getBooleanOrNullStateFlow,
         setter = Settings::putBoolean,
         firstValue = true,
         secondValue = false

@@ -20,33 +20,42 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.stateIn
 
 @ExperimentalSettingsApi
-private inline fun <T> ObservableSettings.createFlow(
+private inline fun <T> ObservableSettings.createStateFlow(
+    coroutineScope: CoroutineScope,
     key: String,
     defaultValue: T,
     crossinline getter: Settings.(String, T) -> T,
     crossinline addListener: ObservableSettings.(String, T, (T) -> Unit) -> SettingsListener
-): Flow<T> = callbackFlow {
-    send(getter(key, defaultValue))
+): StateFlow<T> = callbackFlow {
     val listener = addListener(key, defaultValue) {
         trySend(it)
     }
     awaitClose {
         listener.deactivate()
     }
-}
+}.stateIn(coroutineScope, SharingStarted.Eagerly, getter(key, defaultValue))
 
 @ExperimentalSettingsApi
-private inline fun <T> ObservableSettings.createNullableFlow(
+private inline fun <T> ObservableSettings.createNullableStateFlow(
+    coroutineScope: CoroutineScope,
     key: String,
     crossinline getter: Settings.(String) -> T?,
     crossinline addListener: ObservableSettings.(String, (T?) -> Unit) -> SettingsListener
-): Flow<T?> =
-    createFlow<T?>(key, null, { it, _ -> getter(it) }, { it, _, callback -> addListener(it, callback) })
+): StateFlow<T?> =
+    createStateFlow<T?>(
+        coroutineScope,
+        key,
+        null,
+        { it, _ -> getter(it) },
+        { it, _, callback -> addListener(it, callback) })
 
 /**
  * Create a new flow, based on observing the given [key] as an `Int`. This flow will immediately emit the current
@@ -54,8 +63,12 @@ private inline fun <T> ObservableSettings.createNullableFlow(
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int): Flow<Int> =
-    createFlow(key, defaultValue, Settings::getInt, ObservableSettings::addIntListener)
+public fun ObservableSettings.getIntStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String,
+    defaultValue: Int
+): StateFlow<Int> =
+    createStateFlow(coroutineScope, key, defaultValue, Settings::getInt, ObservableSettings::addIntListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a `Long`. This flow will immediately emit the current
@@ -63,8 +76,12 @@ public fun ObservableSettings.getIntFlow(key: String, defaultValue: Int): Flow<I
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long): Flow<Long> =
-    createFlow(key, defaultValue, Settings::getLong, ObservableSettings::addLongListener)
+public fun ObservableSettings.getLongStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String,
+    defaultValue: Long
+): StateFlow<Long> =
+    createStateFlow(coroutineScope, key, defaultValue, Settings::getLong, ObservableSettings::addLongListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a `String`. This flow will immediately emit the current
@@ -72,8 +89,12 @@ public fun ObservableSettings.getLongFlow(key: String, defaultValue: Long): Flow
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getStringFlow(key: String, defaultValue: String): Flow<String> =
-    createFlow(key, defaultValue, Settings::getString, ObservableSettings::addStringListener)
+public fun ObservableSettings.getStringStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String,
+    defaultValue: String
+): StateFlow<String> =
+    createStateFlow(coroutineScope, key, defaultValue, Settings::getString, ObservableSettings::addStringListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a `Float`. This flow will immediately emit the current
@@ -81,8 +102,12 @@ public fun ObservableSettings.getStringFlow(key: String, defaultValue: String): 
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
-    createFlow(key, defaultValue, Settings::getFloat, ObservableSettings::addFloatListener)
+public fun ObservableSettings.getFloatStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String,
+    defaultValue: Float
+): StateFlow<Float> =
+    createStateFlow(coroutineScope, key, defaultValue, Settings::getFloat, ObservableSettings::addFloatListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a `Double`. This flow will immediately emit the current
@@ -90,8 +115,12 @@ public fun ObservableSettings.getFloatFlow(key: String, defaultValue: Float): Fl
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
-    createFlow(key, defaultValue, Settings::getDouble, ObservableSettings::addDoubleListener)
+public fun ObservableSettings.getDoubleStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String,
+    defaultValue: Double
+): StateFlow<Double> =
+    createStateFlow(coroutineScope, key, defaultValue, Settings::getDouble, ObservableSettings::addDoubleListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a `Boolean`. This flow will immediately emit the current
@@ -99,8 +128,12 @@ public fun ObservableSettings.getDoubleFlow(key: String, defaultValue: Double): 
  * [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =
-    createFlow(key, defaultValue, Settings::getBoolean, ObservableSettings::addBooleanListener)
+public fun ObservableSettings.getBooleanStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String,
+    defaultValue: Boolean
+): StateFlow<Boolean> =
+    createStateFlow(coroutineScope, key, defaultValue, Settings::getBoolean, ObservableSettings::addBooleanListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a nullable `Int`. This flow will immediately emit the
@@ -108,8 +141,8 @@ public fun ObservableSettings.getBooleanFlow(key: String, defaultValue: Boolean)
  * `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getIntOrNullFlow(key: String): Flow<Int?> =
-    createNullableFlow(key, Settings::getIntOrNull, ObservableSettings::addIntOrNullListener)
+public fun ObservableSettings.getIntOrNullStateFlow(coroutineScope: CoroutineScope, key: String): StateFlow<Int?> =
+    createNullableStateFlow(coroutineScope, key, Settings::getIntOrNull, ObservableSettings::addIntOrNullListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a nullable `Long`. This flow will immediately emit the
@@ -117,8 +150,8 @@ public fun ObservableSettings.getIntOrNullFlow(key: String): Flow<Int?> =
  * `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getLongOrNullFlow(key: String): Flow<Long?> =
-    createNullableFlow(key, Settings::getLongOrNull, ObservableSettings::addLongOrNullListener)
+public fun ObservableSettings.getLongOrNullStateFlow(coroutineScope: CoroutineScope, key: String): StateFlow<Long?> =
+    createNullableStateFlow(coroutineScope, key, Settings::getLongOrNull, ObservableSettings::addLongOrNullListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a nullable `String`. This flow will immediately emit the
@@ -126,8 +159,11 @@ public fun ObservableSettings.getLongOrNullFlow(key: String): Flow<Long?> =
  * `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getStringOrNullFlow(key: String): Flow<String?> =
-    createNullableFlow(key, Settings::getStringOrNull, ObservableSettings::addStringOrNullListener)
+public fun ObservableSettings.getStringOrNullStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String
+): StateFlow<String?> =
+    createNullableStateFlow(coroutineScope, key, Settings::getStringOrNull, ObservableSettings::addStringOrNullListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a nullable `Float`. This flow will immediately emit the
@@ -135,8 +171,8 @@ public fun ObservableSettings.getStringOrNullFlow(key: String): Flow<String?> =
  * `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getFloatOrNullFlow(key: String): Flow<Float?> =
-    createNullableFlow(key, Settings::getFloatOrNull, ObservableSettings::addFloatOrNullListener)
+public fun ObservableSettings.getFloatOrNullStateFlow(coroutineScope: CoroutineScope, key: String): StateFlow<Float?> =
+    createNullableStateFlow(coroutineScope, key, Settings::getFloatOrNull, ObservableSettings::addFloatOrNullListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a nullable `Double`. This flow will immediately emit the
@@ -144,8 +180,11 @@ public fun ObservableSettings.getFloatOrNullFlow(key: String): Flow<Float?> =
  * `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getDoubleOrNullFlow(key: String): Flow<Double?> =
-    createNullableFlow(key, Settings::getDoubleOrNull, ObservableSettings::addDoubleOrNullListener)
+public fun ObservableSettings.getDoubleOrNullStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String
+): StateFlow<Double?> =
+    createNullableStateFlow(coroutineScope, key, Settings::getDoubleOrNull, ObservableSettings::addDoubleOrNullListener)
 
 /**
  * Create a new flow, based on observing the given [key] as a nullable `Boolean`. This flow will immediately emit the
@@ -153,6 +192,14 @@ public fun ObservableSettings.getDoubleOrNullFlow(key: String): Flow<Double?> =
  * `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
-public fun ObservableSettings.getBooleanOrNullFlow(key: String): Flow<Boolean?> =
-    createNullableFlow(key, Settings::getBooleanOrNull, ObservableSettings::addBooleanOrNullListener)
+public fun ObservableSettings.getBooleanOrNullStateFlow(
+    coroutineScope: CoroutineScope,
+    key: String
+): StateFlow<Boolean?> =
+    createNullableStateFlow(
+        coroutineScope,
+        key,
+        Settings::getBooleanOrNull,
+        ObservableSettings::addBooleanOrNullListener
+    )
 

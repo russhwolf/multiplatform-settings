@@ -18,7 +18,7 @@ public final class com/russhwolf/settings/coroutines/ConvertersKt {
 	public static synthetic fun toSuspendSettings$default (Lcom/russhwolf/settings/Settings;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/russhwolf/settings/coroutines/SuspendSettings;
 }
 
-public final class com/russhwolf/settings/coroutines/CoroutineExtensionsKt {
+public final class com/russhwolf/settings/coroutines/FlowExtensionsKt {
 	public static final fun getBooleanFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;Z)Lkotlinx/coroutines/flow/Flow;
 	public static final fun getBooleanOrNullFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun getDoubleFlow (Lcom/russhwolf/settings/ObservableSettings;Ljava/lang/String;D)Lkotlinx/coroutines/flow/Flow;
@@ -85,6 +85,21 @@ public abstract interface class com/russhwolf/settings/coroutines/FlowSettings :
 }
 
 public final class com/russhwolf/settings/coroutines/FlowSettings$Companion {
+}
+
+public final class com/russhwolf/settings/coroutines/StateFlowExtensionsKt {
+	public static final fun getBooleanOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getBooleanStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Z)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getDoubleOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getDoubleStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;D)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getFloatOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getFloatStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;F)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getIntOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getIntStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;I)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getLongOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getLongStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;J)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getStringOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getStringStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
 }
 
 public abstract interface class com/russhwolf/settings/coroutines/SuspendSettings {
