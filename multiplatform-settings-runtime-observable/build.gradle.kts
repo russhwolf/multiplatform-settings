@@ -1,3 +1,8 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.konan.target.Family
+
 /*
  * Copyright 2019 Russell Wolf
  *
@@ -15,39 +20,38 @@
  */
 
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.dokka")
-    `maven-publish`
-    signing
+    id("standard-configuration")
+    id("module-publication")
 }
 
-standardConfiguration(
-    "android",
-    "iosArm32",
-    "iosArm64",
-    "iosSimulatorArm64",
-    "iosX64",
-    "js",
-    "jvm",
-    "linuxArm32Hfp",
-    "linuxArm64",
-    "linuxX64",
-    "macosArm64",
-    "macosX64",
-    "mingwX64",
-    "mingwX86",
-    "tvosArm64",
-    "tvosSimulatorArm64",
-    "tvosX64",
-    "watchosArm32",
-    "watchosArm64",
-    "watchosSimulatorArm64",
-    "watchosX64",
-    "watchosX86"
-)
-
 kotlin {
+
+    androidTarget {
+        publishAllLibraryVariants()
+    }
+    iosArm64()
+    iosSimulatorArm64()
+    iosX64()
+    js {
+        browser()
+    }
+    jvm()
+    macosArm64()
+    macosX64()
+    mingwX64()
+    tvosArm64()
+    tvosSimulatorArm64()
+    tvosX64()
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
+    watchosArm32()
+    watchosArm64()
+    watchosDeviceArm64()
+    watchosSimulatorArm64()
+    watchosX64()
+
     sourceSets {
         commonMain {
             dependencies {
@@ -59,7 +63,7 @@ kotlin {
                 implementation(project(":multiplatform-settings-test"))
                 implementation(project(":tests"))
 
-                implementation(kotlin("test"))
+                implementation(libs.kotlin.test)
             }
         }
     }
