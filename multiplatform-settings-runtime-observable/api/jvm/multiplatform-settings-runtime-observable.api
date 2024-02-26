@@ -1,0 +1,5 @@
+public final class com/russhwolf/settings/serialization/ConverterKt {
+	public static final fun toRuntimeObservable (Lcom/russhwolf/settings/Settings;Z)Lcom/russhwolf/settings/ObservableSettings;
+	public static synthetic fun toRuntimeObservable$default (Lcom/russhwolf/settings/Settings;ZILjava/lang/Object;)Lcom/russhwolf/settings/ObservableSettings;
+}
+
