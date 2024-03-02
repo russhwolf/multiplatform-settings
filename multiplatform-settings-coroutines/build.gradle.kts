@@ -39,6 +39,7 @@ standardConfiguration(
     "tvosArm64",
     "tvosSimulatorArm64",
     "tvosX64",
+//    "wasmJs", // Blocked by turbin
     "watchosArm32",
     "watchosArm64",
     "watchosSimulatorArm64",
