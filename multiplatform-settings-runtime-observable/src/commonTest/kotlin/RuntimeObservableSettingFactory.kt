@@ -1,3 +1,7 @@
+import com.russhwolf.settings.MapSettings
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.serialization.toRuntimeObservable
+
 /*
  * Copyright 2024 Russell Wolf
  *
@@ -14,18 +18,12 @@
  * limitations under the License.
  */
 
-package com.russhwolf.settings.serialization
+internal class RuntimeObservableSettingFactory : Settings.Factory {
 
-import com.russhwolf.settings.ObservableSettings
-import com.russhwolf.settings.Settings
-
-/**
- *  Creates a [RuntimeObservableSettingsWrapper] around the [Settings] instance.
- *
- *  If the [this] is already a [ObservableSettings] it doesn't create a
- *  [RuntimeObservableSettingsWrapper] for it and the same instance is returned.
- *
- */
-public fun Settings.toRuntimeObservable(): ObservableSettings =
-    if (this is ObservableSettings) this
-    else RuntimeObservableSettingsWrapper(this)
+    override fun create(name: String?): Settings {
+        // delegating to MapSettings rather than using it directly because MapSettings is already
+        // observable, and delegating to it make the delegate non observable
+        val delegate = object : Settings by MapSettings() {}
+        return delegate.toRuntimeObservable()
+    }
+}

@@ -1,10 +1,14 @@
 import com.russhwolf.settings.BaseSettingsTest
 import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.Settings
+import com.russhwolf.settings.get
+import com.russhwolf.settings.minusAssign
 import com.russhwolf.settings.serialization.toRuntimeObservable
+import com.russhwolf.settings.set
 import kotlin.test.Test
-import kotlin.test.assertIs
+import kotlin.test.assertEquals
 import kotlin.test.assertNotSame
+import kotlin.test.assertNull
 import kotlin.test.assertSame
 
 /*
@@ -29,10 +33,28 @@ class SettingsExtensionTest() : BaseSettingsTest(
     hasNamedInstances = false
 ) {
     @Test
-    fun checkObservableFlagTest() {
-        val delegate = MapSettings()
+    fun extensionObservableInstanceTest() {
 
-        assertSame(delegate, delegate.toRuntimeObservable(true))
-        assertNotSame(delegate, delegate.toRuntimeObservable(false))
+        val observableSetting = MapSettings()
+        val nonObservableSetting = object : Settings by observableSetting {}
+
+        assertSame(observableSetting, observableSetting.toRuntimeObservable())
+        assertNotSame(observableSetting, nonObservableSetting.toRuntimeObservable())
+    }
+
+    @Test
+    fun delegateTest() {
+
+        val delegate = object : Settings by MapSettings() {}
+
+        delegate["key"] = "test_value"
+
+        val runtimeObservable = delegate.toRuntimeObservable()
+
+        assertEquals("test_value", runtimeObservable["key"])
+
+        delegate -= "key"
+
+        assertNull(runtimeObservable.getStringOrNull("key"))
     }
 }
