@@ -1,0 +1,4 @@
+public final class com/russhwolf/settings/serialization/ConverterKt {
+	public static final fun toRuntimeObservable (Lcom/russhwolf/settings/Settings;)Lcom/russhwolf/settings/ObservableSettings;
+}
+
