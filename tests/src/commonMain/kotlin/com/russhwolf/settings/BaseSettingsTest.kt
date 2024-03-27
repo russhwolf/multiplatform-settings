@@ -789,9 +789,7 @@ abstract class BaseSettingsTest(
     }
 
     @Test
-    fun intListener() {
-        typedListenerTest(-1, 1, ObservableSettings::addIntListener)
-    }
+    fun intListener() = typedListenerTest(-1, 1, ObservableSettings::addIntListener)
 
     @Test
     fun intOrNullListener() =

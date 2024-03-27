@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.russhwolf.settings.serialization
+package com.russhwolf.settings.observable
 
+import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
@@ -23,12 +24,27 @@ import com.russhwolf.settings.get
 import kotlin.jvm.JvmInline
 
 /**
- * A wrapper around provided [Settings] instance. It only ensures the callback if the
- * settings are modified through the member functions of [RuntimeObservableSettingsWrapper].
+ * Returns an [ObservableSettings] instance based on this [Settings].
  *
- * If the provided delegate is already
+ * If `this` already implements `ObservableSettings`, the same instance is returned. Otherwise, a wrapper class is
+ * returned which manually invoked callbacks when values are changed.
+ *
+ * WARNING: When the wrapper class is used, changes to the underlying storage will not trigger callbacks unless they
+ * are made through the same `ObservableSettings` instance returned by this function.
  */
-internal class RuntimeObservableSettingsWrapper(
+@ExperimentalSettingsApi
+public fun Settings.makeObservable(): ObservableSettings =
+    if (this is ObservableSettings) {
+        this
+    } else {
+        MakeObservableSettings(this)
+    }
+
+/**
+ * A wrapper around provided [Settings] instance. It only ensures the callback if the
+ * settings are modified through the member functions of [MakeObservableSettings].
+ */
+private class MakeObservableSettings(
     private val delegate: Settings,
 ) : Settings by delegate, ObservableSettings {
 
@@ -210,11 +226,11 @@ internal class RuntimeObservableSettingsWrapper(
 
 
 /**
- *  A handle to a listener instance returned by one of the addListener methods of [RuntimeObservableSettingsWrapper], so it can be
+ *  A handle to a listener instance returned by one of the addListener methods of [MakeObservableSettings], so it can be
  *  deactivated as needed.
  */
 @JvmInline
-internal value class Listener(
+private value class Listener(
     private val removeListener: () -> Unit
 ) : SettingsListener {
 

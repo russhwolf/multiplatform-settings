@@ -1,0 +1,4 @@
+public final class com/russhwolf/settings/observable/MakeObservableSettingsKt {
+	public static final fun makeObservable (Lcom/russhwolf/settings/Settings;)Lcom/russhwolf/settings/ObservableSettings;
+}
+

@@ -39,6 +39,6 @@ include(
     ":multiplatform-settings-coroutines",
     ":multiplatform-settings-datastore",
     ":multiplatform-settings-serialization",
-    ":multiplatform-settings-runtime-observable",
+    ":multiplatform-settings-make-observable",
     ":tests"
 )

@@ -1,8 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
-import org.jetbrains.kotlin.konan.target.Family
-
 /*
  * Copyright 2019 Russell Wolf
  *
@@ -24,34 +19,11 @@ plugins {
     id("module-publication")
 }
 
+standardConfig {
+    defaultTargets()
+}
+
 kotlin {
-
-    androidTarget {
-        publishAllLibraryVariants()
-    }
-    iosArm64()
-    iosSimulatorArm64()
-    iosX64()
-    js {
-        browser()
-    }
-    jvm()
-    macosArm64()
-    macosX64()
-    mingwX64()
-    tvosArm64()
-    tvosSimulatorArm64()
-    tvosX64()
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-    }
-    watchosArm32()
-    watchosArm64()
-    watchosDeviceArm64()
-    watchosSimulatorArm64()
-    watchosX64()
-
     sourceSets {
         commonMain {
             dependencies {
