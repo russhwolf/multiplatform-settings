@@ -1,7 +1,8 @@
 # Changelog #
 
-## v1.2.0 *(2023-12-XX)* ##
+## v1.2.0 *(2023-04-XX)* ##
 
+- Update to Kotlin 1.9.23, Gradle 8.7, and Android Gradle Plugin 8.3.2
 - Add alternative APIs to `multiplatform-settings-serialization` that don't require manually passing a serializer (#172)
 - Make `SettingsInitializer` public so it's easier to configure custom android.startup initialization or write tests
   when using `multiplatform-settings-no-arg`

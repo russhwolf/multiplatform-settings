@@ -1,16 +1,16 @@
 [versions]
 multiplatformSettings = "1.2.0"
 
-kotlin = "1.9.20"
+kotlin = "1.9.24"
 
-android-gradle = "8.1.2"
+android-gradle = "8.2.2"
 android-minSdk = "15"
 android-compileSdk = "34"
 
-kotlinx-coroutines = "1.7.3"
-kotlinx-serialization = "1.6.0"
+kotlinx-coroutines = "1.8.0"
+kotlinx-serialization = "1.6.3"
 
-androidx-datastore = "1.0.0"
+androidx-datastore = "1.1.0"
 androidx-preference = "1.2.1"
 androidx-startup = "1.1.1"
 androidx-test = "1.5.0"
@@ -20,7 +20,7 @@ binaryCompatibilityValidator = "0.13.2"
 nexus-publish = "2.0.0-rc-1"
 junit = "4.13.2"
 robolectric = "4.10.3"
-turbine = "1.0.0"
+turbine = "1.1.0"
 
 
 [libraries]
