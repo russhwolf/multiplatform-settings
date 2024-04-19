@@ -1,6 +1,7 @@
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 // TODO are there better ways to inject this function into build scripts?
 open class StandardConfigExtension {
@@ -8,7 +9,6 @@ open class StandardConfigExtension {
     private fun Project.kotlin(block: KotlinMultiplatformExtension.() -> Unit) = kotlin.block()
 
     fun Project.defaultTargets() {
-        // TODO add WASM once kotlinx libs have it
         kotlin {
             androidTarget {
                 publishAllLibraryVariants()
@@ -43,6 +43,14 @@ open class StandardConfigExtension {
             tvosArm64()
             tvosSimulatorArm64()
             tvosX64()
+
+            @OptIn(ExperimentalWasmDsl::class)
+            wasmJs {
+                browser()
+            }
+//            // TODO Add WASI after Kotlin 2.0
+//            @OptIn(ExperimentalWasmDsl::class)
+//            wasmWasi()
 
             watchosArm32()
             watchosArm64()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Russell Wolf
+ * Copyright 2023 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,9 @@
  * limitations under the License.
  */
 
-plugins {
-    id("standard-configuration")
-    id("module-publication")
-}
+package com.russhwolf.settings.coroutines
 
-standardConfig {
-    defaultTargets()
-}
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
-kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation(project(":multiplatform-settings"))
-            }
-        }
-        commonTest {
-            dependencies {
-                implementation(project(":tests"))
-
-                implementation(libs.kotlin.test)
-            }
-        }
-    }
-}
-
-android {
-    namespace = "com.russhwolf.settings.test"
-}
+internal actual val converterDefaultDispatcher: CoroutineDispatcher = Dispatchers.Default

@@ -21,6 +21,7 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -35,7 +36,7 @@ abstract class BaseCoroutineExtensionsTest {
         defaultValue: T,
         firstValue: T,
         secondValue: T
-    ) = suspendTest {
+    ) = runTest {
         settings.setter("foo", firstValue)
         settings.flowBuilder("foo", defaultValue)
             .test {
