@@ -64,6 +64,7 @@ import platform.Security.SecItemAdd
 import platform.Security.SecItemCopyMatching
 import platform.Security.SecItemDelete
 import platform.Security.SecItemUpdate
+import platform.Security.errSecDuplicateItem
 import platform.Security.errSecItemNotFound
 import platform.Security.kSecAttrAccount
 import platform.Security.kSecAttrService
@@ -194,19 +195,19 @@ public class KeychainSettings @ExperimentalSettingsApi constructor(vararg defaul
         NSKeyedArchiver.archivedDataWithRootObject(number, true, null)
 
     private inline fun addOrUpdateKeychainItem(key: String, value: NSData?) {
-        if (hasKeychainItem(key)) {
+        if(!addKeychainItem(key, value)) {
             updateKeychainItem(key, value)
-        } else {
-            addKeychainItem(key, value)
         }
     }
 
-    private inline fun addKeychainItem(key: String, value: NSData?): Unit = cfRetain(key, value) { cfKey, cfValue ->
+    private inline fun addKeychainItem(key: String, value: NSData?): Boolean = cfRetain(key, value) { cfKey, cfValue ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
             kSecValueData to cfValue
         ) { SecItemAdd(it, null) }
-        status.checkError()
+        status.checkError(errSecDuplicateItem)
+
+        status == errSecDuplicateItem
     }
 
     private inline fun removeKeychainItem(key: String): Unit = cfRetain(key) { cfKey ->
