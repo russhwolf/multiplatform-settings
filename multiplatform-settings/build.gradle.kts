@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 /*
  * Copyright 2019 Russell Wolf
  *
@@ -25,6 +27,16 @@ plugins {
 standardConfiguration()
 
 kotlin {
+    targets.withType<KotlinNativeTarget>()
+        .matching { it.konanTarget.family.isAppleFamily }
+        .configureEach {
+            compilations.getByName("main") {
+                cinterops.create("nskeyvalueobserving") {
+                    defFile = file("src/appleMain/cinterop/nskeyvalueobserving.def")
+                }
+            }
+        }
+
     sourceSets {
         commonMain {
             dependencies {

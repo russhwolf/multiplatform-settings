@@ -1,0 +1,13 @@
+# CF https://proandroiddev.com/leveraging-key-value-observing-kvo-in-kotlin-multiplatform-kmp-for-ios-231519e5c1ff
+package = platform.Foundation
+language = Objective-C
+---
+#import <Foundation/Foundation.h>
+
+@protocol NSKeyValueObserving
+@required
+- (void) observeValueForKeyPath:(NSString *)keyPath
+    ofObject:(id)object
+    change:(NSDictionary<NSKeyValueChangeKey, id> *)change
+    context:(void *)context;
+@end;
