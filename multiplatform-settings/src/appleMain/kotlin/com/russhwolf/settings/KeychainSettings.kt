@@ -207,7 +207,7 @@ public class KeychainSettings @ExperimentalSettingsApi constructor(vararg defaul
         ) { SecItemAdd(it, null) }
         status.checkError(errSecDuplicateItem)
 
-        status == errSecDuplicateItem
+        status != errSecDuplicateItem
     }
 
     private inline fun removeKeychainItem(key: String): Unit = cfRetain(key) { cfKey ->
