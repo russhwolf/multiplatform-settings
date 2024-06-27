@@ -1,0 +1,9 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.russhwolf:multiplatform-settings-no-arg>
+final fun com.russhwolf.settings/Settings(): com.russhwolf.settings/Settings // com.russhwolf.settings/Settings|Settings(){}[0]

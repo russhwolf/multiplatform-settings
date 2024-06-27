@@ -16,7 +16,7 @@ androidx-startup = "1.1.1"
 androidx-test = "1.5.0"
 androidx-testExt = "1.1.5"
 
-binaryCompatibilityValidator = "0.13.2"
+binaryCompatibilityValidator = "0.15.0-Beta.2"
 nexus-publish = "2.0.0-rc-1"
 junit = "4.13.2"
 okio = "3.3.0"

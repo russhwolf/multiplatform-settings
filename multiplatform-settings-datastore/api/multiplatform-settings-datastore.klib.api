@@ -1,0 +1,34 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, linuxX64, macosArm64, macosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.russhwolf:multiplatform-settings-datastore>
+final class com.russhwolf.settings.datastore/DataStoreSettings : com.russhwolf.settings.coroutines/FlowSettings { // com.russhwolf.settings.datastore/DataStoreSettings|null[0]
+    constructor <init>(androidx.datastore.core/DataStore<androidx.datastore.preferences.core/Preferences>) // com.russhwolf.settings.datastore/DataStoreSettings.<init>|<init>(androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>){}[0]
+    final fun getBooleanFlow(kotlin/String, kotlin/Boolean): kotlinx.coroutines.flow/Flow<kotlin/Boolean> // com.russhwolf.settings.datastore/DataStoreSettings.getBooleanFlow|getBooleanFlow(kotlin.String;kotlin.Boolean){}[0]
+    final fun getBooleanOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/Boolean?> // com.russhwolf.settings.datastore/DataStoreSettings.getBooleanOrNullFlow|getBooleanOrNullFlow(kotlin.String){}[0]
+    final fun getDoubleFlow(kotlin/String, kotlin/Double): kotlinx.coroutines.flow/Flow<kotlin/Double> // com.russhwolf.settings.datastore/DataStoreSettings.getDoubleFlow|getDoubleFlow(kotlin.String;kotlin.Double){}[0]
+    final fun getDoubleOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/Double?> // com.russhwolf.settings.datastore/DataStoreSettings.getDoubleOrNullFlow|getDoubleOrNullFlow(kotlin.String){}[0]
+    final fun getFloatFlow(kotlin/String, kotlin/Float): kotlinx.coroutines.flow/Flow<kotlin/Float> // com.russhwolf.settings.datastore/DataStoreSettings.getFloatFlow|getFloatFlow(kotlin.String;kotlin.Float){}[0]
+    final fun getFloatOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/Float?> // com.russhwolf.settings.datastore/DataStoreSettings.getFloatOrNullFlow|getFloatOrNullFlow(kotlin.String){}[0]
+    final fun getIntFlow(kotlin/String, kotlin/Int): kotlinx.coroutines.flow/Flow<kotlin/Int> // com.russhwolf.settings.datastore/DataStoreSettings.getIntFlow|getIntFlow(kotlin.String;kotlin.Int){}[0]
+    final fun getIntOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/Int?> // com.russhwolf.settings.datastore/DataStoreSettings.getIntOrNullFlow|getIntOrNullFlow(kotlin.String){}[0]
+    final fun getLongFlow(kotlin/String, kotlin/Long): kotlinx.coroutines.flow/Flow<kotlin/Long> // com.russhwolf.settings.datastore/DataStoreSettings.getLongFlow|getLongFlow(kotlin.String;kotlin.Long){}[0]
+    final fun getLongOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/Long?> // com.russhwolf.settings.datastore/DataStoreSettings.getLongOrNullFlow|getLongOrNullFlow(kotlin.String){}[0]
+    final fun getStringFlow(kotlin/String, kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/String> // com.russhwolf.settings.datastore/DataStoreSettings.getStringFlow|getStringFlow(kotlin.String;kotlin.String){}[0]
+    final fun getStringOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/String?> // com.russhwolf.settings.datastore/DataStoreSettings.getStringOrNullFlow|getStringOrNullFlow(kotlin.String){}[0]
+    final suspend fun clear() // com.russhwolf.settings.datastore/DataStoreSettings.clear|clear(){}[0]
+    final suspend fun hasKey(kotlin/String): kotlin/Boolean // com.russhwolf.settings.datastore/DataStoreSettings.hasKey|hasKey(kotlin.String){}[0]
+    final suspend fun keys(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings.datastore/DataStoreSettings.keys|keys(){}[0]
+    final suspend fun putBoolean(kotlin/String, kotlin/Boolean) // com.russhwolf.settings.datastore/DataStoreSettings.putBoolean|putBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final suspend fun putDouble(kotlin/String, kotlin/Double) // com.russhwolf.settings.datastore/DataStoreSettings.putDouble|putDouble(kotlin.String;kotlin.Double){}[0]
+    final suspend fun putFloat(kotlin/String, kotlin/Float) // com.russhwolf.settings.datastore/DataStoreSettings.putFloat|putFloat(kotlin.String;kotlin.Float){}[0]
+    final suspend fun putInt(kotlin/String, kotlin/Int) // com.russhwolf.settings.datastore/DataStoreSettings.putInt|putInt(kotlin.String;kotlin.Int){}[0]
+    final suspend fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings.datastore/DataStoreSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
+    final suspend fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings.datastore/DataStoreSettings.putString|putString(kotlin.String;kotlin.String){}[0]
+    final suspend fun remove(kotlin/String) // com.russhwolf.settings.datastore/DataStoreSettings.remove|remove(kotlin.String){}[0]
+    final suspend fun size(): kotlin/Int // com.russhwolf.settings.datastore/DataStoreSettings.size|size(){}[0]
+}

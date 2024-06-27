@@ -1,0 +1,58 @@
+// Klib ABI Dump
+// Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.russhwolf:multiplatform-settings-test>
+final class com.russhwolf.settings/MapSettings : com.russhwolf.settings/ObservableSettings { // com.russhwolf.settings/MapSettings|null[0]
+    constructor <init>(kotlin.collections/MutableMap<kotlin/String, kotlin/Any> =...) // com.russhwolf.settings/MapSettings.<init>|<init>(kotlin.collections.MutableMap<kotlin.String,kotlin.Any>){}[0]
+    constructor <init>(kotlin/Array<out kotlin/Pair<kotlin/String, kotlin/Any>>...) // com.russhwolf.settings/MapSettings.<init>|<init>(kotlin.Array<out|kotlin.Pair<kotlin.String,kotlin.Any>>...){}[0]
+    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/MapSettings.Factory|null[0]
+        constructor <init>(kotlin/Function0<kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> =..., kotlin.collections/MutableMap<kotlin/String?, kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> =...) // com.russhwolf.settings/MapSettings.Factory.<init>|<init>(kotlin.Function0<kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>;kotlin.collections.MutableMap<kotlin.String?,kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>){}[0]
+        final fun create(kotlin/String?): com.russhwolf.settings/MapSettings // com.russhwolf.settings/MapSettings.Factory.create|create(kotlin.String?){}[0]
+        final fun setCacheValues(kotlin/String?, kotlin.collections/Map<kotlin/String, kotlin/Any>) // com.russhwolf.settings/MapSettings.Factory.setCacheValues|setCacheValues(kotlin.String?;kotlin.collections.Map<kotlin.String,kotlin.Any>){}[0]
+        final fun setCacheValues(kotlin/String?, kotlin/Array<out kotlin/Pair<kotlin/String, kotlin/Any>>...) // com.russhwolf.settings/MapSettings.Factory.setCacheValues|setCacheValues(kotlin.String?;kotlin.Array<out|kotlin.Pair<kotlin.String,kotlin.Any>>...){}[0]
+    }
+    final class Listener : com.russhwolf.settings/SettingsListener { // com.russhwolf.settings/MapSettings.Listener|null[0]
+        final fun deactivate() // com.russhwolf.settings/MapSettings.Listener.deactivate|deactivate(){}[0]
+    }
+    final fun addBooleanListener(kotlin/String, kotlin/Boolean, kotlin/Function1<kotlin/Boolean, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addBooleanListener|addBooleanListener(kotlin.String;kotlin.Boolean;kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
+    final fun addBooleanOrNullListener(kotlin/String, kotlin/Function1<kotlin/Boolean?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addBooleanOrNullListener|addBooleanOrNullListener(kotlin.String;kotlin.Function1<kotlin.Boolean?,kotlin.Unit>){}[0]
+    final fun addDoubleListener(kotlin/String, kotlin/Double, kotlin/Function1<kotlin/Double, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addDoubleListener|addDoubleListener(kotlin.String;kotlin.Double;kotlin.Function1<kotlin.Double,kotlin.Unit>){}[0]
+    final fun addDoubleOrNullListener(kotlin/String, kotlin/Function1<kotlin/Double?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addDoubleOrNullListener|addDoubleOrNullListener(kotlin.String;kotlin.Function1<kotlin.Double?,kotlin.Unit>){}[0]
+    final fun addFloatListener(kotlin/String, kotlin/Float, kotlin/Function1<kotlin/Float, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addFloatListener|addFloatListener(kotlin.String;kotlin.Float;kotlin.Function1<kotlin.Float,kotlin.Unit>){}[0]
+    final fun addFloatOrNullListener(kotlin/String, kotlin/Function1<kotlin/Float?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addFloatOrNullListener|addFloatOrNullListener(kotlin.String;kotlin.Function1<kotlin.Float?,kotlin.Unit>){}[0]
+    final fun addIntListener(kotlin/String, kotlin/Int, kotlin/Function1<kotlin/Int, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addIntListener|addIntListener(kotlin.String;kotlin.Int;kotlin.Function1<kotlin.Int,kotlin.Unit>){}[0]
+    final fun addIntOrNullListener(kotlin/String, kotlin/Function1<kotlin/Int?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addIntOrNullListener|addIntOrNullListener(kotlin.String;kotlin.Function1<kotlin.Int?,kotlin.Unit>){}[0]
+    final fun addLongListener(kotlin/String, kotlin/Long, kotlin/Function1<kotlin/Long, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addLongListener|addLongListener(kotlin.String;kotlin.Long;kotlin.Function1<kotlin.Long,kotlin.Unit>){}[0]
+    final fun addLongOrNullListener(kotlin/String, kotlin/Function1<kotlin/Long?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addLongOrNullListener|addLongOrNullListener(kotlin.String;kotlin.Function1<kotlin.Long?,kotlin.Unit>){}[0]
+    final fun addStringListener(kotlin/String, kotlin/String, kotlin/Function1<kotlin/String, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addStringListener|addStringListener(kotlin.String;kotlin.String;kotlin.Function1<kotlin.String,kotlin.Unit>){}[0]
+    final fun addStringOrNullListener(kotlin/String, kotlin/Function1<kotlin/String?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/MapSettings.addStringOrNullListener|addStringOrNullListener(kotlin.String;kotlin.Function1<kotlin.String?,kotlin.Unit>){}[0]
+    final fun clear() // com.russhwolf.settings/MapSettings.clear|clear(){}[0]
+    final fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/MapSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/MapSettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
+    final fun getDouble(kotlin/String, kotlin/Double): kotlin/Double // com.russhwolf.settings/MapSettings.getDouble|getDouble(kotlin.String;kotlin.Double){}[0]
+    final fun getDoubleOrNull(kotlin/String): kotlin/Double? // com.russhwolf.settings/MapSettings.getDoubleOrNull|getDoubleOrNull(kotlin.String){}[0]
+    final fun getFloat(kotlin/String, kotlin/Float): kotlin/Float // com.russhwolf.settings/MapSettings.getFloat|getFloat(kotlin.String;kotlin.Float){}[0]
+    final fun getFloatOrNull(kotlin/String): kotlin/Float? // com.russhwolf.settings/MapSettings.getFloatOrNull|getFloatOrNull(kotlin.String){}[0]
+    final fun getInt(kotlin/String, kotlin/Int): kotlin/Int // com.russhwolf.settings/MapSettings.getInt|getInt(kotlin.String;kotlin.Int){}[0]
+    final fun getIntOrNull(kotlin/String): kotlin/Int? // com.russhwolf.settings/MapSettings.getIntOrNull|getIntOrNull(kotlin.String){}[0]
+    final fun getLong(kotlin/String, kotlin/Long): kotlin/Long // com.russhwolf.settings/MapSettings.getLong|getLong(kotlin.String;kotlin.Long){}[0]
+    final fun getLongOrNull(kotlin/String): kotlin/Long? // com.russhwolf.settings/MapSettings.getLongOrNull|getLongOrNull(kotlin.String){}[0]
+    final fun getString(kotlin/String, kotlin/String): kotlin/String // com.russhwolf.settings/MapSettings.getString|getString(kotlin.String;kotlin.String){}[0]
+    final fun getStringOrNull(kotlin/String): kotlin/String? // com.russhwolf.settings/MapSettings.getStringOrNull|getStringOrNull(kotlin.String){}[0]
+    final fun hasKey(kotlin/String): kotlin/Boolean // com.russhwolf.settings/MapSettings.hasKey|hasKey(kotlin.String){}[0]
+    final fun putBoolean(kotlin/String, kotlin/Boolean) // com.russhwolf.settings/MapSettings.putBoolean|putBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun putDouble(kotlin/String, kotlin/Double) // com.russhwolf.settings/MapSettings.putDouble|putDouble(kotlin.String;kotlin.Double){}[0]
+    final fun putFloat(kotlin/String, kotlin/Float) // com.russhwolf.settings/MapSettings.putFloat|putFloat(kotlin.String;kotlin.Float){}[0]
+    final fun putInt(kotlin/String, kotlin/Int) // com.russhwolf.settings/MapSettings.putInt|putInt(kotlin.String;kotlin.Int){}[0]
+    final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/MapSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
+    final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/MapSettings.putString|putString(kotlin.String;kotlin.String){}[0]
+    final fun remove(kotlin/String) // com.russhwolf.settings/MapSettings.remove|remove(kotlin.String){}[0]
+    final val keys // com.russhwolf.settings/MapSettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/MapSettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/MapSettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/MapSettings.size.<get-size>|<get-size>(){}[0]
+}

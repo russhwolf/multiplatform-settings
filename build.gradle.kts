@@ -32,6 +32,10 @@ nexusPublishing {
 
 apiValidation {
     ignoredProjects.add("tests")
+    @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
+    klib {
+        enabled = true
+    }
 }
 
 // Need new enough node for WASM as of Kotlin 1.9.20
