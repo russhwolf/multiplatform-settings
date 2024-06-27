@@ -41,6 +41,7 @@ import platform.Foundation.NSString
 import platform.Foundation.NSUTF8StringEncoding
 import platform.Foundation.create
 import platform.Security.SecItemCopyMatching
+import platform.Security.kSecAttrAccessGroup
 import platform.Security.kSecAttrAccount
 import platform.Security.kSecAttrService
 import platform.Security.kSecClass
@@ -92,6 +93,19 @@ class KeychainSettingsTest : BaseSettingsTest(
 
         // Ensure this doesn't throw
         settings.keys
+    }
+
+    @OptIn(ExperimentalSettingsApi::class)
+    @Test
+    fun custom_attributes_group() {
+        val settings = KeychainSettings(
+            kSecAttrService to CFBridgingRetain("SettingsGroupTest"),
+            kSecAttrAccessGroup to CFBridgingRetain("group.com.russhwolf.settings.test")
+        )
+
+        settings["key"] = "value"
+
+        assertEquals("value", settings["key"])
     }
 }
 
