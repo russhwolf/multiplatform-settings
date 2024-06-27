@@ -11,3 +11,4 @@ keys.properties
 !.idea/copyright
 !.idea/inspectionProfiles
 !.idea/runConfigurations
+.kotlin

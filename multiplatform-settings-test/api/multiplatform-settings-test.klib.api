@@ -7,10 +7,10 @@
 
 // Library unique name: <com.russhwolf:multiplatform-settings-test>
 final class com.russhwolf.settings/MapSettings : com.russhwolf.settings/ObservableSettings { // com.russhwolf.settings/MapSettings|null[0]
-    constructor <init>(kotlin.collections/MutableMap<kotlin/String, kotlin/Any> =...) // com.russhwolf.settings/MapSettings.<init>|<init>(kotlin.collections.MutableMap<kotlin.String,kotlin.Any>){}[0]
+    constructor <init>(kotlin.collections/MutableMap<kotlin/String, kotlin/Any> = ...) // com.russhwolf.settings/MapSettings.<init>|<init>(kotlin.collections.MutableMap<kotlin.String,kotlin.Any>){}[0]
     constructor <init>(kotlin/Array<out kotlin/Pair<kotlin/String, kotlin/Any>>...) // com.russhwolf.settings/MapSettings.<init>|<init>(kotlin.Array<out|kotlin.Pair<kotlin.String,kotlin.Any>>...){}[0]
     final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/MapSettings.Factory|null[0]
-        constructor <init>(kotlin/Function0<kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> =..., kotlin.collections/MutableMap<kotlin/String?, kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> =...) // com.russhwolf.settings/MapSettings.Factory.<init>|<init>(kotlin.Function0<kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>;kotlin.collections.MutableMap<kotlin.String?,kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>){}[0]
+        constructor <init>(kotlin/Function0<kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> = ..., kotlin.collections/MutableMap<kotlin/String?, kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> = ...) // com.russhwolf.settings/MapSettings.Factory.<init>|<init>(kotlin.Function0<kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>;kotlin.collections.MutableMap<kotlin.String?,kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>){}[0]
         final fun create(kotlin/String?): com.russhwolf.settings/MapSettings // com.russhwolf.settings/MapSettings.Factory.create|create(kotlin.String?){}[0]
         final fun setCacheValues(kotlin/String?, kotlin.collections/Map<kotlin/String, kotlin/Any>) // com.russhwolf.settings/MapSettings.Factory.setCacheValues|setCacheValues(kotlin.String?;kotlin.collections.Map<kotlin.String,kotlin.Any>){}[0]
         final fun setCacheValues(kotlin/String?, kotlin/Array<out kotlin/Pair<kotlin/String, kotlin/Any>>...) // com.russhwolf.settings/MapSettings.Factory.setCacheValues|setCacheValues(kotlin.String?;kotlin.Array<out|kotlin.Pair<kotlin.String,kotlin.Any>>...){}[0]

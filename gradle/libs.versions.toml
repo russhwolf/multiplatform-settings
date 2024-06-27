@@ -1,7 +1,7 @@
 [versions]
 multiplatformSettings = "1.2.0"
 
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 
 android-gradle = "8.2.2"
 android-minSdk = "15"
