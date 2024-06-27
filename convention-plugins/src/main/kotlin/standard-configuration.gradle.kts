@@ -105,9 +105,4 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-
-android {
-    // Oops, this was on in 1.0, so now it's technically a breaking change to turn it off
-    buildFeatures.buildConfig = true
-}
 //endregion

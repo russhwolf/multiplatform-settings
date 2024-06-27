@@ -1,10 +1,3 @@
-public final class com/russhwolf/settings/serialization/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public final class com/russhwolf/settings/serialization/SettingsSerializationKt {
 	public static final fun containsValue (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;)Z
 	public static synthetic fun containsValue$default (Lcom/russhwolf/settings/Settings;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlinx/serialization/modules/SerializersModule;ILjava/lang/Object;)Z

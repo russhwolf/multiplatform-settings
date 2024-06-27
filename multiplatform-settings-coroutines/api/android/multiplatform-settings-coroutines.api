@@ -4,13 +4,6 @@ public final class com/russhwolf/settings/coroutines/BlockingConvertersKt {
 	public static final fun toBlockingSettings (Lcom/russhwolf/settings/coroutines/SuspendSettings;)Lcom/russhwolf/settings/Settings;
 }
 
-public final class com/russhwolf/settings/coroutines/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public final class com/russhwolf/settings/coroutines/ConvertersKt {
 	public static final fun toFlowSettings (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineDispatcher;)Lcom/russhwolf/settings/coroutines/FlowSettings;
 	public static synthetic fun toFlowSettings$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/russhwolf/settings/coroutines/FlowSettings;

@@ -50,4 +50,7 @@ kotlin {
 android {
     namespace = "com.russhwolf.settings"
     testOptions.unitTests.isIncludeAndroidResources = true
+
+    // Oops, this was on in 1.0, so now it's technically a breaking change to turn it off
+    buildFeatures.buildConfig = true
 }
