@@ -77,6 +77,9 @@ import platform.Security.kSecReturnAttributes
 import platform.Security.kSecReturnData
 import platform.Security.kSecValueData
 import platform.darwin.OSStatus
+import kotlin.experimental.ExperimentalNativeApi
+import kotlin.native.ref.Cleaner
+import kotlin.native.ref.createCleaner
 
 /**
  * A collection of storage-backed key-value data
@@ -97,17 +100,30 @@ import platform.darwin.OSStatus
  * every key, if the default behavior does not fit your needs.
  */
 @ExperimentalSettingsImplementation
-public class KeychainSettings @ExperimentalSettingsApi constructor(vararg defaultProperties: Pair<CFStringRef?, CFTypeRef?>) :
-    Settings {
+public class KeychainSettings : Settings {
+
+    @OptIn(ExperimentalNativeApi::class)
+    private val cleaner: Cleaner?
+
+    @ExperimentalSettingsApi
+    public constructor(vararg defaultProperties: Pair<CFStringRef?, CFTypeRef?>) {
+        this.defaultProperties = mapOf(kSecClass to kSecClassGenericPassword, *defaultProperties)
+        @OptIn(ExperimentalNativeApi::class)
+        cleaner = null
+    }
 
     @OptIn(ExperimentalSettingsApi::class) // IDE is wrong when it says this is redundant
-    // NB this calls CFBridgingRetain() without ever calling CFBridgingRelease()
-    public constructor(service: String) : this(kSecAttrService to CFBridgingRetain(service))
+    public constructor(service: String) {
+        val cfService = CFBridgingRetain(service)
+        this.defaultProperties = mapOf(kSecClass to kSecClassGenericPassword, kSecAttrService to cfService)
+        @OptIn(ExperimentalNativeApi::class)
+        cleaner = createCleaner(cfService) { CFBridgingRelease(it) }
+    }
 
     @OptIn(ExperimentalSettingsApi::class) // IDE is wrong when it says this is redundant
     public constructor() : this(*emptyArray())
 
-    private val defaultProperties = mapOf(kSecClass to kSecClassGenericPassword) + mapOf(*defaultProperties)
+    private val defaultProperties: Map<CFStringRef?, CFTypeRef?>
 
     /**
      * A factory that can produce [Settings] instances.
