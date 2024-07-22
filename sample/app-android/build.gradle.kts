@@ -17,6 +17,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("plugin.compose") version "2.0.0"
 }
 
 kotlin {
@@ -48,10 +49,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
     }
 }
 

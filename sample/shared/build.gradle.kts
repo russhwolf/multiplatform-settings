@@ -22,6 +22,7 @@ plugins {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
     jvmToolchain(17)
 
     androidTarget()
@@ -34,8 +35,12 @@ kotlin {
         browser()
     }
 
-    ios {
-        binaries {
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64(),
+        iosX64()
+    ).onEach {
+        it.binaries {
             framework("Shared") {
                 // Make AppleSettings visible from Swift
                 export("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
