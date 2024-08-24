@@ -22,7 +22,10 @@ import kotlin.test.assertEquals
 
 abstract class NoArgTest {
     // clear() inside the lazy block in case subclasses need to do their setup first
-    private val settings by lazy { Settings().also { it.clear() } }
+    private val settings by lazy {
+        @OptIn(ExperimentalSettingsImplementation::class) // IDE doesn't know this is needed for mingw
+        Settings().also { it.clear() }
+    }
 
     @AfterTest
     fun tearDown() {

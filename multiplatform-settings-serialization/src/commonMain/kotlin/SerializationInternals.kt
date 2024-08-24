@@ -133,7 +133,7 @@ internal class SettingsDecoder(
         }
     }
 
-    private inline fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
+    private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
         val key = "${getKey()}.${descriptor.getElementName(index)}"
         // Descriptor shows key is optional, key is not present, and nullability doesn't indicate key should be present
         return descriptor.isElementOptional(index) && key !in settings && settings.getBooleanOrNull("$key?") != true
@@ -245,7 +245,7 @@ internal class SettingsRemover(
         }
     }
 
-    private inline fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
+    private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
         val key = "${getKey()}.${descriptor.getElementName(index)}"
         // Descriptor shows key is optional, key is not present, and nullability doesn't indicate key should be present
         val output =
@@ -339,10 +339,10 @@ internal class SettingsRemover(
 
 private class DeserializationException : IllegalStateException()
 
-private inline fun deserializationError(): Nothing = throw DeserializationException()
+private fun deserializationError(): Nothing = throw DeserializationException()
 
 @ExperimentalSerializationApi
-internal inline fun <V, T : V> KSerializer<T>.deserializeOrElse(decoder: SettingsDecoder, defaultValue: V): V =
+internal fun <V, T : V> KSerializer<T>.deserializeOrElse(decoder: SettingsDecoder, defaultValue: V): V =
     try {
         deserialize(decoder)
     } catch (_: DeserializationException) {

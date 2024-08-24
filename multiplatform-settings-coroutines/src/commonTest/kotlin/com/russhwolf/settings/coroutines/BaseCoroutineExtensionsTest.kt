@@ -21,6 +21,7 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -81,6 +82,7 @@ abstract class BaseCoroutineExtensionsTest(
     ) = runTest {
         // We want StataFlow updates in unconfined dispatcher, so we don't need to wait for updates before asserting.
         // If everything runs in UnconfinedTestDispatcher, we deadlock, so just use unconfined for creating StateFlows
+        @OptIn(ExperimentalCoroutinesApi::class)
         val stateFlowScope = CoroutineScope(UnconfinedTestDispatcher(testScheduler))
         val stateFlow = settings.stateFlowBuilder(stateFlowScope, "foo", defaultValue)
         assertEquals(defaultValue, stateFlow.value)

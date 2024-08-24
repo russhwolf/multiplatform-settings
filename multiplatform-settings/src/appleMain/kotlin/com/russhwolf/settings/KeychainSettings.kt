@@ -203,19 +203,19 @@ public class KeychainSettings : Settings {
     public override fun getBoolean(key: String, defaultValue: Boolean): Boolean = getBooleanOrNull(key) ?: defaultValue
     public override fun getBooleanOrNull(key: String): Boolean? = unarchiveNumber(getKeychainItem(key))?.boolValue
 
-    private inline fun unarchiveNumber(data: NSData?): NSNumber? =
+    private fun unarchiveNumber(data: NSData?): NSNumber? =
         data?.let { NSKeyedUnarchiver.unarchiveObjectWithData(it) } as? NSNumber
 
-    private inline fun archiveNumber(number: NSNumber): NSData? =
+    private fun archiveNumber(number: NSNumber): NSData? =
         NSKeyedArchiver.archivedDataWithRootObject(number, true, null)
 
-    private inline fun addOrUpdateKeychainItem(key: String, value: NSData?) {
+    private fun addOrUpdateKeychainItem(key: String, value: NSData?) {
         if(!addKeychainItem(key, value)) {
             updateKeychainItem(key, value)
         }
     }
 
-    private inline fun addKeychainItem(key: String, value: NSData?): Boolean = cfRetain(key, value) { cfKey, cfValue ->
+    private fun addKeychainItem(key: String, value: NSData?): Boolean = cfRetain(key, value) { cfKey, cfValue ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
             kSecValueData to cfValue
@@ -225,14 +225,14 @@ public class KeychainSettings : Settings {
         status != errSecDuplicateItem
     }
 
-    private inline fun removeKeychainItem(key: String): Unit = cfRetain(key) { cfKey ->
+    private fun removeKeychainItem(key: String): Unit = cfRetain(key) { cfKey ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
         ) { SecItemDelete(it) }
         status.checkError(errSecItemNotFound)
     }
 
-    private inline fun updateKeychainItem(key: String, value: NSData?): Unit = cfRetain(key, value) { cfKey, cfValue ->
+    private fun updateKeychainItem(key: String, value: NSData?): Unit = cfRetain(key, value) { cfKey, cfValue ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
             kSecReturnData to kCFBooleanFalse
@@ -245,7 +245,7 @@ public class KeychainSettings : Settings {
         status.checkError()
     }
 
-    private inline fun getKeychainItem(key: String): NSData? = cfRetain(key) { cfKey ->
+    private fun getKeychainItem(key: String): NSData? = cfRetain(key) { cfKey ->
         val cfValue = alloc<CFTypeRefVar>()
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
@@ -259,7 +259,7 @@ public class KeychainSettings : Settings {
         CFBridgingRelease(cfValue.value) as? NSData
     }
 
-    private inline fun hasKeychainItem(key: String): Boolean = cfRetain(key) { cfKey ->
+    private fun hasKeychainItem(key: String): Boolean = cfRetain(key) { cfKey ->
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
             kSecMatchLimit to kSecMatchLimitOne
@@ -278,7 +278,7 @@ public class KeychainSettings : Settings {
         return output
     }
 
-    private inline fun OSStatus.checkError(vararg expectedErrors: OSStatus) {
+    private fun OSStatus.checkError(vararg expectedErrors: OSStatus) {
         if (this != 0 && this !in expectedErrors) {
             val cfMessage = SecCopyErrorMessageString(this, null)
             val nsMessage = CFBridgingRelease(cfMessage) as? NSString
@@ -289,10 +289,10 @@ public class KeychainSettings : Settings {
 
 }
 
-internal inline fun MemScope.cfDictionaryOf(vararg items: Pair<CFStringRef?, CFTypeRef?>): CFDictionaryRef? =
+internal fun MemScope.cfDictionaryOf(vararg items: Pair<CFStringRef?, CFTypeRef?>): CFDictionaryRef? =
     cfDictionaryOf(mapOf(*items))
 
-internal inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>): CFDictionaryRef? {
+internal fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>): CFDictionaryRef? {
     val size = map.size
     val keys = allocArrayOf(*map.keys.toTypedArray())
     val values = allocArrayOf(*map.values.toTypedArray())
@@ -308,10 +308,10 @@ internal inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>):
 
 // Turn casts into dot calls for better readability
 @Suppress("CAST_NEVER_SUCCEEDS")
-internal inline fun String.toNSString() = this as NSString
+internal fun String.toNSString() = this as NSString
 
 @Suppress("CAST_NEVER_SUCCEEDS")
-internal inline fun NSString.toKString() = this as String
+internal fun NSString.toKString() = this as String
 
 internal inline fun <T> cfRetain(value: Any?, block: MemScope.(CFTypeRef?) -> T): T = memScoped {
     val cfValue = CFBridgingRetain(value)

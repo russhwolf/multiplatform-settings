@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalForeignApi::class)
+@file:OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
 
 package com.russhwolf.settings
 
+import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.MemScope
 import kotlinx.cinterop.alloc
@@ -110,10 +111,10 @@ class KeychainSettingsTest : BaseSettingsTest(
 }
 
 // Copy/paste utilities since we can't access internals now that this is a separate module
-private inline fun MemScope.cfDictionaryOf(vararg items: Pair<CFStringRef?, CFTypeRef?>): CFDictionaryRef? =
+private fun MemScope.cfDictionaryOf(vararg items: Pair<CFStringRef?, CFTypeRef?>): CFDictionaryRef? =
     cfDictionaryOf(mapOf(*items))
 
-private inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>): CFDictionaryRef? {
+private fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>): CFDictionaryRef? {
     val size = map.size
     val keys = allocArrayOf(*map.keys.toTypedArray())
     val values = allocArrayOf(*map.values.toTypedArray())
@@ -129,10 +130,10 @@ private inline fun MemScope.cfDictionaryOf(map: Map<CFStringRef?, CFTypeRef?>): 
 
 // Turn casts into dot calls for better readability
 @Suppress("CAST_NEVER_SUCCEEDS")
-private inline fun String.toNSString() = this as NSString
+private fun String.toNSString() = this as NSString
 
 @Suppress("CAST_NEVER_SUCCEEDS")
-private inline fun NSString.toKString() = this as String
+private fun NSString.toKString() = this as String
 
 private inline fun <T> cfRetain(value: Any?, block: MemScope.(CFTypeRef?) -> T): T = memScoped {
     val cfValue = CFBridgingRetain(value)

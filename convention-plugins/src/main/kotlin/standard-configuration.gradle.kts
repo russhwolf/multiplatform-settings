@@ -16,6 +16,7 @@
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -34,8 +35,11 @@ kotlin {
 
     targets.configureEach {
         compilations.configureEach {
-            // TODO reenable this once duplicate library warnings are cleared
-//            kotlinOptions.allWarningsAsErrors = true
+            // TODO reenable this once remaining warnings are cleared
+//            @OptIn(ExperimentalKotlinGradlePluginApi::class)
+//            compilerOptions {
+//                allWarningsAsErrors = true
+//            }
         }
     }
 
@@ -55,7 +59,7 @@ kotlin {
 
             group("browserCommon") {
                 withJs()
-                withWasm() // TODO we actually want withWasmJs() here but it doesn't matter because no Wasi yet
+                withWasmJs()
             }
 
             group("apple") {
@@ -101,8 +105,9 @@ tasks.withType<AbstractTestTask> {
 // This configuration is here to avoid breaking consumers
 
 tasks.withType<KotlinCompile> {
-    // Keeping 1.8 compatibility until it becomes burdensome
-    kotlinOptions.jvmTarget = "1.8"
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+    }
 }
 
 //endregion
