@@ -112,10 +112,9 @@ public class KeychainSettings : Settings {
         cleaner = null
     }
 
-    @OptIn(ExperimentalSettingsApi::class) // IDE is wrong when it says this is redundant
     public constructor(service: String) {
         val cfService = CFBridgingRetain(service)
-        this.defaultProperties = mapOf(kSecClass to kSecClassGenericPassword, kSecAttrService to cfService)
+        defaultProperties = mapOf(kSecClass to kSecClassGenericPassword, kSecAttrService to cfService)
         @OptIn(ExperimentalNativeApi::class)
         cleaner = createCleaner(cfService) { CFBridgingRelease(it) }
     }
