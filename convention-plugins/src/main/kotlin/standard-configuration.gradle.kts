@@ -62,6 +62,12 @@ kotlin {
                 withWasmJs()
             }
 
+            group("jsWasmCommon") {
+                withJs()
+                withWasmJs()
+                withWasmWasi()
+            }
+
             group("apple") {
                 group("apple64") {
                     withIos()

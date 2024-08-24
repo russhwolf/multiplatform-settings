@@ -48,9 +48,12 @@ open class StandardConfigExtension {
             wasmJs {
                 browser()
             }
-//            // TODO Add WASI after Kotlin 2.0
+
+            // TODO need coroutines and serialization before we can enable this globally
 //            @OptIn(ExperimentalWasmDsl::class)
-//            wasmWasi()
+//            wasmWasi {
+//                nodejs()
+//            }
 
             watchosArm32()
             watchosArm64()
