@@ -1,15 +1,21 @@
 # Changelog #
 
-## v1.2.0 *(2023-04-XX)* ##
+## v1.2.0 *(2024-09-01)* ##
 
-- Update to Kotlin 1.9.23, Gradle 8.7, and Android Gradle Plugin 8.3.2
-- Add alternative APIs to `multiplatform-settings-serialization` that don't require manually passing a serializer (#172)
+- Update to Kotlin 2.0.0, Gradle 8.7, and Android Gradle Plugin 8.3.2
+- Add alternative APIs to `multiplatform-settings-serialization` that don't require manually passing a serializer (
+  #172). Thanks for contributions by @findusl
+- New experimental module `multiplatform-settings-make-observable` to convert non-observable settings to observable by
+  wiring in callbacks when platform observability APIs don't exist (#155, #184). Thanks for contributions by @psuzn.
+- Add all supported targets to `multiplatform-settings-coroutines` and `multiplatform-settings-serialization`, including
+  `wasmJs`.
+- Add additional targets to `multiplatform-settings-datastore` based on multiplatform Datastore version 1.1.0
+- Add `wasmWasi` support to `multiplatform-settings`, `multiplatform-settings-test`, and
+  `multiplatform-settings-make-observable`.
+- Add `Stateflow` analogs to existing `Flow` extensions in `multiplatform-settings-coroutines`. (#156)
 - Make `SettingsInitializer` public so it's easier to configure custom android.startup initialization or write tests
   when using `multiplatform-settings-no-arg`
-- New experimental module `multiplatform-settings-observable` to convert non-observable settings to observable by wiring
-  in callbacks when platform observability APIs don't exist
-- Add all supported targets to `multiplatform-settings-coroutines` and `multiplatform-settings-serialization`, including
-  wasm
+- Adjust `KeychainSettings` to avoid duplicated authentication requests (#193). Thanks for contributions by @crysxd
 - Modernize gradle and publication config. This shouldn't impact consumers, but please file an issue if you notice
   anything missing.
 
