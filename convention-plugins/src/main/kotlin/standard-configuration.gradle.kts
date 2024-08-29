@@ -15,78 +15,15 @@
  */
 
 import org.gradle.accessors.dm.LibrariesForLibs
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("multiplatform")
+    id("standard-configuration-without-android")
     id("com.android.library")
 }
 
 // h4x so we can access version catalog from convention script
 // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
 val libs = the<LibrariesForLibs>()
-
-extensions.create<StandardConfigExtension>("standardConfig")
-
-kotlin {
-    explicitApi()
-
-    targets.configureEach {
-        compilations.configureEach {
-            // TODO reenable this once remaining warnings are cleared
-//            @OptIn(ExperimentalKotlinGradlePluginApi::class)
-//            compilerOptions {
-//                allWarningsAsErrors = true
-//            }
-        }
-    }
-
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyDefaultHierarchyTemplate {
-        common {
-            group("multithreaded") {
-                withAndroidTarget()
-                withJvm()
-                withNative()
-            }
-
-            group("jvmCommon") {
-                withAndroidTarget()
-                withJvm()
-            }
-
-            group("browserCommon") {
-                withJs()
-                withWasmJs()
-            }
-
-            group("jsWasmCommon") {
-                withJs()
-                withWasmJs()
-                withWasmWasi()
-            }
-
-            group("apple") {
-                group("apple64") {
-                    withIos()
-                    withMacos()
-                    withTvos()
-
-                    withWatchosX64()
-                    withWatchosDeviceArm64()
-                    withWatchosSimulatorArm64()
-                }
-
-                group("apple32") {
-                    withWatchosArm32()
-                    withWatchosArm64() // NB this is weird target w/ 32-bit numbers
-                }
-            }
-        }
-    }
-}
 
 android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -99,21 +36,3 @@ android {
         abortOnError = true
     }
 }
-
-tasks.withType<AbstractTestTask> {
-    testLogging {
-        showStandardStreams = true
-        events("passed", "failed")
-    }
-}
-
-//region Compatibility Config
-// This configuration is here to avoid breaking consumers
-
-tasks.withType<KotlinCompile> {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_1_8
-    }
-}
-
-//endregion

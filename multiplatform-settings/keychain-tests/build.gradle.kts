@@ -17,7 +17,7 @@
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
 
 plugins {
-    kotlin("multiplatform")
+    id("standard-configuration-without-android")
 }
 
 kotlin {
