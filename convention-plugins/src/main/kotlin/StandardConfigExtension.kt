@@ -25,9 +25,6 @@ open class StandardConfigExtension {
 
             js {
                 browser()
-                // TODO need separate targets nodejs() because impl is browser-dependent
-                //  https://youtrack.jetbrains.com/issue/KT-47038/
-//                nodejs()
             }
 
             jvm()
