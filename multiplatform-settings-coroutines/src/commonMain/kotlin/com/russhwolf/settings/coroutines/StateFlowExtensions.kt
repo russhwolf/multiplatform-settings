@@ -61,9 +61,7 @@ private inline fun <T> ObservableSettings.createNullableStateFlow(
         { it, _, callback -> addListener(it, callback) })
 
 /**
- * Create a new flow, based on observing the given [key] as an `Int`. This flow will immediately emit the current
- * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * [defaultValue] will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as an `Int`. This flow will emit when the underlying `Settings` changes. When no value is present, [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getIntStateFlow(
@@ -82,9 +80,7 @@ public fun ObservableSettings.getIntStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a `Long`. This flow will immediately emit the current
- * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * [defaultValue] will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a `Long`. This flow will emit when the underlying `Settings` changes. When no value is present, [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getLongStateFlow(
@@ -103,9 +99,7 @@ public fun ObservableSettings.getLongStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a `String`. This flow will immediately emit the current
- * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * [defaultValue] will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a `String`. This flow will emit when the underlying `Settings` changes. When no value is present, [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getStringStateFlow(
@@ -124,9 +118,7 @@ public fun ObservableSettings.getStringStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a `Float`. This flow will immediately emit the current
- * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * [defaultValue] will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a `Float`. This flow will emit when the underlying `Settings` changes. When no value is present, [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getFloatStateFlow(
@@ -145,9 +137,7 @@ public fun ObservableSettings.getFloatStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a `Double`. This flow will immediately emit the current
- * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * [defaultValue] will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a `Double`. This flow will emit when the underlying `Settings` changes. When no value is present, [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getDoubleStateFlow(
@@ -166,9 +156,7 @@ public fun ObservableSettings.getDoubleStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a `Boolean`. This flow will immediately emit the current
- * value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * [defaultValue] will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a `Boolean`. This flow will emit when the underlying `Settings` changes. When no value is present, [defaultValue] will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getBooleanStateFlow(
@@ -187,9 +175,7 @@ public fun ObservableSettings.getBooleanStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a nullable `Int`. This flow will immediately emit the
- * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * `null` will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as an `Int`. This flow will emit when the underlying `Settings` changes. When no value is present, `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getIntOrNullStateFlow(
@@ -206,9 +192,7 @@ public fun ObservableSettings.getIntOrNullStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a nullable `Long`. This flow will immediately emit the
- * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * `null` will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a nullable `Long`. This flow will emit when the underlying `Settings` changes. When no value is present, `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getLongOrNullStateFlow(
@@ -225,9 +209,7 @@ public fun ObservableSettings.getLongOrNullStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a nullable `String`. This flow will immediately emit the
- * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * `null` will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a nullable `String`. This flow will emit when the underlying `Settings` changes. When no value is present, `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getStringOrNullStateFlow(
@@ -244,9 +226,7 @@ public fun ObservableSettings.getStringOrNullStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a nullable `Float`. This flow will immediately emit the
- * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * `null` will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a nullable `Float`. This flow will emit when the underlying `Settings` changes. When no value is present, `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getFloatOrNullStateFlow(
@@ -263,9 +243,7 @@ public fun ObservableSettings.getFloatOrNullStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a nullable `Double`. This flow will immediately emit the
- * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * `null` will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a nullable `Double`. This flow will emit when the underlying `Settings` changes. When no value is present, `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getDoubleOrNullStateFlow(
@@ -282,9 +260,7 @@ public fun ObservableSettings.getDoubleOrNullStateFlow(
     )
 
 /**
- * Create a new flow, based on observing the given [key] as a nullable `Boolean`. This flow will immediately emit the
- * current value and then emit any subsequent values when the underlying `Settings` changes. When no value is present,
- * `null` will be emitted instead.
+ * Create a new `StateFlow`, based on observing the given [key] as a nullable `Boolean`. This flow will emit when the underlying `Settings` changes. When no value is present, `null` will be emitted instead.
  */
 @ExperimentalSettingsApi
 public fun ObservableSettings.getBooleanOrNullStateFlow(
