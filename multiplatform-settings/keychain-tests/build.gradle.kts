@@ -21,8 +21,11 @@ plugins {
 }
 
 kotlin {
+    iosArm64()
+    iosSimulatorArm64()
     iosX64()
     macosX64()
+    macosArm64()
     // TODO also add tvos and watchos simulators?
 
     sourceSets {
