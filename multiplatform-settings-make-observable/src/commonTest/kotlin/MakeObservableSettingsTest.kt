@@ -29,7 +29,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotSame
 import kotlin.test.assertNull
-import kotlin.test.assertSame
 
 /**
  * A `Settings.Factory` that creates `ObservableSettings` which are backed by `MapSettings`, but use the observability
@@ -61,11 +60,11 @@ class MakeObservableSettingsTest : BaseSettingsTest(factory) {
     }
 
     @Test
-    fun extension_sameInstanceIffObservable() {
+    fun extension_returnsNewInstance() {
         val observableSettings = factory.create()
         val nonObservableSettings = object : Settings by observableSettings {}
 
-        assertSame(observableSettings, observableSettings.makeObservable())
+        assertNotSame(observableSettings, observableSettings.makeObservable())
         assertNotSame(observableSettings, nonObservableSettings.makeObservable())
     }
 }

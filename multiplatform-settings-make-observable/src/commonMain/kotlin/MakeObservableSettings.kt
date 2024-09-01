@@ -26,19 +26,11 @@ import kotlin.jvm.JvmInline
 /**
  * Returns an [ObservableSettings] instance based on this [Settings].
  *
- * If `this` already implements `ObservableSettings`, the same instance is returned. Otherwise, a wrapper class is
- * returned which manually invoked callbacks when values are changed.
- *
- * WARNING: When the wrapper class is used, changes to the underlying storage will not trigger callbacks unless they
- * are made through the same `ObservableSettings` instance returned by this function.
+ * WARNING: When this function is used, changes to the underlying storage will not trigger callbacks unless they are
+ * made through the same `ObservableSettings` instance being observed.
  */
 @ExperimentalSettingsApi
-public fun Settings.makeObservable(): ObservableSettings =
-    if (this is ObservableSettings) {
-        this
-    } else {
-        MakeObservableSettings(this)
-    }
+public fun Settings.makeObservable(): ObservableSettings = MakeObservableSettings(this)
 
 /**
  * A wrapper around provided [Settings] instance. It only ensures the callback if the
