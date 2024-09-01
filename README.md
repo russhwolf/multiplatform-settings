@@ -8,6 +8,9 @@
 
 This is a Kotlin library for Multiplatform apps, so that common code can persist key-value data.
 
+A [Korean translation](https://github.com/wooram-yang/multiplatform-settings/blob/feature/add_ko_readme_file/README-ko.md)
+of this readme is available separately, maintained by @wooram-yang
+
 ## Table of contents
 
 <!-- TODO it's maybe getting time to break this up into separate pages and do a real docs site -->
@@ -394,6 +397,16 @@ val someClass: SomeClass by settings.serializedValue(SomeClass.serializer(), "so
 val nullableSomeClass: SomeClass? by settings.nullableSerializedValue(SomeClass.serializer(), "someClass")
 ```
 
+All APIs also have variants that infer a serializer implicitly rather than taking one as a parameter. These APIs throw
+if the class is not serializable.
+
+```kotlin
+settings.encodeValue("key", someClass)
+val newInstance: SomeClass = settings.decodeValue("key", defaultValue)
+val nullableNewInstance: SomeClass = settings.decodeValueOrNull("key")
+// etc
+```
+
 Usage requires accepting both the `@ExperimentalSettingsApi` and `@ExperimentalSerializationApi` annotations.
 
 ### Coroutine APIs
@@ -408,8 +421,19 @@ This adds flow extensions for all types which use the listener APIs internally.
 
 ```kotlin
 val observableSettings: ObservableSettings // Only works with ObservableSettings
-val flow: Flow<Int> by observableSettings.intFlow("key", defaultValue)
-val nullableFlow: Flow<Int?> by observableSettings.intOrNullFlow("key")
+
+val flow: Flow<Int> by observableSettings.getIntFlow("key", defaultValue)
+val nullableFlow: Flow<Int?> by observableSettings.getIntOrNullFlow("key")
+```
+
+There are also `StateFlow` extensions, which require a coroutine scope.
+
+```kotlin
+val observableSettings: ObservableSettings // Only works with ObservableSettings
+val coroutineScope: CoroutineScope
+
+val stateFlow: StateFlow<Int> by observableSettings.getIntStateFlow("key", defaultValue)
+val nullableStateFlow: StateFlow<Int?> by observableSettings.getIntOrNullStateFlow("key")
 ```
 
 In addition, there are two new `Settings`-like interfaces: `SuspendSettings`, which looks similar to `Settings` but all
@@ -441,8 +465,10 @@ val blockingSettings: ObservableSettings = flowSettings.toBlockingObservableSett
 
 #### DataStore
 
-An implementation of `FlowSettings` on the Android exists in the `multiplatform-settings-datastore` dependency, based
-on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
+An implementation of `FlowSettings` exists in the `multiplatform-settings-datastore` dependency, based
+on [Jetpack DataStore](https://developer.android.com/jetpack/androidx/releases/datastore). Because DataStore is now a
+multiplatform library, starting in version 1.2.0, this module is available on all platforms where DataStore is
+available, rather than being limited to Android and JVM.
 
 ```kotlin
 implementation("com.russhwolf:multiplatform-settings-datastore:1.2.0")
@@ -483,6 +509,20 @@ actual val settings: SuspendSettings = NSUserDefaultsSettings(/*...*/).toSuspend
 // JS
 actual val settings: SuspendSettings = StorageSettings().toSuspendSettings()
 ```
+
+### Make-Observable module
+
+The experimental `multiplatform-settings-make-observable` module adds an extension function `Settings.makeObservable()`
+in common ode which converts a `Settings` instance to `ObservableSettings` by directly wiring in callbacks rather than
+native observability methods.
+
+```kotlin
+val settings: Settings // = ...
+val observableSettings: ObservableSettings = settings.makeObservable()
+```
+
+This has the advantage of enabling observability on platforms which don't have an observable implementation. It has the
+disadvantage that updates will only be delivered to the same instance where changes were made.
 
 ## Building
 
