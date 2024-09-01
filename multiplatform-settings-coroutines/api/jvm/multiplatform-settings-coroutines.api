@@ -81,18 +81,30 @@ public final class com/russhwolf/settings/coroutines/FlowSettings$Companion {
 }
 
 public final class com/russhwolf/settings/coroutines/StateFlowExtensionsKt {
-	public static final fun getBooleanOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getBooleanStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Z)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getDoubleOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getDoubleStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;D)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getFloatOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getFloatStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;F)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getIntOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getIntStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;I)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getLongOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getLongStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;J)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getStringOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
-	public static final fun getStringStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getBooleanOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getBooleanOrNullStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getBooleanStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;ZLkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getBooleanStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;ZLkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getDoubleOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getDoubleOrNullStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getDoubleStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;DLkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getDoubleStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;DLkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getFloatOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getFloatOrNullStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getFloatStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;FLkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getFloatStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;FLkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getIntOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getIntOrNullStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getIntStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;ILkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getIntStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;ILkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getLongOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getLongOrNullStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getLongStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;JLkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getLongStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;JLkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getStringOrNullStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getStringOrNullStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
+	public static final fun getStringStateFlow (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;)Lkotlinx/coroutines/flow/StateFlow;
+	public static synthetic fun getStringStateFlow$default (Lcom/russhwolf/settings/ObservableSettings;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Ljava/lang/String;Lkotlinx/coroutines/flow/SharingStarted;ILjava/lang/Object;)Lkotlinx/coroutines/flow/StateFlow;
 }
 
 public abstract interface class com/russhwolf/settings/coroutines/SuspendSettings {
