@@ -21,6 +21,10 @@ plugins {
     alias(libs.plugins.kotlin.binaryCompatibilityValidator)
 }
 
+allprojects {
+    group = "com.russhwolf"
+}
+
 nexusPublishing {
     repositories {
         sonatype()

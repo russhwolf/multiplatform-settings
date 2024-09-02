@@ -25,7 +25,6 @@ plugins {
 // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
 val libs = the<LibrariesForLibs>()
 
-group = "com.russhwolf"
 version = libs.versions.multiplatformSettings.get()
 
 publishing {
