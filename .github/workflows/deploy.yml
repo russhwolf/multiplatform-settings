@@ -10,23 +10,7 @@ env:
   ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
 
 jobs:
-  deploy-linux:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: JDK setup
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: corretto
-
-      - name: Linux deploy
-        run: |
-          ./gradlew publish --no-daemon --stacktrace
-
-  deploy-macos:
+  deploy:
     runs-on: macos-latest
 
     steps:
@@ -39,35 +23,4 @@ jobs:
           distribution: corretto
 
       - name: Mac deploy
-        run: |
-          ./gradlew \
-          publishIosArm64PublicationToMavenRepository \
-          publishIosSimulatorArm64PublicationToMavenRepository \
-          publishIosX64PublicationToMavenRepository \
-          publishMacosX64PublicationToMavenRepository \
-          publishMacosArm64PublicationToMavenRepository \
-          publishWatchosArm32PublicationToMavenRepository \
-          publishWatchosArm64PublicationToMavenRepository \
-          publishWatchosDeviceArm64PublicationToMavenRepository \
-          publishWatchosSimulatorArm64PublicationToMavenRepository \
-          publishWatchosX64PublicationToMavenRepository \
-          publishTvosArm64PublicationToMavenRepository \
-          publishTvosSimulatorArm64PublicationToMavenRepository \
-          publishTvosX64PublicationToMavenRepository \
-          --no-daemon --stacktrace
-
-  deploy-windows:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: JDK setup
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: corretto
-
-      - name: Windows deploy
-        run: |
-          ./gradlew publishMingwX64PublicationToMavenRepository --no-daemon --stacktrace
+        run: ./gradlew publish --no-daemon --stacktrace
