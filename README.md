@@ -15,52 +15,52 @@ of this readme is available separately, maintained by @wooram-yang
 
 <!-- TODO it's maybe getting time to break this up into separate pages and do a real docs site -->
 
-* [Adding to your project](#adding-to-your-project)
 * [Usage](#usage)
-  * [Creating a Settings instance](#creating-a-settings-instance)
-    * [Platform constructors](#platform-constructors)
-    * [Factories](#factories)
-    * [No-arg module](#no-arg-module)
-  * [Settings API](#settings-api)
-    * [Listeners](#listeners)
-    * [Testing](#testing)
-  * [Other platforms](#other-platforms)
+  + [Implementation Summary](#implementation-summary)
+  + [Creating a Settings instance](#creating-a-settings-instance)
+    - [Platform constructors](#platform-constructors)
+    - [Factories](#factories)
+    - [No-arg module](#no-arg-module)
+  + [Settings API](#settings-api)
+    - [Listeners](#listeners)
+    - [Testing](#testing)
+  + [Other platforms](#other-platforms)
 * [Experimental API](#experimental-api)
-  * [Experimental Implementations](#experimental-implementations)
-    * [Apple Keychain](#apple-keychain)
-  * [Serialization module](#serialization-module)
-  * [Coroutine APIs](#coroutine-apis)
-    * [DataStore](#datastore)
+  + [Experimental Implementations](#experimental-implementations)
+    - [Apple Keychain](#apple-keychain)
+  + [Serialization module](#serialization-module)
+  + [Coroutine APIs](#coroutine-apis)
+    - [DataStore](#datastore)
+  + [Make-Observable module](#make-observable-module)
+* [Adding to your project](#adding-to-your-project)
 * [Building](#building)
 * [License](#license)
 
-## Adding to your project
-
-Multiplatform Settings is currently published to Maven Central, so add that to repositories.
-
-```kotlin
-repositories {
-    mavenCentral()
-    // ...
-}
-```
-
-Then, simply add the dependency to your common source-set dependencies
-
-```kotlin
-commonMain {
-    dependencies {
-        // ...
-        implementation("com.russhwolf:multiplatform-settings:1.2.0")
-    }
-}
-``` 
-
-See also the sample project, which uses this structure.
-
 ## Usage
 
-The `Settings` interface has implementations on the Android, iOS, macOS, watchOS, tvOS, JS, JVM, and Windows platforms.
+The `Settings` interface has implementations on the Android, iOS, macOS, watchOS, tvOS, JS, WasmJS, JVM, and Windows
+platforms.
+
+### Implementation Summary
+
+The following table shows the names of implementing classes and what platforms they're available on.
+
+| Class                                   | Backing API                         | Platforms                 |
+|-----------------------------------------|-------------------------------------|---------------------------|
+| `KeychainSettings`<sup>2</sup>          | Apple Keychain                      | iOS, macOS, watchOS, tvOS |
+| `NSUserDefaultsSettings`<sup>1</sup>    | User Defaults                       | iOS, macOS, watchOS, tvOS |
+| `PreferencesSettings`<sup>1</sup>       | `java.util.prefs.Preferences`       | JVM                       |
+| `PropertiesSettings`                    | `java.util.Properties`              | JVM                       |
+| `SharedPreferencesSettings`<sup>1</sup> | `android.content.SharedPreferences` | Android                   |
+| `StorageSettings`                       | Web Storage (localStorage)          | JS, WasmJS                |
+| `RegistrySettings`<sup>2</sup>          | Windows Registry                    | MingwX64                  |
+| `MapSettings`<sup>1,3</sup>             | `kotlin.collections.MutableMap`     | All platforms             |
+
+<sup>
+<sup>1</sup>Implements ObservableSettings interface<br/>
+<sup>2</sup>Implementations is considered experimental<br/>
+<sup>3</sup>MapSettings is intended for use in unit tests and will not persist data to storage
+</sup>
 
 ### Creating a Settings instance
 
@@ -137,7 +137,7 @@ val delegate: Properties // ...
 val settings: Settings = PropertiesSettings(delegate)
 ```
 
-On JS, `StorageSettings` wraps `Storage`.
+On JS and WasmJS, `StorageSettings` wraps `Storage`.
 
 ```kotlin
 val delegate: Storage // ...
@@ -523,6 +523,30 @@ val observableSettings: ObservableSettings = settings.makeObservable()
 
 This has the advantage of enabling observability on platforms which don't have an observable implementation. It has the
 disadvantage that updates will only be delivered to the same instance where changes were made.
+
+## Adding to your project
+
+Multiplatform Settings is currently published to Maven Central, so add that to repositories.
+
+```kotlin
+repositories {
+  mavenCentral()
+  // ...
+}
+```
+
+Then, simply add the dependency to your common source-set dependencies
+
+```kotlin
+commonMain {
+  dependencies {
+    // ...
+    implementation("com.russhwolf:multiplatform-settings:1.2.0")
+  }
+}
+``` 
+
+See also the sample project, which uses this structure.
 
 ## Building
 
