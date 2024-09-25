@@ -31,7 +31,6 @@ abstract interface com.russhwolf.settings.coroutines/FlowSettings : com.russhwol
     abstract suspend fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings.coroutines/FlowSettings.putString|putString(kotlin.String;kotlin.String){}[0]
     abstract suspend fun remove(kotlin/String) // com.russhwolf.settings.coroutines/FlowSettings.remove|remove(kotlin.String){}[0]
     abstract suspend fun size(): kotlin/Int // com.russhwolf.settings.coroutines/FlowSettings.size|size(){}[0]
-    final object Companion // com.russhwolf.settings.coroutines/FlowSettings.Companion|null[0]
     open suspend fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings.coroutines/FlowSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
     open suspend fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings.coroutines/FlowSettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
     open suspend fun getDouble(kotlin/String, kotlin/Double): kotlin/Double // com.russhwolf.settings.coroutines/FlowSettings.getDouble|getDouble(kotlin.String;kotlin.Double){}[0]
@@ -44,7 +43,10 @@ abstract interface com.russhwolf.settings.coroutines/FlowSettings : com.russhwol
     open suspend fun getLongOrNull(kotlin/String): kotlin/Long? // com.russhwolf.settings.coroutines/FlowSettings.getLongOrNull|getLongOrNull(kotlin.String){}[0]
     open suspend fun getString(kotlin/String, kotlin/String): kotlin/String // com.russhwolf.settings.coroutines/FlowSettings.getString|getString(kotlin.String;kotlin.String){}[0]
     open suspend fun getStringOrNull(kotlin/String): kotlin/String? // com.russhwolf.settings.coroutines/FlowSettings.getStringOrNull|getStringOrNull(kotlin.String){}[0]
+
+    final object Companion // com.russhwolf.settings.coroutines/FlowSettings.Companion|null[0]
 }
+
 abstract interface com.russhwolf.settings.coroutines/SuspendSettings { // com.russhwolf.settings.coroutines/SuspendSettings|null[0]
     abstract suspend fun clear() // com.russhwolf.settings.coroutines/SuspendSettings.clear|clear(){}[0]
     abstract suspend fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings.coroutines/SuspendSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
@@ -69,8 +71,10 @@ abstract interface com.russhwolf.settings.coroutines/SuspendSettings { // com.ru
     abstract suspend fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings.coroutines/SuspendSettings.putString|putString(kotlin.String;kotlin.String){}[0]
     abstract suspend fun remove(kotlin/String) // com.russhwolf.settings.coroutines/SuspendSettings.remove|remove(kotlin.String){}[0]
     abstract suspend fun size(): kotlin/Int // com.russhwolf.settings.coroutines/SuspendSettings.size|size(){}[0]
+
     final object Companion // com.russhwolf.settings.coroutines/SuspendSettings.Companion|null[0]
 }
+
 final fun (com.russhwolf.settings/ObservableSettings).com.russhwolf.settings.coroutines/getBooleanFlow(kotlin/String, kotlin/Boolean): kotlinx.coroutines.flow/Flow<kotlin/Boolean> // com.russhwolf.settings.coroutines/getBooleanFlow|getBooleanFlow@com.russhwolf.settings.ObservableSettings(kotlin.String;kotlin.Boolean){}[0]
 final fun (com.russhwolf.settings/ObservableSettings).com.russhwolf.settings.coroutines/getBooleanOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/Boolean?> // com.russhwolf.settings.coroutines/getBooleanOrNullFlow|getBooleanOrNullFlow@com.russhwolf.settings.ObservableSettings(kotlin.String){}[0]
 final fun (com.russhwolf.settings/ObservableSettings).com.russhwolf.settings.coroutines/getBooleanOrNullStateFlow(kotlinx.coroutines/CoroutineScope, kotlin/String, kotlinx.coroutines.flow/SharingStarted = ...): kotlinx.coroutines.flow/StateFlow<kotlin/Boolean?> // com.russhwolf.settings.coroutines/getBooleanOrNullStateFlow|getBooleanOrNullStateFlow@com.russhwolf.settings.ObservableSettings(kotlinx.coroutines.CoroutineScope;kotlin.String;kotlinx.coroutines.flow.SharingStarted){}[0]
@@ -97,7 +101,9 @@ final fun (com.russhwolf.settings/ObservableSettings).com.russhwolf.settings.cor
 final fun (com.russhwolf.settings/ObservableSettings).com.russhwolf.settings.coroutines/getStringStateFlow(kotlinx.coroutines/CoroutineScope, kotlin/String, kotlin/String, kotlinx.coroutines.flow/SharingStarted = ...): kotlinx.coroutines.flow/StateFlow<kotlin/String> // com.russhwolf.settings.coroutines/getStringStateFlow|getStringStateFlow@com.russhwolf.settings.ObservableSettings(kotlinx.coroutines.CoroutineScope;kotlin.String;kotlin.String;kotlinx.coroutines.flow.SharingStarted){}[0]
 final fun (com.russhwolf.settings/ObservableSettings).com.russhwolf.settings.coroutines/toFlowSettings(kotlinx.coroutines/CoroutineDispatcher = ...): com.russhwolf.settings.coroutines/FlowSettings // com.russhwolf.settings.coroutines/toFlowSettings|toFlowSettings@com.russhwolf.settings.ObservableSettings(kotlinx.coroutines.CoroutineDispatcher){}[0]
 final fun (com.russhwolf.settings/Settings).com.russhwolf.settings.coroutines/toSuspendSettings(kotlinx.coroutines/CoroutineDispatcher = ...): com.russhwolf.settings.coroutines/SuspendSettings // com.russhwolf.settings.coroutines/toSuspendSettings|toSuspendSettings@com.russhwolf.settings.Settings(kotlinx.coroutines.CoroutineDispatcher){}[0]
+
 // Targets: [native]
 final fun (com.russhwolf.settings.coroutines/FlowSettings).com.russhwolf.settings.coroutines/toBlockingObservableSettings(kotlinx.coroutines/CoroutineScope = ...): com.russhwolf.settings/ObservableSettings // com.russhwolf.settings.coroutines/toBlockingObservableSettings|toBlockingObservableSettings@com.russhwolf.settings.coroutines.FlowSettings(kotlinx.coroutines.CoroutineScope){}[0]
+
 // Targets: [native]
 final fun (com.russhwolf.settings.coroutines/SuspendSettings).com.russhwolf.settings.coroutines/toBlockingSettings(): com.russhwolf.settings/Settings // com.russhwolf.settings.coroutines/toBlockingSettings|toBlockingSettings@com.russhwolf.settings.coroutines.SuspendSettings(){}[0]

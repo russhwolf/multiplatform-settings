@@ -7,6 +7,14 @@
 // - Show declarations: true
 
 // Library unique name: <com.russhwolf:multiplatform-settings>
+open annotation class com.russhwolf.settings/ExperimentalSettingsApi : kotlin/Annotation { // com.russhwolf.settings/ExperimentalSettingsApi|null[0]
+    constructor <init>() // com.russhwolf.settings/ExperimentalSettingsApi.<init>|<init>(){}[0]
+}
+
+open annotation class com.russhwolf.settings/ExperimentalSettingsImplementation : kotlin/Annotation { // com.russhwolf.settings/ExperimentalSettingsImplementation|null[0]
+    constructor <init>() // com.russhwolf.settings/ExperimentalSettingsImplementation.<init>|<init>(){}[0]
+}
+
 abstract interface com.russhwolf.settings/ObservableSettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/ObservableSettings|null[0]
     abstract fun addBooleanListener(kotlin/String, kotlin/Boolean, kotlin/Function1<kotlin/Boolean, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/ObservableSettings.addBooleanListener|addBooleanListener(kotlin.String;kotlin.Boolean;kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
     abstract fun addBooleanOrNullListener(kotlin/String, kotlin/Function1<kotlin/Boolean?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/ObservableSettings.addBooleanOrNullListener|addBooleanOrNullListener(kotlin.String;kotlin.Function1<kotlin.Boolean?,kotlin.Unit>){}[0]
@@ -21,7 +29,13 @@ abstract interface com.russhwolf.settings/ObservableSettings : com.russhwolf.set
     abstract fun addStringListener(kotlin/String, kotlin/String, kotlin/Function1<kotlin/String, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/ObservableSettings.addStringListener|addStringListener(kotlin.String;kotlin.String;kotlin.Function1<kotlin.String,kotlin.Unit>){}[0]
     abstract fun addStringOrNullListener(kotlin/String, kotlin/Function1<kotlin/String?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/ObservableSettings.addStringOrNullListener|addStringOrNullListener(kotlin.String;kotlin.Function1<kotlin.String?,kotlin.Unit>){}[0]
 }
+
 abstract interface com.russhwolf.settings/Settings { // com.russhwolf.settings/Settings|null[0]
+    abstract val keys // com.russhwolf.settings/Settings.keys|{}keys[0]
+        abstract fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/Settings.keys.<get-keys>|<get-keys>(){}[0]
+    abstract val size // com.russhwolf.settings/Settings.size|{}size[0]
+        abstract fun <get-size>(): kotlin/Int // com.russhwolf.settings/Settings.size.<get-size>|<get-size>(){}[0]
+
     abstract fun clear() // com.russhwolf.settings/Settings.clear|clear(){}[0]
     abstract fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/Settings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
     abstract fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/Settings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
@@ -43,18 +57,18 @@ abstract interface com.russhwolf.settings/Settings { // com.russhwolf.settings/S
     abstract fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/Settings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
     abstract fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/Settings.putString|putString(kotlin.String;kotlin.String){}[0]
     abstract fun remove(kotlin/String) // com.russhwolf.settings/Settings.remove|remove(kotlin.String){}[0]
+
     abstract interface Factory { // com.russhwolf.settings/Settings.Factory|null[0]
         abstract fun create(kotlin/String? = ...): com.russhwolf.settings/Settings // com.russhwolf.settings/Settings.Factory.create|create(kotlin.String?){}[0]
     }
-    abstract val keys // com.russhwolf.settings/Settings.keys|{}keys[0]
-        abstract fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/Settings.keys.<get-keys>|<get-keys>(){}[0]
-    abstract val size // com.russhwolf.settings/Settings.size|{}size[0]
-        abstract fun <get-size>(): kotlin/Int // com.russhwolf.settings/Settings.size.<get-size>|<get-size>(){}[0]
+
     final object Companion // com.russhwolf.settings/Settings.Companion|null[0]
 }
+
 abstract interface com.russhwolf.settings/SettingsListener { // com.russhwolf.settings/SettingsListener|null[0]
     abstract fun deactivate() // com.russhwolf.settings/SettingsListener.deactivate|deactivate(){}[0]
 }
+
 final fun (com.russhwolf.settings/Settings).com.russhwolf.settings/boolean(kotlin/String? = ..., kotlin/Boolean): kotlin.properties/ReadWriteProperty<kotlin/Any?, kotlin/Boolean> // com.russhwolf.settings/boolean|boolean@com.russhwolf.settings.Settings(kotlin.String?;kotlin.Boolean){}[0]
 final fun (com.russhwolf.settings/Settings).com.russhwolf.settings/double(kotlin/String? = ..., kotlin/Double): kotlin.properties/ReadWriteProperty<kotlin/Any?, kotlin/Double> // com.russhwolf.settings/double|double@com.russhwolf.settings.Settings(kotlin.String?;kotlin.Double){}[0]
 final fun (com.russhwolf.settings/Settings).com.russhwolf.settings/float(kotlin/String? = ..., kotlin/Float): kotlin.properties/ReadWriteProperty<kotlin/Any?, kotlin/Float> // com.russhwolf.settings/float|float@com.russhwolf.settings.Settings(kotlin.String?;kotlin.Float){}[0]
@@ -84,21 +98,18 @@ final inline fun (com.russhwolf.settings/Settings).com.russhwolf.settings/set(ko
 final inline fun (com.russhwolf.settings/Settings).com.russhwolf.settings/set(kotlin/String, kotlin/String) // com.russhwolf.settings/set|set@com.russhwolf.settings.Settings(kotlin.String;kotlin.String){}[0]
 final inline fun <#A: reified kotlin/Any> (com.russhwolf.settings/Settings).com.russhwolf.settings/get(kotlin/String): #A? // com.russhwolf.settings/get|get@com.russhwolf.settings.Settings(kotlin.String){0§<kotlin.Any>}[0]
 final inline fun <#A: reified kotlin/Any> (com.russhwolf.settings/Settings).com.russhwolf.settings/set(kotlin/String, #A?) // com.russhwolf.settings/set|set@com.russhwolf.settings.Settings(kotlin.String;0:0?){0§<kotlin.Any>}[0]
-open annotation class com.russhwolf.settings/ExperimentalSettingsApi : kotlin/Annotation { // com.russhwolf.settings/ExperimentalSettingsApi|null[0]
-    constructor <init>() // com.russhwolf.settings/ExperimentalSettingsApi.<init>|<init>(){}[0]
-}
-open annotation class com.russhwolf.settings/ExperimentalSettingsImplementation : kotlin/Annotation { // com.russhwolf.settings/ExperimentalSettingsImplementation|null[0]
-    constructor <init>() // com.russhwolf.settings/ExperimentalSettingsImplementation.<init>|<init>(){}[0]
-}
+
 // Targets: [apple]
 final class com.russhwolf.settings/KeychainSettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/KeychainSettings|null[0]
     constructor <init>() // com.russhwolf.settings/KeychainSettings.<init>|<init>(){}[0]
     constructor <init>(kotlin/Array<out kotlin/Pair<kotlinx.cinterop/CPointer<cnames.structs/__CFString>?, kotlinx.cinterop/CPointer<out kotlinx.cinterop/CPointed>?>>...) // com.russhwolf.settings/KeychainSettings.<init>|<init>(kotlin.Array<out|kotlin.Pair<kotlinx.cinterop.CPointer<cnames.structs.__CFString>?,kotlinx.cinterop.CPointer<out|kotlinx.cinterop.CPointed>?>>...){}[0]
     constructor <init>(kotlin/String) // com.russhwolf.settings/KeychainSettings.<init>|<init>(kotlin.String){}[0]
-    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/KeychainSettings.Factory|null[0]
-        constructor <init>() // com.russhwolf.settings/KeychainSettings.Factory.<init>|<init>(){}[0]
-        final fun create(kotlin/String?): com.russhwolf.settings/KeychainSettings // com.russhwolf.settings/KeychainSettings.Factory.create|create(kotlin.String?){}[0]
-    }
+
+    final val keys // com.russhwolf.settings/KeychainSettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/KeychainSettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/KeychainSettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/KeychainSettings.size.<get-size>|<get-size>(){}[0]
+
     final fun clear() // com.russhwolf.settings/KeychainSettings.clear|clear(){}[0]
     final fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/KeychainSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
     final fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/KeychainSettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
@@ -120,21 +131,23 @@ final class com.russhwolf.settings/KeychainSettings : com.russhwolf.settings/Set
     final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/KeychainSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
     final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/KeychainSettings.putString|putString(kotlin.String;kotlin.String){}[0]
     final fun remove(kotlin/String) // com.russhwolf.settings/KeychainSettings.remove|remove(kotlin.String){}[0]
-    final val keys // com.russhwolf.settings/KeychainSettings.keys|{}keys[0]
-        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/KeychainSettings.keys.<get-keys>|<get-keys>(){}[0]
-    final val size // com.russhwolf.settings/KeychainSettings.size|{}size[0]
-        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/KeychainSettings.size.<get-size>|<get-size>(){}[0]
+
+    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/KeychainSettings.Factory|null[0]
+        constructor <init>() // com.russhwolf.settings/KeychainSettings.Factory.<init>|<init>(){}[0]
+
+        final fun create(kotlin/String?): com.russhwolf.settings/KeychainSettings // com.russhwolf.settings/KeychainSettings.Factory.create|create(kotlin.String?){}[0]
+    }
 }
+
 // Targets: [apple]
 final class com.russhwolf.settings/NSUserDefaultsSettings : com.russhwolf.settings/ObservableSettings { // com.russhwolf.settings/NSUserDefaultsSettings|null[0]
     constructor <init>(platform.Foundation/NSUserDefaults) // com.russhwolf.settings/NSUserDefaultsSettings.<init>|<init>(platform.Foundation.NSUserDefaults){}[0]
-    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/NSUserDefaultsSettings.Factory|null[0]
-        constructor <init>() // com.russhwolf.settings/NSUserDefaultsSettings.Factory.<init>|<init>(){}[0]
-        final fun create(kotlin/String?): com.russhwolf.settings/NSUserDefaultsSettings // com.russhwolf.settings/NSUserDefaultsSettings.Factory.create|create(kotlin.String?){}[0]
-    }
-    final class Listener : com.russhwolf.settings/SettingsListener { // com.russhwolf.settings/NSUserDefaultsSettings.Listener|null[0]
-        final fun deactivate() // com.russhwolf.settings/NSUserDefaultsSettings.Listener.deactivate|deactivate(){}[0]
-    }
+
+    final val keys // com.russhwolf.settings/NSUserDefaultsSettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/NSUserDefaultsSettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/NSUserDefaultsSettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/NSUserDefaultsSettings.size.<get-size>|<get-size>(){}[0]
+
     final fun addBooleanListener(kotlin/String, kotlin/Boolean, kotlin/Function1<kotlin/Boolean, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/NSUserDefaultsSettings.addBooleanListener|addBooleanListener(kotlin.String;kotlin.Boolean;kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
     final fun addBooleanOrNullListener(kotlin/String, kotlin/Function1<kotlin/Boolean?, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/NSUserDefaultsSettings.addBooleanOrNullListener|addBooleanOrNullListener(kotlin.String;kotlin.Function1<kotlin.Boolean?,kotlin.Unit>){}[0]
     final fun addDoubleListener(kotlin/String, kotlin/Double, kotlin/Function1<kotlin/Double, kotlin/Unit>): com.russhwolf.settings/SettingsListener // com.russhwolf.settings/NSUserDefaultsSettings.addDoubleListener|addDoubleListener(kotlin.String;kotlin.Double;kotlin.Function1<kotlin.Double,kotlin.Unit>){}[0]
@@ -168,14 +181,27 @@ final class com.russhwolf.settings/NSUserDefaultsSettings : com.russhwolf.settin
     final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/NSUserDefaultsSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
     final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/NSUserDefaultsSettings.putString|putString(kotlin.String;kotlin.String){}[0]
     final fun remove(kotlin/String) // com.russhwolf.settings/NSUserDefaultsSettings.remove|remove(kotlin.String){}[0]
-    final val keys // com.russhwolf.settings/NSUserDefaultsSettings.keys|{}keys[0]
-        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/NSUserDefaultsSettings.keys.<get-keys>|<get-keys>(){}[0]
-    final val size // com.russhwolf.settings/NSUserDefaultsSettings.size|{}size[0]
-        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/NSUserDefaultsSettings.size.<get-size>|<get-size>(){}[0]
+
+    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/NSUserDefaultsSettings.Factory|null[0]
+        constructor <init>() // com.russhwolf.settings/NSUserDefaultsSettings.Factory.<init>|<init>(){}[0]
+
+        final fun create(kotlin/String?): com.russhwolf.settings/NSUserDefaultsSettings // com.russhwolf.settings/NSUserDefaultsSettings.Factory.create|create(kotlin.String?){}[0]
+    }
+
+    final class Listener : com.russhwolf.settings/SettingsListener { // com.russhwolf.settings/NSUserDefaultsSettings.Listener|null[0]
+        final fun deactivate() // com.russhwolf.settings/NSUserDefaultsSettings.Listener.deactivate|deactivate(){}[0]
+    }
 }
+
 // Targets: [js, wasmJs]
 final class com.russhwolf.settings/StorageSettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/StorageSettings|null[0]
     constructor <init>(org.w3c.dom/Storage = ...) // com.russhwolf.settings/StorageSettings.<init>|<init>(org.w3c.dom.Storage){}[0]
+
+    final val keys // com.russhwolf.settings/StorageSettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/StorageSettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/StorageSettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/StorageSettings.size.<get-size>|<get-size>(){}[0]
+
     final fun clear() // com.russhwolf.settings/StorageSettings.clear|clear(){}[0]
     final fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/StorageSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
     final fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/StorageSettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
@@ -197,18 +223,17 @@ final class com.russhwolf.settings/StorageSettings : com.russhwolf.settings/Sett
     final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/StorageSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
     final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/StorageSettings.putString|putString(kotlin.String;kotlin.String){}[0]
     final fun remove(kotlin/String) // com.russhwolf.settings/StorageSettings.remove|remove(kotlin.String){}[0]
-    final val keys // com.russhwolf.settings/StorageSettings.keys|{}keys[0]
-        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/StorageSettings.keys.<get-keys>|<get-keys>(){}[0]
-    final val size // com.russhwolf.settings/StorageSettings.size|{}size[0]
-        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/StorageSettings.size.<get-size>|<get-size>(){}[0]
 }
+
 // Targets: [mingwX64]
 final class com.russhwolf.settings/RegistrySettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/RegistrySettings|null[0]
     constructor <init>(kotlin/String) // com.russhwolf.settings/RegistrySettings.<init>|<init>(kotlin.String){}[0]
-    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/RegistrySettings.Factory|null[0]
-        constructor <init>(kotlin/String) // com.russhwolf.settings/RegistrySettings.Factory.<init>|<init>(kotlin.String){}[0]
-        final fun create(kotlin/String?): com.russhwolf.settings/RegistrySettings // com.russhwolf.settings/RegistrySettings.Factory.create|create(kotlin.String?){}[0]
-    }
+
+    final val keys // com.russhwolf.settings/RegistrySettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/RegistrySettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/RegistrySettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/RegistrySettings.size.<get-size>|<get-size>(){}[0]
+
     final fun clear() // com.russhwolf.settings/RegistrySettings.clear|clear(){}[0]
     final fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/RegistrySettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
     final fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/RegistrySettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
@@ -230,8 +255,10 @@ final class com.russhwolf.settings/RegistrySettings : com.russhwolf.settings/Set
     final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/RegistrySettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
     final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/RegistrySettings.putString|putString(kotlin.String;kotlin.String){}[0]
     final fun remove(kotlin/String) // com.russhwolf.settings/RegistrySettings.remove|remove(kotlin.String){}[0]
-    final val keys // com.russhwolf.settings/RegistrySettings.keys|{}keys[0]
-        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/RegistrySettings.keys.<get-keys>|<get-keys>(){}[0]
-    final val size // com.russhwolf.settings/RegistrySettings.size|{}size[0]
-        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/RegistrySettings.size.<get-size>|<get-size>(){}[0]
+
+    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/RegistrySettings.Factory|null[0]
+        constructor <init>(kotlin/String) // com.russhwolf.settings/RegistrySettings.Factory.<init>|<init>(kotlin.String){}[0]
+
+        final fun create(kotlin/String?): com.russhwolf.settings/RegistrySettings // com.russhwolf.settings/RegistrySettings.Factory.create|create(kotlin.String?){}[0]
+    }
 }

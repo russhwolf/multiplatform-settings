@@ -8,6 +8,7 @@
 // Library unique name: <com.russhwolf:multiplatform-settings-datastore>
 final class com.russhwolf.settings.datastore/DataStoreSettings : com.russhwolf.settings.coroutines/FlowSettings { // com.russhwolf.settings.datastore/DataStoreSettings|null[0]
     constructor <init>(androidx.datastore.core/DataStore<androidx.datastore.preferences.core/Preferences>) // com.russhwolf.settings.datastore/DataStoreSettings.<init>|<init>(androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>){}[0]
+
     final fun getBooleanFlow(kotlin/String, kotlin/Boolean): kotlinx.coroutines.flow/Flow<kotlin/Boolean> // com.russhwolf.settings.datastore/DataStoreSettings.getBooleanFlow|getBooleanFlow(kotlin.String;kotlin.Boolean){}[0]
     final fun getBooleanOrNullFlow(kotlin/String): kotlinx.coroutines.flow/Flow<kotlin/Boolean?> // com.russhwolf.settings.datastore/DataStoreSettings.getBooleanOrNullFlow|getBooleanOrNullFlow(kotlin.String){}[0]
     final fun getDoubleFlow(kotlin/String, kotlin/Double): kotlinx.coroutines.flow/Flow<kotlin/Double> // com.russhwolf.settings.datastore/DataStoreSettings.getDoubleFlow|getDoubleFlow(kotlin.String;kotlin.Double){}[0]
