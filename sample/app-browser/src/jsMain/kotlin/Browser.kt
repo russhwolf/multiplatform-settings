@@ -20,7 +20,6 @@ import com.russhwolf.settings.StorageSettings
 import com.russhwolf.settings.example.SettingConfig
 import com.russhwolf.settings.example.SettingsRepository
 import kotlinx.browser.document
-import kotlinx.html.INPUT
 import kotlinx.html.InputType
 import kotlinx.html.dom.append
 import kotlinx.html.js.button

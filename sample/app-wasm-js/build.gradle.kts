@@ -35,6 +35,7 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(project(":shared"))
+                implementation("org.jetbrains.kotlinx:kotlinx-html:0.11.0")
                 implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
             }
         }
