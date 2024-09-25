@@ -1,5 +1,5 @@
 [versions]
-multiplatformSettings = "1.2.0"
+multiplatformSettings = "1.2.1-SNAPSHOT"
 
 kotlin = "2.0.0"
 
