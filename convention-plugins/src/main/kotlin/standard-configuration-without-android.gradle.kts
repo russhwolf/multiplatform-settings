@@ -17,6 +17,7 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -39,6 +40,14 @@ kotlin {
 //            compilerOptions {
 //                allWarningsAsErrors = true
 //            }
+        }
+
+        if (this is KotlinNativeTarget && this.name.startsWith("linux")) {
+            binaries.configureEach {
+                // lmdb appears to be using a newer gcc than Kotlin. This lets us still work as long as host has newer gcc too
+                // https://stackoverflow.com/a/78267398
+                linkerOpts += "--allow-shlib-undefined"
+            }
         }
     }
 
