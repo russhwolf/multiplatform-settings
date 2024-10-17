@@ -15,7 +15,6 @@
  */
 
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     id("standard-configuration")
@@ -27,11 +26,6 @@ standardConfig {
 
 kotlin {
     explicitApi = ExplicitApiMode.Disabled
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmWasi {
-        nodejs()
-    }
 
     sourceSets {
         commonMain {

@@ -46,11 +46,10 @@ open class StandardConfigExtension {
                 browser()
             }
 
-            // TODO need coroutines and serialization before we can enable this globally
-//            @OptIn(ExperimentalWasmDsl::class)
-//            wasmWasi {
-//                nodejs()
-//            }
+            @OptIn(ExperimentalWasmDsl::class)
+            wasmWasi {
+                nodejs()
+            }
 
             watchosArm32()
             watchosArm64()
