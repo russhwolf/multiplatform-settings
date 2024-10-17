@@ -1,5 +1,10 @@
 # Changelog #
 
+## Unreleased ##
+
+- Update to Kotlin 2.0.21, Gradle 8.10, and Android Gradle Plugin 8.5.2
+- Add `wasmWasi` support to `multiplatform-settings-coroutines` and `multiplatform-settings-serialization`.
+
 ## v1.2.0 *(2024-09-01)* ##
 
 - Update to Kotlin 2.0.0, Gradle 8.7, and Android Gradle Plugin 8.3.2
