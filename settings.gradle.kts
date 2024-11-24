@@ -35,6 +35,7 @@ include(
     ":multiplatform-settings",
     ":multiplatform-settings:keychain-tests",
     ":multiplatform-settings:node-tests",
+    ":multiplatform-settings:androidNative-test-helpers",
     ":multiplatform-settings-test",
     ":multiplatform-settings-no-arg",
     ":multiplatform-settings-coroutines",

@@ -1,5 +1,6 @@
 // Klib ABI Dump
 // Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, wasmWasi, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Alias: androidNative => [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86]
 // Alias: apple => [iosArm64, iosSimulatorArm64, iosX64, macosArm64, macosX64, tvosArm64, tvosSimulatorArm64, tvosX64, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
 // Rendering settings:
 // - Signature version: 2
@@ -191,6 +192,38 @@ final class com.russhwolf.settings/NSUserDefaultsSettings : com.russhwolf.settin
     final class Listener : com.russhwolf.settings/SettingsListener { // com.russhwolf.settings/NSUserDefaultsSettings.Listener|null[0]
         final fun deactivate() // com.russhwolf.settings/NSUserDefaultsSettings.Listener.deactivate|deactivate(){}[0]
     }
+}
+
+// Targets: [androidNative]
+final class com.russhwolf.settings/JniSharedPreferencesSettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/JniSharedPreferencesSettings|null[0]
+    constructor <init>(kotlinx.cinterop/CPointer<kotlinx.cinterop/CPointerVarOf<kotlinx.cinterop/CPointer<platform.android/JNINativeInterface>>>, kotlinx.cinterop/CPointer<out kotlinx.cinterop/CPointed>) // com.russhwolf.settings/JniSharedPreferencesSettings.<init>|<init>(kotlinx.cinterop.CPointer<kotlinx.cinterop.CPointerVarOf<kotlinx.cinterop.CPointer<platform.android.JNINativeInterface>>>;kotlinx.cinterop.CPointer<out|kotlinx.cinterop.CPointed>){}[0]
+
+    final val keys // com.russhwolf.settings/JniSharedPreferencesSettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/JniSharedPreferencesSettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/JniSharedPreferencesSettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/JniSharedPreferencesSettings.size.<get-size>|<get-size>(){}[0]
+
+    final fun clear() // com.russhwolf.settings/JniSharedPreferencesSettings.clear|clear(){}[0]
+    final fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/JniSharedPreferencesSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/JniSharedPreferencesSettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
+    final fun getDouble(kotlin/String, kotlin/Double): kotlin/Double // com.russhwolf.settings/JniSharedPreferencesSettings.getDouble|getDouble(kotlin.String;kotlin.Double){}[0]
+    final fun getDoubleOrNull(kotlin/String): kotlin/Double? // com.russhwolf.settings/JniSharedPreferencesSettings.getDoubleOrNull|getDoubleOrNull(kotlin.String){}[0]
+    final fun getFloat(kotlin/String, kotlin/Float): kotlin/Float // com.russhwolf.settings/JniSharedPreferencesSettings.getFloat|getFloat(kotlin.String;kotlin.Float){}[0]
+    final fun getFloatOrNull(kotlin/String): kotlin/Float? // com.russhwolf.settings/JniSharedPreferencesSettings.getFloatOrNull|getFloatOrNull(kotlin.String){}[0]
+    final fun getInt(kotlin/String, kotlin/Int): kotlin/Int // com.russhwolf.settings/JniSharedPreferencesSettings.getInt|getInt(kotlin.String;kotlin.Int){}[0]
+    final fun getIntOrNull(kotlin/String): kotlin/Int? // com.russhwolf.settings/JniSharedPreferencesSettings.getIntOrNull|getIntOrNull(kotlin.String){}[0]
+    final fun getLong(kotlin/String, kotlin/Long): kotlin/Long // com.russhwolf.settings/JniSharedPreferencesSettings.getLong|getLong(kotlin.String;kotlin.Long){}[0]
+    final fun getLongOrNull(kotlin/String): kotlin/Long? // com.russhwolf.settings/JniSharedPreferencesSettings.getLongOrNull|getLongOrNull(kotlin.String){}[0]
+    final fun getString(kotlin/String, kotlin/String): kotlin/String // com.russhwolf.settings/JniSharedPreferencesSettings.getString|getString(kotlin.String;kotlin.String){}[0]
+    final fun getStringOrNull(kotlin/String): kotlin/String? // com.russhwolf.settings/JniSharedPreferencesSettings.getStringOrNull|getStringOrNull(kotlin.String){}[0]
+    final fun hasKey(kotlin/String): kotlin/Boolean // com.russhwolf.settings/JniSharedPreferencesSettings.hasKey|hasKey(kotlin.String){}[0]
+    final fun putBoolean(kotlin/String, kotlin/Boolean) // com.russhwolf.settings/JniSharedPreferencesSettings.putBoolean|putBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun putDouble(kotlin/String, kotlin/Double) // com.russhwolf.settings/JniSharedPreferencesSettings.putDouble|putDouble(kotlin.String;kotlin.Double){}[0]
+    final fun putFloat(kotlin/String, kotlin/Float) // com.russhwolf.settings/JniSharedPreferencesSettings.putFloat|putFloat(kotlin.String;kotlin.Float){}[0]
+    final fun putInt(kotlin/String, kotlin/Int) // com.russhwolf.settings/JniSharedPreferencesSettings.putInt|putInt(kotlin.String;kotlin.Int){}[0]
+    final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/JniSharedPreferencesSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
+    final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/JniSharedPreferencesSettings.putString|putString(kotlin.String;kotlin.String){}[0]
+    final fun remove(kotlin/String) // com.russhwolf.settings/JniSharedPreferencesSettings.remove|remove(kotlin.String){}[0]
 }
 
 // Targets: [js, wasmJs]

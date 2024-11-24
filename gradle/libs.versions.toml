@@ -18,6 +18,7 @@ androidx-preference = "1.2.1"
 androidx-startup = "1.2.0"
 androidx-test = "1.6.1"
 androidx-testExt = "1.2.1"
+androidx-test-orchestrator = "1.5.1"
 
 binaryCompatibilityValidator = "0.16.3"
 nexus-publish = "2.0.0"
@@ -44,6 +45,9 @@ androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-p
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidx-preference" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
+androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "androidx-test-orchestrator" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-testExt" }
 
 junit = { module = "junit:junit", version.ref = "junit" }

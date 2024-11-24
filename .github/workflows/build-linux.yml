@@ -37,3 +37,9 @@ jobs:
           ./gradlew build --no-daemon --stacktrace
         env:
           GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
+
+      - name: Connected tests
+        uses: reactivecircus/android-emulator-runner@62dbb605bba737720e10b196cb4220d374026a6d # v2.33.0
+        with:
+          api-level: 35
+          script: ./gradlew multiplatform-settings:androidNative-test-helpers:prepareDebugAndroidNdkSo multiplatform-settings:connectedCheck

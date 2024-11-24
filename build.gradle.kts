@@ -32,7 +32,7 @@ nexusPublishing {
 }
 
 apiValidation {
-    ignoredProjects.add("tests")
+    ignoredProjects.addAll(listOf("tests", "androidNative-test-helpers"))
     @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
     klib {
         enabled = true
