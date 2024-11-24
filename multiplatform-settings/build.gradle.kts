@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 /*
  * Copyright 2019 Russell Wolf
@@ -31,6 +32,12 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    androidTarget {
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+        unitTestVariant.sourceSetTree.set(KotlinSourceSetTree.unitTest)
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -51,6 +58,18 @@ kotlin {
                 implementation(libs.robolectric)
             }
         }
+
+        androidInstrumentedTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.androidx.test.runner)
+                implementation(libs.androidx.test.rules)
+
+                implementation(project(":tests"))
+
+                implementation(libs.androidx.preference)
+            }
+        }
     }
 }
 
@@ -58,6 +77,19 @@ android {
     namespace = "com.russhwolf.settings"
     testOptions.unitTests.isIncludeAndroidResources = true
 
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
+    }
+
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+    }
+
     // Oops, this was on in 1.0, so now it's technically a breaking change to turn it off
     buildFeatures.buildConfig = true
+}
+
+dependencies {
+    androidTestUtil(libs.androidx.test.orchestrator)
 }

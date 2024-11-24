@@ -25,5 +25,7 @@ include(
     ":app-android",
     ":app-browser",
     ":app-desktop",
-    ":app-wasm-js"
+    ":app-wasm-js",
+    ":app-ndk",
+    ":lib-ndk"
 )

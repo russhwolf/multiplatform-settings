@@ -35,6 +35,11 @@ kotlin {
         browser()
     }
 
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
+
     listOf(
         iosArm64(),
         iosSimulatorArm64(),
