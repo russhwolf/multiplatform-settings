@@ -31,7 +31,7 @@ import kotlinx.serialization.modules.SerializersModule
 @ExperimentalSerializationApi
 internal class SettingsEncoder(
     private val settings: Settings,
-    key: String,
+    private val key: String,
     public override val serializersModule: SerializersModule
 ) : AbstractEncoder() {
 
@@ -60,6 +60,10 @@ internal class SettingsEncoder(
     public override fun endStructure(descriptor: SerialDescriptor) {
         depth--
         keyStack.removeLast()
+        if (keyStack.isEmpty()) {
+            // We've reached the end of everything, so reset for potential encoder reuse
+            keyStack.add(key)
+        }
     }
 
     public override fun beginCollection(descriptor: SerialDescriptor, collectionSize: Int): CompositeEncoder {

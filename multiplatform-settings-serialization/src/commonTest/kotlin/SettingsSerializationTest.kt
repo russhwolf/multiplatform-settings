@@ -21,6 +21,7 @@ import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.contains
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -1022,6 +1023,46 @@ class SettingsSerializationTest {
         val list = listOf("Hello", "World")
         preferences.list = list
         assertEquals(expected = list, actual = preferences.list)
+    }
+
+    @Test
+    fun issue_217() {
+        val settings = MapSettings()
+
+        @Serializable
+        data class MyItemDto(
+            @SerialName("name")
+            val name: String,
+            @SerialName("id")
+            val id: String,
+        )
+
+        var myItems: List<MyItemDto> by settings.serializedValue(
+            ListSerializer(MyItemDto.serializer()),
+            "MY_ITEMS",
+            emptyList(),
+        )
+
+        myItems = emptyList()
+        assertEquals(emptyList(), myItems)
+        myItems = listOf(
+            MyItemDto(
+                name = "Name",
+                id = "Id",
+            )
+        )
+        assertEquals(
+            listOf(
+                MyItemDto(
+                    name = "Name",
+                    id = "Id",
+                )
+            ), myItems
+        )
+
+        // Should not crash
+        myItems = emptyList()
+        myItems = emptyList()
     }
 }
 
