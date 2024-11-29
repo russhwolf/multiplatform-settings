@@ -20,10 +20,10 @@ androidx-test = "1.6.1"
 androidx-testExt = "1.2.1"
 
 binaryCompatibilityValidator = "0.16.3"
-nexus-publish = "2.0.0-rc-1"
+nexus-publish = "2.0.0"
 junit = "4.13.2"
-okio = "3.3.0"
-robolectric = "4.11.1"
+okio = "3.9.1"
+robolectric = "4.14.1"
 turbine = "1.2.0"
 
 
