@@ -1,5 +1,9 @@
 # Changelog #
 
+## Unreleased ##
+
+<!-- Add new release notes here -->
+
 ## v1.3.0 *(2024-11-29)* ##
 
 - Update to Kotlin 2.1.0, Gradle 8.11, and Android Gradle Plugin 8.7.2
