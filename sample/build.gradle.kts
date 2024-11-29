@@ -23,7 +23,7 @@ plugins {
 }
 
 allprojects {
-    ext["library_version"] = "1.2.0"
+    ext["library_version"] = "1.3.0"
 
     repositories {
         mavenLocal()
