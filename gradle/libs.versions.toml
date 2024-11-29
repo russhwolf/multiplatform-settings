@@ -1,12 +1,15 @@
 [versions]
 multiplatformSettings = "1.2.1-SNAPSHOT"
 
-kotlin = "2.0.21"
+kotlin = "2.1.0"
+#noinspection GradleDependency
+conventionKotlin = "2.0.21" # Convention plugins sometimes need older Kotlin for compatibility with kotlin-dsl plugin
 
-android-gradle = "8.5.2"
+android-gradle = "8.7.2"
 android-minSdk = "21"
-android-compileSdk = "34"
+android-compileSdk = "35"
 
+kotlinx-browser = "0.3"
 kotlinx-coroutines = "1.9.0"
 kotlinx-serialization = "1.7.3"
 
@@ -25,13 +28,14 @@ turbine = "1.2.0"
 
 
 [libraries]
-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "conventionKotlin" }
+kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "conventionKotlin" }
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 
+kotlinx-browser = { module = "org.jetbrains.kotlinx:kotlinx-browser", version.ref = "kotlinx-browser" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }

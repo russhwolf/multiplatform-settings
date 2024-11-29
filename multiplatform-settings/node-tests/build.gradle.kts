@@ -45,5 +45,11 @@ kotlin {
                 implementation(npm("node-localstorage", "3.0.5"))
             }
         }
+
+        wasmJsTest {
+            dependencies {
+                implementation(libs.kotlinx.browser)
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("plugin.compose") version "2.0.20"
+    kotlin("plugin.compose")
 }
 
 kotlin {
@@ -32,7 +32,7 @@ android {
     defaultConfig {
         applicationId = "com.russhwolf.settings.example.android"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

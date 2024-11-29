@@ -84,6 +84,12 @@ kotlin {
                 implementation(libs.androidx.preference)
             }
         }
+
+        wasmJsMain {
+            dependencies {
+                implementation(libs.kotlinx.browser)
+            }
+        }
     }
 }
 

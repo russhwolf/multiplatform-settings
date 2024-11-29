@@ -51,6 +51,12 @@ kotlin {
                 implementation(libs.robolectric)
             }
         }
+
+        wasmJsMain {
+            dependencies {
+                implementation(libs.kotlinx.browser)
+            }
+        }
     }
 }
 
