@@ -32,14 +32,9 @@ extensions.create<StandardConfigExtension>("standardConfig")
 kotlin {
     explicitApi()
 
-    targets.configureEach {
-        compilations.configureEach {
-            // TODO reenable this once remaining warnings are cleared
-//            @OptIn(ExperimentalKotlinGradlePluginApi::class)
-//            compilerOptions {
-//                allWarningsAsErrors = true
-//            }
-        }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        allWarningsAsErrors = true
     }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
