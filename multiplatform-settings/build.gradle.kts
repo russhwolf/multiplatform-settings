@@ -16,6 +16,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 plugins {
     id("standard-configuration")
     id("module-publication")
@@ -26,6 +28,11 @@ standardConfig {
 }
 
 kotlin {
+    targets.getByName<KotlinNativeTarget>("linuxX64") {
+        compilations["main"].cinterops.create("qdbm-depot")
+        compilations["main"].cinterops.create("qdbm-relic")
+        compilations["main"].cinterops.create("qdbm-villa")
+    }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
