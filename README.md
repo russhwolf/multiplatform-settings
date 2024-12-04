@@ -45,21 +45,23 @@ platforms.
 
 The following table shows the names of implementing classes and what platforms they're available on.
 
-| Class                                   | Backing API                         | Platforms                 |
-|-----------------------------------------|-------------------------------------|---------------------------|
-| `KeychainSettings`<sup>2</sup>          | Apple Keychain                      | iOS, macOS, watchOS, tvOS |
-| `NSUserDefaultsSettings`<sup>1</sup>    | User Defaults                       | iOS, macOS, watchOS, tvOS |
-| `PreferencesSettings`<sup>1</sup>       | `java.util.prefs.Preferences`       | JVM                       |
-| `PropertiesSettings`                    | `java.util.Properties`              | JVM                       |
-| `SharedPreferencesSettings`<sup>1</sup> | `android.content.SharedPreferences` | Android                   |
-| `StorageSettings`                       | Web Storage (localStorage)          | JS, WasmJS                |
-| `RegistrySettings`<sup>2</sup>          | Windows Registry                    | MingwX64                  |
-| `MapSettings`<sup>1,3</sup>             | `kotlin.collections.MutableMap`     | All platforms             |
+| Class                                   | Backing API                         | Platforms                      |
+|-----------------------------------------|-------------------------------------|--------------------------------|
+| `KeychainSettings`<sup>2</sup>          | Apple Keychain                      | iOS, macOS, watchOS, tvOS      |
+| `NSUserDefaultsSettings`<sup>1</sup>    | User Defaults                       | iOS, macOS, watchOS, tvOS      |
+| `PreferencesSettings`<sup>1</sup>       | `java.util.prefs.Preferences`       | JVM                            |
+| `PropertiesSettings`                    | `java.util.Properties`              | JVM                            |
+| `SharedPreferencesSettings`<sup>1</sup> | `android.content.SharedPreferences` | Android                        |
+| `StorageSettings`                       | Web Storage (localStorage)          | JS, WasmJS                     |
+| `RegistrySettings`<sup>2</sup>          | Windows Registry                    | MingwX64                       |
+| `DataStoreSettings`<sup>3</sup>         | Jetpack DataStore                   | Android, JVM, Native           |
+| `MapSettings`<sup>1,4</sup>             | `kotlin.collections.MutableMap`     | All platforms                  |
 
 <sup>
-<sup>1</sup>Implements ObservableSettings interface<br/>
-<sup>2</sup>Implementations is considered experimental<br/>
-<sup>3</sup>MapSettings is intended for use in unit tests and will not persist data to storage
+<sup>1</sup> Implements <code>ObservableSettings</code> interface<br/>
+<sup>2</sup> Implementation is considered experimental<br/>
+<sup>3</sup> <code>DataStoreSettings</code> only implements <code>SuspendSettings</code> / <code>FlowSettings</code> interface<br/>
+<sup>4</sup> <code>MapSettings</code> is intended for use in unit tests and will not persist data to storage
 </sup>
 
 ### Creating a Settings instance
@@ -340,7 +342,7 @@ may have the potential to break in the future and should not be considered stabl
 
 ### Experimental Implementations
 
-#### Apple Keychain
+#### Apple Keychain / Windows Registry
 
 The `KeychainSettings` implementation on Apple platforms and the `RegistrySettings` implementation on Windows are
 considered experimental. Feel free to reach out if they're working well for you, or if you encounter any issues with
@@ -513,7 +515,7 @@ actual val settings: SuspendSettings = StorageSettings().toSuspendSettings()
 ### Make-Observable module
 
 The experimental `multiplatform-settings-make-observable` module adds an extension function `Settings.makeObservable()`
-in common ode which converts a `Settings` instance to `ObservableSettings` by directly wiring in callbacks rather than
+in common code which converts a `Settings` instance to `ObservableSettings` by directly wiring in callbacks rather than
 native observability methods.
 
 ```kotlin
