@@ -27,7 +27,6 @@ of this readme is available separately, maintained by @wooram-yang
   + [Other platforms](#other-platforms)
 * [Experimental API](#experimental-api)
   + [Experimental Implementations](#experimental-implementations)
-    - [Apple Keychain](#apple-keychain)
   + [Serialization module](#serialization-module)
   + [Coroutine APIs](#coroutine-apis)
     - [DataStore](#datastore)
@@ -54,13 +53,13 @@ The following table shows the names of implementing classes and what platforms t
 | `SharedPreferencesSettings`<sup>1</sup> | `android.content.SharedPreferences` | Android                        |
 | `StorageSettings`                       | Web Storage (localStorage)          | JS, WasmJS                     |
 | `RegistrySettings`<sup>2</sup>          | Windows Registry                    | MingwX64                       |
-| `DataStoreSettings`<sup>3</sup>         | Jetpack DataStore                   | Android, JVM, Native           |
+| `DataStoreSettings`<sup>3</sup>         | `androidx.datastore.core.DataStore  | Android, JVM, Native           |
 | `MapSettings`<sup>1,4</sup>             | `kotlin.collections.MutableMap`     | All platforms                  |
 
 <sup>
 <sup>1</sup> Implements <code>ObservableSettings</code> interface<br/>
 <sup>2</sup> Implementation is considered experimental<br/>
-<sup>3</sup> <code>DataStoreSettings</code> only implements <code>SuspendSettings</code> / <code>FlowSettings</code> interface<br/>
+<sup>3</sup> Implements <code>SuspendSettings</code> and <code>FlowSettings</code> rather than <code>Settings</code> or <code>ObservableSettings</code><br/>
 <sup>4</sup> <code>MapSettings</code> is intended for use in unit tests and will not persist data to storage
 </sup>
 
@@ -341,8 +340,6 @@ Certain APIs are marked with `@ExperimentalSettingsApi` or `@ExperimentalSetting
 may have the potential to break in the future and should not be considered stable to depend on.
 
 ### Experimental Implementations
-
-#### Apple Keychain / Windows Registry
 
 The `KeychainSettings` implementation on Apple platforms and the `RegistrySettings` implementation on Windows are
 considered experimental. Feel free to reach out if they're working well for you, or if you encounter any issues with
