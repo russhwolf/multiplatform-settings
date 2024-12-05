@@ -53,7 +53,7 @@ The following table shows the names of implementing classes and what platforms t
 | `SharedPreferencesSettings`<sup>1</sup> | `android.content.SharedPreferences` | Android                        |
 | `StorageSettings`                       | Web Storage (localStorage)          | JS, WasmJS                     |
 | `RegistrySettings`<sup>2</sup>          | Windows Registry                    | MingwX64                       |
-| `DataStoreSettings`<sup>3</sup>         | `androidx.datastore.core.DataStore  | Android, JVM, Native           |
+| `DataStoreSettings`<sup>3</sup>         | `androidx.datastore.core.DataStore` | Android, JVM, Native           |
 | `MapSettings`<sup>1,4</sup>             | `kotlin.collections.MutableMap`     | All platforms                  |
 
 <sup>
