@@ -2,8 +2,8 @@ import XCTest
 @testable import SettingsDemo
 import Shared
 
-class SettingsDemoTests: XCTestCase {
-    
+final class SettingsDemoTests: XCTestCase {
+
     func testMigration() throws {
         let legacySettings = KeychainSettings(service: "Legacy Settings Test")
         legacySettings.clear()
@@ -19,5 +19,4 @@ class SettingsDemoTests: XCTestCase {
 
         XCTAssertEqual("Bar", migratedSettings.getStringOrNull(key: "Foo"))
     }
-    
 }

@@ -15,6 +15,7 @@
  */
 
 @file:OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
+@file:Suppress("DEPRECATION")
 
 package com.russhwolf.settings
 
@@ -52,6 +53,8 @@ import platform.Security.kSecMatchLimitOne
 import platform.Security.kSecReturnData
 import kotlin.test.Test
 import kotlin.test.assertEquals
+
+// TODO keep this as legacy test and add another test class for new constructors
 
 @ExperimentalSettingsImplementation
 @OptIn(ExperimentalForeignApi::class)

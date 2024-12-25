@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithSimulatorTests
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
 
 plugins {
@@ -47,7 +49,7 @@ kotlin {
 // Hacks to get KeychainSettingsTest running on iOS simulator
 // https://youtrack.jetbrains.com/issue/KT-61470
 kotlin {
-    iosX64 {
+    targets.withType<KotlinNativeTargetWithSimulatorTests>().configureEach {
         testRuns.configureEach {
             executionSource.binary.linkerOpts(
                 "-sectcreate",
@@ -64,8 +66,9 @@ if ("mac" in System.getProperties()["os.name"].toString().lowercase()) {
     }
 
     tasks.getByName("iosX64Test").dependsOn("launchIosSimulator")
+    tasks.getByName("iosSimulatorArm64Test").dependsOn("launchIosSimulator")
 }
-tasks.withType<KotlinNativeSimulatorTest>().getByName("iosX64Test") {
+tasks.withType<KotlinNativeSimulatorTest>().configureEach {
     standalone.set(false)
     device.set("booted")
 }
