@@ -15,6 +15,7 @@
  */
 
 @file:OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
+@file:Suppress("DEPRECATION")
 
 package com.russhwolf.settings
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Russell Wolf
+ * Copyright 2023 Russell Wolf
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("multiplatform") version "2.1.0" apply false
-    kotlin("android") version "2.1.0" apply false
-    kotlin("plugin.compose") version "2.1.0"
-    id("com.android.library") version "8.7.2" apply false
-    id("com.android.application") version "8.7.2" apply false
-}
+import SwiftUI
 
-allprojects {
-    ext["library_version"] = "1.4.0-SNAPSHOT"
-
-    repositories {
-        mavenLocal()
-        google()
-        mavenCentral()
+@main
+struct SettingsDemoApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
     }
 }

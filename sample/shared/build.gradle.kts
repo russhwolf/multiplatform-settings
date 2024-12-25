@@ -38,7 +38,9 @@ kotlin {
     listOf(
         iosArm64(),
         iosSimulatorArm64(),
-        iosX64()
+        iosX64(),
+        macosX64(),
+        macosArm64(),
     ).onEach {
         it.binaries {
             framework("Shared") {

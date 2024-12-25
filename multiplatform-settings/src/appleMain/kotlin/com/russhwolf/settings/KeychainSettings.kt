@@ -66,6 +66,14 @@ import platform.Security.SecItemDelete
 import platform.Security.SecItemUpdate
 import platform.Security.errSecDuplicateItem
 import platform.Security.errSecItemNotFound
+import platform.Security.errSecMissingEntitlement
+import platform.Security.kSecAttrAccessible
+import platform.Security.kSecAttrAccessibleAfterFirstUnlock
+import platform.Security.kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+import platform.Security.kSecAttrAccessibleAlways
+import platform.Security.kSecAttrAccessibleAlwaysThisDeviceOnly
+import platform.Security.kSecAttrAccessibleWhenUnlocked
+import platform.Security.kSecAttrAccessibleWhenUnlockedThisDeviceOnly
 import platform.Security.kSecAttrAccount
 import platform.Security.kSecAttrService
 import platform.Security.kSecClass
@@ -75,6 +83,7 @@ import platform.Security.kSecMatchLimitAll
 import platform.Security.kSecMatchLimitOne
 import platform.Security.kSecReturnAttributes
 import platform.Security.kSecReturnData
+import platform.Security.kSecUseDataProtectionKeychain
 import platform.Security.kSecValueData
 import platform.darwin.OSStatus
 import kotlin.experimental.ExperimentalNativeApi
@@ -102,6 +111,15 @@ import kotlin.native.ref.createCleaner
 @ExperimentalSettingsImplementation
 public class KeychainSettings : Settings {
 
+    public enum class Accessibility(internal val rawValue: CFTypeRef?) {
+        WhenUnlocked(kSecAttrAccessibleWhenUnlocked),
+        Always(kSecAttrAccessibleAlways),
+        AfterFirstUnlock(kSecAttrAccessibleAfterFirstUnlock),
+        WhenUnlockedThisDeviceOnly(kSecAttrAccessibleWhenUnlockedThisDeviceOnly),
+        AlwaysThisDeviceOnly(kSecAttrAccessibleAlwaysThisDeviceOnly),
+        AfterFirstUnlockThisDeviceOnly(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly),
+    }
+
     @OptIn(ExperimentalNativeApi::class)
     private val cleaner: Cleaner?
 
@@ -112,6 +130,74 @@ public class KeychainSettings : Settings {
         cleaner = null
     }
 
+    @Deprecated("This function should only be used by developers who are migrating away from deprecated constructors")
+    @OptIn(ExperimentalSettingsApi::class)
+    @Throws(Throwable::class)
+    public fun migrateLegacyKeys(vararg keys: String) {
+
+        val legacyProperties = defaultProperties - kSecAttrAccessible - kSecUseDataProtectionKeychain
+        val legacySettings = KeychainSettings(*legacyProperties.entries.map { it.key to it.value }.toTypedArray())
+
+        inline fun MemScope.legacyKeychainOperation(
+            vararg input: Pair<CFStringRef?, CFTypeRef?>,
+            operation: (query: CFDictionaryRef?) -> OSStatus,
+        ): OSStatus {
+            val query = cfDictionaryOf(legacyProperties + mapOf(*input))
+            val output = operation(query)
+            CFBridgingRelease(query)
+            return output
+        }
+
+        val keys = keys.takeIf { it.isNotEmpty() }?.toList() ?: legacySettings.keys
+        keys.forEach { key ->
+            cfRetain(key) { cfKey ->
+                val cfDataRef = alloc<CFTypeRefVar>()
+
+                legacyKeychainOperation(
+                    kSecAttrAccount to cfKey,
+                    kSecReturnData to kCFBooleanTrue,
+                    kSecMatchLimit to kSecMatchLimitOne
+                ) { SecItemCopyMatching(it, cfDataRef.ptr) }
+                    .checkError(errSecItemNotFound)
+
+                legacyKeychainOperation(
+                    kSecAttrAccount to cfKey,
+                ) { SecItemDelete(it) }
+                    .checkError(errSecItemNotFound)
+
+                keyChainOperation(
+                    kSecAttrAccount to cfKey,
+                    kSecValueData to cfDataRef.value
+                ) { SecItemAdd(it, null) }
+                    .checkError()
+
+            }
+        }
+    }
+
+    public constructor(service: String, accessibility: Accessibility) {
+        val cfService = CFBridgingRetain(service)
+        defaultProperties = mapOf(
+            kSecClass to kSecClassGenericPassword,
+            kSecUseDataProtectionKeychain to kCFBooleanTrue,
+            kSecAttrAccessible to accessibility.rawValue,
+            kSecAttrService to cfService
+        )
+        @OptIn(ExperimentalNativeApi::class)
+        cleaner = createCleaner(cfService) { CFBridgingRelease(it) }
+    }
+
+    public constructor(accessibility: Accessibility) {
+        defaultProperties = mapOf(
+            kSecClass to kSecClassGenericPassword,
+            kSecUseDataProtectionKeychain to kCFBooleanTrue,
+            kSecAttrAccessible to accessibility.rawValue
+        )
+        @OptIn(ExperimentalNativeApi::class)
+        cleaner = null
+    }
+
+    @Deprecated("Use constructor that passes an `Accessible` value instead")
     public constructor(service: String) {
         val cfService = CFBridgingRetain(service)
         defaultProperties = mapOf(kSecClass to kSecClassGenericPassword, kSecAttrService to cfService)
@@ -120,6 +206,7 @@ public class KeychainSettings : Settings {
     }
 
     @OptIn(ExperimentalSettingsApi::class) // IDE is wrong when it says this is redundant
+    @Deprecated("Use constructor that passes an `Accessible` value instead")
     public constructor() : this(*emptyArray())
 
     private val defaultProperties: Map<CFStringRef?, CFTypeRef?>
@@ -130,8 +217,26 @@ public class KeychainSettings : Settings {
      * This class creates `Settings` objects backed by the Apple keychain.
      */
     public class Factory : Settings.Factory {
-        override fun create(name: String?): KeychainSettings =
-            if (name != null) KeychainSettings(name) else KeychainSettings()
+        @Deprecated("Use constructor that passes an `Accessible` value instead")
+        public constructor() {
+            accessibility = null
+        }
+
+        public constructor(accessibility: Accessibility) {
+            this.accessibility = accessibility
+        }
+
+        private val accessibility: Accessibility?
+
+        override fun create(name: String?): KeychainSettings {
+            val accessibility = accessibility
+            return if (accessibility == null) {
+                @Suppress("DEPRECATION")
+                if (name != null) KeychainSettings(name) else KeychainSettings()
+            } else {
+                if (name != null) KeychainSettings(name, accessibility) else KeychainSettings(accessibility)
+            }
+        }
     }
 
     public override val keys: Set<String>
@@ -229,7 +334,10 @@ public class KeychainSettings : Settings {
         val status = keyChainOperation(
             kSecAttrAccount to cfKey,
         ) { SecItemDelete(it) }
-        status.checkError(errSecItemNotFound)
+        status.checkError(
+            errSecItemNotFound, // Typical return value if item isn't present
+            errSecMissingEntitlement // Happens when e.g. we try to delete an item associated with an access group and it isn't present
+        )
     }
 
     private fun updateKeychainItem(key: String, value: NSData?): Unit = cfRetain(key, value) { cfKey, cfValue ->

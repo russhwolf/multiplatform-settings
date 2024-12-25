@@ -47,11 +47,42 @@ jobs:
       - name: Mac sample Gradle build
         run: |
           cd sample
-          ./gradlew iosX64Test --no-daemon --stacktrace
+          ./gradlew iosX64Test macosX64Test --no-daemon --stacktrace
         env:
           GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
 
-      - name: Mac sample Xcode simulator build
+      - name: Mac iOS sample Xcode simulator build
         run: |
           cd sample/app-ios
+          xcodebuild test -scheme SettingsDemo -destination "platform=iOS Simulator,name=iPhone 15"
           xcodebuild -configuration Debug -scheme SettingsDemo -sdk iphonesimulator -arch x86_64
+
+      # https://docs.github.com/en/actions/use-cases-and-examples/deploying/installing-an-apple-certificate-on-macos-runners-for-xcode-development
+      - name: Install dev cert for macos sample
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          
+          # import certificate from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+      - name: Mac macOS sample Xcode build
+        run: |
+          cd sample/app-macos
+          xcodebuild test -scheme SettingsDemo
+          xcodebuild -configuration Debug -scheme SettingsDemo
