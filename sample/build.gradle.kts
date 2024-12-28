@@ -15,15 +15,15 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "2.1.0" apply false
-    kotlin("android") version "2.1.0" apply false
-    kotlin("plugin.compose") version "2.1.0"
+    kotlin("multiplatform") version "2.1.20" apply false
+    kotlin("android") version "2.1.20" apply false
+    kotlin("plugin.compose") version "2.1.20"
     id("com.android.library") version "8.7.2" apply false
     id("com.android.application") version "8.7.2" apply false
 }
 
 allprojects {
-    ext["library_version"] = "1.3.0"
+    ext["library_version"] = "1.4.0-SNAPSHOT"
 
     repositories {
         mavenLocal()

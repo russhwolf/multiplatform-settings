@@ -1,9 +1,9 @@
 [versions]
 multiplatformSettings = "1.4.0-SNAPSHOT"
 
-kotlin = "2.1.0"
+kotlin = "2.1.20"
 #noinspection GradleDependency
-conventionKotlin = "2.0.21" # Convention plugins sometimes need older Kotlin for compatibility with kotlin-dsl plugin
+conventionKotlin = "2.1.20" # Convention plugins sometimes need older Kotlin for compatibility with kotlin-dsl plugin
 
 android-gradle = "8.7.2"
 android-minSdk = "21"
