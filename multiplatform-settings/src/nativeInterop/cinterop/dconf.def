@@ -1,0 +1,4 @@
+headers = dconf.h
+package = com.russhwolf.settings.cinterop.dconf
+compilerOpts = -I/usr/include/dconf -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+linkerOpts = -ldconf -lglib-2.0 -lgobject-2.0 -L/usr/lib -L/usr/lib/x86_64-linux-gnu/

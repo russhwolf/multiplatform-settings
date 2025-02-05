@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-
 /*
  * Copyright 2019 Russell Wolf
  *
@@ -15,6 +13,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     id("standard-configuration")
@@ -26,6 +26,9 @@ standardConfig {
 }
 
 kotlin {
+    targets.getByName<KotlinNativeTarget>("linuxX64") {
+        compilations["main"].cinterops.create("dconf")
+    }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")

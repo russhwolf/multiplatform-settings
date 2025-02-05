@@ -25,6 +25,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-konan-
 
+      - name: dconf install
+        run: |
+          sudo apt-get install libdconf-dev
+
       - name: Linux build
         run: |
           ./gradlew build publishToMavenLocal --no-daemon --stacktrace
