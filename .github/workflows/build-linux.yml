@@ -25,6 +25,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-konan-
 
+      - name: glibc install
+        run: |
+          sudo apt-get install glibc-source
+
+      - name: LMDB install
+        run: |
+          sudo apt-get install liblmdb-dev
+
       - name: Linux build
         run: |
           ./gradlew build publishToMavenLocal --no-daemon --stacktrace

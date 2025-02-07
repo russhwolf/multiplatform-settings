@@ -1,0 +1,4 @@
+headers = lmdb.h
+package = com.russhwolf.settings.cinterop.lmdb
+compilerOpts = -I/usr/include -I/usr/include/x86_64-linux-gnu/
+linkerOpts = -llmdb  -L/usr/lib -L/usr/lib/x86_64-linux-gnu/
