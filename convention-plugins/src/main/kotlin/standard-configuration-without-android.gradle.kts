@@ -17,6 +17,7 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -35,6 +36,16 @@ kotlin {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         allWarningsAsErrors = true
+    }
+
+    targets.configureEach {
+        if (this is KotlinNativeTarget && this.name.startsWith("linux")) {
+            binaries.configureEach {
+                // Workaround issues with gcc version mismatch
+                // https://stackoverflow.com/a/78267398
+                linkerOpts += "--allow-shlib-undefined"
+            }
+        }
     }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
