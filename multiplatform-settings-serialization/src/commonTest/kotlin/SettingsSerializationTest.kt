@@ -801,9 +801,9 @@ class SettingsSerializationTest {
             settings.decodeValue(TestClassNullable.serializer().nullable, "testClass", TestClassNullable())
         )
 
-        assertTrue(settings.containsValue(TestClass.serializer().nullable, "testClass"))
+        assertTrue(settings.containsValue(TestClassNullable.serializer().nullable, "testClass"))
 
-        settings.removeValue(TestClass.serializer().nullable, "testClass")
+        settings.removeValue(TestClassNullable.serializer().nullable, "testClass")
         assertEquals(0, settings.size)
 
     }
@@ -1063,6 +1063,25 @@ class SettingsSerializationTest {
         // Should not crash
         myItems = emptyList()
         myItems = emptyList()
+    }
+
+    @Test
+    fun issue_231() {
+        @Serializable
+        data class Container(
+            val data: Map<String, String> = emptyMap()
+        )
+
+        val settings = MapSettings()
+        val container = Container(mapOf("foo" to "bar"))
+
+        settings.encodeValue("container", container)
+
+        val deserialized = settings.decodeValueOrNull<Container>("container")
+        assertEquals("bar", deserialized?.data?.get("foo"))
+
+        settings.removeValue<Container>("container")
+        assertEquals(0, settings.size)
     }
 }
 
