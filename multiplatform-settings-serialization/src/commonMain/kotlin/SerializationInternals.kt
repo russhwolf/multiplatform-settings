@@ -140,7 +140,8 @@ internal class SettingsDecoder(
     private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
         val key = "${getKey()}.${descriptor.getElementName(index)}"
         // Descriptor shows key is optional, key is not present, and nullability doesn't indicate key should be present
-        return descriptor.isElementOptional(index) && key !in settings && settings.getBooleanOrNull("$key?") != true
+        return descriptor.isElementOptional(index) && descriptor.isNullable &&
+                key !in settings && settings.getBooleanOrNull("$key?") != true
     }
 
 
@@ -252,8 +253,8 @@ internal class SettingsRemover(
     private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
         val key = "${getKey()}.${descriptor.getElementName(index)}"
         // Descriptor shows key is optional, key is not present, and nullability doesn't indicate key should be present
-        val output =
-            descriptor.isElementOptional(index) && key !in settings && settings.getBooleanOrNull("$key?") != true
+        val output = descriptor.isElementOptional(index) && descriptor.isNullable &&
+                key !in settings && settings.getBooleanOrNull("$key?") != true
         keys.add(key)
         keys.add("$key?")
         return output
