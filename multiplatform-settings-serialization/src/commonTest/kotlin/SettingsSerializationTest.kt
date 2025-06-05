@@ -313,6 +313,26 @@ class SettingsSerializationTest {
     }
 
     @Test
+    fun removeValue_extra() {
+        val delegate = mutableMapOf<String, Any>(
+            "foo.a" to "hello",
+            "foo.a?" to 0, // Should not be removed
+        )
+        val settings = MapSettings(delegate)
+
+        @Serializable
+        data class Foo(
+            val a: String,
+        )
+
+        val foo = settings.decodeValueOrNull<Foo>("foo")
+        assertEquals("hello", foo?.a)
+
+        settings.removeValue<Foo>("foo")
+        assertEquals(mapOf<String, Any>("foo.a?" to 0), delegate)
+    }
+
+    @Test
     fun containsValue() {
         val settings: Settings = MapSettings(
             "foo.bar" to "hello",

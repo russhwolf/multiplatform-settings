@@ -90,8 +90,8 @@ internal class SettingsEncoder(
 }
 
 @ExperimentalSerializationApi
-internal class SettingsDecoder(
-    private val settings: Settings,
+internal abstract class AbstractSettingsDecoder(
+    protected val settings: Settings,
     private val key: String,
     public override val serializersModule: SerializersModule
 ) : AbstractDecoder() {
@@ -99,7 +99,7 @@ internal class SettingsDecoder(
     // Stacks of keys and indices so we can track index at arbitrary levels to know what we're decoding next
     private val keyStack = ArrayDeque<String>().apply { add(key) }
     private val indexStack = ArrayDeque<Int>().apply { add(0) }
-    private fun getKey(): String = keyStack.joinToString(".")
+    protected fun getKey(): String = keyStack.joinToString(".")
 
     // Depth increases with beginStructure() and decreases with endStructure(). Subtly different from stack sizes.
     // This is important so we can tell whether the last items on the stack refer to the current parent or a sibling.
@@ -161,6 +161,27 @@ internal class SettingsDecoder(
         }
     }
 
+    // Hook to reset state after we throw during deserializationError()
+    internal fun reset() {
+        keyStack.clear()
+        indexStack.clear()
+        depth = 0
+        keyStack.add(key)
+        indexStack.add(0)
+    }
+}
+
+@ExperimentalSerializationApi
+internal class SettingsDecoder(
+    settings: Settings,
+    key: String,
+    serializersModule: SerializersModule
+) : AbstractSettingsDecoder(
+    settings,
+    key,
+    serializersModule
+) {
+
     public override fun decodeCollectionSize(descriptor: SerialDescriptor): Int =
         settings.getIntOrNull("${getKey()}.size") ?: deserializationError()
 
@@ -183,97 +204,23 @@ internal class SettingsDecoder(
     public override fun decodeLong(): Long = settings.getLongOrNull(getKey()) ?: deserializationError()
     public override fun decodeShort(): Short = settings.getIntOrNull(getKey())?.toShort() ?: deserializationError()
     public override fun decodeString(): String = settings.getStringOrNull(getKey()) ?: deserializationError()
-
-    // Hook to reset state after we throw during deserializationError()
-    internal fun reset() {
-        keyStack.clear()
-        indexStack.clear()
-        depth = 0
-        keyStack.add(key)
-        indexStack.add(0)
-    }
 }
 
 // (Ab)uses Decoder machinery to enumerate all keys related to a serialized value, so they can be removed
 @ExperimentalSerializationApi
 internal class SettingsRemover(
-    private val settings: Settings,
-    private val key: String,
-    public override val serializersModule: SerializersModule
-) : AbstractDecoder() {
-
+    settings: Settings,
+    key: String,
+    serializersModule: SerializersModule
+) : AbstractSettingsDecoder(
+    settings,
+    key,
+    serializersModule
+) {
     private val keys = mutableListOf<String>()
     fun removeKeys() {
         for (key in keys) {
             settings.remove(key)
-        }
-    }
-
-    // Stacks of keys and indices so we can track index at arbitrary levels to know what we're decoding next
-    private val keyStack = ArrayDeque<String>().apply { add(key) }
-    private val indexStack = ArrayDeque<Int>().apply { add(0) }
-    private fun getKey(): String = keyStack.joinToString(".")
-
-    // Depth increases with beginStructure() and decreases with endStructure(). Subtly different from stack sizes.
-    // This is important so we can tell whether the last items on the stack refer to the current parent or a sibling.
-    private var depth = 0
-
-
-    public override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-        if (keyStack.size > depth) {
-            keyStack.removeLast()
-            indexStack.removeLast()
-        }
-
-        // Can usually ask descriptor for a size, except for collections
-        val size = when (descriptor.kind) {
-            StructureKind.LIST -> decodeCollectionSize(descriptor)
-            StructureKind.MAP -> 2 * decodeCollectionSize(descriptor) // Maps look like lists [k1, v1, k2, v2, ...]
-            else -> descriptor.elementsCount
-        }
-
-        return getNextIndex(descriptor, size)
-    }
-
-    private tailrec fun getNextIndex(descriptor: SerialDescriptor, size: Int): Int {
-        val index = indexStack.removeLast()
-        indexStack.addLast(index + 1)
-
-        return when {
-            index >= size -> CompositeDecoder.DECODE_DONE
-            isMissingAndOptional(descriptor, index) -> getNextIndex(descriptor, size)
-            else -> {
-                keyStack.add(descriptor.getElementName(index))
-                indexStack.add(0)
-                index
-            }
-        }
-    }
-
-    private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
-        val key = "${getKey()}.${descriptor.getElementName(index)}"
-        // Descriptor shows key is optional, key is not present, and nullability doesn't indicate key should be present
-        val output = descriptor.isElementOptional(index) && descriptor.isNullable &&
-                key !in settings && settings.getBooleanOrNull("$key?") != true
-        keys.add(key)
-        keys.add("$key?")
-        return output
-    }
-
-
-    public override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
-        depth++
-        return super.beginStructure(descriptor)
-    }
-
-    public override fun endStructure(descriptor: SerialDescriptor) {
-        depth--
-        keyStack.removeLast()
-        indexStack.removeLast()
-        if (keyStack.isEmpty()) {
-            // We've reached the end of everything, so reset for potential decoder reuse
-            keyStack.add(key)
-            indexStack.add(0)
         }
     }
 
