@@ -1,0 +1,4 @@
+headers = relic.h
+package = com.russhwolf.settings.cinterop.qdbm.relic
+compilerOpts = -I/usr/include/qdbm
+linkerOpts = -lqdbm -L/usr/lib
