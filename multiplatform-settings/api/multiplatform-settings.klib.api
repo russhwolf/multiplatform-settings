@@ -225,6 +225,38 @@ final class com.russhwolf.settings/StorageSettings : com.russhwolf.settings/Sett
     final fun remove(kotlin/String) // com.russhwolf.settings/StorageSettings.remove|remove(kotlin.String){}[0]
 }
 
+// Targets: [linuxX64]
+final class com.russhwolf.settings/LmdbSettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/LmdbSettings|null[0]
+    constructor <init>(kotlin/String) // com.russhwolf.settings/LmdbSettings.<init>|<init>(kotlin.String){}[0]
+
+    final val keys // com.russhwolf.settings/LmdbSettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/LmdbSettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/LmdbSettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/LmdbSettings.size.<get-size>|<get-size>(){}[0]
+
+    final fun clear() // com.russhwolf.settings/LmdbSettings.clear|clear(){}[0]
+    final fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/LmdbSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/LmdbSettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
+    final fun getDouble(kotlin/String, kotlin/Double): kotlin/Double // com.russhwolf.settings/LmdbSettings.getDouble|getDouble(kotlin.String;kotlin.Double){}[0]
+    final fun getDoubleOrNull(kotlin/String): kotlin/Double? // com.russhwolf.settings/LmdbSettings.getDoubleOrNull|getDoubleOrNull(kotlin.String){}[0]
+    final fun getFloat(kotlin/String, kotlin/Float): kotlin/Float // com.russhwolf.settings/LmdbSettings.getFloat|getFloat(kotlin.String;kotlin.Float){}[0]
+    final fun getFloatOrNull(kotlin/String): kotlin/Float? // com.russhwolf.settings/LmdbSettings.getFloatOrNull|getFloatOrNull(kotlin.String){}[0]
+    final fun getInt(kotlin/String, kotlin/Int): kotlin/Int // com.russhwolf.settings/LmdbSettings.getInt|getInt(kotlin.String;kotlin.Int){}[0]
+    final fun getIntOrNull(kotlin/String): kotlin/Int? // com.russhwolf.settings/LmdbSettings.getIntOrNull|getIntOrNull(kotlin.String){}[0]
+    final fun getLong(kotlin/String, kotlin/Long): kotlin/Long // com.russhwolf.settings/LmdbSettings.getLong|getLong(kotlin.String;kotlin.Long){}[0]
+    final fun getLongOrNull(kotlin/String): kotlin/Long? // com.russhwolf.settings/LmdbSettings.getLongOrNull|getLongOrNull(kotlin.String){}[0]
+    final fun getString(kotlin/String, kotlin/String): kotlin/String // com.russhwolf.settings/LmdbSettings.getString|getString(kotlin.String;kotlin.String){}[0]
+    final fun getStringOrNull(kotlin/String): kotlin/String? // com.russhwolf.settings/LmdbSettings.getStringOrNull|getStringOrNull(kotlin.String){}[0]
+    final fun hasKey(kotlin/String): kotlin/Boolean // com.russhwolf.settings/LmdbSettings.hasKey|hasKey(kotlin.String){}[0]
+    final fun putBoolean(kotlin/String, kotlin/Boolean) // com.russhwolf.settings/LmdbSettings.putBoolean|putBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun putDouble(kotlin/String, kotlin/Double) // com.russhwolf.settings/LmdbSettings.putDouble|putDouble(kotlin.String;kotlin.Double){}[0]
+    final fun putFloat(kotlin/String, kotlin/Float) // com.russhwolf.settings/LmdbSettings.putFloat|putFloat(kotlin.String;kotlin.Float){}[0]
+    final fun putInt(kotlin/String, kotlin/Int) // com.russhwolf.settings/LmdbSettings.putInt|putInt(kotlin.String;kotlin.Int){}[0]
+    final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/LmdbSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
+    final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/LmdbSettings.putString|putString(kotlin.String;kotlin.String){}[0]
+    final fun remove(kotlin/String) // com.russhwolf.settings/LmdbSettings.remove|remove(kotlin.String){}[0]
+}
+
 // Targets: [mingwX64]
 final class com.russhwolf.settings/RegistrySettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/RegistrySettings|null[0]
     constructor <init>(kotlin/String) // com.russhwolf.settings/RegistrySettings.<init>|<init>(kotlin.String){}[0]
