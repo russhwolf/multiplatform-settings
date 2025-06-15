@@ -225,6 +225,44 @@ final class com.russhwolf.settings/StorageSettings : com.russhwolf.settings/Sett
     final fun remove(kotlin/String) // com.russhwolf.settings/StorageSettings.remove|remove(kotlin.String){}[0]
 }
 
+// Targets: [linuxX64]
+final class com.russhwolf.settings/DConfSettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/DConfSettings|null[0]
+    constructor <init>(kotlin/String) // com.russhwolf.settings/DConfSettings.<init>|<init>(kotlin.String){}[0]
+
+    final val keys // com.russhwolf.settings/DConfSettings.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // com.russhwolf.settings/DConfSettings.keys.<get-keys>|<get-keys>(){}[0]
+    final val size // com.russhwolf.settings/DConfSettings.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // com.russhwolf.settings/DConfSettings.size.<get-size>|<get-size>(){}[0]
+
+    final fun clear() // com.russhwolf.settings/DConfSettings.clear|clear(){}[0]
+    final fun getBoolean(kotlin/String, kotlin/Boolean): kotlin/Boolean // com.russhwolf.settings/DConfSettings.getBoolean|getBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun getBooleanOrNull(kotlin/String): kotlin/Boolean? // com.russhwolf.settings/DConfSettings.getBooleanOrNull|getBooleanOrNull(kotlin.String){}[0]
+    final fun getDouble(kotlin/String, kotlin/Double): kotlin/Double // com.russhwolf.settings/DConfSettings.getDouble|getDouble(kotlin.String;kotlin.Double){}[0]
+    final fun getDoubleOrNull(kotlin/String): kotlin/Double? // com.russhwolf.settings/DConfSettings.getDoubleOrNull|getDoubleOrNull(kotlin.String){}[0]
+    final fun getFloat(kotlin/String, kotlin/Float): kotlin/Float // com.russhwolf.settings/DConfSettings.getFloat|getFloat(kotlin.String;kotlin.Float){}[0]
+    final fun getFloatOrNull(kotlin/String): kotlin/Float? // com.russhwolf.settings/DConfSettings.getFloatOrNull|getFloatOrNull(kotlin.String){}[0]
+    final fun getInt(kotlin/String, kotlin/Int): kotlin/Int // com.russhwolf.settings/DConfSettings.getInt|getInt(kotlin.String;kotlin.Int){}[0]
+    final fun getIntOrNull(kotlin/String): kotlin/Int? // com.russhwolf.settings/DConfSettings.getIntOrNull|getIntOrNull(kotlin.String){}[0]
+    final fun getLong(kotlin/String, kotlin/Long): kotlin/Long // com.russhwolf.settings/DConfSettings.getLong|getLong(kotlin.String;kotlin.Long){}[0]
+    final fun getLongOrNull(kotlin/String): kotlin/Long? // com.russhwolf.settings/DConfSettings.getLongOrNull|getLongOrNull(kotlin.String){}[0]
+    final fun getString(kotlin/String, kotlin/String): kotlin/String // com.russhwolf.settings/DConfSettings.getString|getString(kotlin.String;kotlin.String){}[0]
+    final fun getStringOrNull(kotlin/String): kotlin/String? // com.russhwolf.settings/DConfSettings.getStringOrNull|getStringOrNull(kotlin.String){}[0]
+    final fun hasKey(kotlin/String): kotlin/Boolean // com.russhwolf.settings/DConfSettings.hasKey|hasKey(kotlin.String){}[0]
+    final fun putBoolean(kotlin/String, kotlin/Boolean) // com.russhwolf.settings/DConfSettings.putBoolean|putBoolean(kotlin.String;kotlin.Boolean){}[0]
+    final fun putDouble(kotlin/String, kotlin/Double) // com.russhwolf.settings/DConfSettings.putDouble|putDouble(kotlin.String;kotlin.Double){}[0]
+    final fun putFloat(kotlin/String, kotlin/Float) // com.russhwolf.settings/DConfSettings.putFloat|putFloat(kotlin.String;kotlin.Float){}[0]
+    final fun putInt(kotlin/String, kotlin/Int) // com.russhwolf.settings/DConfSettings.putInt|putInt(kotlin.String;kotlin.Int){}[0]
+    final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/DConfSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
+    final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/DConfSettings.putString|putString(kotlin.String;kotlin.String){}[0]
+    final fun remove(kotlin/String) // com.russhwolf.settings/DConfSettings.remove|remove(kotlin.String){}[0]
+
+    final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/DConfSettings.Factory|null[0]
+        constructor <init>(kotlin/String) // com.russhwolf.settings/DConfSettings.Factory.<init>|<init>(kotlin.String){}[0]
+
+        final fun create(kotlin/String?): com.russhwolf.settings/Settings // com.russhwolf.settings/DConfSettings.Factory.create|create(kotlin.String?){}[0]
+    }
+}
+
 // Targets: [mingwX64]
 final class com.russhwolf.settings/RegistrySettings : com.russhwolf.settings/Settings { // com.russhwolf.settings/RegistrySettings|null[0]
     constructor <init>(kotlin/String) // com.russhwolf.settings/RegistrySettings.<init>|<init>(kotlin.String){}[0]
