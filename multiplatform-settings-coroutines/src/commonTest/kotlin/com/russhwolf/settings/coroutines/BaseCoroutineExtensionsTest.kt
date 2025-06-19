@@ -334,4 +334,19 @@ abstract class BaseCoroutineExtensionsTest(
         firstValue = true,
         secondValue = false
     )
+
+
+    @Test
+    fun issue_235() = runTest {
+        settings.getStringOrNullFlow("some_key").test {
+            assertEquals(null, awaitItem())
+            expectNoEvents()
+            settings.putString("some_key", "some_value")
+            assertEquals("some_value", awaitItem())
+            expectNoEvents()
+            settings.remove("some_key")
+            assertEquals(null, awaitItem())
+            expectNoEvents()
+        }
+    }
 }
