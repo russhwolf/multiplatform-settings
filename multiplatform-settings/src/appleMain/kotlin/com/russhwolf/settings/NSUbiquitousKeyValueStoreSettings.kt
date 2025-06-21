@@ -39,7 +39,7 @@ import platform.darwin.NSObjectProtocol
  * delegate, or via a [Factory].
  */
 public class NSUbiquitousKeyValueStoreSettings public constructor(
-    private val delegate: NSUbiquitousKeyValueStore
+    private val delegate: NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore.defaultStore
 ) : ObservableSettings {
 
     /**
