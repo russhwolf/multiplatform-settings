@@ -204,17 +204,8 @@ public class NSUbiquitousKeyValueStoreSettings public constructor(
         addListener(key) { callback(getBooleanOrNull(key)) }
 
     private fun addListener(key: String, callback: () -> Unit): SettingsListener {
-        var previousValue = delegate.objectForKey(key)
         val block = { _: NSNotification? ->
-            /*
-             We'll get called here on any update to the underlying NSUserDefaults delegate. We use a cache to determine
-             whether the value at this listener's key changed before calling the user-supplied callback.
-             */
-            val current = delegate.objectForKey(key)
-            if (previousValue != current) {
-                callback.invoke()
-                previousValue = current
-            }
+            callback.invoke()
         }
         val observer = NSNotificationCenter.defaultCenter.addObserverForName(
             name = NSUbiquitousKeyValueStoreDidChangeExternallyNotification,
