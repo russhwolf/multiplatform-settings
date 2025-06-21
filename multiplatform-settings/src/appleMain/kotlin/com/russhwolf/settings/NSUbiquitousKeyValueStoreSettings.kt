@@ -42,28 +42,6 @@ public class NSUbiquitousKeyValueStoreSettings public constructor(
     private val delegate: NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore.defaultStore
 ) : ObservableSettings {
 
-    /**
-     * A factory that can produce [Settings] instances.
-     *
-     * This class creates `Settings` objects backed by [NSUbiquitousKeyValueStore].
-     */
-    public class Factory : Settings.Factory {
-
-        /**
-         * Creates a [Settings] object associated with the provided [name].
-         *
-         * Multiple `Settings` instances created with the same `name` parameter will be backed by the same persistent
-         * data, while distinct `name`s will use different data. If `name` is `null` then a platform-specific default
-         * will be used.
-         *
-         * On the iOS and macOS platforms, this is implemented by calling [NSUbiquitousKeyValueStore.defaultStore]
-         */
-        public override fun create(name: String?): NSUbiquitousKeyValueStoreSettings {
-            val delegate = NSUbiquitousKeyValueStore.defaultStore
-            return NSUbiquitousKeyValueStoreSettings(delegate)
-        }
-    }
-
     @Suppress("UNCHECKED_CAST")
     public override val keys: Set<String> get() = delegate.dictionaryRepresentation().keys as Set<String>
     public override val size: Int get() = delegate.dictionaryRepresentation().keys.count()
