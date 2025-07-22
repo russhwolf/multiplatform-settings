@@ -56,21 +56,21 @@ public class NSUbiquitousKeyValueStoreSettings public constructor(
 
     public override fun hasKey(key: String): Boolean = delegate.objectForKey(key) != null
 
-    public override fun putInt(key: String, value: Int): Unit = delegate.setInt(value, key)
+    public override fun putInt(key: String, value: Int): Unit = delegate.setLongLong(value.toLong(), key)
 
     public override fun getInt(key: String, defaultValue: Int): Int =
-        if (hasKey(key)) delegate.intForKey(key) else defaultValue
+        if (hasKey(key)) delegate.longLongForKey(key).toInt() else defaultValue
 
     public override fun getIntOrNull(key: String): Int? =
-        if (hasKey(key)) delegate.intForKey(key) else null
+        if (hasKey(key)) delegate.longLongForKey(key).toInt() else null
 
-    public override fun putLong(key: String, value: Long): Unit = delegate.setLong(value, key)
+    public override fun putLong(key: String, value: Long): Unit = delegate.setLongLong(value, key)
 
     public override fun getLong(key: String, defaultValue: Long): Long =
-        if (hasKey(key)) delegate.longForKey(key) else defaultValue
+        if (hasKey(key)) delegate.longLongForKey(key) else defaultValue
 
     public override fun getLongOrNull(key: String): Long? =
-        if (hasKey(key)) delegate.longForKey(key) else null
+        if (hasKey(key)) delegate.longLongForKey(key) else null
 
     public override fun putString(key: String, value: String): Unit = delegate.setObject(value, key)
 
@@ -79,13 +79,13 @@ public class NSUbiquitousKeyValueStoreSettings public constructor(
 
     public override fun getStringOrNull(key: String): String? = delegate.stringForKey(key)
 
-    public override fun putFloat(key: String, value: Float): Unit = delegate.setFloat(value, key)
+    public override fun putFloat(key: String, value: Float): Unit = delegate.setDouble(value.toDouble(), key)
 
     public override fun getFloat(key: String, defaultValue: Float): Float =
-        if (hasKey(key)) delegate.floatForKey(key) else defaultValue
+        if (hasKey(key)) delegate.doubleForKey(key).toFloat() else defaultValue
 
     public override fun getFloatOrNull(key: String): Float? =
-        if (hasKey(key)) delegate.floatForKey(key) else null
+        if (hasKey(key)) delegate.doubleForKey(key).toFloat() else null
 
     public override fun putDouble(key: String, value: Double): Unit = delegate.setDouble(value, key)
 
@@ -218,10 +218,3 @@ public class NSUbiquitousKeyValueStoreSettings public constructor(
         }
     }
 }
-
-internal expect fun NSUbiquitousKeyValueStore.intForKey(defaultName: String): Int
-internal expect fun NSUbiquitousKeyValueStore.setInt(value: Int, forKey: String)
-internal expect fun NSUbiquitousKeyValueStore.longForKey(defaultName: String): Long
-internal expect fun NSUbiquitousKeyValueStore.setLong(value: Long, forKey: String)
-internal expect fun NSUbiquitousKeyValueStore.setFloat(value: Float, forKey: String)
-internal expect fun NSUbiquitousKeyValueStore.floatForKey(defaultName: String): Float
