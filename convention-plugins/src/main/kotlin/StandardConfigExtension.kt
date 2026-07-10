@@ -10,10 +10,7 @@ open class StandardConfigExtension {
 
     fun Project.defaultTargets() {
         kotlin {
-            androidTarget {
-                publishAllLibraryVariants()
-            }
-
+            // android is added automatically when agp.multiplatform.library plugin is applied
             androidNativeX64()
             androidNativeX86()
             androidNativeArm32()

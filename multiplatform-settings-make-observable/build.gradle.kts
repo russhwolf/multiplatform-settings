@@ -24,6 +24,10 @@ standardConfig {
 }
 
 kotlin {
+    android {
+        namespace = "com.russhwolf.settings.runtime_observable"
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -39,9 +43,5 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.russhwolf.settings.runtime_observable"
 }
 

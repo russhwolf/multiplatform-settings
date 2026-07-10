@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -27,6 +28,13 @@ standardConfig {
 }
 
 kotlin {
+    android {
+        namespace = "com.russhwolf.settings.coroutines"
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -47,7 +55,7 @@ kotlin {
             }
         }
 
-        val androidUnitTest by getting {
+        val androidHostTest by getting {
             dependencies {
                 implementation(libs.androidx.test.core)
                 implementation(libs.androidx.test.junit)
@@ -57,18 +65,9 @@ kotlin {
     }
 }
 
-android {
-    namespace = "com.russhwolf.settings.coroutines"
-    testOptions.unitTests.isIncludeAndroidResources = true
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-}
-
 tasks.withType<KotlinCompile> {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_1_8
-        freeCompilerArgs.add("-Xjvm-default=all")
+        jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
     }
 }

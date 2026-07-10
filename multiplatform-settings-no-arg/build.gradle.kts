@@ -25,8 +25,11 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        publishAllLibraryVariants()
+    android {
+        namespace = "com.russhwolf.settings.no_arg"
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
     }
     iosArm64()
     iosSimulatorArm64()
@@ -75,7 +78,7 @@ kotlin {
                 implementation(libs.androidx.startup.runtime)
             }
         }
-        val androidUnitTest by getting {
+        val androidHostTest by getting {
             dependencies {
                 implementation(libs.androidx.test.core)
                 implementation(libs.androidx.test.junit)
@@ -91,12 +94,4 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.russhwolf.settings.no_arg"
-    testOptions.unitTests.isIncludeAndroidResources = true
-
-    // Oops, this was on in 1.0, so now it's technically a breaking change to turn it off
-    buildFeatures.buildConfig = true
 }

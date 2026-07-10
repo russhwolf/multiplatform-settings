@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -41,13 +42,13 @@ kotlin {
     applyDefaultHierarchyTemplate {
         common {
             group("multithreaded") {
-                withAndroidTarget()
+                withCompilations { it.target is KotlinMultiplatformAndroidLibraryTarget }
                 withJvm()
                 withNative()
             }
 
             group("jvmCommon") {
-                withAndroidTarget()
+                withCompilations { it.target is KotlinMultiplatformAndroidLibraryTarget }
                 withJvm()
             }
 

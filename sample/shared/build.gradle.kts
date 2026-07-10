@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
  */
 
 plugins {
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
     kotlin("multiplatform")
 }
 
@@ -25,7 +25,14 @@ kotlin {
     applyDefaultHierarchyTemplate()
     jvmToolchain(17)
 
-    androidTarget()
+    android {
+        namespace = "com.russhwolf.settings.example"
+        compileSdk = 35
+        minSdk = 21
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+    }
     jvm()
     js {
         browser()
@@ -67,7 +74,7 @@ kotlin {
             dependencies {
             }
         }
-        val androidUnitTest by getting {
+        val androidHostTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
@@ -100,15 +107,5 @@ kotlin {
             dependencies {
             }
         }
-    }
-}
-
-android {
-    namespace = "com.russhwolf.settings.example"
-
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 21
     }
 }

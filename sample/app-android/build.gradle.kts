@@ -16,7 +16,6 @@
 
 plugins {
     id("com.android.application")
-    kotlin("android")
     kotlin("plugin.compose")
 }
 
@@ -27,7 +26,7 @@ kotlin {
 android {
     namespace = "com.russhwolf.settings.example.android"
 
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.russhwolf.settings.example.android"
@@ -43,7 +42,7 @@ android {
     buildTypes {
         val release by getting {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
