@@ -51,7 +51,7 @@ class WindowsNoArgTest : NoArgTest() {
     // Note this matches the name set in gradle
     private val subKey = "com.russhwolf.settings.noarg.test"
 
-    private fun getTestValue(keyName: String) = memScoped<String?> {
+    private fun getTestValue(keyName: String): String? = memScoped<String?> {
         val hkey = alloc<HKEYVar>()
         RegCreateKeyExW(
             HKEY_CURRENT_USER,

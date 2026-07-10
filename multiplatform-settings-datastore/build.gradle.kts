@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -23,8 +24,8 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        publishAllLibraryVariants()
+    android {
+        namespace = "com.russhwolf.settings.datastore"
     }
     iosArm64()
     iosSimulatorArm64()
@@ -61,17 +62,9 @@ kotlin {
     }
 }
 
-android {
-    namespace = "com.russhwolf.settings.datastore"
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-}
-
 tasks.withType<KotlinCompile> {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_1_8
-        freeCompilerArgs.add("-Xjvm-default=all")
+        jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
     }
 }

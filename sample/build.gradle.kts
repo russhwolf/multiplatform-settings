@@ -15,11 +15,10 @@
  */
 
 plugins {
-    kotlin("multiplatform") version "2.1.20" apply false
-    kotlin("android") version "2.1.20" apply false
-    kotlin("plugin.compose") version "2.1.20"
-    id("com.android.library") version "8.7.2" apply false
-    id("com.android.application") version "8.7.2" apply false
+    kotlin("multiplatform") version "2.4.0" apply false
+    kotlin("plugin.compose") version "2.4.0"
+    id("com.android.kotlin.multiplatform.library") version "9.0.1" apply false
+    id("com.android.application") version "9.0.1" apply false
 }
 
 allprojects {

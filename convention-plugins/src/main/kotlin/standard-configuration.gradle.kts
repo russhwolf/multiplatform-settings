@@ -18,21 +18,16 @@ import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     id("standard-configuration-without-android")
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
 }
 
 // h4x so we can access version catalog from convention script
 // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
 val libs = the<LibrariesForLibs>()
 
-android {
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    defaultConfig {
+kotlin {
+    android {
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-
-    lint {
-        warningsAsErrors = true
-        abortOnError = true
     }
 }

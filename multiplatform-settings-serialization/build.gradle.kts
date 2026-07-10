@@ -25,6 +25,10 @@ standardConfig {
 }
 
 kotlin {
+    android {
+        namespace = "com.russhwolf.settings.serialization"
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -42,8 +46,4 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.russhwolf.settings.serialization"
 }

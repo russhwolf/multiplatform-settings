@@ -32,11 +32,11 @@ kotlin {
     }
 
     sourceSets {
-        val wasmJsMain by getting {
+        named("wasmJsMain") {
             dependencies {
                 implementation(project(":shared"))
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.11.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-browser:0.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-browser:0.5.0")
                 implementation("com.russhwolf:multiplatform-settings:${rootProject.ext["library_version"]}")
             }
         }

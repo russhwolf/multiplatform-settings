@@ -25,6 +25,10 @@ standardConfig {
 }
 
 kotlin {
+    android {
+        namespace = "com.russhwolf.settings.tests"
+    }
+
     explicitApi = ExplicitApiMode.Disabled
 
     sourceSets {
@@ -43,8 +47,4 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.russhwolf.settings.tests"
 }
