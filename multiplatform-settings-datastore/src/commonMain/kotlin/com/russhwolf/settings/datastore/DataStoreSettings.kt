@@ -45,14 +45,15 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
     public override suspend fun clear(): Unit = keys().forEach { remove(it) }
 
     public override suspend fun remove(key: String) {
-        datastore.edit { it.remove(stringSetPreferencesKey(key)) }
+        // Assign to local variable to prevent suspend tail-call optimization forwarding MutablePreferences (KT-55559)
+        val unused = datastore.edit { it.remove(stringSetPreferencesKey(key)) }
     }
 
     public override suspend fun hasKey(key: String): Boolean =
         datastore.data.first().contains(stringSetPreferencesKey(key))
 
     public override suspend fun putInt(key: String, value: Int) {
-        datastore.edit { it[intPreferencesKey(key)] = value }
+        val unused = datastore.edit { it[intPreferencesKey(key)] = value }
     }
 
     public override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> =
@@ -62,7 +63,7 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         getValue { it[intPreferencesKey(key)] }
 
     public override suspend fun putLong(key: String, value: Long) {
-        datastore.edit { it[longPreferencesKey(key)] = value }
+        val unused = datastore.edit { it[longPreferencesKey(key)] = value }
     }
 
     public override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> =
@@ -72,7 +73,7 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         getValue { it[longPreferencesKey(key)] }
 
     public override suspend fun putString(key: String, value: String) {
-        datastore.edit { it[stringPreferencesKey(key)] = value }
+        val unused = datastore.edit { it[stringPreferencesKey(key)] = value }
     }
 
     public override fun getStringFlow(key: String, defaultValue: String): Flow<String> =
@@ -82,7 +83,7 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         getValue { it[stringPreferencesKey(key)] }
 
     public override suspend fun putFloat(key: String, value: Float) {
-        datastore.edit { it[floatPreferencesKey(key)] = value }
+        val unused = datastore.edit { it[floatPreferencesKey(key)] = value }
     }
 
     public override fun getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
@@ -92,7 +93,7 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         getValue { it[floatPreferencesKey(key)] }
 
     public override suspend fun putDouble(key: String, value: Double) {
-        datastore.edit { it[doublePreferencesKey(key)] = value }
+        val unused = datastore.edit { it[doublePreferencesKey(key)] = value }
     }
 
     public override fun getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
@@ -102,7 +103,7 @@ public class DataStoreSettings(private val datastore: DataStore<Preferences>) : 
         getValue { it[doublePreferencesKey(key)] }
 
     public override suspend fun putBoolean(key: String, value: Boolean) {
-        datastore.edit { it[booleanPreferencesKey(key)] = value }
+        val unused = datastore.edit { it[booleanPreferencesKey(key)] = value }
     }
 
     public override fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =

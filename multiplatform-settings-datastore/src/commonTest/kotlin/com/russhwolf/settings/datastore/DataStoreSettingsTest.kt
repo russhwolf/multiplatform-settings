@@ -80,4 +80,34 @@ class DataStoreSettingsTest : BaseSettingsTest(
         dataStore.edit { it[intPreferencesKey("a")] = 3 }
         assertEquals(3, settings.getIntOrNull("a"))
     }
+
+    @Test
+    fun suspend_write_methods_return_unit(): Unit = runBlocking {
+        val storage = OkioStorage(fakeFileSystem, PreferencesSerializer) {
+            FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "test_unit.preferences_pb".toPath()
+        }
+        val dataStore = PreferenceDataStoreFactory.create(storage, scope = scope)
+        val settings = DataStoreSettings(dataStore)
+
+        val intRes: Any = settings.putInt("a", 1)
+        assertEquals(Unit, intRes)
+
+        val longRes: Any = settings.putLong("b", 2L)
+        assertEquals(Unit, longRes)
+
+        val strRes: Any = settings.putString("c", "3")
+        assertEquals(Unit, strRes)
+
+        val floatRes: Any = settings.putFloat("d", 4f)
+        assertEquals(Unit, floatRes)
+
+        val doubleRes: Any = settings.putDouble("e", 5.0)
+        assertEquals(Unit, doubleRes)
+
+        val boolRes: Any = settings.putBoolean("f", true)
+        assertEquals(Unit, boolRes)
+
+        val removeRes: Any = settings.remove("a")
+        assertEquals(Unit, removeRes)
+    }
 }
