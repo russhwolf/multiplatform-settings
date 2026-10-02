@@ -151,8 +151,10 @@ public class KeychainSettings : Settings {
                     val item: CFDictionaryRef? = CFArrayGetValueAtIndex(attributes.value, i.convert())?.reinterpret()
                     val cfKey: CFStringRef? = CFDictionaryGetValue(item, kSecAttrAccount)?.reinterpret()
                     if (cfKey != null) {
-                        val nsKey = CFBridgingRelease(cfKey) as NSString
-                        add(nsKey.toKString())
+                        val nsKey = CFBridgingRelease(cfKey) as? NSString
+                        if (nsKey != null) {
+                            add(nsKey.toKString())
+                        }
                     }
                 }
             }
