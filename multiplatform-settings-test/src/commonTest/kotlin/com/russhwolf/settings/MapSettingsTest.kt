@@ -132,4 +132,16 @@ class MapSettingsTest : BaseSettingsTest(MapSettings.Factory()) {
         assertEquals("", settings3["b", ""])
         assertEquals(true, settings3["c", true])
     }
+
+    @Test
+    fun testToString() {
+        val emptySettings = MapSettings()
+        assertEquals("MapSettings(delegate={})", emptySettings.toString())
+
+        val settings = MapSettings("a" to 1, "b" to "value")
+        assertEquals("MapSettings(delegate={a=1, b=value})", settings.toString())
+
+        settings["c"] = true
+        assertEquals("MapSettings(delegate={a=1, b=value, c=true})", settings.toString())
+    }
 }

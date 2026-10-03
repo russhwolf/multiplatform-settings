@@ -38,6 +38,7 @@ public final class com/russhwolf/settings/MapSettings : com/russhwolf/settings/O
 	public fun putLong (Ljava/lang/String;J)V
 	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
 	public fun remove (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/russhwolf/settings/MapSettings$Factory : com/russhwolf/settings/Settings$Factory {

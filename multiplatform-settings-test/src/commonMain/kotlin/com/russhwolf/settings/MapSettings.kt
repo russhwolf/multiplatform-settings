@@ -237,6 +237,8 @@ public class MapSettings public constructor(private val delegate: MutableMap<Str
         return Listener(listeners, listener)
     }
 
+    public override fun toString(): String = "MapSettings(delegate=$delegate)"
+
     /**
      * A handle to a listener instance returned by one of the addListener methods of [ObservableSettings], so it can be
      * deactivated as needed.

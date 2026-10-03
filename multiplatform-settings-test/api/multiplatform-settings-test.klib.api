@@ -48,6 +48,7 @@ final class com.russhwolf.settings/MapSettings : com.russhwolf.settings/Observab
     final fun putLong(kotlin/String, kotlin/Long) // com.russhwolf.settings/MapSettings.putLong|putLong(kotlin.String;kotlin.Long){}[0]
     final fun putString(kotlin/String, kotlin/String) // com.russhwolf.settings/MapSettings.putString|putString(kotlin.String;kotlin.String){}[0]
     final fun remove(kotlin/String) // com.russhwolf.settings/MapSettings.remove|remove(kotlin.String){}[0]
+    final fun toString(): kotlin/String // com.russhwolf.settings/MapSettings.toString|toString(){}[0]
 
     final class Factory : com.russhwolf.settings/Settings.Factory { // com.russhwolf.settings/MapSettings.Factory|null[0]
         constructor <init>(kotlin/Function0<kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> = ..., kotlin.collections/MutableMap<kotlin/String?, kotlin.collections/MutableMap<kotlin/String, kotlin/Any>> = ...) // com.russhwolf.settings/MapSettings.Factory.<init>|<init>(kotlin.Function0<kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>;kotlin.collections.MutableMap<kotlin.String?,kotlin.collections.MutableMap<kotlin.String,kotlin.Any>>){}[0]
