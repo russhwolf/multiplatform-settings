@@ -1103,6 +1103,54 @@ class SettingsSerializationTest {
         settings.removeValue<Container>("container")
         assertEquals(0, settings.size)
     }
+
+    @Test
+    fun issue_245() {
+        @Serializable
+        data class Metadata(
+            val author: String? = null,
+            val version: Int? = null,
+        )
+
+        @Serializable
+        data class Document(
+            val title: String? = null,
+            val metadata: Metadata = Metadata(),
+        )
+
+        class Storage(settings: Settings) {
+            var document: Document by settings.serializedValue(
+                serializer = Document.serializer(),
+                key = "document",
+                defaultValue = Document(),
+            )
+        }
+
+        val settings = MapSettings()
+        val storage = Storage(settings)
+
+        storage.document = storage.document.copy(
+            metadata = storage.document.metadata.copy(author = "Alice")
+        )
+
+        assertEquals("Alice", storage.document.metadata.author)
+    }
+
+    @Test
+    fun testOptionalFieldWithDefaultValueWhenKeyNotPresent() {
+        @Serializable
+        data class V1(val name: String)
+
+        @Serializable
+        data class V2(val name: String, val age: Int = 42)
+
+        val settings = MapSettings()
+        settings.encodeValue("user", V1("Alice"))
+
+        val user = settings.decodeValue("user", V2("default", -1))
+        assertEquals("Alice", user.name)
+        assertEquals(42, user.age)
+    }
 }
 
 @Serializable

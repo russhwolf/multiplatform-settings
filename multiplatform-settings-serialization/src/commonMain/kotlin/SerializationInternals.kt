@@ -138,10 +138,12 @@ internal abstract class AbstractSettingsDecoder(
     }
 
     private fun isMissingAndOptional(descriptor: SerialDescriptor, index: Int): Boolean {
+        if (!descriptor.isElementOptional(index)) return false
         val key = "${getKey()}.${descriptor.getElementName(index)}"
-        // Descriptor shows key is optional, key is not present, and nullability doesn't indicate key should be present
-        return descriptor.isElementOptional(index) && descriptor.isNullable &&
-                key !in settings && settings.getBooleanOrNull("$key?") != true
+        if (key in settings) return false
+        if (settings.getBooleanOrNull("$key?") != null) return false
+        if ("$key.size" in settings) return false
+        return settings.keys.none { it.startsWith("$key.") }
     }
 
 
